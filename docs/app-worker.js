@@ -1,8 +1,8 @@
-const cacheName = "app-" + "0073f083c41452feba77b44bfafd4dd99f549cfc";
-const resourcesToCache = ["/","/app.css","/app.js","/manifest.webmanifest","/wasm_exec.js","/web/app.wasm","/web/css/docs.css","/web/css/prism.css","/web/documents/home-next.md","/web/documents/home.md","/web/documents/updates.md","/web/documents/what-is-go-app.md","/web/js/prism.js","https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500\u0026display=swap","https://storage.googleapis.com/murlok-github/icon-192.png","https://storage.googleapis.com/murlok-github/icon-512.png"];
+const cacheName = "app-" + "c70df206f81d79312548f4edc88cad79e000a3bd";
+const resourcesToCache = ["/","/app.css","/app.js","/manifest.webmanifest","/wasm_exec.js","/web/app.wasm","/web/css/docs.css","/web/css/prism.css","/web/documents/home-next.md","/web/documents/home.md","/web/documents/updates.md","/web/documents/what-is-go-app.md","/web/icon.png","/web/js/prism.js","https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500\u0026display=swap","https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236"];
 
 self.addEventListener("install", (event) => {
-  console.log("installing app worker 0073f083c41452feba77b44bfafd4dd99f549cfc");
+  console.log("installing app worker c70df206f81d79312548f4edc88cad79e000a3bd");
 
   event.waitUntil(
     caches
@@ -28,7 +28,7 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
-  console.log("app worker 0073f083c41452feba77b44bfafd4dd99f549cfc is activated");
+  console.log("app worker c70df206f81d79312548f4edc88cad79e000a3bd is activated");
 });
 
 self.addEventListener("fetch", (event) => {

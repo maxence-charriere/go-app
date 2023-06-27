@@ -5,7 +5,7 @@ var goappNav = function () {};
 var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"0073f083c41452feba77b44bfafd4dd99f549cfc"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"c70df206f81d79312548f4edc88cad79e000a3bd"};
 const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLengthHeader = "";
 
@@ -190,8 +190,10 @@ function goappKeepBodyClean() {
 // Web Assembly
 // -----------------------------------------------------------------------------
 async function goappInitWebAssembly() {
+  const loader = document.getElementById("app-wasm-loader");
+
   if (!goappCanLoadWebAssembly()) {
-    document.getElementById("app-wasm-loader").style.display = "none";
+    loader.remove();
     return;
   }
 
@@ -219,6 +221,7 @@ async function goappInitWebAssembly() {
     );
 
     go.run(wasm.instance);
+    loader.remove();
   } catch (err) {
     loaderIcon.className = "goapp-logo";
     loaderLabel.innerText = err;
@@ -227,9 +230,14 @@ async function goappInitWebAssembly() {
 }
 
 function goappCanLoadWebAssembly() {
-  return !/bot|googlebot|crawler|spider|robot|crawling/i.test(
-    navigator.userAgent
-  );
+  if (
+    /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)
+  ) {
+    return false;
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("wasm") !== "false";
 }
 
 async function fetchWithProgress(url, progess) {

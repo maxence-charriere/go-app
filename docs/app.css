@@ -1,7 +1,11 @@
 /*------------------------------------------------------------------------------
   Loader
 ------------------------------------------------------------------------------*/
-.goapp-app-info {
+.app-wasm-loader-hidden {
+  display: none;
+}
+
+.app-wasm-loader {
   position: fixed;
   top: 0;
   left: 0;
@@ -72,18 +76,4 @@
   align-items: center;
   font-size: 65pt;
   font-weight: 100;
-}
-
-/*------------------------------------------------------------------------------
-  Widget Layout
-------------------------------------------------------------------------------*/
-.goapp-shell-hamburger-button-default {
-  font-size: 24px;
-  padding: 12px 18px;
-  color: currentColor;
-}
-
-.goapp-shell-hamburger-button-default:hover {
-  color: dodgerblue;
-  cursor: pointer;
 }

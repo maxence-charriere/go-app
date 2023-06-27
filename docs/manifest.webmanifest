@@ -4,14 +4,19 @@
   "description": "A package for building progressive web apps (PWA) with the Go programming language (Golang) and WebAssembly (Wasm). It uses a declarative syntax that allows creating and dealing with HTML elements only by using Go, and without writing any HTML markup.",
   "icons": [
     {
-      "src": "https://storage.googleapis.com/murlok-github/icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "",
+      "type": "image/svg+xml",
+      "sizes": "any"
     },
     {
-      "src": "https://storage.googleapis.com/murlok-github/icon-512.png",
+      "src": "",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "/web/icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
     }
   ],
   "scope": "/",

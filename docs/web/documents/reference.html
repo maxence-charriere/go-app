@@ -15,7 +15,7 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 
 
 
-<script>var goVersion = "go1.20.1";</script>
+<script>var goVersion = "go1.20.4";</script>
 <script src="/lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -1294,22 +1294,6 @@ resources to run Go-based progressive web apps.
 				
 			
 				
-				<dd><a href="#PreRenderCache">type PreRenderCache</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewPreRenderLRUCache">func NewPreRenderLRUCache(size int, itemTTL time.Duration, onEvict ...func(path string, i PreRenderedItem)) PreRenderCache</a></dd>
-				
-				
-			
-				
-				<dd><a href="#PreRenderedItem">type PreRenderedItem</a></dd>
-				
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#PreRenderedItem.Size">func (r PreRenderedItem) Size() int</a></dd>
-				
-			
-				
 				<dd><a href="#PreRenderer">type PreRenderer</a></dd>
 				
 				
@@ -1405,6 +1389,11 @@ resources to run Go-based progressive web apps.
 			
 				
 				<dd><a href="#TestUIDescriptor">type TestUIDescriptor</a></dd>
+				
+				
+			
+				
+				<dd><a href="#TwitterCard">type TwitterCard</a></dd>
 				
 				
 			
@@ -1515,6 +1504,8 @@ resources to run Go-based progressive web apps.
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go">route.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/scripts.go">scripts.go</a>
+			
+				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/social.go">social.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go">state.go</a>
 			
@@ -2682,7 +2673,7 @@ additional actions when dismounted.
 		
 			
 			
-			<h2 id="Dispatch">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3756:3840#L132">Dispatch</a>
+			<h2 id="Dispatch">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3929:4013#L141">Dispatch</a>
 				<a class="permalink" href="#Dispatch">&#xb6;</a>
 				
 				
@@ -2710,7 +2701,7 @@ additional actions when dismounted.
 		
 			
 			
-			<h2 id="DispatchMode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4039:4060#L146">DispatchMode</a>
+			<h2 id="DispatchMode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4212:4233#L155">DispatchMode</a>
 				<a class="permalink" href="#DispatchMode">&#xb6;</a>
 				
 				
@@ -2819,7 +2810,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=22153:22187#L903">Environment</a>
+			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=23378:23412#L965">Environment</a>
 				<a class="permalink" href="#Environment">&#xb6;</a>
 				
 				
@@ -2961,7 +2952,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLA">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=152:7452#L1">HTMLA</a>
+			<h2 id="HTMLA">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=152:7590#L1">HTMLA</a>
 				<a class="permalink" href="#HTMLA">&#xb6;</a>
 				
 				
@@ -2994,6 +2985,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLA">HTMLA</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLA">HTMLA</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLA">HTMLA</a>
@@ -3168,7 +3162,7 @@ be used any more.
 
 			
 				
-				<h3 id="A">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=7509:7523#L192">A</a>
+				<h3 id="A">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=7647:7661#L195">A</a>
 					<a class="permalink" href="#A">&#xb6;</a>
 					
 					
@@ -3184,7 +3178,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLAbbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=14152:20823#L524">HTMLAbbr</a>
+			<h2 id="HTMLAbbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=14400:21212#L534">HTMLAbbr</a>
 				<a class="permalink" href="#HTMLAbbr">&#xb6;</a>
 				
 				
@@ -3217,6 +3211,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAbbr">HTMLAbbr</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAbbr">HTMLAbbr</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAbbr">HTMLAbbr</a>
@@ -3367,7 +3364,7 @@ be used any more.
 
 			
 				
-				<h3 id="Abbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=20901:20921#L691">Abbr</a>
+				<h3 id="Abbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=21290:21310#L704">Abbr</a>
 					<a class="permalink" href="#Abbr">&#xb6;</a>
 					
 					
@@ -3383,7 +3380,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLAddress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=27277:34113#L983">HTMLAddress</a>
+			<h2 id="HTMLAddress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=27782:34762#L1003">HTMLAddress</a>
 				<a class="permalink" href="#HTMLAddress">&#xb6;</a>
 				
 				
@@ -3416,6 +3413,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAddress">HTMLAddress</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAddress">HTMLAddress</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAddress">HTMLAddress</a>
@@ -3566,7 +3566,7 @@ be used any more.
 
 			
 				
-				<h3 id="Address">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=34219:34245#L1150">Address</a>
+				<h3 id="Address">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=34868:34894#L1173">Address</a>
 					<a class="permalink" href="#Address">&#xb6;</a>
 					
 					
@@ -3582,7 +3582,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLArea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=40928:48369#L1442">HTMLArea</a>
+			<h2 id="HTMLArea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=41699:49281#L1472">HTMLArea</a>
 				<a class="permalink" href="#HTMLArea">&#xb6;</a>
 				
 				
@@ -3615,6 +3615,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLArea">HTMLArea</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLArea">HTMLArea</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLArea">HTMLArea</a>
@@ -3789,7 +3792,7 @@ be used any more.
 
 			
 				
-				<h3 id="Area">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=48445:48465#L1633">Area</a>
+				<h3 id="Area">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=49357:49377#L1666">Area</a>
 					<a class="permalink" href="#Area">&#xb6;</a>
 					
 					
@@ -3805,7 +3808,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLArticle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=55497:62333#L1966">HTMLArticle</a>
+			<h2 id="HTMLArticle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=56525:63505#L2006">HTMLArticle</a>
 				<a class="permalink" href="#HTMLArticle">&#xb6;</a>
 				
 				
@@ -3838,6 +3841,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLArticle">HTMLArticle</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLArticle">HTMLArticle</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLArticle">HTMLArticle</a>
@@ -3988,7 +3994,7 @@ be used any more.
 
 			
 				
-				<h3 id="Article">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=62395:62421#L2133">Article</a>
+				<h3 id="Article">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=63567:63593#L2176">Article</a>
 					<a class="permalink" href="#Article">&#xb6;</a>
 					
 					
@@ -4004,7 +4010,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLAside">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=69106:75832#L2425">HTMLAside</a>
+			<h2 id="HTMLAside">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=70400:77268#L2475">HTMLAside</a>
 				<a class="permalink" href="#HTMLAside">&#xb6;</a>
 				
 				
@@ -4037,6 +4043,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAside">HTMLAside</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAside">HTMLAside</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAside">HTMLAside</a>
@@ -4187,7 +4196,7 @@ be used any more.
 
 			
 				
-				<h3 id="Aside">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=75917:75939#L2592">Aside</a>
+				<h3 id="Aside">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=77353:77375#L2645">Aside</a>
 					<a class="permalink" href="#Aside">&#xb6;</a>
 					
 					
@@ -4203,7 +4212,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLAudio">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=82402:93504#L2884">HTMLAudio</a>
+			<h2 id="HTMLAudio">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=83956:95200#L2944">HTMLAudio</a>
 				<a class="permalink" href="#HTMLAudio">&#xb6;</a>
 				
 				
@@ -4245,6 +4254,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAudio">HTMLAudio</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLAudio">HTMLAudio</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAudio">HTMLAudio</a>
@@ -4476,7 +4488,7 @@ be used any more.
 
 			
 				
-				<h3 id="Audio">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=93567:93589#L3141">Audio</a>
+				<h3 id="Audio">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=95263:95285#L3204">Audio</a>
 					<a class="permalink" href="#Audio">&#xb6;</a>
 					
 					
@@ -4492,7 +4504,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLB">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=103646:110152#L3583">HTMLB</a>
+			<h2 id="HTMLB">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=105460:112104#L3653">HTMLB</a>
 				<a class="permalink" href="#HTMLB">&#xb6;</a>
 				
 				
@@ -4525,6 +4537,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLB">HTMLB</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLB">HTMLB</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLB">HTMLB</a>
@@ -4675,7 +4690,7 @@ be used any more.
 
 			
 				
-				<h3 id="B">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=110207:110221#L3750">B</a>
+				<h3 id="B">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=112159:112173#L3823">B</a>
 					<a class="permalink" href="#B">&#xb6;</a>
 					
 					
@@ -4691,7 +4706,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLBase">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=116238:122928#L4042">HTMLBase</a>
+			<h2 id="HTMLBase">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=118300:125131#L4122">HTMLBase</a>
 				<a class="permalink" href="#HTMLBase">&#xb6;</a>
 				
 				
@@ -4718,6 +4733,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBase">HTMLBase</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBase">HTMLBase</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBase">HTMLBase</a>
@@ -4874,7 +4892,7 @@ be used any more.
 
 			
 				
-				<h3 id="Base">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=123034:123054#L4209">Base</a>
+				<h3 id="Base">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=125237:125257#L4292">Base</a>
 					<a class="permalink" href="#Base">&#xb6;</a>
 					
 					
@@ -4890,7 +4908,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLBdi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=129418:136034#L4502">HTMLBdi</a>
+			<h2 id="HTMLBdi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=131737:138493#L4592">HTMLBdi</a>
 				<a class="permalink" href="#HTMLBdi">&#xb6;</a>
 				
 				
@@ -4923,6 +4941,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBdi">HTMLBdi</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBdi">HTMLBdi</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBdi">HTMLBdi</a>
@@ -5073,7 +5094,7 @@ be used any more.
 
 			
 				
-				<h3 id="Bdi">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=136173:136191#L4669">Bdi</a>
+				<h3 id="Bdi">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=138632:138650#L4762">Bdi</a>
 					<a class="permalink" href="#Bdi">&#xb6;</a>
 					
 					
@@ -5089,7 +5110,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLBdo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=142428:149044#L4961">HTMLBdo</a>
+			<h2 id="HTMLBdo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=145001:151757#L5061">HTMLBdo</a>
 				<a class="permalink" href="#HTMLBdo">&#xb6;</a>
 				
 				
@@ -5122,6 +5143,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBdo">HTMLBdo</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBdo">HTMLBdo</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBdo">HTMLBdo</a>
@@ -5272,7 +5296,7 @@ be used any more.
 
 			
 				
-				<h3 id="Bdo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=149120:149138#L5128">Bdo</a>
+				<h3 id="Bdo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=151833:151851#L5231">Bdo</a>
 					<a class="permalink" href="#Bdo">&#xb6;</a>
 					
 					
@@ -5288,7 +5312,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLBlockquote">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=155389:162495#L5420">HTMLBlockquote</a>
+			<h2 id="HTMLBlockquote">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=158216:165469#L5530">HTMLBlockquote</a>
 				<a class="permalink" href="#HTMLBlockquote">&#xb6;</a>
 				
 				
@@ -5324,6 +5348,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBlockquote">HTMLBlockquote</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBlockquote">HTMLBlockquote</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBlockquote">HTMLBlockquote</a>
@@ -5474,7 +5501,7 @@ be used any more.
 
 			
 				
-				<h3 id="Blockquote">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=162594:162626#L5590">Blockquote</a>
+				<h3 id="Blockquote">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=165568:165600#L5703">Blockquote</a>
 					<a class="permalink" href="#Blockquote">&#xb6;</a>
 					
 					
@@ -5490,7 +5517,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=169734:178189#L5887">HTMLBody</a>
+			<h2 id="HTMLBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=172836:181432#L6007">HTMLBody</a>
 				<a class="permalink" href="#HTMLBody">&#xb6;</a>
 				
 				
@@ -5517,6 +5544,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBody">HTMLBody</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBody">HTMLBody</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBody">HTMLBody</a>
@@ -5713,7 +5743,7 @@ be used any more.
 
 			
 				
-				<h3 id="Body">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=178257:178277#L6095">Body</a>
+				<h3 id="Body">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=181500:181520#L6218">Body</a>
 					<a class="permalink" href="#Body">&#xb6;</a>
 					
 					
@@ -5729,7 +5759,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLBr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=186471:192845#L6458">HTMLBr</a>
+			<h2 id="HTMLBr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=189830:196343#L6588">HTMLBr</a>
 				<a class="permalink" href="#HTMLBr">&#xb6;</a>
 				
 				
@@ -5756,6 +5786,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBr">HTMLBr</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLBr">HTMLBr</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBr">HTMLBr</a>
@@ -5906,7 +5939,7 @@ be used any more.
 
 			
 				
-				<h3 id="Br">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=192911:192927#L6619">Br</a>
+				<h3 id="Br">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=196409:196425#L6752">Br</a>
 					<a class="permalink" href="#Br">&#xb6;</a>
 					
 					
@@ -5922,7 +5955,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLButton">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=198919:206945#L6902">HTMLButton</a>
+			<h2 id="HTMLButton">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=202529:210698#L7042">HTMLButton</a>
 				<a class="permalink" href="#HTMLButton">&#xb6;</a>
 				
 				
@@ -5958,6 +5991,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLButton">HTMLButton</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLButton">HTMLButton</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLButton">HTMLButton</a>
@@ -6138,7 +6174,7 @@ be used any more.
 
 			
 				
-				<h3 id="Button">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=207014:207038#L7102">Button</a>
+				<h3 id="Button">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=210767:210791#L7245">Button</a>
 					<a class="permalink" href="#Button">&#xb6;</a>
 					
 					
@@ -6154,7 +6190,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLCanvas">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=214619:221559#L7449">HTMLCanvas</a>
+			<h2 id="HTMLCanvas">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=218492:225575#L7599">HTMLCanvas</a>
 				<a class="permalink" href="#HTMLCanvas">&#xb6;</a>
 				
 				
@@ -6187,6 +6223,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCanvas">HTMLCanvas</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCanvas">HTMLCanvas</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCanvas">HTMLCanvas</a>
@@ -6343,7 +6382,7 @@ be used any more.
 
 			
 				
-				<h3 id="Canvas">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=221637:221661#L7622">Canvas</a>
+				<h3 id="Canvas">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=225653:225677#L7775">Canvas</a>
 					<a class="permalink" href="#Canvas">&#xb6;</a>
 					
 					
@@ -6359,7 +6398,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=228407:235243#L7924">HTMLCaption</a>
+			<h2 id="HTMLCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=232543:239523#L8084">HTMLCaption</a>
 				<a class="permalink" href="#HTMLCaption">&#xb6;</a>
 				
 				
@@ -6392,6 +6431,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCaption">HTMLCaption</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCaption">HTMLCaption</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCaption">HTMLCaption</a>
@@ -6542,7 +6584,7 @@ be used any more.
 
 			
 				
-				<h3 id="Caption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=235310:235336#L8091">Caption</a>
+				<h3 id="Caption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=239590:239616#L8254">Caption</a>
 					<a class="permalink" href="#Caption">&#xb6;</a>
 					
 					
@@ -6558,7 +6600,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLCite">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=242019:248690#L8383">HTMLCite</a>
+			<h2 id="HTMLCite">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=246421:253233#L8553">HTMLCite</a>
 				<a class="permalink" href="#HTMLCite">&#xb6;</a>
 				
 				
@@ -6591,6 +6633,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCite">HTMLCite</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCite">HTMLCite</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCite">HTMLCite</a>
@@ -6741,7 +6786,7 @@ be used any more.
 
 			
 				
-				<h3 id="Cite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=248758:248778#L8550">Cite</a>
+				<h3 id="Cite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=253301:253321#L8723">Cite</a>
 					<a class="permalink" href="#Cite">&#xb6;</a>
 					
 					
@@ -6757,7 +6802,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLCode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=255128:261799#L8842">HTMLCode</a>
+			<h2 id="HTMLCode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=259787:266599#L9022">HTMLCode</a>
 				<a class="permalink" href="#HTMLCode">&#xb6;</a>
 				
 				
@@ -6790,6 +6835,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCode">HTMLCode</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCode">HTMLCode</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCode">HTMLCode</a>
@@ -6940,7 +6988,7 @@ be used any more.
 
 			
 				
-				<h3 id="Code">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=261872:261892#L9009">Code</a>
+				<h3 id="Code">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=266672:266692#L9192">Code</a>
 					<a class="permalink" href="#Code">&#xb6;</a>
 					
 					
@@ -6956,7 +7004,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLCol">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=268240:274739#L9301">HTMLCol</a>
+			<h2 id="HTMLCol">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=273156:279795#L9491">HTMLCol</a>
 				<a class="permalink" href="#HTMLCol">&#xb6;</a>
 				
 				
@@ -6983,6 +7031,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCol">HTMLCol</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLCol">HTMLCol</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCol">HTMLCol</a>
@@ -7136,7 +7187,7 @@ be used any more.
 
 			
 				
-				<h3 id="Col">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=274848:274866#L9465">Col</a>
+				<h3 id="Col">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=279904:279922#L9658">Col</a>
 					<a class="permalink" href="#Col">&#xb6;</a>
 					
 					
@@ -7152,7 +7203,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLColGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=281044:288012#L9753">HTMLColGroup</a>
+			<h2 id="HTMLColGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=286214:293327#L9953">HTMLColGroup</a>
 				<a class="permalink" href="#HTMLColGroup">&#xb6;</a>
 				
 				
@@ -7185,6 +7236,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLColGroup">HTMLColGroup</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLColGroup">HTMLColGroup</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLColGroup">HTMLColGroup</a>
@@ -7338,7 +7392,7 @@ be used any more.
 
 			
 				
-				<h3 id="ColGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=288123:288151#L9923">ColGroup</a>
+				<h3 id="ColGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=293438:293466#L10126">ColGroup</a>
 					<a class="permalink" href="#ColGroup">&#xb6;</a>
 					
 					
@@ -7354,7 +7408,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLData">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=295030:297212#L10220">HTMLData</a>
+			<h2 id="HTMLData">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=300469:302792#L10430">HTMLData</a>
 				<a class="permalink" href="#HTMLData">&#xb6;</a>
 				
 				
@@ -7387,6 +7441,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLData">HTMLData</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLData">HTMLData</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLData">HTMLData</a>
@@ -7438,7 +7495,7 @@ be used any more.
 
 			
 				
-				<h3 id="Data">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=297312:297332#L10288">Data</a>
+				<h3 id="Data">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=302892:302912#L10501">Data</a>
 					<a class="permalink" href="#Data">&#xb6;</a>
 					
 					
@@ -7454,7 +7511,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDataList">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=299503:306394#L10415">HTMLDataList</a>
+			<h2 id="HTMLDataList">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=305199:312235#L10635">HTMLDataList</a>
 				<a class="permalink" href="#HTMLDataList">&#xb6;</a>
 				
 				
@@ -7487,6 +7544,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDataList">HTMLDataList</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDataList">HTMLDataList</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDataList">HTMLDataList</a>
@@ -7637,7 +7697,7 @@ be used any more.
 
 			
 				
-				<h3 id="DataList">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=306497:306525#L10582">DataList</a>
+				<h3 id="DataList">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=312338:312366#L10805">DataList</a>
 					<a class="permalink" href="#DataList">&#xb6;</a>
 					
 					
@@ -7653,7 +7713,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=313315:319876#L10874">HTMLDd</a>
+			<h2 id="HTMLDd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=319280:325980#L11104">HTMLDd</a>
 				<a class="permalink" href="#HTMLDd">&#xb6;</a>
 				
 				
@@ -7686,6 +7746,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDd">HTMLDd</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDd">HTMLDd</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDd">HTMLDd</a>
@@ -7836,7 +7899,7 @@ be used any more.
 
 			
 				
-				<h3 id="Dd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=319974:319990#L11041">Dd</a>
+				<h3 id="Dd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=326078:326094#L11274">Dd</a>
 					<a class="permalink" href="#Dd">&#xb6;</a>
 					
 					
@@ -7852,7 +7915,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=326116:332901#L11333">HTMLDel</a>
+			<h2 id="HTMLDel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=332332:339257#L11573">HTMLDel</a>
 				<a class="permalink" href="#HTMLDel">&#xb6;</a>
 				
 				
@@ -7888,6 +7951,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDel">HTMLDel</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDel">HTMLDel</a>
 
     <span class="comment">// DateTime specifies the date and time.</span>
     DateTime(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDel">HTMLDel</a>
@@ -8041,7 +8107,7 @@ be used any more.
 
 			
 				
-				<h3 id="Del">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=332991:333009#L11506">Del</a>
+				<h3 id="Del">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=339347:339365#L11749">Del</a>
 					<a class="permalink" href="#Del">&#xb6;</a>
 					
 					
@@ -8057,7 +8123,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDetails">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=339418:346496#L11808">HTMLDetails</a>
+			<h2 id="HTMLDetails">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=345888:353110#L12058">HTMLDetails</a>
 				<a class="permalink" href="#HTMLDetails">&#xb6;</a>
 				
 				
@@ -8090,6 +8156,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDetails">HTMLDetails</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDetails">HTMLDetails</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDetails">HTMLDetails</a>
@@ -8246,7 +8315,7 @@ be used any more.
 
 			
 				
-				<h3 id="Details">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=346597:346623#L11981">Details</a>
+				<h3 id="Details">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=353211:353237#L12234">Details</a>
 					<a class="permalink" href="#Details">&#xb6;</a>
 					
 					
@@ -8262,7 +8331,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDfn">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=353518:360134#L12283">HTMLDfn</a>
+			<h2 id="HTMLDfn">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=360254:367010#L12543">HTMLDfn</a>
 				<a class="permalink" href="#HTMLDfn">&#xb6;</a>
 				
 				
@@ -8295,6 +8364,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDfn">HTMLDfn</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDfn">HTMLDfn</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDfn">HTMLDfn</a>
@@ -8445,7 +8517,7 @@ be used any more.
 
 			
 				
-				<h3 id="Dfn">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=360216:360234#L12450">Dfn</a>
+				<h3 id="Dfn">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=367092:367110#L12713">Dfn</a>
 					<a class="permalink" href="#Dfn">&#xb6;</a>
 					
 					
@@ -8461,7 +8533,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDialog">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=366477:373358#L12742">HTMLDialog</a>
+			<h2 id="HTMLDialog">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=373467:380491#L13012">HTMLDialog</a>
 				<a class="permalink" href="#HTMLDialog">&#xb6;</a>
 				
 				
@@ -8494,6 +8566,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDialog">HTMLDialog</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDialog">HTMLDialog</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDialog">HTMLDialog</a>
@@ -8647,7 +8722,7 @@ be used any more.
 
 			
 				
-				<h3 id="Dialog">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=373431:373455#L12912">Dialog</a>
+				<h3 id="Dialog">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=380564:380588#L13185">Dialog</a>
 					<a class="permalink" href="#Dialog">&#xb6;</a>
 					
 					
@@ -8663,7 +8738,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDiv">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=380107:386723#L13209">HTMLDiv</a>
+			<h2 id="HTMLDiv">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=387360:394116#L13489">HTMLDiv</a>
 				<a class="permalink" href="#HTMLDiv">&#xb6;</a>
 				
 				
@@ -8696,6 +8771,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDiv">HTMLDiv</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDiv">HTMLDiv</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDiv">HTMLDiv</a>
@@ -8846,7 +8924,7 @@ be used any more.
 
 			
 				
-				<h3 id="Div">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=386794:386812#L13376">Div</a>
+				<h3 id="Div">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=394187:394205#L13659">Div</a>
 					<a class="permalink" href="#Div">&#xb6;</a>
 					
 					
@@ -8862,7 +8940,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=393047:399608#L13668">HTMLDl</a>
+			<h2 id="HTMLDl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=400554:407254#L13958">HTMLDl</a>
 				<a class="permalink" href="#HTMLDl">&#xb6;</a>
 				
 				
@@ -8895,6 +8973,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDl">HTMLDl</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDl">HTMLDl</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDl">HTMLDl</a>
@@ -9045,7 +9126,7 @@ be used any more.
 
 			
 				
-				<h3 id="Dl">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=399673:399689#L13835">Dl</a>
+				<h3 id="Dl">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=407319:407335#L14128">Dl</a>
 					<a class="permalink" href="#Dl">&#xb6;</a>
 					
 					
@@ -9061,7 +9142,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLDt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=405813:412374#L14127">HTMLDt</a>
+			<h2 id="HTMLDt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=413571:420271#L14427">HTMLDt</a>
 				<a class="permalink" href="#HTMLDt">&#xb6;</a>
 				
 				
@@ -9094,6 +9175,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDt">HTMLDt</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLDt">HTMLDt</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDt">HTMLDt</a>
@@ -9244,7 +9328,7 @@ be used any more.
 
 			
 				
-				<h3 id="Dt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=412454:412470#L14294">Dt</a>
+				<h3 id="Dt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=420351:420367#L14597">Dt</a>
 					<a class="permalink" href="#Dt">&#xb6;</a>
 					
 					
@@ -9260,7 +9344,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLElem">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=418598:425350#L14586">HTMLElem</a>
+			<h2 id="HTMLElem">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=426607:433500#L14896">HTMLElem</a>
 				<a class="permalink" href="#HTMLElem">&#xb6;</a>
 				
 				
@@ -9293,6 +9377,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLElem">HTMLElem</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLElem">HTMLElem</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLElem">HTMLElem</a>
@@ -9446,7 +9533,7 @@ be used any more.
 
 			
 				
-				<h3 id="Elem">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=425430:425460#L14756">Elem</a>
+				<h3 id="Elem">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=433580:433610#L15069">Elem</a>
 					<a class="permalink" href="#Elem">&#xb6;</a>
 					
 					
@@ -9462,7 +9549,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLElemSelfClosing">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=431901:439056#L15053">HTMLElemSelfClosing</a>
+			<h2 id="HTMLElemSelfClosing">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=440167:447474#L15373">HTMLElemSelfClosing</a>
 				<a class="permalink" href="#HTMLElemSelfClosing">&#xb6;</a>
 				
 				
@@ -9489,6 +9576,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLElemSelfClosing">HTMLElemSelfClosing</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLElemSelfClosing">HTMLElemSelfClosing</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLElemSelfClosing">HTMLElemSelfClosing</a>
@@ -9642,7 +9732,7 @@ be used any more.
 
 			
 				
-				<h3 id="ElemSelfClosing">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=439153:439205#L15217">ElemSelfClosing</a>
+				<h3 id="ElemSelfClosing">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=447571:447623#L15540">ElemSelfClosing</a>
 					<a class="permalink" href="#ElemSelfClosing">&#xb6;</a>
 					
 					
@@ -9658,7 +9748,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLEm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=446660:453221#L15505">HTMLEm</a>
+			<h2 id="HTMLEm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=455216:461916#L15835">HTMLEm</a>
 				<a class="permalink" href="#HTMLEm">&#xb6;</a>
 				
 				
@@ -9691,6 +9781,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLEm">HTMLEm</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLEm">HTMLEm</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLEm">HTMLEm</a>
@@ -9841,7 +9934,7 @@ be used any more.
 
 			
 				
-				<h3 id="Em">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=453283:453299#L15672">Em</a>
+				<h3 id="Em">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=461978:461994#L16005">Em</a>
 					<a class="permalink" href="#Em">&#xb6;</a>
 					
 					
@@ -9857,7 +9950,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLEmbed">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=459429:469861#L15964">HTMLEmbed</a>
+			<h2 id="HTMLEmbed">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=468236:478810#L16304">HTMLEmbed</a>
 				<a class="permalink" href="#HTMLEmbed">&#xb6;</a>
 				
 				
@@ -9884,6 +9977,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLEmbed">HTMLEmbed</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLEmbed">HTMLEmbed</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLEmbed">HTMLEmbed</a>
@@ -10115,7 +10211,7 @@ be used any more.
 
 			
 				
-				<h3 id="Embed">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=469961:469983#L16206">Embed</a>
+				<h3 id="Embed">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=478910:478932#L16549">Embed</a>
 					<a class="permalink" href="#Embed">&#xb6;</a>
 					
 					
@@ -10131,7 +10227,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLFieldSet">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=479626:486805#L16624">HTMLFieldSet</a>
+			<h2 id="HTMLFieldSet">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=488693:496017#L16974">HTMLFieldSet</a>
 				<a class="permalink" href="#HTMLFieldSet">&#xb6;</a>
 				
 				
@@ -10164,6 +10260,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFieldSet">HTMLFieldSet</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFieldSet">HTMLFieldSet</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFieldSet">HTMLFieldSet</a>
@@ -10323,7 +10422,7 @@ be used any more.
 
 			
 				
-				<h3 id="FieldSet">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=486883:486911#L16800">FieldSet</a>
+				<h3 id="FieldSet">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=496095:496123#L17153">FieldSet</a>
 					<a class="permalink" href="#FieldSet">&#xb6;</a>
 					
 					
@@ -10339,7 +10438,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLFigCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=493987:500988#L17107">HTMLFigCaption</a>
+			<h2 id="HTMLFigCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=503323:510471#L17467">HTMLFigCaption</a>
 				<a class="permalink" href="#HTMLFigCaption">&#xb6;</a>
 				
 				
@@ -10372,6 +10471,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFigCaption">HTMLFigCaption</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFigCaption">HTMLFigCaption</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFigCaption">HTMLFigCaption</a>
@@ -10522,7 +10624,7 @@ be used any more.
 
 			
 				
-				<h3 id="FigCaption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=501073:501105#L17274">FigCaption</a>
+				<h3 id="FigCaption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=510556:510588#L17637">FigCaption</a>
 					<a class="permalink" href="#FigCaption">&#xb6;</a>
 					
 					
@@ -10538,7 +10640,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLFigure">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=508125:514906#L17566">HTMLFigure</a>
+			<h2 id="HTMLFigure">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=517736:524660#L17936">HTMLFigure</a>
 				<a class="permalink" href="#HTMLFigure">&#xb6;</a>
 				
 				
@@ -10571,6 +10673,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFigure">HTMLFigure</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFigure">HTMLFigure</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFigure">HTMLFigure</a>
@@ -10721,7 +10826,7 @@ be used any more.
 
 			
 				
-				<h3 id="Figure">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=514981:515005#L17733">Figure</a>
+				<h3 id="Figure">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=524735:524759#L18106">Figure</a>
 					<a class="permalink" href="#Figure">&#xb6;</a>
 					
 					
@@ -10737,7 +10842,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLFooter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=521581:528362#L18025">HTMLFooter</a>
+			<h2 id="HTMLFooter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=531455:538379#L18405">HTMLFooter</a>
 				<a class="permalink" href="#HTMLFooter">&#xb6;</a>
 				
 				
@@ -10770,6 +10875,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFooter">HTMLFooter</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLFooter">HTMLFooter</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFooter">HTMLFooter</a>
@@ -10920,7 +11028,7 @@ be used any more.
 
 			
 				
-				<h3 id="Footer">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=528447:528471#L18192">Footer</a>
+				<h3 id="Footer">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=538464:538488#L18575">Footer</a>
 					<a class="permalink" href="#Footer">&#xb6;</a>
 					
 					
@@ -10936,7 +11044,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLForm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=535043:542608#L18484">HTMLForm</a>
+			<h2 id="HTMLForm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=545180:552886#L18874">HTMLForm</a>
 				<a class="permalink" href="#HTMLForm">&#xb6;</a>
 				
 				
@@ -10978,6 +11086,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLForm">HTMLForm</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLForm">HTMLForm</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLForm">HTMLForm</a>
@@ -11143,7 +11254,7 @@ be used any more.
 
 			
 				
-				<h3 id="Form">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=542684:542704#L18675">Form</a>
+				<h3 id="Form">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=552962:552982#L19068">Form</a>
 					<a class="permalink" href="#Form">&#xb6;</a>
 					
 					
@@ -11159,7 +11270,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLH1">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=549786:556347#L19012">HTMLH1</a>
+			<h2 id="HTMLH1">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=560180:566880#L19412">HTMLH1</a>
 				<a class="permalink" href="#HTMLH1">&#xb6;</a>
 				
 				
@@ -11192,6 +11303,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH1">HTMLH1</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH1">HTMLH1</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH1">HTMLH1</a>
@@ -11342,7 +11456,7 @@ be used any more.
 
 			
 				
-				<h3 id="H1">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=556406:556422#L19179">H1</a>
+				<h3 id="H1">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=566939:566955#L19582">H1</a>
 					<a class="permalink" href="#H1">&#xb6;</a>
 					
 					
@@ -11358,7 +11472,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLH2">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=562546:569107#L19471">HTMLH2</a>
+			<h2 id="HTMLH2">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=573191:579891#L19881">HTMLH2</a>
 				<a class="permalink" href="#HTMLH2">&#xb6;</a>
 				
 				
@@ -11391,6 +11505,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH2">HTMLH2</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH2">HTMLH2</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH2">HTMLH2</a>
@@ -11541,7 +11658,7 @@ be used any more.
 
 			
 				
-				<h3 id="H2">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=569166:569182#L19638">H2</a>
+				<h3 id="H2">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=579950:579966#L20051">H2</a>
 					<a class="permalink" href="#H2">&#xb6;</a>
 					
 					
@@ -11557,7 +11674,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLH3">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=575306:581867#L19930">HTMLH3</a>
+			<h2 id="HTMLH3">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=586202:592902#L20350">HTMLH3</a>
 				<a class="permalink" href="#HTMLH3">&#xb6;</a>
 				
 				
@@ -11590,6 +11707,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH3">HTMLH3</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH3">HTMLH3</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH3">HTMLH3</a>
@@ -11740,7 +11860,7 @@ be used any more.
 
 			
 				
-				<h3 id="H3">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=581926:581942#L20097">H3</a>
+				<h3 id="H3">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=592961:592977#L20520">H3</a>
 					<a class="permalink" href="#H3">&#xb6;</a>
 					
 					
@@ -11756,7 +11876,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLH4">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=588066:594627#L20389">HTMLH4</a>
+			<h2 id="HTMLH4">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=599213:605913#L20819">HTMLH4</a>
 				<a class="permalink" href="#HTMLH4">&#xb6;</a>
 				
 				
@@ -11789,6 +11909,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH4">HTMLH4</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH4">HTMLH4</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH4">HTMLH4</a>
@@ -11939,7 +12062,7 @@ be used any more.
 
 			
 				
-				<h3 id="H4">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=594686:594702#L20556">H4</a>
+				<h3 id="H4">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=605972:605988#L20989">H4</a>
 					<a class="permalink" href="#H4">&#xb6;</a>
 					
 					
@@ -11955,7 +12078,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLH5">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=600826:607387#L20848">HTMLH5</a>
+			<h2 id="HTMLH5">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=612224:618924#L21288">HTMLH5</a>
 				<a class="permalink" href="#HTMLH5">&#xb6;</a>
 				
 				
@@ -11988,6 +12111,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH5">HTMLH5</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH5">HTMLH5</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH5">HTMLH5</a>
@@ -12138,7 +12264,7 @@ be used any more.
 
 			
 				
-				<h3 id="H5">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=607446:607462#L21015">H5</a>
+				<h3 id="H5">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=618983:618999#L21458">H5</a>
 					<a class="permalink" href="#H5">&#xb6;</a>
 					
 					
@@ -12154,7 +12280,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLH6">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=613586:620147#L21307">HTMLH6</a>
+			<h2 id="HTMLH6">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=625235:631935#L21757">HTMLH6</a>
 				<a class="permalink" href="#HTMLH6">&#xb6;</a>
 				
 				
@@ -12187,6 +12313,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH6">HTMLH6</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLH6">HTMLH6</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH6">HTMLH6</a>
@@ -12337,7 +12466,7 @@ be used any more.
 
 			
 				
-				<h3 id="H6">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=620206:620222#L21474">H6</a>
+				<h3 id="H6">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=631994:632010#L21927">H6</a>
 					<a class="permalink" href="#H6">&#xb6;</a>
 					
 					
@@ -12353,7 +12482,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=626350:628462#L21766">HTMLHead</a>
+			<h2 id="HTMLHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=638250:640503#L22226">HTMLHead</a>
 				<a class="permalink" href="#HTMLHead">&#xb6;</a>
 				
 				
@@ -12386,6 +12515,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHead">HTMLHead</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHead">HTMLHead</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHead">HTMLHead</a>
@@ -12434,7 +12566,7 @@ be used any more.
 
 			
 				
-				<h3 id="Head">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=628541:628561#L21831">Head</a>
+				<h3 id="Head">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=640582:640602#L22294">Head</a>
 					<a class="permalink" href="#Head">&#xb6;</a>
 					
 					
@@ -12450,7 +12582,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLHeader">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=630649:637430#L21953">HTMLHeader</a>
+			<h2 id="HTMLHeader">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=642806:649730#L22423">HTMLHeader</a>
 				<a class="permalink" href="#HTMLHeader">&#xb6;</a>
 				
 				
@@ -12483,6 +12615,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHeader">HTMLHeader</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHeader">HTMLHeader</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHeader">HTMLHeader</a>
@@ -12633,7 +12768,7 @@ be used any more.
 
 			
 				
-				<h3 id="Header">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=637515:637539#L22120">Header</a>
+				<h3 id="Header">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=649815:649839#L22593">Header</a>
 					<a class="permalink" href="#Header">&#xb6;</a>
 					
 					
@@ -12649,7 +12784,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLHr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=644107:650481#L22412">HTMLHr</a>
+			<h2 id="HTMLHr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=656527:663040#L22892">HTMLHr</a>
 				<a class="permalink" href="#HTMLHr">&#xb6;</a>
 				
 				
@@ -12676,6 +12811,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHr">HTMLHr</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHr">HTMLHr</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHr">HTMLHr</a>
@@ -12826,7 +12964,7 @@ be used any more.
 
 			
 				
-				<h3 id="Hr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=650560:650576#L22573">Hr</a>
+				<h3 id="Hr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=663119:663135#L23056">Hr</a>
 					<a class="permalink" href="#Hr">&#xb6;</a>
 					
 					
@@ -12842,7 +12980,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLHtml">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=656564:658521#L22856">HTMLHtml</a>
+			<h2 id="HTMLHtml">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=669235:671333#L23346">HTMLHtml</a>
 				<a class="permalink" href="#HTMLHtml">&#xb6;</a>
 				
 				
@@ -12869,6 +13007,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHtml">HTMLHtml</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLHtml">HTMLHtml</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHtml">HTMLHtml</a>
@@ -12918,7 +13059,7 @@ be used any more.
 
 			
 				
-				<h3 id="Html">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=658598:658618#L22917">Html</a>
+				<h3 id="Html">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=671410:671430#L23410">Html</a>
 					<a class="permalink" href="#Html">&#xb6;</a>
 					
 					
@@ -12934,7 +13075,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=660634:667140#L23035">HTMLI</a>
+			<h2 id="HTMLI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=673562:680206#L23535">HTMLI</a>
 				<a class="permalink" href="#HTMLI">&#xb6;</a>
 				
 				
@@ -12967,6 +13108,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLI">HTMLI</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLI">HTMLI</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLI">HTMLI</a>
@@ -13117,7 +13261,7 @@ be used any more.
 
 			
 				
-				<h3 id="I">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=667230:667244#L23202">I</a>
+				<h3 id="I">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=680296:680310#L23705">I</a>
 					<a class="permalink" href="#I">&#xb6;</a>
 					
 					
@@ -13133,7 +13277,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLIFrame">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=673265:681326#L23494">HTMLIFrame</a>
+			<h2 id="HTMLIFrame">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=686441:694645#L24004">HTMLIFrame</a>
 				<a class="permalink" href="#HTMLIFrame">&#xb6;</a>
 				
 				
@@ -13175,6 +13319,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLIFrame">HTMLIFrame</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLIFrame">HTMLIFrame</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLIFrame">HTMLIFrame</a>
@@ -13352,7 +13499,7 @@ be used any more.
 
 			
 				
-				<h3 id="IFrame">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=681392:681416#L23697">IFrame</a>
+				<h3 id="IFrame">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=694711:694735#L24210">IFrame</a>
 					<a class="permalink" href="#IFrame">&#xb6;</a>
 					
 					
@@ -13368,7 +13515,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLImg">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=689193:700073#L24059">HTMLImg</a>
+			<h2 id="HTMLImg">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=702632:713652#L24579">HTMLImg</a>
 				<a class="permalink" href="#HTMLImg">&#xb6;</a>
 				
 				
@@ -13401,6 +13548,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLImg">HTMLImg</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLImg">HTMLImg</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLImg">HTMLImg</a>
@@ -13644,7 +13794,7 @@ be used any more.
 
 			
 				
-				<h3 id="Img">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=700129:700147#L24319">Img</a>
+				<h3 id="Img">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=713708:713726#L24842">Img</a>
 					<a class="permalink" href="#Img">&#xb6;</a>
 					
 					
@@ -13660,7 +13810,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLInput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=709992:719823#L24767">HTMLInput</a>
+			<h2 id="HTMLInput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=723685:733658#L25297">HTMLInput</a>
 				<a class="permalink" href="#HTMLInput">&#xb6;</a>
 				
 				
@@ -13705,6 +13855,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLInput">HTMLInput</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLInput">HTMLInput</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLInput">HTMLInput</a>
@@ -13933,7 +14086,7 @@ be used any more.
 
 			
 				
-				<h3 id="Input">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=719889:719911#L25024">Input</a>
+				<h3 id="Input">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=733724:733746#L25557">Input</a>
 					<a class="permalink" href="#Input">&#xb6;</a>
 					
 					
@@ -13949,7 +14102,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLIns">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=729061:735677#L25472">HTMLIns</a>
+			<h2 id="HTMLIns">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=743014:749770#L26012">HTMLIns</a>
 				<a class="permalink" href="#HTMLIns">&#xb6;</a>
 				
 				
@@ -13982,6 +14135,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLIns">HTMLIns</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLIns">HTMLIns</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLIns">HTMLIns</a>
@@ -14132,7 +14288,7 @@ be used any more.
 
 			
 				
-				<h3 id="Ins">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=735770:735788#L25639">Ins</a>
+				<h3 id="Ins">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=749863:749881#L26182">Ins</a>
 					<a class="permalink" href="#Ins">&#xb6;</a>
 					
 					
@@ -14148,7 +14304,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLKbd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=742025:748641#L25931">HTMLKbd</a>
+			<h2 id="HTMLKbd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=756232:762988#L26481">HTMLKbd</a>
 				<a class="permalink" href="#HTMLKbd">&#xb6;</a>
 				
 				
@@ -14181,6 +14337,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLKbd">HTMLKbd</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLKbd">HTMLKbd</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLKbd">HTMLKbd</a>
@@ -14331,7 +14490,7 @@ be used any more.
 
 			
 				
-				<h3 id="Kbd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=748703:748721#L26098">Kbd</a>
+				<h3 id="Kbd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=763050:763068#L26651">Kbd</a>
 					<a class="permalink" href="#Kbd">&#xb6;</a>
 					
 					
@@ -14347,7 +14506,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLLabel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=754962:761878#L26390">HTMLLabel</a>
+			<h2 id="HTMLLabel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=769423:776481#L26950">HTMLLabel</a>
 				<a class="permalink" href="#HTMLLabel">&#xb6;</a>
 				
 				
@@ -14380,6 +14539,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLabel">HTMLLabel</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLabel">HTMLLabel</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLabel">HTMLLabel</a>
@@ -14536,7 +14698,7 @@ be used any more.
 
 			
 				
-				<h3 id="Label">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=761956:761978#L26563">Label</a>
+				<h3 id="Label">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=776559:776581#L27126">Label</a>
 					<a class="permalink" href="#Label">&#xb6;</a>
 					
 					
@@ -14552,7 +14714,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLLegend">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=768605:775386#L26865">HTMLLegend</a>
+			<h2 id="HTMLLegend">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=783326:790250#L27435">HTMLLegend</a>
 				<a class="permalink" href="#HTMLLegend">&#xb6;</a>
 				
 				
@@ -14585,6 +14747,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLegend">HTMLLegend</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLegend">HTMLLegend</a>
@@ -14735,7 +14900,7 @@ be used any more.
 
 			
 				
-				<h3 id="Legend">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=775469:775493#L27032">Legend</a>
+				<h3 id="Legend">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=790333:790357#L27605">Legend</a>
 					<a class="permalink" href="#Legend">&#xb6;</a>
 					
 					
@@ -14751,7 +14916,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLLi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=782061:788690#L27324">HTMLLi</a>
+			<h2 id="HTMLLi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=797045:803813#L27904">HTMLLi</a>
 				<a class="permalink" href="#HTMLLi">&#xb6;</a>
 				
 				
@@ -14784,6 +14949,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLi">HTMLLi</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLi">HTMLLi</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLi">HTMLLi</a>
@@ -14937,7 +15105,7 @@ be used any more.
 
 			
 				
-				<h3 id="Li">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=788748:788764#L27494">Li</a>
+				<h3 id="Li">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=803871:803887#L28077">Li</a>
 					<a class="permalink" href="#Li">&#xb6;</a>
 					
 					
@@ -14953,7 +15121,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLLink">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=794967:802208#L27791">HTMLLink</a>
+			<h2 id="HTMLLink">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=810202:817653#L28381">HTMLLink</a>
 				<a class="permalink" href="#HTMLLink">&#xb6;</a>
 				
 				
@@ -14969,6 +15137,9 @@ be used any more.
     <span class="comment">// Aria stores accessible rich internet applications (ARIA) data.</span>
     Aria(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLink">HTMLLink</a>
 
+    <span class="comment">// As specifies a resource type to preload.</span>
+    As(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLink">HTMLLink</a>
+
     <span class="comment">// Attr sets the named attribute with the given value.</span>
     Attr(n <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLink">HTMLLink</a>
 
@@ -14983,6 +15154,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLink">HTMLLink</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLLink">HTMLLink</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLink">HTMLLink</a>
@@ -15154,7 +15328,7 @@ be used any more.
 
 			
 				
-				<h3 id="Link">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=802353:802373#L27976">Link</a>
+				<h3 id="Link">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=817798:817818#L28572">Link</a>
 					<a class="permalink" href="#Link">&#xb6;</a>
 					
 					
@@ -15170,7 +15344,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLMain">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=809279:815950#L28299">HTMLMain</a>
+			<h2 id="HTMLMain">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=824916:831728#L28907">HTMLMain</a>
 				<a class="permalink" href="#HTMLMain">&#xb6;</a>
 				
 				
@@ -15203,6 +15377,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMain">HTMLMain</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMain">HTMLMain</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMain">HTMLMain</a>
@@ -15353,7 +15530,7 @@ be used any more.
 
 			
 				
-				<h3 id="Main">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=816031:816051#L28466">Main</a>
+				<h3 id="Main">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=831809:831829#L29077">Main</a>
 					<a class="permalink" href="#Main">&#xb6;</a>
 					
 					
@@ -15369,7 +15546,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLMap">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=822399:829084#L28758">HTMLMap</a>
+			<h2 id="HTMLMap">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=838293:845118#L29376">HTMLMap</a>
 				<a class="permalink" href="#HTMLMap">&#xb6;</a>
 				
 				
@@ -15402,6 +15579,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMap">HTMLMap</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMap">HTMLMap</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMap">HTMLMap</a>
@@ -15555,7 +15735,7 @@ be used any more.
 
 			
 				
-				<h3 id="Map">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=829155:829173#L28928">Map</a>
+				<h3 id="Map">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=845189:845207#L29549">Map</a>
 					<a class="permalink" href="#Map">&#xb6;</a>
 					
 					
@@ -15571,7 +15751,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLMark">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=835490:842161#L29225">HTMLMark</a>
+			<h2 id="HTMLMark">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=851638:858450#L29853">HTMLMark</a>
 				<a class="permalink" href="#HTMLMark">&#xb6;</a>
 				
 				
@@ -15604,6 +15784,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMark">HTMLMark</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMark">HTMLMark</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMark">HTMLMark</a>
@@ -15754,7 +15937,7 @@ be used any more.
 
 			
 				
-				<h3 id="Mark">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=842233:842253#L29392">Mark</a>
+				<h3 id="Mark">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=858522:858542#L30023">Mark</a>
 					<a class="permalink" href="#Mark">&#xb6;</a>
 					
 					
@@ -15770,7 +15953,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLMeta">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=848603:850969#L29684">HTMLMeta</a>
+			<h2 id="HTMLMeta">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=865008:867515#L30322">HTMLMeta</a>
 				<a class="permalink" href="#HTMLMeta">&#xb6;</a>
 				
 				
@@ -15803,6 +15986,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMeta">HTMLMeta</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMeta">HTMLMeta</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMeta">HTMLMeta</a>
@@ -15860,7 +16046,7 @@ be used any more.
 
 			
 				
-				<h3 id="Meta">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=851010:851030#L29758">Meta</a>
+				<h3 id="Meta">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=867556:867576#L30399">Meta</a>
 					<a class="permalink" href="#Meta">&#xb6;</a>
 					
 					
@@ -15876,7 +16062,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLMeter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=853399:860694#L29896">HTMLMeter</a>
+			<h2 id="HTMLMeter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=870061:877498#L30544">HTMLMeter</a>
 				<a class="permalink" href="#HTMLMeter">&#xb6;</a>
 				
 				
@@ -15909,6 +16095,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMeter">HTMLMeter</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLMeter">HTMLMeter</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMeter">HTMLMeter</a>
@@ -16080,7 +16269,7 @@ be used any more.
 
 			
 				
-				<h3 id="Meter">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=860795:860817#L30084">Meter</a>
+				<h3 id="Meter">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=877599:877621#L30735">Meter</a>
 					<a class="permalink" href="#Meter">&#xb6;</a>
 					
 					
@@ -16096,7 +16285,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLNav">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=867846:874462#L30411">HTMLNav</a>
+			<h2 id="HTMLNav">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=884768:891524#L31069">HTMLNav</a>
 				<a class="permalink" href="#HTMLNav">&#xb6;</a>
 				
 				
@@ -16129,6 +16318,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLNav">HTMLNav</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLNav">HTMLNav</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLNav">HTMLNav</a>
@@ -16279,7 +16471,7 @@ be used any more.
 
 			
 				
-				<h3 id="Nav">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=874526:874544#L30578">Nav</a>
+				<h3 id="Nav">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=891588:891606#L31239">Nav</a>
 					<a class="permalink" href="#Nav">&#xb6;</a>
 					
 					
@@ -16295,7 +16487,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLNoScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=880791:882987#L30870">HTMLNoScript</a>
+			<h2 id="HTMLNoScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=897967:900308#L31538">HTMLNoScript</a>
 				<a class="permalink" href="#HTMLNoScript">&#xb6;</a>
 				
 				
@@ -16328,6 +16520,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLNoScript">HTMLNoScript</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLNoScript">HTMLNoScript</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLNoScript">HTMLNoScript</a>
@@ -16376,7 +16571,7 @@ be used any more.
 
 			
 				
-				<h3 id="NoScript">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=883110:883138#L30935">NoScript</a>
+				<h3 id="NoScript">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=900431:900459#L31606">NoScript</a>
 					<a class="permalink" href="#NoScript">&#xb6;</a>
 					
 					
@@ -16392,7 +16587,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLObject">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=885398:896382#L31057">HTMLObject</a>
+			<h2 id="HTMLObject">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=902843:913970#L31735">HTMLObject</a>
 				<a class="permalink" href="#HTMLObject">&#xb6;</a>
 				
 				
@@ -16428,6 +16623,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLObject">HTMLObject</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLObject">HTMLObject</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLObject">HTMLObject</a>
@@ -16665,7 +16863,7 @@ be used any more.
 
 			
 				
-				<h3 id="Object">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=896451:896475#L31314">Object</a>
+				<h3 id="Object">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=914039:914063#L31995">Object</a>
 					<a class="permalink" href="#Object">&#xb6;</a>
 					
 					
@@ -16681,7 +16879,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLOl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=906681:913487#L31756">HTMLOl</a>
+			<h2 id="HTMLOl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=924389:931334#L32444">HTMLOl</a>
 				<a class="permalink" href="#HTMLOl">&#xb6;</a>
 				
 				
@@ -16714,6 +16912,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOl">HTMLOl</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOl">HTMLOl</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOl">HTMLOl</a>
@@ -16873,7 +17074,7 @@ be used any more.
 
 			
 				
-				<h3 id="Ol">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=913549:913565#L31932">Ol</a>
+				<h3 id="Ol">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=931396:931412#L32623">Ol</a>
 					<a class="permalink" href="#Ol">&#xb6;</a>
 					
 					
@@ -16889,7 +17090,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLOptGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=919934:927028#L32239">HTMLOptGroup</a>
+			<h2 id="HTMLOptGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=937893:945132#L32937">HTMLOptGroup</a>
 				<a class="permalink" href="#HTMLOptGroup">&#xb6;</a>
 				
 				
@@ -16922,6 +17123,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOptGroup">HTMLOptGroup</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOptGroup">HTMLOptGroup</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOptGroup">HTMLOptGroup</a>
@@ -17078,7 +17282,7 @@ be used any more.
 
 			
 				
-				<h3 id="OptGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=927127:927155#L32412">OptGroup</a>
+				<h3 id="OptGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=945231:945259#L33113">OptGroup</a>
 					<a class="permalink" href="#OptGroup">&#xb6;</a>
 					
 					
@@ -17094,7 +17298,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLOption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=934137:941301#L32714">HTMLOption</a>
+			<h2 id="HTMLOption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=952365:959672#L33422">HTMLOption</a>
 				<a class="permalink" href="#HTMLOption">&#xb6;</a>
 				
 				
@@ -17127,6 +17331,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOption">HTMLOption</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOption">HTMLOption</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOption">HTMLOption</a>
@@ -17289,7 +17496,7 @@ be used any more.
 
 			
 				
-				<h3 id="Option">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=941381:941405#L32893">Option</a>
+				<h3 id="Option">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=959752:959776#L33604">Option</a>
 					<a class="permalink" href="#Option">&#xb6;</a>
 					
 					
@@ -17305,7 +17512,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLOutput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=948330:955375#L33205">HTMLOutput</a>
+			<h2 id="HTMLOutput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=966821:974009#L33923">HTMLOutput</a>
 				<a class="permalink" href="#HTMLOutput">&#xb6;</a>
 				
 				
@@ -17338,6 +17545,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOutput">HTMLOutput</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLOutput">HTMLOutput</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOutput">HTMLOutput</a>
@@ -17497,7 +17707,7 @@ be used any more.
 
 			
 				
-				<h3 id="Output">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=955418:955442#L33381">Output</a>
+				<h3 id="Output">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=974052:974076#L34102">Output</a>
 					<a class="permalink" href="#Output">&#xb6;</a>
 					
 					
@@ -17513,7 +17723,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLP">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=962258:968764#L33688">HTMLP</a>
+			<h2 id="HTMLP">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=981012:987656#L34416">HTMLP</a>
 				<a class="permalink" href="#HTMLP">&#xb6;</a>
 				
 				
@@ -17546,6 +17756,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLP">HTMLP</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLP">HTMLP</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLP">HTMLP</a>
@@ -17696,7 +17909,7 @@ be used any more.
 
 			
 				
-				<h3 id="P">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=968821:968835#L33855">P</a>
+				<h3 id="P">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=987713:987727#L34586">P</a>
 					<a class="permalink" href="#P">&#xb6;</a>
 					
 					
@@ -17712,7 +17925,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLParam">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=974854:981529#L34147">HTMLParam</a>
+			<h2 id="HTMLParam">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=993856:1000673#L34885">HTMLParam</a>
 				<a class="permalink" href="#HTMLParam">&#xb6;</a>
 				
 				
@@ -17739,6 +17952,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLParam">HTMLParam</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLParam">HTMLParam</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLParam">HTMLParam</a>
@@ -17895,7 +18111,7 @@ be used any more.
 
 			
 				
-				<h3 id="Param">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=981604:981626#L34314">Param</a>
+				<h3 id="Param">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1000748:1000770#L35055">Param</a>
 					<a class="permalink" href="#Param">&#xb6;</a>
 					
 					
@@ -17911,7 +18127,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLPicture">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=988104:994940#L34607">HTMLPicture</a>
+			<h2 id="HTMLPicture">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1007366:1014346#L35355">HTMLPicture</a>
 				<a class="permalink" href="#HTMLPicture">&#xb6;</a>
 				
 				
@@ -17944,6 +18160,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLPicture">HTMLPicture</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLPicture">HTMLPicture</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLPicture">HTMLPicture</a>
@@ -18094,7 +18313,7 @@ be used any more.
 
 			
 				
-				<h3 id="Picture">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=995032:995058#L34774">Picture</a>
+				<h3 id="Picture">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1014438:1014464#L35525">Picture</a>
 					<a class="permalink" href="#Picture">&#xb6;</a>
 					
 					
@@ -18110,7 +18329,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLPre">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1001739:1008355#L35066">HTMLPre</a>
+			<h2 id="HTMLPre">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1021267:1028023#L35824">HTMLPre</a>
 				<a class="permalink" href="#HTMLPre">&#xb6;</a>
 				
 				
@@ -18143,6 +18362,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLPre">HTMLPre</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLPre">HTMLPre</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLPre">HTMLPre</a>
@@ -18293,7 +18515,7 @@ be used any more.
 
 			
 				
-				<h3 id="Pre">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1008420:1008438#L35233">Pre</a>
+				<h3 id="Pre">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1028088:1028106#L35994">Pre</a>
 					<a class="permalink" href="#Pre">&#xb6;</a>
 					
 					
@@ -18309,7 +18531,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLProgress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1014685:1021713#L35525">HTMLProgress</a>
+			<h2 id="HTMLProgress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1034467:1041640#L36293">HTMLProgress</a>
 				<a class="permalink" href="#HTMLProgress">&#xb6;</a>
 				
 				
@@ -18342,6 +18564,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLProgress">HTMLProgress</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLProgress">HTMLProgress</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLProgress">HTMLProgress</a>
@@ -18498,7 +18723,7 @@ be used any more.
 
 			
 				
-				<h3 id="Progress">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1021791:1021819#L35698">Progress</a>
+				<h3 id="Progress">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1041718:1041746#L36469">Progress</a>
 					<a class="permalink" href="#Progress">&#xb6;</a>
 					
 					
@@ -18514,7 +18739,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLQ">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1028777:1035379#L36000">HTMLQ</a>
+			<h2 id="HTMLQ">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1048828:1055568#L36778">HTMLQ</a>
 				<a class="permalink" href="#HTMLQ">&#xb6;</a>
 				
 				
@@ -18550,6 +18775,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLQ">HTMLQ</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLQ">HTMLQ</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLQ">HTMLQ</a>
@@ -18700,7 +18928,7 @@ be used any more.
 
 			
 				
-				<h3 id="Q">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1035442:1035456#L36170">Q</a>
+				<h3 id="Q">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1055631:1055645#L36951">Q</a>
 					<a class="permalink" href="#Q">&#xb6;</a>
 					
 					
@@ -18716,7 +18944,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLRp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1041543:1048104#L36467">HTMLRp</a>
+			<h2 id="HTMLRp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1061842:1068542#L37255">HTMLRp</a>
 				<a class="permalink" href="#HTMLRp">&#xb6;</a>
 				
 				
@@ -18749,6 +18977,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLRp">HTMLRp</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLRp">HTMLRp</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRp">HTMLRp</a>
@@ -18899,7 +19130,7 @@ be used any more.
 
 			
 				
-				<h3 id="Rp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1048212:1048228#L36634">Rp</a>
+				<h3 id="Rp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1068650:1068666#L37425">Rp</a>
 					<a class="permalink" href="#Rp">&#xb6;</a>
 					
 					
@@ -18915,7 +19146,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLRt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1054352:1060913#L36926">HTMLRt</a>
+			<h2 id="HTMLRt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1074902:1081602#L37724">HTMLRt</a>
 				<a class="permalink" href="#HTMLRt">&#xb6;</a>
 				
 				
@@ -18948,6 +19179,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLRt">HTMLRt</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLRt">HTMLRt</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRt">HTMLRt</a>
@@ -19098,7 +19332,7 @@ be used any more.
 
 			
 				
-				<h3 id="Rt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1061030:1061046#L37093">Rt</a>
+				<h3 id="Rt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1081719:1081735#L37894">Rt</a>
 					<a class="permalink" href="#Rt">&#xb6;</a>
 					
 					
@@ -19114,7 +19348,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLRuby">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1067174:1073845#L37385">HTMLRuby</a>
+			<h2 id="HTMLRuby">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1087975:1094787#L38193">HTMLRuby</a>
 				<a class="permalink" href="#HTMLRuby">&#xb6;</a>
 				
 				
@@ -19147,6 +19381,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLRuby">HTMLRuby</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLRuby">HTMLRuby</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRuby">HTMLRuby</a>
@@ -19297,7 +19534,7 @@ be used any more.
 
 			
 				
-				<h3 id="Ruby">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1073939:1073959#L37552">Ruby</a>
+				<h3 id="Ruby">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1094881:1094901#L38363">Ruby</a>
 					<a class="permalink" href="#Ruby">&#xb6;</a>
 					
 					
@@ -19313,7 +19550,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLS">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1080303:1086809#L37844">HTMLS</a>
+			<h2 id="HTMLS">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1101361:1108005#L38662">HTMLS</a>
 				<a class="permalink" href="#HTMLS">&#xb6;</a>
 				
 				
@@ -19346,6 +19583,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLS">HTMLS</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLS">HTMLS</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLS">HTMLS</a>
@@ -19496,7 +19736,7 @@ be used any more.
 
 			
 				
-				<h3 id="S">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1086885:1086899#L38011">S</a>
+				<h3 id="S">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1108081:1108095#L38832">S</a>
 					<a class="permalink" href="#S">&#xb6;</a>
 					
 					
@@ -19512,7 +19752,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSamp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1092916:1099587#L38303">HTMLSamp</a>
+			<h2 id="HTMLSamp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1114222:1121034#L39131">HTMLSamp</a>
 				<a class="permalink" href="#HTMLSamp">&#xb6;</a>
 				
 				
@@ -19545,6 +19785,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSamp">HTMLSamp</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSamp">HTMLSamp</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSamp">HTMLSamp</a>
@@ -19695,7 +19938,7 @@ be used any more.
 
 			
 				
-				<h3 id="Samp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1099673:1099693#L38470">Samp</a>
+				<h3 id="Samp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1121120:1121140#L39301">Samp</a>
 					<a class="permalink" href="#Samp">&#xb6;</a>
 					
 					
@@ -19711,7 +19954,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1106047:1108905#L38762">HTMLScript</a>
+			<h2 id="HTMLScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1127610:1130611#L39600">HTMLScript</a>
 				<a class="permalink" href="#HTMLScript">&#xb6;</a>
 				
 				
@@ -19753,6 +19996,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLScript">HTMLScript</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLScript">HTMLScript</a>
 
     <span class="comment">// Defer specifies that the script is executed when the page has finished parsing (only for external scripts).</span>
     Defer(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLScript">HTMLScript</a>
@@ -19813,7 +20059,7 @@ be used any more.
 
 			
 				
-				<h3 id="Script">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1108976:1109000#L38848">Script</a>
+				<h3 id="Script">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1130682:1130706#L39689">Script</a>
 					<a class="permalink" href="#Script">&#xb6;</a>
 					
 					
@@ -19829,7 +20075,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSection">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1111822:1118658#L39005">HTMLSection</a>
+			<h2 id="HTMLSection">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1133648:1140628#L39853">HTMLSection</a>
 				<a class="permalink" href="#HTMLSection">&#xb6;</a>
 				
 				
@@ -19862,6 +20108,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSection">HTMLSection</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSection">HTMLSection</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSection">HTMLSection</a>
@@ -20012,7 +20261,7 @@ be used any more.
 
 			
 				
-				<h3 id="Section">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1118733:1118759#L39172">Section</a>
+				<h3 id="Section">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1140703:1140729#L40023">Section</a>
 					<a class="permalink" href="#Section">&#xb6;</a>
 					
 					
@@ -20028,7 +20277,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSelect">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1125446:1132901#L39464">HTMLSelect</a>
+			<h2 id="HTMLSelect">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1147538:1155136#L40322">HTMLSelect</a>
 				<a class="permalink" href="#HTMLSelect">&#xb6;</a>
 				
 				
@@ -20064,6 +20313,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSelect">HTMLSelect</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSelect">HTMLSelect</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSelect">HTMLSelect</a>
@@ -20232,7 +20484,7 @@ be used any more.
 
 			
 				
-				<h3 id="Select">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1132968:1132992#L39652">Select</a>
+				<h3 id="Select">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1155203:1155227#L40513">Select</a>
 					<a class="permalink" href="#Select">&#xb6;</a>
 					
 					
@@ -20248,7 +20500,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSmall">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1140177:1146903#L39979">HTMLSmall</a>
+			<h2 id="HTMLSmall">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1162532:1169400#L40847">HTMLSmall</a>
 				<a class="permalink" href="#HTMLSmall">&#xb6;</a>
 				
 				
@@ -20281,6 +20533,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSmall">HTMLSmall</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSmall">HTMLSmall</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSmall">HTMLSmall</a>
@@ -20431,7 +20686,7 @@ be used any more.
 
 			
 				
-				<h3 id="Small">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1146965:1146987#L40146">Small</a>
+				<h3 id="Small">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1169462:1169484#L41017">Small</a>
 					<a class="permalink" href="#Small">&#xb6;</a>
 					
 					
@@ -20447,7 +20702,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1153452:1160469#L40438">HTMLSource</a>
+			<h2 id="HTMLSource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1176067:1183227#L41316">HTMLSource</a>
 				<a class="permalink" href="#HTMLSource">&#xb6;</a>
 				
 				
@@ -20474,6 +20729,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSource">HTMLSource</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSource">HTMLSource</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSource">HTMLSource</a>
@@ -20639,7 +20897,7 @@ be used any more.
 
 			
 				
-				<h3 id="Source">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1160512:1160536#L40614">Source</a>
+				<h3 id="Source">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1183270:1183294#L41495">Source</a>
 					<a class="permalink" href="#Source">&#xb6;</a>
 					
 					
@@ -20655,7 +20913,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSpan">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1167378:1174049#L40922">HTMLSpan</a>
+			<h2 id="HTMLSpan">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1190256:1197068#L41810">HTMLSpan</a>
 				<a class="permalink" href="#HTMLSpan">&#xb6;</a>
 				
 				
@@ -20688,6 +20946,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSpan">HTMLSpan</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSpan">HTMLSpan</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSpan">HTMLSpan</a>
@@ -20838,7 +21099,7 @@ be used any more.
 
 			
 				
-				<h3 id="Span">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1174121:1174141#L41089">Span</a>
+				<h3 id="Span">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1197140:1197160#L41980">Span</a>
 					<a class="permalink" href="#Span">&#xb6;</a>
 					
 					
@@ -20854,7 +21115,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLStrong">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1180495:1187276#L41381">HTMLStrong</a>
+			<h2 id="HTMLStrong">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1203630:1210554#L42279">HTMLStrong</a>
 				<a class="permalink" href="#HTMLStrong">&#xb6;</a>
 				
 				
@@ -20887,6 +21148,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLStrong">HTMLStrong</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLStrong">HTMLStrong</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLStrong">HTMLStrong</a>
@@ -21037,7 +21301,7 @@ be used any more.
 
 			
 				
-				<h3 id="Strong">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1187341:1187365#L41548">Strong</a>
+				<h3 id="Strong">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1210619:1210643#L42449">Strong</a>
 					<a class="permalink" href="#Strong">&#xb6;</a>
 					
 					
@@ -21053,7 +21317,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLStyle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1193939:1200959#L41840">HTMLStyle</a>
+			<h2 id="HTMLStyle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1217337:1224499#L42748">HTMLStyle</a>
 				<a class="permalink" href="#HTMLStyle">&#xb6;</a>
 				
 				
@@ -21086,6 +21350,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLStyle">HTMLStyle</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLStyle">HTMLStyle</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLStyle">HTMLStyle</a>
@@ -21245,7 +21512,7 @@ be used any more.
 
 			
 				
-				<h3 id="Style">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1201041:1201063#L42016">Style</a>
+				<h3 id="Style">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1224581:1224603#L42927">Style</a>
 					<a class="permalink" href="#Style">&#xb6;</a>
 					
 					
@@ -21261,7 +21528,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSub">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1207810:1214426#L42323">HTMLSub</a>
+			<h2 id="HTMLSub">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1231468:1238224#L43241">HTMLSub</a>
 				<a class="permalink" href="#HTMLSub">&#xb6;</a>
 				
 				
@@ -21294,6 +21561,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSub">HTMLSub</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSub">HTMLSub</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSub">HTMLSub</a>
@@ -21444,7 +21714,7 @@ be used any more.
 
 			
 				
-				<h3 id="Sub">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1214490:1214508#L42490">Sub</a>
+				<h3 id="Sub">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1238288:1238306#L43411">Sub</a>
 					<a class="permalink" href="#Sub">&#xb6;</a>
 					
 					
@@ -21460,7 +21730,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSummary">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1220753:1227589#L42782">HTMLSummary</a>
+			<h2 id="HTMLSummary">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1244665:1251645#L43710">HTMLSummary</a>
 				<a class="permalink" href="#HTMLSummary">&#xb6;</a>
 				
 				
@@ -21493,6 +21763,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSummary">HTMLSummary</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSummary">HTMLSummary</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSummary">HTMLSummary</a>
@@ -21643,7 +21916,7 @@ be used any more.
 
 			
 				
-				<h3 id="Summary">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1227680:1227706#L42949">Summary</a>
+				<h3 id="Summary">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1251736:1251762#L43880">Summary</a>
 					<a class="permalink" href="#Summary">&#xb6;</a>
 					
 					
@@ -21659,7 +21932,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLSup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1234387:1241003#L43241">HTMLSup</a>
+			<h2 id="HTMLSup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1258565:1265321#L44179">HTMLSup</a>
 				<a class="permalink" href="#HTMLSup">&#xb6;</a>
 				
 				
@@ -21692,6 +21965,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSup">HTMLSup</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLSup">HTMLSup</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSup">HTMLSup</a>
@@ -21842,7 +22118,7 @@ be used any more.
 
 			
 				
-				<h3 id="Sup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1241069:1241087#L43408">Sup</a>
+				<h3 id="Sup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1265387:1265405#L44349">Sup</a>
 					<a class="permalink" href="#Sup">&#xb6;</a>
 					
 					
@@ -21858,7 +22134,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1260596:1267322#L44159">HTMLTBody</a>
+			<h2 id="HTMLTBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1285288:1292156#L45117">HTMLTBody</a>
 				<a class="permalink" href="#HTMLTBody">&#xb6;</a>
 				
 				
@@ -21891,6 +22167,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTBody">HTMLTBody</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTBody">HTMLTBody</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTBody">HTMLTBody</a>
@@ -22041,7 +22320,7 @@ be used any more.
 
 			
 				
-				<h3 id="TBody">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1267398:1267420#L44326">TBody</a>
+				<h3 id="TBody">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1292232:1292254#L45287">TBody</a>
 					<a class="permalink" href="#TBody">&#xb6;</a>
 					
 					
@@ -22057,7 +22336,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTFoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1307889:1314615#L45844">HTMLTFoot</a>
+			<h2 id="HTMLTFoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1333630:1340498#L46842">HTMLTFoot</a>
 				<a class="permalink" href="#HTMLTFoot">&#xb6;</a>
 				
 				
@@ -22090,6 +22369,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
@@ -22240,7 +22522,7 @@ be used any more.
 
 			
 				
-				<h3 id="TFoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1314693:1314715#L46011">TFoot</a>
+				<h3 id="TFoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1340576:1340598#L47012">TFoot</a>
 					<a class="permalink" href="#TFoot">&#xb6;</a>
 					
 					
@@ -22256,7 +22538,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1334852:1341578#L46802">HTMLTHead</a>
+			<h2 id="HTMLTHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1361104:1367972#L47820">HTMLTHead</a>
 				<a class="permalink" href="#HTMLTHead">&#xb6;</a>
 				
 				
@@ -22289,6 +22571,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTHead">HTMLTHead</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTHead">HTMLTHead</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTHead">HTMLTHead</a>
@@ -22439,7 +22724,7 @@ be used any more.
 
 			
 				
-				<h3 id="THead">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1341655:1341677#L46969">THead</a>
+				<h3 id="THead">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1368049:1368071#L47990">THead</a>
 					<a class="permalink" href="#THead">&#xb6;</a>
 					
 					
@@ -22455,7 +22740,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTable">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1247328:1254054#L43700">HTMLTable</a>
+			<h2 id="HTMLTable">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1271760:1278628#L44648">HTMLTable</a>
 				<a class="permalink" href="#HTMLTable">&#xb6;</a>
 				
 				
@@ -22488,6 +22773,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTable">HTMLTable</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTable">HTMLTable</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTable">HTMLTable</a>
@@ -22638,7 +22926,7 @@ be used any more.
 
 			
 				
-				<h3 id="Table">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1254111:1254133#L43867">Table</a>
+				<h3 id="Table">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1278685:1278707#L44818">Table</a>
 					<a class="permalink" href="#Table">&#xb6;</a>
 					
 					
@@ -22654,7 +22942,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1273877:1280720#L44618">HTMLTd</a>
+			<h2 id="HTMLTd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1298829:1305811#L45586">HTMLTd</a>
 				<a class="permalink" href="#HTMLTd">&#xb6;</a>
 				
 				
@@ -22690,6 +22978,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTd">HTMLTd</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTd">HTMLTd</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTd">HTMLTd</a>
@@ -22846,7 +23137,7 @@ be used any more.
 
 			
 				
-				<h3 id="Td">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1280784:1280800#L44794">Td</a>
+				<h3 id="Td">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1305875:1305891#L45765">Td</a>
 					<a class="permalink" href="#Td">&#xb6;</a>
 					
 					
@@ -22862,7 +23153,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTemplate">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1287176:1289372#L45101">HTMLTemplate</a>
+			<h2 id="HTMLTemplate">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1312379:1314720#L46079">HTMLTemplate</a>
 				<a class="permalink" href="#HTMLTemplate">&#xb6;</a>
 				
 				
@@ -22895,6 +23186,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTemplate">HTMLTemplate</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTemplate">HTMLTemplate</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTemplate">HTMLTemplate</a>
@@ -22943,7 +23237,7 @@ be used any more.
 
 			
 				
-				<h3 id="Template">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1289435:1289463#L45166">Template</a>
+				<h3 id="Template">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1314783:1314811#L46147">Template</a>
 					<a class="permalink" href="#Template">&#xb6;</a>
 					
 					
@@ -22959,7 +23253,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTextarea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1291727:1299863#L45288">HTMLTextarea</a>
+			<h2 id="HTMLTextarea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1317199:1325480#L46276">HTMLTextarea</a>
 				<a class="permalink" href="#HTMLTextarea">&#xb6;</a>
 				
 				
@@ -22998,6 +23292,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTextarea">HTMLTextarea</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTextarea">HTMLTextarea</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTextarea">HTMLTextarea</a>
@@ -23178,7 +23475,7 @@ be used any more.
 
 			
 				
-				<h3 id="Textarea">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1299953:1299981#L45491">Textarea</a>
+				<h3 id="Textarea">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1325570:1325598#L46482">Textarea</a>
 					<a class="permalink" href="#Textarea">&#xb6;</a>
 					
 					
@@ -23194,7 +23491,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTh">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1321172:1328241#L46303">HTMLTh</a>
+			<h2 id="HTMLTh">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1347173:1354381#L47311">HTMLTh</a>
 				<a class="permalink" href="#HTMLTh">&#xb6;</a>
 				
 				
@@ -23233,6 +23530,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTh">HTMLTh</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTh">HTMLTh</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTh">HTMLTh</a>
@@ -23392,7 +23692,7 @@ be used any more.
 
 			
 				
-				<h3 id="Th">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1328312:1328328#L46485">Th</a>
+				<h3 id="Th">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1354452:1354468#L47496">Th</a>
 					<a class="permalink" href="#Th">&#xb6;</a>
 					
 					
@@ -23408,7 +23708,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTime">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1348138:1354881#L47261">HTMLTime</a>
+			<h2 id="HTMLTime">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1374650:1381534#L48289">HTMLTime</a>
 				<a class="permalink" href="#HTMLTime">&#xb6;</a>
 				
 				
@@ -23441,6 +23741,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTime">HTMLTime</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTime">HTMLTime</a>
 
     <span class="comment">// DateTime specifies the date and time.</span>
     DateTime(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTime">HTMLTime</a>
@@ -23594,7 +23897,7 @@ be used any more.
 
 			
 				
-				<h3 id="Time">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1354941:1354961#L47431">Time</a>
+				<h3 id="Time">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1381594:1381614#L48462">Time</a>
 					<a class="permalink" href="#Time">&#xb6;</a>
 					
 					
@@ -23610,7 +23913,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTitle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1361401:1363534#L47728">HTMLTitle</a>
+			<h2 id="HTMLTitle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1388170:1390445#L48766">HTMLTitle</a>
 				<a class="permalink" href="#HTMLTitle">&#xb6;</a>
 				
 				
@@ -23643,6 +23946,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTitle">HTMLTitle</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTitle">HTMLTitle</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTitle">HTMLTitle</a>
@@ -23691,7 +23997,7 @@ be used any more.
 
 			
 				
-				<h3 id="Title">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1363608:1363630#L47793">Title</a>
+				<h3 id="Title">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1390519:1390541#L48834">Title</a>
 					<a class="permalink" href="#Title">&#xb6;</a>
 					
 					
@@ -23707,7 +24013,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLTr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1365753:1372314#L47915">HTMLTr</a>
+			<h2 id="HTMLTr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1392782:1399482#L48963">HTMLTr</a>
 				<a class="permalink" href="#HTMLTr">&#xb6;</a>
 				
 				
@@ -23740,6 +24046,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTr">HTMLTr</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLTr">HTMLTr</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTr">HTMLTr</a>
@@ -23890,7 +24199,7 @@ be used any more.
 
 			
 				
-				<h3 id="Tr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1372377:1372393#L48082">Tr</a>
+				<h3 id="Tr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1399545:1399561#L49133">Tr</a>
 					<a class="permalink" href="#Tr">&#xb6;</a>
 					
 					
@@ -23906,7 +24215,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLU">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1378515:1385021#L48374">HTMLU</a>
+			<h2 id="HTMLU">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1405795:1412439#L49432">HTMLU</a>
 				<a class="permalink" href="#HTMLU">&#xb6;</a>
 				
 				
@@ -23939,6 +24248,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLU">HTMLU</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLU">HTMLU</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLU">HTMLU</a>
@@ -24089,7 +24401,7 @@ be used any more.
 
 			
 				
-				<h3 id="U">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1385127:1385141#L48541">U</a>
+				<h3 id="U">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1412545:1412559#L49602">U</a>
 					<a class="permalink" href="#U">&#xb6;</a>
 					
 					
@@ -24105,7 +24417,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLUl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1391154:1397715#L48833">HTMLUl</a>
+			<h2 id="HTMLUl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1418682:1425382#L49901">HTMLUl</a>
 				<a class="permalink" href="#HTMLUl">&#xb6;</a>
 				
 				
@@ -24138,6 +24450,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLUl">HTMLUl</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLUl">HTMLUl</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLUl">HTMLUl</a>
@@ -24288,7 +24603,7 @@ be used any more.
 
 			
 				
-				<h3 id="Ul">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1397779:1397795#L49000">Ul</a>
+				<h3 id="Ul">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1425446:1425462#L50071">Ul</a>
 					<a class="permalink" href="#Ul">&#xb6;</a>
 					
 					
@@ -24304,7 +24619,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLVar">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1403921:1410537#L49292">HTMLVar</a>
+			<h2 id="HTMLVar">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1431700:1438456#L50370">HTMLVar</a>
 				<a class="permalink" href="#HTMLVar">&#xb6;</a>
 				
 				
@@ -24337,6 +24652,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLVar">HTMLVar</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLVar">HTMLVar</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLVar">HTMLVar</a>
@@ -24487,7 +24805,7 @@ be used any more.
 
 			
 				
-				<h3 id="Var">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1410595:1410613#L49459">Var</a>
+				<h3 id="Var">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1438514:1438532#L50540">Var</a>
 					<a class="permalink" href="#Var">&#xb6;</a>
 					
 					
@@ -24503,7 +24821,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLVideo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1416854:1428256#L49751">HTMLVideo</a>
+			<h2 id="HTMLVideo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1444887:1456431#L50839">HTMLVideo</a>
 				<a class="permalink" href="#HTMLVideo">&#xb6;</a>
 				
 				
@@ -24545,6 +24863,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLVideo">HTMLVideo</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLVideo">HTMLVideo</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLVideo">HTMLVideo</a>
@@ -24785,7 +25106,7 @@ be used any more.
 
 			
 				
-				<h3 id="Video">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1428322:1428344#L50017">Video</a>
+				<h3 id="Video">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1456497:1456519#L51108">Video</a>
 					<a class="permalink" href="#Video">&#xb6;</a>
 					
 					
@@ -24801,7 +25122,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLWbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1438655:1445271#L50474">HTMLWbr</a>
+			<h2 id="HTMLWbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1466948:1473704#L51572">HTMLWbr</a>
 				<a class="permalink" href="#HTMLWbr">&#xb6;</a>
 				
 				
@@ -24834,6 +25155,9 @@ be used any more.
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
     DataSet(k <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#HTMLWbr">HTMLWbr</a>
+
+    <span class="comment">// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.</span>
+    DataSets(ds map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#any">any</a>) <a href="#HTMLWbr">HTMLWbr</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
     Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLWbr">HTMLWbr</a>
@@ -24984,7 +25308,7 @@ be used any more.
 
 			
 				
-				<h3 id="Wbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1445340:1445358#L50641">Wbr</a>
+				<h3 id="Wbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1473773:1473791#L51742">Wbr</a>
 					<a class="permalink" href="#Wbr">&#xb6;</a>
 					
 					
@@ -25000,7 +25324,7 @@ be used any more.
 		
 			
 			
-			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=469:5488#L21">Handler</a>
+			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=386:5483#L19">Handler</a>
 				<a class="permalink" href="#Handler">&#xb6;</a>
 				
 				
@@ -25070,6 +25394,17 @@ and its resources.
     <span class="comment">//  },</span>
 <span id="Handler.Styles"></span>    Styles []<a href="/pkg/builtin/#string">string</a>
 
+    <span class="comment">// The paths or urls of the font files to preload with the page.</span>
+    <span class="comment">//</span>
+    <span class="comment">// eg:</span>
+    <span class="comment">//  app.Handler{</span>
+    <span class="comment">//      Fonts: []string{</span>
+    <span class="comment">//          &#34;/web/test.woff2&#34;,            // Static resource</span>
+    <span class="comment">//          &#34;https://foo.com/test.woff2&#34;, // External resource</span>
+    <span class="comment">//      },</span>
+    <span class="comment">//  },</span>
+<span id="Handler.Fonts"></span>    Fonts []<a href="/pkg/builtin/#string">string</a>
+
     <span class="comment">// The paths or urls of the JavaScript files to use with the page.</span>
     <span class="comment">//</span>
     <span class="comment">// eg:</span>
@@ -25132,15 +25467,6 @@ and its resources.
     <span class="comment">// DNS+TCP+TLS for HTTPS origins).</span>
 <span id="Handler.Preconnect"></span>    Preconnect []<a href="/pkg/builtin/#string">string</a>
 
-    <span class="comment">// The cache that stores pre-rendered pages.</span>
-    <span class="comment">//</span>
-    <span class="comment">// Default: A LRU cache that keeps pages up to 24h and have a maximum size</span>
-    <span class="comment">// of 8MB.</span>
-<span id="Handler.PreRenderCache"></span>    PreRenderCache <a href="#PreRenderCache">PreRenderCache</a>
-
-    <span class="comment">// The Control-Cache header value for pre-rendered resources.</span>
-<span id="Handler.PreRenderCacheControl"></span>    PreRenderCacheControl <a href="/pkg/builtin/#string">string</a>
-
     <span class="comment">// The static resources that are accessible from custom paths. Files that</span>
     <span class="comment">// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.</span>
 <span id="Handler.ProxyResources"></span>    ProxyResources []<a href="#ProxyResource">ProxyResource</a>
@@ -25191,7 +25517,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=13511:13578#L532">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=13548:13615#L532">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -25205,7 +25531,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=21476:22061#L877">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=22701:23286#L939">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -25368,7 +25694,7 @@ additional actions when mounted.
 		
 			
 			
-			<h2 id="MsgHandler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4598:4632#L164">MsgHandler</a>
+			<h2 id="MsgHandler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4771:4805#L173">MsgHandler</a>
 				<a class="permalink" href="#MsgHandler">&#xb6;</a>
 				
 				
@@ -25721,7 +26047,7 @@ API.
 		
 			
 			
-			<h2 id="Page">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/page.go?s=99:1095#L1">Page</a>
+			<h2 id="Page">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/page.go?s=99:1153#L1">Page</a>
 				<a class="permalink" href="#Page">&#xb6;</a>
 				
 				
@@ -25778,6 +26104,9 @@ API.
 
     <span class="comment">// Returns the page width and height in px.</span>
     Size() (w <a href="/pkg/builtin/#int">int</a>, h <a href="/pkg/builtin/#int">int</a>)
+
+    <span class="comment">// Set the Twitter card.</span>
+    SetTwitterCard(v <a href="#TwitterCard">TwitterCard</a>)
 }</pre>
 
 			
@@ -25790,102 +26119,6 @@ API.
 
 			
 
-			
-		
-			
-			
-			<h2 id="PreRenderCache">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/cache.go?s=202:431#L3">PreRenderCache</a>
-				<a class="permalink" href="#PreRenderCache">&#xb6;</a>
-				
-				
-			</h2>
-			<p>PreRenderCache is the interface that describes a cache that stores
-pre-rendered resources.
-
-			<pre>type PreRenderCache interface {
-    <span class="comment">// Get returns the item at the given path.</span>
-    Get(ctx <a href="/pkg/context/">context</a>.<a href="/pkg/context/#Context">Context</a>, path <a href="/pkg/builtin/#string">string</a>) (<a href="#PreRenderedItem">PreRenderedItem</a>, <a href="/pkg/builtin/#bool">bool</a>)
-
-    <span class="comment">// Set stored the item at the given path.</span>
-    Set(ctx <a href="/pkg/context/">context</a>.<a href="/pkg/context/#Context">Context</a>, i <a href="#PreRenderedItem">PreRenderedItem</a>)
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-				
-				<h3 id="NewPreRenderLRUCache">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/cache.go?s=1032:1154#L37">NewPreRenderLRUCache</a>
-					<a class="permalink" href="#NewPreRenderLRUCache">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func NewPreRenderLRUCache(size <a href="/pkg/builtin/#int">int</a>, itemTTL <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>, onEvict ...func(path <a href="/pkg/builtin/#string">string</a>, i <a href="#PreRenderedItem">PreRenderedItem</a>)) <a href="#PreRenderCache">PreRenderCache</a></pre>
-				<p>NewPreRenderLRUCache creates an in memory LRU cache that stores items for the
-given duration. If provided, on eviction functions are called when item are
-evicted.
-
-				
-				
-			
-
-			
-		
-			
-			
-			<h2 id="PreRenderedItem">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/cache.go?s=506:766#L12">PreRenderedItem</a>
-				<a class="permalink" href="#PreRenderedItem">&#xb6;</a>
-				
-				
-			</h2>
-			<p>PreRenderedItem represent an item that is stored in a PreRenderCache.
-
-			<pre>type PreRenderedItem struct {
-    <span class="comment">// The request path.</span>
-<span id="PreRenderedItem.Path"></span>    Path <a href="/pkg/builtin/#string">string</a>
-
-    <span class="comment">// The response content type.</span>
-<span id="PreRenderedItem.ContentType"></span>    ContentType <a href="/pkg/builtin/#string">string</a>
-
-    <span class="comment">// The response content encoding.</span>
-<span id="PreRenderedItem.ContentEncoding"></span>    ContentEncoding <a href="/pkg/builtin/#string">string</a>
-
-    <span class="comment">// The cache control.</span>
-<span id="PreRenderedItem.CacheControl"></span>    CacheControl <a href="/pkg/builtin/#string">string</a>
-
-    <span class="comment">// The response body.</span>
-<span id="PreRenderedItem.Body"></span>    Body []<a href="/pkg/builtin/#byte">byte</a>
-}
-</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
-				
-				<h3 id="PreRenderedItem.Size">func (PreRenderedItem) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/cache.go?s=799:834#L30">Size</a>
-					<a class="permalink" href="#PreRenderedItem.Size">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func (r <a href="#PreRenderedItem">PreRenderedItem</a>) Size() <a href="/pkg/builtin/#int">int</a></pre>
-				<p>Len return the body length.
-
-				
-				
-				
 			
 		
 			
@@ -26126,7 +26359,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 		
 			
 			
-			<h2 id="ServerDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3148:3430#L104">ServerDispatcher</a>
+			<h2 id="ServerDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3321:3603#L113">ServerDispatcher</a>
 				<a class="permalink" href="#ServerDispatcher">&#xb6;</a>
 				
 				
@@ -26157,7 +26390,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 
 			
 				
-				<h3 id="NewServerTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3520:3563#L120">NewServerTester</a>
+				<h3 id="NewServerTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3693:3736#L129">NewServerTester</a>
 					<a class="permalink" href="#NewServerTester">&#xb6;</a>
 					
 					
@@ -26434,6 +26667,54 @@ location from its parents.
     <span class="comment">//</span>
     <span class="comment">// Components have their exported field values compared.</span>
 <span id="TestUIDescriptor.Expected"></span>    Expected <a href="#UI">UI</a>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="TwitterCard">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/social.go?s=115:832#L1">TwitterCard</a>
+				<a class="permalink" href="#TwitterCard">&#xb6;</a>
+				
+				
+			</h2>
+			<p>A Twitter card: <a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards">https://developer.twitter.com/en/docs/twitter-for-websites/cards</a>
+
+			<pre>type TwitterCard struct {
+    <span class="comment">// The card type, which will be one of “summary”, “summary_large_image”,</span>
+    <span class="comment">// “app”, or “player”.</span>
+<span id="TwitterCard.Card"></span>    Card <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// Username for the website used in the card footer.</span>
+<span id="TwitterCard.Site"></span>    Site <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// Username for the content creator / author.</span>
+<span id="TwitterCard.Creator"></span>    Creator <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// A concise title for the related content.</span>
+<span id="TwitterCard.Title"></span>    Title <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// A description that concisely summarizes the content as appropriate for</span>
+    <span class="comment">// presentation within a Tweet.</span>
+<span id="TwitterCard.Description"></span>    Description <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// A URL to a unique image representing the content of the page.</span>
+<span id="TwitterCard.Image"></span>    Image <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// A text description of the image conveying the essential nature of an</span>
+    <span class="comment">// image to users who are visually impaired. Maximum 420 characters.</span>
+<span id="TwitterCard.ImageAlt"></span>    ImageAlt <a href="/pkg/builtin/#string">string</a>
 }
 </pre>
 
@@ -26834,7 +27115,7 @@ package.
 
 
 <div id="footer">
-Build version go1.20.1.<br>
+Build version go1.20.4.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
