@@ -5,7 +5,6 @@
   display: none;
 }
 
-.app-wasm-loader,
 .goapp-app-info {
   position: fixed;
   top: 0;
@@ -29,7 +28,6 @@
 }
 
 @media (prefers-color-scheme: light) {
-  .app-wasm-loader,
   .goapp-app-info {
     color: black;
     background-color: #f6f6f6;
