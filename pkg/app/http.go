@@ -61,6 +61,9 @@ type Handler struct {
 	// DEFAULT: en.
 	Lang string
 
+	// The custom libraries to load with the page.
+	Libraries []Library
+
 	// The page title.
 	Title string
 
@@ -198,6 +201,7 @@ type Handler struct {
 
 	once                 sync.Once
 	etag                 string
+	libraries            map[string][]byte
 	proxyResources       map[string]ProxyResource
 	cachedProxyResources *memoryCache
 	cachedPWAResources   *memoryCache
@@ -207,6 +211,7 @@ func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
 	h.initImage()
+	h.initLibraries()
 	h.initLinks()
 	h.initScripts()
 	h.initServiceWorker()
@@ -236,6 +241,15 @@ func (h *Handler) initImage() {
 	if h.Image != "" {
 		h.Image = h.resolveStaticPath(h.Image)
 	}
+}
+
+func (h *Handler) initLibraries() {
+	libs := make(map[string][]byte)
+	for _, l := range h.Libraries {
+		path, script := l.Script()
+		libs[path] = []byte(script)
+	}
+	h.libraries = libs
 }
 
 func (h *Handler) initLinks() {
@@ -589,6 +603,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if library, ok := h.libraries[path]; ok && len(library) != 0 {
+		h.serveLibrary(w, r, library)
+		return
+	}
+
 	h.servePage(w, r)
 }
 
@@ -910,8 +929,13 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")
-	w.WriteHeader(http.StatusOK)
 	w.Write(b.Bytes())
+}
+
+func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library []byte) {
+	w.Header().Set("Content-Length", strconv.Itoa(len(library)))
+	w.Header().Set("Content-Type", "text/css")
+	w.Write(library)
 }
 
 func (h *Handler) resolvePackagePath(path string) string {
