@@ -247,6 +247,9 @@ func (h *Handler) initLibraries() {
 	libs := make(map[string][]byte)
 	for _, l := range h.Libraries {
 		path, script := l.Script()
+		if !strings.HasPrefix(path, "/") || len(script) == 0 {
+			continue
+		}
 		libs[path] = []byte(script)
 	}
 	h.libraries = libs
@@ -257,10 +260,14 @@ func (h *Handler) initLinks() {
 		h.Preconnect[i] = h.resolveStaticPath(path)
 	}
 
-	for i, path := range h.Styles {
-		h.Styles[i] = h.resolveStaticPath(path)
+	styles := []string{h.resolvePackagePath("/app.css")}
+	for path := range h.libraries {
+		styles = append(styles, h.resolvePackagePath(path))
 	}
-	h.Styles = append([]string{h.resolvePackagePath("/app.css")}, h.Styles...)
+	for _, path := range h.Styles {
+		styles = append(styles, h.resolveStaticPath(path))
+	}
+	h.Styles = styles
 
 	for i, path := range h.Fonts {
 		h.Fonts[i] = h.resolveStaticPath(path)
@@ -603,7 +610,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if library, ok := h.libraries[path]; ok && len(library) != 0 {
+	if library, ok := h.libraries[path]; ok {
 		h.serveLibrary(w, r, library)
 		return
 	}
