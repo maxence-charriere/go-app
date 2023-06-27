@@ -856,23 +856,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 					return link
 				}),
-				Range(h.Styles).Slice(func(i int) UI {
-					url, crossOrigin, _ := parseSrc(h.Styles[i])
-					if url == "" {
-						return nil
-					}
-
-					link := Link().
-						Type("text/css").
-						Rel("stylesheet").
-						Href(url)
-
-					if crossOrigin != "" {
-						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					return link
-				}),
 				Script().
 					Defer(true).
 					Src(h.resolvePackagePath("/wasm_exec.js")),
