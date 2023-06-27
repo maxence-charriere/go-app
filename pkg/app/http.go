@@ -246,11 +246,11 @@ func (h *Handler) initImage() {
 func (h *Handler) initLibraries() {
 	libs := make(map[string][]byte)
 	for _, l := range h.Libraries {
-		path, script := l.Script()
-		if !strings.HasPrefix(path, "/") || len(script) == 0 {
+		path, styles := l.Styles()
+		if !strings.HasPrefix(path, "/") || len(styles) == 0 {
 			continue
 		}
-		libs[path] = []byte(script)
+		libs[path] = []byte(styles)
 	}
 	h.libraries = libs
 }
