@@ -104,6 +104,15 @@ func NewClientTester(n UI) ClientDispatcher {
 	e := &engine{
 		ActionHandlers: actionHandlers,
 	}
+
+	if IsClient {
+		e.LocalStorage = newJSStorage("localStorage")
+		e.LocalStorage.Clear()
+
+		e.SessionStorage = newJSStorage("sessionStorage")
+		e.SessionStorage.Clear()
+	}
+
 	e.init()
 	e.Mount(n)
 	e.Consume()

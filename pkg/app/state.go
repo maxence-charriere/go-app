@@ -286,6 +286,7 @@ func (s *store) Cleanup() {
 
 	s.removeUnusedObservers()
 	s.expireExpiredValues()
+	s.expireExpriredPersistentValues()
 }
 
 func (s *store) Close() {
@@ -367,6 +368,29 @@ func (s *store) expireExpiredValues() {
 		if state.isExpired(now) {
 			state = s.expire(k, state)
 			s.states[k] = state
+		}
+	}
+}
+
+func (s *store) expireExpriredPersistentValues() {
+	object := Window().Get("Object")
+	if !object.Truthy() {
+		return
+	}
+
+	keys := object.Call("keys", Window().Get("localStorage"))
+	for i, l := 0, keys.Get("length").Int(); i < l; i++ {
+		key := keys.Index(i).String()
+
+		var state persistentState
+		s.disp.getLocalStorage().Get(key, &state)
+
+		if state.EncryptedValue == nil && state.Value == nil && state.ExpiresAt == (time.Time{}) {
+			continue
+		}
+
+		if state.isExpired(time.Now()) {
+			s.disp.getLocalStorage().Del(key)
 		}
 	}
 }

@@ -576,3 +576,43 @@ type copyTester struct {
 	slice      []int
 	mapp       map[string]int
 }
+
+func TestExpireExpriredPersistentValues(t *testing.T) {
+	if IsServer {
+		t.Skip()
+	}
+
+	d := NewClientTester(&foo{})
+	defer d.Close()
+	localStorage := d.getLocalStorage()
+
+	s := newStore(d)
+	defer s.Close()
+
+	t.Run("non expired state is not removed", func(t *testing.T) {
+		localStorage.Clear()
+		s.setPersistent("/hello", false, time.Now().Add(time.Minute), "hello")
+		require.Equal(t, 1, localStorage.Len())
+
+		s.expireExpriredPersistentValues()
+		require.Equal(t, 1, localStorage.Len())
+	})
+
+	t.Run("expired state is removed", func(t *testing.T) {
+		localStorage.Clear()
+		s.setPersistent("/bye", false, time.Now().Add(-time.Minute), "bye")
+		require.Equal(t, 1, localStorage.Len())
+
+		s.expireExpriredPersistentValues()
+		require.Equal(t, 0, localStorage.Len())
+	})
+
+	t.Run("non state value is not removed", func(t *testing.T) {
+		localStorage.Clear()
+		localStorage.Set("/hi", "hi")
+		require.Equal(t, 1, localStorage.Len())
+
+		s.expireExpriredPersistentValues()
+		require.Equal(t, 1, localStorage.Len())
+	})
+}
