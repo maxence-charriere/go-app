@@ -5,7 +5,8 @@
   display: none;
 }
 
-.app-wasm-loader {
+.app-wasm-loader,
+.goapp-app-info {
   position: fixed;
   top: 0;
   left: 0;
