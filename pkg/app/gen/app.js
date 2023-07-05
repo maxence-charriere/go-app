@@ -52,9 +52,13 @@ function goappSetupNotifyUpdate(registration) {
   registration.addEventListener("updatefound", (event) => {
     const newSW = registration.installing;
     newSW.addEventListener("statechange", (event) => {
-      if (newSW.state == "installed") {
-        goappOnUpdate();
+      if (!navigator.serviceWorker.controller) {
+        return;
       }
+      if (newSW.state != "installed") {
+        return;
+      }
+      goappOnUpdate();
     });
   });
 }
