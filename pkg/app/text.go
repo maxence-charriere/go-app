@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"html"
 	"io"
 
@@ -11,6 +12,11 @@ import (
 // Text creates a simple text element.
 func Text(v any) UI {
 	return &text{value: toString(v)}
+}
+
+// Text creates a simple text element with the given format and values.
+func Textf(format string, v ...any) UI {
+	return &text{value: fmt.Sprintf(format, v...)}
 }
 
 type text struct {
