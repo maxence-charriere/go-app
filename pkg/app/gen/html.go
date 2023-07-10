@@ -2204,6 +2204,11 @@ func writeInterface(w io.Writer, t tag) {
 			Text(v any) HTML%s
 		`, t.Name)
 
+		fmt.Fprintf(w, `
+			// Textf sets the content of the element with the given format and values.
+			Textf(format string, v ...any) HTML%s
+		`, t.Name)
+
 	case privateParent:
 		fmt.Fprintf(w, `
 			privateBody(elems ...UI) HTML%s 
@@ -2264,10 +2269,28 @@ func writeStruct(w io.Writer, t tag) {
 				t.Name,
 				t.Name,
 			)
+			fmt.Fprintf(w, `
+			func (e *html%s) Textf(format string, v ...any) HTML%s {
+				e.setAttr("value", fmt.Sprintf(format, v...))
+				return e
+			}
+			`,
+				t.Name,
+				t.Name,
+			)
 		} else {
 			fmt.Fprintf(w, `
 			func (e *html%s) Text(v any) HTML%s {
 				return e.Body(Text(v))
+			}
+			`,
+				t.Name,
+				t.Name,
+			)
+
+			fmt.Fprintf(w, `
+			func (e *html%s) Textf(format string, v ...any) HTML%s {
+				return e.Body(Textf(format, v...))
 			}
 			`,
 				t.Name,
@@ -2553,6 +2576,7 @@ import (
 		switch t.Type {
 		case parent:
 			fmt.Fprintln(f, `elem.Text("hello")`)
+			fmt.Fprintln(f, `elem.Textf("hello %s", "Maxence")`)
 
 		case privateParent:
 			fmt.Fprintln(f, `elem.privateBody(Text("hello"))`)
