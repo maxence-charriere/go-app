@@ -1605,6 +1605,11 @@ var attrs = map[string]attr{
 		Type: "string",
 		Doc:  "specifies extra information about an element.",
 	},
+	"titlef": {
+		Name: "Titlef",
+		Type: "fmt",
+		Doc:  "specifies extra information about an element with the given format and values.",
+	},
 	"type": {
 		Name: "Type",
 		Type: "string",
@@ -1679,6 +1684,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"styles",
 		"tabindex",
 		"title",
+		"titlef",
 		"attribute",
 	)...)
 
@@ -2463,6 +2469,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`)
 		}
 
+	case "fmt":
+		fmt.Fprintf(w, `%s(format string, v ...any) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.setAttr("%s", fmt.Sprintf(format, v...))
+				return e
+			}`, attrName)
+		}
+
 	default:
 		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
 		if !isInterface {
@@ -2554,6 +2569,9 @@ import (
 
 			case "xmlns":
 				fmt.Fprintln(f, `"http://www.w3.org/2000/svg")`)
+
+			case "fmt":
+				fmt.Fprintln(f, `"hello %v", 42)`)
 
 			default:
 				fmt.Fprintln(f, `42)`)
