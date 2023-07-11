@@ -108,8 +108,8 @@ func AppendClass(class string, v ...string) string {
 	b.WriteString(strings.TrimSpace(class))
 
 	for _, c := range v {
-		c = strings.TrimSpace(class)
-		if len(c) == 0 {
+		c = strings.TrimSpace(c)
+		if c == "" {
 			continue
 		}
 
