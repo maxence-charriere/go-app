@@ -108,6 +108,7 @@ func AppendClass(class string, v ...string) string {
 	b.WriteString(strings.TrimSpace(class))
 
 	for _, c := range v {
+		c = strings.TrimSpace(class)
 		if len(c) == 0 {
 			continue
 		}
@@ -115,7 +116,7 @@ func AppendClass(class string, v ...string) string {
 		if b.Len() != 0 {
 			b.WriteByte(' ')
 		}
-		b.WriteString(strings.TrimSpace(c))
+		b.WriteString(c)
 	}
 
 	return b.String()
