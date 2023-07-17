@@ -53,8 +53,8 @@ type HTMLA interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLA
 
-	// Href specifies the URL of the page the link goes to.
-	Href(v url) HTMLA
+	// Href specifies the URL of the page the link goes to with the given format and values.
+	Href(format string, v ...any) HTMLA
 
 	// HrefLang specifies the language of the linked document.
 	HrefLang(v string) HTMLA
@@ -92,8 +92,8 @@ type HTMLA interface {
 	// Target specifies the target for where to open the linked document or where to submit the form.
 	Target(v string) HTMLA
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLA
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLA
 
 	// Type specifies the type of element.
 	Type(v string) HTMLA
@@ -290,8 +290,8 @@ func (e *htmlA) Hidden(v bool) HTMLA {
 	return e
 }
 
-func (e *htmlA) Href(v url) HTMLA {
-	e.setAttr("href", v)
+func (e *htmlA) Href(format string, v ...any) HTMLA {
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -362,8 +362,8 @@ func (e *htmlA) Target(v string) HTMLA {
 	return e
 }
 
-func (e *htmlA) Title(v string) HTMLA {
-	e.setAttr("title", v)
+func (e *htmlA) Title(format string, v ...any) HTMLA {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -611,8 +611,8 @@ type HTMLAbbr interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAbbr
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLAbbr
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLAbbr
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAbbr
@@ -843,8 +843,8 @@ func (e *htmlAbbr) TabIndex(v int) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) Title(v string) HTMLAbbr {
-	e.setAttr("title", v)
+func (e *htmlAbbr) Title(format string, v ...any) HTMLAbbr {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1087,8 +1087,8 @@ type HTMLAddress interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAddress
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLAddress
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLAddress
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAddress
@@ -1319,8 +1319,8 @@ func (e *htmlAddress) TabIndex(v int) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) Title(v string) HTMLAddress {
-	e.setAttr("title", v)
+func (e *htmlAddress) Title(format string, v ...any) HTMLAddress {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1542,8 +1542,8 @@ type HTMLArea interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLArea
 
-	// Href specifies the URL of the page the link goes to.
-	Href(v url) HTMLArea
+	// Href specifies the URL of the page the link goes to with the given format and values.
+	Href(format string, v ...any) HTMLArea
 
 	// HrefLang specifies the language of the linked document.
 	HrefLang(v string) HTMLArea
@@ -1581,8 +1581,8 @@ type HTMLArea interface {
 	// Target specifies the target for where to open the linked document or where to submit the form.
 	Target(v string) HTMLArea
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLArea
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLArea
 
 	// Type specifies the type of element.
 	Type(v string) HTMLArea
@@ -1776,8 +1776,8 @@ func (e *htmlArea) Hidden(v bool) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Href(v url) HTMLArea {
-	e.setAttr("href", v)
+func (e *htmlArea) Href(format string, v ...any) HTMLArea {
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1848,8 +1848,8 @@ func (e *htmlArea) Target(v string) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Title(v string) HTMLArea {
-	e.setAttr("title", v)
+func (e *htmlArea) Title(format string, v ...any) HTMLArea {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2097,8 +2097,8 @@ type HTMLArticle interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLArticle
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLArticle
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLArticle
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLArticle
@@ -2329,8 +2329,8 @@ func (e *htmlArticle) TabIndex(v int) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) Title(v string) HTMLArticle {
-	e.setAttr("title", v)
+func (e *htmlArticle) Title(format string, v ...any) HTMLArticle {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2573,8 +2573,8 @@ type HTMLAside interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAside
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLAside
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLAside
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAside
@@ -2805,8 +2805,8 @@ func (e *htmlAside) TabIndex(v int) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) Title(v string) HTMLAside {
-	e.setAttr("title", v)
+func (e *htmlAside) Title(format string, v ...any) HTMLAside {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3058,8 +3058,8 @@ type HTMLAudio interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAudio
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLAudio
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLAudio
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAudio
@@ -3070,8 +3070,8 @@ type HTMLAudio interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAudio
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLAudio
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLAudio
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAudio
@@ -3384,8 +3384,8 @@ func (e *htmlAudio) Spellcheck(v bool) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Src(v url) HTMLAudio {
-	e.setAttr("src", v)
+func (e *htmlAudio) Src(format string, v ...any) HTMLAudio {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3406,8 +3406,8 @@ func (e *htmlAudio) TabIndex(v int) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Title(v string) HTMLAudio {
-	e.setAttr("title", v)
+func (e *htmlAudio) Title(format string, v ...any) HTMLAudio {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3765,8 +3765,8 @@ type HTMLB interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLB
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLB
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLB
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLB
@@ -3997,8 +3997,8 @@ func (e *htmlB) TabIndex(v int) HTMLB {
 	return e
 }
 
-func (e *htmlB) Title(v string) HTMLB {
-	e.setAttr("title", v)
+func (e *htmlB) Title(format string, v ...any) HTMLB {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4211,8 +4211,8 @@ type HTMLBase interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLBase
 
-	// Href specifies the URL of the page the link goes to.
-	Href(v url) HTMLBase
+	// Href specifies the URL of the page the link goes to with the given format and values.
+	Href(format string, v ...any) HTMLBase
 
 	// ID specifies a unique id for an element.
 	ID(v string) HTMLBase
@@ -4238,8 +4238,8 @@ type HTMLBase interface {
 	// Target specifies the target for where to open the linked document or where to submit the form.
 	Target(v string) HTMLBase
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLBase
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLBase
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBase
@@ -4415,8 +4415,8 @@ func (e *htmlBase) Hidden(v bool) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Href(v url) HTMLBase {
-	e.setAttr("href", v)
+func (e *htmlBase) Href(format string, v ...any) HTMLBase {
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4467,8 +4467,8 @@ func (e *htmlBase) Target(v string) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Title(v string) HTMLBase {
-	e.setAttr("title", v)
+func (e *htmlBase) Title(format string, v ...any) HTMLBase {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4711,8 +4711,8 @@ type HTMLBdi interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBdi
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLBdi
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLBdi
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBdi
@@ -4943,8 +4943,8 @@ func (e *htmlBdi) TabIndex(v int) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) Title(v string) HTMLBdi {
-	e.setAttr("title", v)
+func (e *htmlBdi) Title(format string, v ...any) HTMLBdi {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5187,8 +5187,8 @@ type HTMLBdo interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBdo
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLBdo
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLBdo
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBdo
@@ -5419,8 +5419,8 @@ func (e *htmlBdo) TabIndex(v int) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) Title(v string) HTMLBdo {
-	e.setAttr("title", v)
+func (e *htmlBdo) Title(format string, v ...any) HTMLBdo {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5621,8 +5621,8 @@ type HTMLBlockquote interface {
 	// Attr sets the named attribute with the given value.
 	Attr(n string, v any) HTMLBlockquote
 
-	// Cite specifies a URL which explains the quote/deleted/inserted text.
-	Cite(v url) HTMLBlockquote
+	// Cite specifies a URL which explains the quote/deleted/inserted text with the given format and values.
+	Cite(format string, v ...any) HTMLBlockquote
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBlockquote
@@ -5666,8 +5666,8 @@ type HTMLBlockquote interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBlockquote
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLBlockquote
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLBlockquote
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBlockquote
@@ -5819,8 +5819,8 @@ func (e *htmlBlockquote) Attr(n string, v any) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Cite(v url) HTMLBlockquote {
-	e.setAttr("cite", v)
+func (e *htmlBlockquote) Cite(format string, v ...any) HTMLBlockquote {
+	e.setAttr("cite", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5903,8 +5903,8 @@ func (e *htmlBlockquote) TabIndex(v int) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Title(v string) HTMLBlockquote {
-	e.setAttr("title", v)
+func (e *htmlBlockquote) Title(format string, v ...any) HTMLBlockquote {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6140,8 +6140,8 @@ type HTMLBody interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBody
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLBody
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLBody
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBody
@@ -6409,8 +6409,8 @@ func (e *htmlBody) TabIndex(v int) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) Title(v string) HTMLBody {
-	e.setAttr("title", v)
+func (e *htmlBody) Title(format string, v ...any) HTMLBody {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6719,8 +6719,8 @@ type HTMLBr interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBr
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLBr
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLBr
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBr
@@ -6938,8 +6938,8 @@ func (e *htmlBr) TabIndex(v int) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) Title(v string) HTMLBr {
-	e.setAttr("title", v)
+func (e *htmlBr) Title(format string, v ...any) HTMLBr {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7209,8 +7209,8 @@ type HTMLButton interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLButton
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLButton
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLButton
 
 	// Type specifies the type of element.
 	Type(v string) HTMLButton
@@ -7492,8 +7492,8 @@ func (e *htmlButton) TabIndex(v int) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Title(v string) HTMLButton {
-	e.setAttr("title", v)
+func (e *htmlButton) Title(format string, v ...any) HTMLButton {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7749,8 +7749,8 @@ type HTMLCanvas interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCanvas
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLCanvas
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLCanvas
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLCanvas
@@ -7989,8 +7989,8 @@ func (e *htmlCanvas) TabIndex(v int) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) Title(v string) HTMLCanvas {
-	e.setAttr("title", v)
+func (e *htmlCanvas) Title(format string, v ...any) HTMLCanvas {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8238,8 +8238,8 @@ type HTMLCaption interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCaption
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLCaption
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLCaption
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCaption
@@ -8470,8 +8470,8 @@ func (e *htmlCaption) TabIndex(v int) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) Title(v string) HTMLCaption {
-	e.setAttr("title", v)
+func (e *htmlCaption) Title(format string, v ...any) HTMLCaption {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8714,8 +8714,8 @@ type HTMLCite interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCite
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLCite
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLCite
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCite
@@ -8946,8 +8946,8 @@ func (e *htmlCite) TabIndex(v int) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) Title(v string) HTMLCite {
-	e.setAttr("title", v)
+func (e *htmlCite) Title(format string, v ...any) HTMLCite {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9190,8 +9190,8 @@ type HTMLCode interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCode
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLCode
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLCode
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCode
@@ -9422,8 +9422,8 @@ func (e *htmlCode) TabIndex(v int) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) Title(v string) HTMLCode {
-	e.setAttr("title", v)
+func (e *htmlCode) Title(format string, v ...any) HTMLCode {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9660,8 +9660,8 @@ type HTMLCol interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCol
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLCol
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLCol
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCol
@@ -9884,8 +9884,8 @@ func (e *htmlCol) TabIndex(v int) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) Title(v string) HTMLCol {
-	e.setAttr("title", v)
+func (e *htmlCol) Title(format string, v ...any) HTMLCol {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10131,8 +10131,8 @@ type HTMLColGroup interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLColGroup
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLColGroup
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLColGroup
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLColGroup
@@ -10368,8 +10368,8 @@ func (e *htmlColGroup) TabIndex(v int) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) Title(v string) HTMLColGroup {
-	e.setAttr("title", v)
+func (e *htmlColGroup) Title(format string, v ...any) HTMLColGroup {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10612,8 +10612,8 @@ type HTMLData interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLData
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLData
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLData
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLData
@@ -10745,8 +10745,8 @@ func (e *htmlData) TabIndex(v int) HTMLData {
 	return e
 }
 
-func (e *htmlData) Title(v string) HTMLData {
-	e.setAttr("title", v)
+func (e *htmlData) Title(format string, v ...any) HTMLData {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10824,8 +10824,8 @@ type HTMLDataList interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDataList
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDataList
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDataList
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDataList
@@ -11056,8 +11056,8 @@ func (e *htmlDataList) TabIndex(v int) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) Title(v string) HTMLDataList {
-	e.setAttr("title", v)
+func (e *htmlDataList) Title(format string, v ...any) HTMLDataList {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11300,8 +11300,8 @@ type HTMLDd interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDd
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDd
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDd
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDd
@@ -11532,8 +11532,8 @@ func (e *htmlDd) TabIndex(v int) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) Title(v string) HTMLDd {
-	e.setAttr("title", v)
+func (e *htmlDd) Title(format string, v ...any) HTMLDd {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11734,8 +11734,8 @@ type HTMLDel interface {
 	// Attr sets the named attribute with the given value.
 	Attr(n string, v any) HTMLDel
 
-	// Cite specifies a URL which explains the quote/deleted/inserted text.
-	Cite(v url) HTMLDel
+	// Cite specifies a URL which explains the quote/deleted/inserted text with the given format and values.
+	Cite(format string, v ...any) HTMLDel
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDel
@@ -11782,8 +11782,8 @@ type HTMLDel interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDel
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDel
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDel
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDel
@@ -11935,8 +11935,8 @@ func (e *htmlDel) Attr(n string, v any) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) Cite(v url) HTMLDel {
-	e.setAttr("cite", v)
+func (e *htmlDel) Cite(format string, v ...any) HTMLDel {
+	e.setAttr("cite", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12024,8 +12024,8 @@ func (e *htmlDel) TabIndex(v int) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) Title(v string) HTMLDel {
-	e.setAttr("title", v)
+func (e *htmlDel) Title(format string, v ...any) HTMLDel {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12271,8 +12271,8 @@ type HTMLDetails interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDetails
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDetails
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDetails
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDetails
@@ -12511,8 +12511,8 @@ func (e *htmlDetails) TabIndex(v int) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) Title(v string) HTMLDetails {
-	e.setAttr("title", v)
+func (e *htmlDetails) Title(format string, v ...any) HTMLDetails {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12760,8 +12760,8 @@ type HTMLDfn interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDfn
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDfn
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDfn
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDfn
@@ -12992,8 +12992,8 @@ func (e *htmlDfn) TabIndex(v int) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) Title(v string) HTMLDfn {
-	e.setAttr("title", v)
+func (e *htmlDfn) Title(format string, v ...any) HTMLDfn {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13239,8 +13239,8 @@ type HTMLDialog interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDialog
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDialog
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDialog
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDialog
@@ -13476,8 +13476,8 @@ func (e *htmlDialog) TabIndex(v int) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) Title(v string) HTMLDialog {
-	e.setAttr("title", v)
+func (e *htmlDialog) Title(format string, v ...any) HTMLDialog {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13720,8 +13720,8 @@ type HTMLDiv interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDiv
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDiv
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDiv
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDiv
@@ -13952,8 +13952,8 @@ func (e *htmlDiv) TabIndex(v int) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) Title(v string) HTMLDiv {
-	e.setAttr("title", v)
+func (e *htmlDiv) Title(format string, v ...any) HTMLDiv {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14196,8 +14196,8 @@ type HTMLDl interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDl
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDl
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDl
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDl
@@ -14428,8 +14428,8 @@ func (e *htmlDl) TabIndex(v int) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) Title(v string) HTMLDl {
-	e.setAttr("title", v)
+func (e *htmlDl) Title(format string, v ...any) HTMLDl {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14672,8 +14672,8 @@ type HTMLDt interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDt
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLDt
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLDt
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDt
@@ -14904,8 +14904,8 @@ func (e *htmlDt) TabIndex(v int) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) Title(v string) HTMLDt {
-	e.setAttr("title", v)
+func (e *htmlDt) Title(format string, v ...any) HTMLDt {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15148,8 +15148,8 @@ type HTMLElem interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLElem
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLElem
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLElem
 
 	// XMLNS specifies the xml namespace of the element.
 	XMLNS(v string) HTMLElem
@@ -15383,8 +15383,8 @@ func (e *htmlElem) TabIndex(v int) HTMLElem {
 	return e
 }
 
-func (e *htmlElem) Title(v string) HTMLElem {
-	e.setAttr("title", v)
+func (e *htmlElem) Title(format string, v ...any) HTMLElem {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15623,8 +15623,8 @@ type HTMLElemSelfClosing interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLElemSelfClosing
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLElemSelfClosing
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLElemSelfClosing
 
 	// XMLNS specifies the xml namespace of the element.
 	XMLNS(v string) HTMLElemSelfClosing
@@ -15845,8 +15845,8 @@ func (e *htmlElemSelfClosing) TabIndex(v int) HTMLElemSelfClosing {
 	return e
 }
 
-func (e *htmlElemSelfClosing) Title(v string) HTMLElemSelfClosing {
-	e.setAttr("title", v)
+func (e *htmlElemSelfClosing) Title(format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16094,8 +16094,8 @@ type HTMLEm interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLEm
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLEm
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLEm
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLEm
@@ -16326,8 +16326,8 @@ func (e *htmlEm) TabIndex(v int) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) Title(v string) HTMLEm {
-	e.setAttr("title", v)
+func (e *htmlEm) Title(format string, v ...any) HTMLEm {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16555,8 +16555,8 @@ type HTMLEmbed interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLEmbed
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLEmbed
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLEmbed
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLEmbed
@@ -16567,8 +16567,8 @@ type HTMLEmbed interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLEmbed
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLEmbed
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLEmbed
 
 	// Type specifies the type of element.
 	Type(v string) HTMLEmbed
@@ -16849,8 +16849,8 @@ func (e *htmlEmbed) Spellcheck(v bool) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Src(v url) HTMLEmbed {
-	e.setAttr("src", v)
+func (e *htmlEmbed) Src(format string, v ...any) HTMLEmbed {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16871,8 +16871,8 @@ func (e *htmlEmbed) TabIndex(v int) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Title(v string) HTMLEmbed {
-	e.setAttr("title", v)
+func (e *htmlEmbed) Title(format string, v ...any) HTMLEmbed {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17249,8 +17249,8 @@ type HTMLFieldSet interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFieldSet
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLFieldSet
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLFieldSet
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFieldSet
@@ -17496,8 +17496,8 @@ func (e *htmlFieldSet) TabIndex(v int) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Title(v string) HTMLFieldSet {
-	e.setAttr("title", v)
+func (e *htmlFieldSet) Title(format string, v ...any) HTMLFieldSet {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17740,8 +17740,8 @@ type HTMLFigCaption interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFigCaption
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLFigCaption
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLFigCaption
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFigCaption
@@ -17972,8 +17972,8 @@ func (e *htmlFigCaption) TabIndex(v int) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) Title(v string) HTMLFigCaption {
-	e.setAttr("title", v)
+func (e *htmlFigCaption) Title(format string, v ...any) HTMLFigCaption {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18216,8 +18216,8 @@ type HTMLFigure interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFigure
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLFigure
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLFigure
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFigure
@@ -18448,8 +18448,8 @@ func (e *htmlFigure) TabIndex(v int) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) Title(v string) HTMLFigure {
-	e.setAttr("title", v)
+func (e *htmlFigure) Title(format string, v ...any) HTMLFigure {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18692,8 +18692,8 @@ type HTMLFooter interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFooter
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLFooter
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLFooter
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFooter
@@ -18924,8 +18924,8 @@ func (e *htmlFooter) TabIndex(v int) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) Title(v string) HTMLFooter {
-	e.setAttr("title", v)
+func (e *htmlFooter) Title(format string, v ...any) HTMLFooter {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19192,8 +19192,8 @@ type HTMLForm interface {
 	// Target specifies the target for where to open the linked document or where to submit the form.
 	Target(v string) HTMLForm
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLForm
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLForm
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLForm
@@ -19469,8 +19469,8 @@ func (e *htmlForm) Target(v string) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Title(v string) HTMLForm {
-	e.setAttr("title", v)
+func (e *htmlForm) Title(format string, v ...any) HTMLForm {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19713,8 +19713,8 @@ type HTMLH1 interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH1
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLH1
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLH1
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH1
@@ -19945,8 +19945,8 @@ func (e *htmlH1) TabIndex(v int) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) Title(v string) HTMLH1 {
-	e.setAttr("title", v)
+func (e *htmlH1) Title(format string, v ...any) HTMLH1 {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20189,8 +20189,8 @@ type HTMLH2 interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH2
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLH2
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLH2
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH2
@@ -20421,8 +20421,8 @@ func (e *htmlH2) TabIndex(v int) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) Title(v string) HTMLH2 {
-	e.setAttr("title", v)
+func (e *htmlH2) Title(format string, v ...any) HTMLH2 {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20665,8 +20665,8 @@ type HTMLH3 interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH3
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLH3
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLH3
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH3
@@ -20897,8 +20897,8 @@ func (e *htmlH3) TabIndex(v int) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) Title(v string) HTMLH3 {
-	e.setAttr("title", v)
+func (e *htmlH3) Title(format string, v ...any) HTMLH3 {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21141,8 +21141,8 @@ type HTMLH4 interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH4
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLH4
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLH4
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH4
@@ -21373,8 +21373,8 @@ func (e *htmlH4) TabIndex(v int) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) Title(v string) HTMLH4 {
-	e.setAttr("title", v)
+func (e *htmlH4) Title(format string, v ...any) HTMLH4 {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21617,8 +21617,8 @@ type HTMLH5 interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH5
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLH5
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLH5
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH5
@@ -21849,8 +21849,8 @@ func (e *htmlH5) TabIndex(v int) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) Title(v string) HTMLH5 {
-	e.setAttr("title", v)
+func (e *htmlH5) Title(format string, v ...any) HTMLH5 {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22093,8 +22093,8 @@ type HTMLH6 interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH6
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLH6
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLH6
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH6
@@ -22325,8 +22325,8 @@ func (e *htmlH6) TabIndex(v int) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) Title(v string) HTMLH6 {
-	e.setAttr("title", v)
+func (e *htmlH6) Title(format string, v ...any) HTMLH6 {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22569,8 +22569,8 @@ type HTMLHead interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHead
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLHead
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLHead
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHead
@@ -22699,8 +22699,8 @@ func (e *htmlHead) TabIndex(v int) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) Title(v string) HTMLHead {
-	e.setAttr("title", v)
+func (e *htmlHead) Title(format string, v ...any) HTMLHead {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22773,8 +22773,8 @@ type HTMLHeader interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHeader
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLHeader
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLHeader
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHeader
@@ -23005,8 +23005,8 @@ func (e *htmlHeader) TabIndex(v int) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) Title(v string) HTMLHeader {
-	e.setAttr("title", v)
+func (e *htmlHeader) Title(format string, v ...any) HTMLHeader {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23240,8 +23240,8 @@ type HTMLHr interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHr
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLHr
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLHr
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHr
@@ -23459,8 +23459,8 @@ func (e *htmlHr) TabIndex(v int) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) Title(v string) HTMLHr {
-	e.setAttr("title", v)
+func (e *htmlHr) Title(format string, v ...any) HTMLHr {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23696,8 +23696,8 @@ type HTMLHtml interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHtml
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLHtml
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLHtml
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHtml
@@ -23818,8 +23818,8 @@ func (e *htmlHtml) TabIndex(v int) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) Title(v string) HTMLHtml {
-	e.setAttr("title", v)
+func (e *htmlHtml) Title(format string, v ...any) HTMLHtml {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23892,8 +23892,8 @@ type HTMLI interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLI
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLI
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLI
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLI
@@ -24124,8 +24124,8 @@ func (e *htmlI) TabIndex(v int) HTMLI {
 	return e
 }
 
-func (e *htmlI) Title(v string) HTMLI {
-	e.setAttr("title", v)
+func (e *htmlI) Title(format string, v ...any) HTMLI {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24383,8 +24383,8 @@ type HTMLIFrame interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLIFrame
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLIFrame
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLIFrame
 
 	// SrcDoc specifies the HTML content of the page to show in the iframe.
 	SrcDoc(v string) HTMLIFrame
@@ -24398,8 +24398,8 @@ type HTMLIFrame interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLIFrame
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLIFrame
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLIFrame
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLIFrame
@@ -24669,8 +24669,8 @@ func (e *htmlIFrame) Spellcheck(v bool) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Src(v url) HTMLIFrame {
-	e.setAttr("src", v)
+func (e *htmlIFrame) Src(format string, v ...any) HTMLIFrame {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24696,8 +24696,8 @@ func (e *htmlIFrame) TabIndex(v int) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Title(v string) HTMLIFrame {
-	e.setAttr("title", v)
+func (e *htmlIFrame) Title(format string, v ...any) HTMLIFrame {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24947,11 +24947,11 @@ type HTMLImg interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLImg
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLImg
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLImg
 
-	// SrcSet specifies the URL of the image to use in different situations.
-	SrcSet(v url) HTMLImg
+	// SrcSet specifies the URL of the image to use in different situations with the given format and values.
+	SrcSet(format string, v ...any) HTMLImg
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLImg
@@ -24962,8 +24962,8 @@ type HTMLImg interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLImg
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLImg
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLImg
 
 	// UseMap specifies an image as a client-side image-map.
 	UseMap(v string) HTMLImg
@@ -25267,13 +25267,13 @@ func (e *htmlImg) Spellcheck(v bool) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Src(v url) HTMLImg {
-	e.setAttr("src", v)
+func (e *htmlImg) Src(format string, v ...any) HTMLImg {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
-func (e *htmlImg) SrcSet(v url) HTMLImg {
-	e.setAttr("srcset", v)
+func (e *htmlImg) SrcSet(format string, v ...any) HTMLImg {
+	e.setAttr("srcset", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25294,8 +25294,8 @@ func (e *htmlImg) TabIndex(v int) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Title(v string) HTMLImg {
-	e.setAttr("title", v)
+func (e *htmlImg) Title(format string, v ...any) HTMLImg {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25728,8 +25728,8 @@ type HTMLInput interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLInput
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLInput
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLInput
 
 	// Step specifies the legal number intervals for an input field.
 	Step(v float64) HTMLInput
@@ -25743,8 +25743,8 @@ type HTMLInput interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLInput
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLInput
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLInput
 
 	// Type specifies the type of element.
 	Type(v string) HTMLInput
@@ -26092,8 +26092,8 @@ func (e *htmlInput) Spellcheck(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Src(v url) HTMLInput {
-	e.setAttr("src", v)
+func (e *htmlInput) Src(format string, v ...any) HTMLInput {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26119,8 +26119,8 @@ func (e *htmlInput) TabIndex(v int) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Title(v string) HTMLInput {
-	e.setAttr("title", v)
+func (e *htmlInput) Title(format string, v ...any) HTMLInput {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26383,8 +26383,8 @@ type HTMLIns interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLIns
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLIns
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLIns
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLIns
@@ -26615,8 +26615,8 @@ func (e *htmlIns) TabIndex(v int) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) Title(v string) HTMLIns {
-	e.setAttr("title", v)
+func (e *htmlIns) Title(format string, v ...any) HTMLIns {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26859,8 +26859,8 @@ type HTMLKbd interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLKbd
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLKbd
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLKbd
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLKbd
@@ -27091,8 +27091,8 @@ func (e *htmlKbd) TabIndex(v int) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) Title(v string) HTMLKbd {
-	e.setAttr("title", v)
+func (e *htmlKbd) Title(format string, v ...any) HTMLKbd {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27341,8 +27341,8 @@ type HTMLLabel interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLabel
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLLabel
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLLabel
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLabel
@@ -27583,8 +27583,8 @@ func (e *htmlLabel) TabIndex(v int) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) Title(v string) HTMLLabel {
-	e.setAttr("title", v)
+func (e *htmlLabel) Title(format string, v ...any) HTMLLabel {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27827,8 +27827,8 @@ type HTMLLegend interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLegend
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLLegend
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLLegend
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLegend
@@ -28059,8 +28059,8 @@ func (e *htmlLegend) TabIndex(v int) HTMLLegend {
 	return e
 }
 
-func (e *htmlLegend) Title(v string) HTMLLegend {
-	e.setAttr("title", v)
+func (e *htmlLegend) Title(format string, v ...any) HTMLLegend {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28303,8 +28303,8 @@ type HTMLLi interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLi
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLLi
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLLi
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLLi
@@ -28538,8 +28538,8 @@ func (e *htmlLi) TabIndex(v int) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) Title(v string) HTMLLi {
-	e.setAttr("title", v)
+func (e *htmlLi) Title(format string, v ...any) HTMLLi {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28763,8 +28763,8 @@ type HTMLLink interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLLink
 
-	// Href specifies the URL of the page the link goes to.
-	Href(v url) HTMLLink
+	// Href specifies the URL of the page the link goes to with the given format and values.
+	Href(format string, v ...any) HTMLLink
 
 	// HrefLang specifies the language of the linked document.
 	HrefLang(v string) HTMLLink
@@ -28799,8 +28799,8 @@ type HTMLLink interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLink
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLLink
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLLink
 
 	// Type specifies the type of element.
 	Type(v string) HTMLLink
@@ -28992,8 +28992,8 @@ func (e *htmlLink) Hidden(v bool) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Href(v url) HTMLLink {
-	e.setAttr("href", v)
+func (e *htmlLink) Href(format string, v ...any) HTMLLink {
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29059,8 +29059,8 @@ func (e *htmlLink) TabIndex(v int) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Title(v string) HTMLLink {
-	e.setAttr("title", v)
+func (e *htmlLink) Title(format string, v ...any) HTMLLink {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29313,8 +29313,8 @@ type HTMLMain interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMain
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLMain
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLMain
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMain
@@ -29545,8 +29545,8 @@ func (e *htmlMain) TabIndex(v int) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) Title(v string) HTMLMain {
-	e.setAttr("title", v)
+func (e *htmlMain) Title(format string, v ...any) HTMLMain {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29792,8 +29792,8 @@ type HTMLMap interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMap
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLMap
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLMap
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMap
@@ -30029,8 +30029,8 @@ func (e *htmlMap) TabIndex(v int) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) Title(v string) HTMLMap {
-	e.setAttr("title", v)
+func (e *htmlMap) Title(format string, v ...any) HTMLMap {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30273,8 +30273,8 @@ type HTMLMark interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMark
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLMark
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLMark
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMark
@@ -30505,8 +30505,8 @@ func (e *htmlMark) TabIndex(v int) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) Title(v string) HTMLMark {
-	e.setAttr("title", v)
+func (e *htmlMark) Title(format string, v ...any) HTMLMark {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30755,8 +30755,8 @@ type HTMLMeta interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMeta
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLMeta
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLMeta
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMeta
@@ -30897,8 +30897,8 @@ func (e *htmlMeta) TabIndex(v int) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Title(v string) HTMLMeta {
-	e.setAttr("title", v)
+func (e *htmlMeta) Title(format string, v ...any) HTMLMeta {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30989,8 +30989,8 @@ type HTMLMeter interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMeter
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLMeter
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLMeter
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLMeter
@@ -31254,8 +31254,8 @@ func (e *htmlMeter) TabIndex(v int) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Title(v string) HTMLMeter {
-	e.setAttr("title", v)
+func (e *htmlMeter) Title(format string, v ...any) HTMLMeter {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31503,8 +31503,8 @@ type HTMLNav interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLNav
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLNav
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLNav
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLNav
@@ -31735,8 +31735,8 @@ func (e *htmlNav) TabIndex(v int) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) Title(v string) HTMLNav {
-	e.setAttr("title", v)
+func (e *htmlNav) Title(format string, v ...any) HTMLNav {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31979,8 +31979,8 @@ type HTMLNoScript interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLNoScript
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLNoScript
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLNoScript
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLNoScript
@@ -32109,8 +32109,8 @@ func (e *htmlNoScript) TabIndex(v int) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) Title(v string) HTMLNoScript {
-	e.setAttr("title", v)
+func (e *htmlNoScript) Title(format string, v ...any) HTMLNoScript {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32147,8 +32147,8 @@ type HTMLObject interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLObject
 
-	// Data specifies the URL of the resource to be used by the object.
-	Data(v url) HTMLObject
+	// Data specifies the URL of the resource to be used by the object with the given format and values.
+	Data(format string, v ...any) HTMLObject
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLObject
@@ -32195,8 +32195,8 @@ type HTMLObject interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLObject
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLObject
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLObject
 
 	// Type specifies the type of element.
 	Type(v string) HTMLObject
@@ -32436,8 +32436,8 @@ func (e *htmlObject) ContentEditable(v bool) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Data(v url) HTMLObject {
-	e.setAttr("data", v)
+func (e *htmlObject) Data(format string, v ...any) HTMLObject {
+	e.setAttr("data", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32525,8 +32525,8 @@ func (e *htmlObject) TabIndex(v int) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Title(v string) HTMLObject {
-	e.setAttr("title", v)
+func (e *htmlObject) Title(format string, v ...any) HTMLObject {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32905,8 +32905,8 @@ type HTMLOl interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOl
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLOl
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLOl
 
 	// Type specifies the type of element.
 	Type(v string) HTMLOl
@@ -33150,8 +33150,8 @@ func (e *htmlOl) TabIndex(v int) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Title(v string) HTMLOl {
-	e.setAttr("title", v)
+func (e *htmlOl) Title(format string, v ...any) HTMLOl {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33405,8 +33405,8 @@ type HTMLOptGroup interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOptGroup
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLOptGroup
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLOptGroup
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOptGroup
@@ -33647,8 +33647,8 @@ func (e *htmlOptGroup) TabIndex(v int) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) Title(v string) HTMLOptGroup {
-	e.setAttr("title", v)
+func (e *htmlOptGroup) Title(format string, v ...any) HTMLOptGroup {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33900,8 +33900,8 @@ type HTMLOption interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOption
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLOption
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLOption
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLOption
@@ -34150,8 +34150,8 @@ func (e *htmlOption) TabIndex(v int) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) Title(v string) HTMLOption {
-	e.setAttr("title", v)
+func (e *htmlOption) Title(format string, v ...any) HTMLOption {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34408,8 +34408,8 @@ type HTMLOutput interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOutput
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLOutput
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLOutput
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOutput
@@ -34655,8 +34655,8 @@ func (e *htmlOutput) TabIndex(v int) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) Title(v string) HTMLOutput {
-	e.setAttr("title", v)
+func (e *htmlOutput) Title(format string, v ...any) HTMLOutput {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34899,8 +34899,8 @@ type HTMLP interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLP
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLP
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLP
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLP
@@ -35131,8 +35131,8 @@ func (e *htmlP) TabIndex(v int) HTMLP {
 	return e
 }
 
-func (e *htmlP) Title(v string) HTMLP {
-	e.setAttr("title", v)
+func (e *htmlP) Title(format string, v ...any) HTMLP {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35369,8 +35369,8 @@ type HTMLParam interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLParam
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLParam
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLParam
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLParam
@@ -35596,8 +35596,8 @@ func (e *htmlParam) TabIndex(v int) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) Title(v string) HTMLParam {
-	e.setAttr("title", v)
+func (e *htmlParam) Title(format string, v ...any) HTMLParam {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35845,8 +35845,8 @@ type HTMLPicture interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLPicture
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLPicture
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLPicture
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLPicture
@@ -36077,8 +36077,8 @@ func (e *htmlPicture) TabIndex(v int) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) Title(v string) HTMLPicture {
-	e.setAttr("title", v)
+func (e *htmlPicture) Title(format string, v ...any) HTMLPicture {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36321,8 +36321,8 @@ type HTMLPre interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLPre
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLPre
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLPre
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLPre
@@ -36553,8 +36553,8 @@ func (e *htmlPre) TabIndex(v int) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) Title(v string) HTMLPre {
-	e.setAttr("title", v)
+func (e *htmlPre) Title(format string, v ...any) HTMLPre {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36800,8 +36800,8 @@ type HTMLProgress interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLProgress
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLProgress
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLProgress
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLProgress
@@ -37040,8 +37040,8 @@ func (e *htmlProgress) TabIndex(v int) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Title(v string) HTMLProgress {
-	e.setAttr("title", v)
+func (e *htmlProgress) Title(format string, v ...any) HTMLProgress {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37247,8 +37247,8 @@ type HTMLQ interface {
 	// Attr sets the named attribute with the given value.
 	Attr(n string, v any) HTMLQ
 
-	// Cite specifies a URL which explains the quote/deleted/inserted text.
-	Cite(v url) HTMLQ
+	// Cite specifies a URL which explains the quote/deleted/inserted text with the given format and values.
+	Cite(format string, v ...any) HTMLQ
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLQ
@@ -37292,8 +37292,8 @@ type HTMLQ interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLQ
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLQ
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLQ
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLQ
@@ -37445,8 +37445,8 @@ func (e *htmlQ) Attr(n string, v any) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Cite(v url) HTMLQ {
-	e.setAttr("cite", v)
+func (e *htmlQ) Cite(format string, v ...any) HTMLQ {
+	e.setAttr("cite", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37529,8 +37529,8 @@ func (e *htmlQ) TabIndex(v int) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Title(v string) HTMLQ {
-	e.setAttr("title", v)
+func (e *htmlQ) Title(format string, v ...any) HTMLQ {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37773,8 +37773,8 @@ type HTMLRp interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRp
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLRp
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLRp
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRp
@@ -38005,8 +38005,8 @@ func (e *htmlRp) TabIndex(v int) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) Title(v string) HTMLRp {
-	e.setAttr("title", v)
+func (e *htmlRp) Title(format string, v ...any) HTMLRp {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38249,8 +38249,8 @@ type HTMLRt interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRt
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLRt
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLRt
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRt
@@ -38481,8 +38481,8 @@ func (e *htmlRt) TabIndex(v int) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) Title(v string) HTMLRt {
-	e.setAttr("title", v)
+func (e *htmlRt) Title(format string, v ...any) HTMLRt {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38725,8 +38725,8 @@ type HTMLRuby interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRuby
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLRuby
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLRuby
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRuby
@@ -38957,8 +38957,8 @@ func (e *htmlRuby) TabIndex(v int) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) Title(v string) HTMLRuby {
-	e.setAttr("title", v)
+func (e *htmlRuby) Title(format string, v ...any) HTMLRuby {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39201,8 +39201,8 @@ type HTMLS interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLS
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLS
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLS
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLS
@@ -39433,8 +39433,8 @@ func (e *htmlS) TabIndex(v int) HTMLS {
 	return e
 }
 
-func (e *htmlS) Title(v string) HTMLS {
-	e.setAttr("title", v)
+func (e *htmlS) Title(format string, v ...any) HTMLS {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39677,8 +39677,8 @@ type HTMLSamp interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSamp
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSamp
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSamp
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSamp
@@ -39909,8 +39909,8 @@ func (e *htmlSamp) TabIndex(v int) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) Title(v string) HTMLSamp {
-	e.setAttr("title", v)
+func (e *htmlSamp) Title(format string, v ...any) HTMLSamp {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40156,8 +40156,8 @@ type HTMLScript interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLScript
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLScript
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLScript
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLScript
@@ -40168,8 +40168,8 @@ type HTMLScript interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLScript
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLScript
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLScript
 
 	// Type specifies the type of element.
 	Type(v string) HTMLScript
@@ -40307,8 +40307,8 @@ func (e *htmlScript) Spellcheck(v bool) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Src(v url) HTMLScript {
-	e.setAttr("src", v)
+func (e *htmlScript) Src(format string, v ...any) HTMLScript {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40329,8 +40329,8 @@ func (e *htmlScript) TabIndex(v int) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Title(v string) HTMLScript {
-	e.setAttr("title", v)
+func (e *htmlScript) Title(format string, v ...any) HTMLScript {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40413,8 +40413,8 @@ type HTMLSection interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSection
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSection
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSection
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSection
@@ -40645,8 +40645,8 @@ func (e *htmlSection) TabIndex(v int) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) Title(v string) HTMLSection {
-	e.setAttr("title", v)
+func (e *htmlSection) Title(format string, v ...any) HTMLSection {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40910,8 +40910,8 @@ type HTMLSelect interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSelect
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSelect
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSelect
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSelect
@@ -41177,8 +41177,8 @@ func (e *htmlSelect) TabIndex(v int) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Title(v string) HTMLSelect {
-	e.setAttr("title", v)
+func (e *htmlSelect) Title(format string, v ...any) HTMLSelect {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41421,8 +41421,8 @@ type HTMLSmall interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSmall
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSmall
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSmall
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSmall
@@ -41653,8 +41653,8 @@ func (e *htmlSmall) TabIndex(v int) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) Title(v string) HTMLSmall {
-	e.setAttr("title", v)
+func (e *htmlSmall) Title(format string, v ...any) HTMLSmall {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41885,11 +41885,11 @@ type HTMLSource interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSource
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLSource
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLSource
 
-	// SrcSet specifies the URL of the image to use in different situations.
-	SrcSet(v url) HTMLSource
+	// SrcSet specifies the URL of the image to use in different situations with the given format and values.
+	SrcSet(format string, v ...any) HTMLSource
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSource
@@ -41900,8 +41900,8 @@ type HTMLSource interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSource
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSource
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSource
 
 	// Type specifies the type of element.
 	Type(v string) HTMLSource
@@ -42115,13 +42115,13 @@ func (e *htmlSource) Spellcheck(v bool) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Src(v url) HTMLSource {
-	e.setAttr("src", v)
+func (e *htmlSource) Src(format string, v ...any) HTMLSource {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
-func (e *htmlSource) SrcSet(v url) HTMLSource {
-	e.setAttr("srcset", v)
+func (e *htmlSource) SrcSet(format string, v ...any) HTMLSource {
+	e.setAttr("srcset", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42142,8 +42142,8 @@ func (e *htmlSource) TabIndex(v int) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Title(v string) HTMLSource {
-	e.setAttr("title", v)
+func (e *htmlSource) Title(format string, v ...any) HTMLSource {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42391,8 +42391,8 @@ type HTMLSpan interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSpan
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSpan
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSpan
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSpan
@@ -42623,8 +42623,8 @@ func (e *htmlSpan) TabIndex(v int) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) Title(v string) HTMLSpan {
-	e.setAttr("title", v)
+func (e *htmlSpan) Title(format string, v ...any) HTMLSpan {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42867,8 +42867,8 @@ type HTMLStrong interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLStrong
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLStrong
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLStrong
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLStrong
@@ -43099,8 +43099,8 @@ func (e *htmlStrong) TabIndex(v int) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) Title(v string) HTMLStrong {
-	e.setAttr("title", v)
+func (e *htmlStrong) Title(format string, v ...any) HTMLStrong {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43346,8 +43346,8 @@ type HTMLStyle interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLStyle
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLStyle
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLStyle
 
 	// Type specifies the type of element.
 	Type(v string) HTMLStyle
@@ -43589,8 +43589,8 @@ func (e *htmlStyle) TabIndex(v int) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) Title(v string) HTMLStyle {
-	e.setAttr("title", v)
+func (e *htmlStyle) Title(format string, v ...any) HTMLStyle {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43843,8 +43843,8 @@ type HTMLSub interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSub
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSub
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSub
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSub
@@ -44075,8 +44075,8 @@ func (e *htmlSub) TabIndex(v int) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) Title(v string) HTMLSub {
-	e.setAttr("title", v)
+func (e *htmlSub) Title(format string, v ...any) HTMLSub {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44319,8 +44319,8 @@ type HTMLSummary interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSummary
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSummary
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSummary
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSummary
@@ -44551,8 +44551,8 @@ func (e *htmlSummary) TabIndex(v int) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) Title(v string) HTMLSummary {
-	e.setAttr("title", v)
+func (e *htmlSummary) Title(format string, v ...any) HTMLSummary {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44795,8 +44795,8 @@ type HTMLSup interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSup
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLSup
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLSup
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSup
@@ -45027,8 +45027,8 @@ func (e *htmlSup) TabIndex(v int) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) Title(v string) HTMLSup {
-	e.setAttr("title", v)
+func (e *htmlSup) Title(format string, v ...any) HTMLSup {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45271,8 +45271,8 @@ type HTMLTable interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTable
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTable
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTable
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTable
@@ -45503,8 +45503,8 @@ func (e *htmlTable) TabIndex(v int) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) Title(v string) HTMLTable {
-	e.setAttr("title", v)
+func (e *htmlTable) Title(format string, v ...any) HTMLTable {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45747,8 +45747,8 @@ type HTMLTBody interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTBody
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTBody
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTBody
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTBody
@@ -45979,8 +45979,8 @@ func (e *htmlTBody) TabIndex(v int) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) Title(v string) HTMLTBody {
-	e.setAttr("title", v)
+func (e *htmlTBody) Title(format string, v ...any) HTMLTBody {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46232,8 +46232,8 @@ type HTMLTd interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTd
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTd
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTd
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTd
@@ -46479,8 +46479,8 @@ func (e *htmlTd) TabIndex(v int) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Title(v string) HTMLTd {
-	e.setAttr("title", v)
+func (e *htmlTd) Title(format string, v ...any) HTMLTd {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46723,8 +46723,8 @@ type HTMLTemplate interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTemplate
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTemplate
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTemplate
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTemplate
@@ -46853,8 +46853,8 @@ func (e *htmlTemplate) TabIndex(v int) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) Title(v string) HTMLTemplate {
-	e.setAttr("title", v)
+func (e *htmlTemplate) Title(format string, v ...any) HTMLTemplate {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46960,8 +46960,8 @@ type HTMLTextarea interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTextarea
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTextarea
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTextarea
 
 	// Wrap specifies how the text in a text area is to be wrapped when submitted in a form.
 	Wrap(v string) HTMLTextarea
@@ -47252,8 +47252,8 @@ func (e *htmlTextarea) TabIndex(v int) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Title(v string) HTMLTextarea {
-	e.setAttr("title", v)
+func (e *htmlTextarea) Title(format string, v ...any) HTMLTextarea {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47501,8 +47501,8 @@ type HTMLTFoot interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTFoot
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTFoot
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTFoot
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTFoot
@@ -47733,8 +47733,8 @@ func (e *htmlTFoot) TabIndex(v int) HTMLTFoot {
 	return e
 }
 
-func (e *htmlTFoot) Title(v string) HTMLTFoot {
-	e.setAttr("title", v)
+func (e *htmlTFoot) Title(format string, v ...any) HTMLTFoot {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47992,8 +47992,8 @@ type HTMLTh interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTh
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTh
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTh
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTh
@@ -48249,8 +48249,8 @@ func (e *htmlTh) TabIndex(v int) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Title(v string) HTMLTh {
-	e.setAttr("title", v)
+func (e *htmlTh) Title(format string, v ...any) HTMLTh {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48493,8 +48493,8 @@ type HTMLTHead interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTHead
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTHead
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTHead
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTHead
@@ -48725,8 +48725,8 @@ func (e *htmlTHead) TabIndex(v int) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) Title(v string) HTMLTHead {
-	e.setAttr("title", v)
+func (e *htmlTHead) Title(format string, v ...any) HTMLTHead {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48972,8 +48972,8 @@ type HTMLTime interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTime
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTime
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTime
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTime
@@ -49209,8 +49209,8 @@ func (e *htmlTime) TabIndex(v int) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) Title(v string) HTMLTime {
-	e.setAttr("title", v)
+func (e *htmlTime) Title(format string, v ...any) HTMLTime {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49453,8 +49453,8 @@ type HTMLTitle interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTitle
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTitle
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTitle
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTitle
@@ -49583,8 +49583,8 @@ func (e *htmlTitle) TabIndex(v int) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) Title(v string) HTMLTitle {
-	e.setAttr("title", v)
+func (e *htmlTitle) Title(format string, v ...any) HTMLTitle {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49657,8 +49657,8 @@ type HTMLTr interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTr
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLTr
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLTr
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTr
@@ -49889,8 +49889,8 @@ func (e *htmlTr) TabIndex(v int) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) Title(v string) HTMLTr {
-	e.setAttr("title", v)
+func (e *htmlTr) Title(format string, v ...any) HTMLTr {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50133,8 +50133,8 @@ type HTMLU interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLU
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLU
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLU
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLU
@@ -50365,8 +50365,8 @@ func (e *htmlU) TabIndex(v int) HTMLU {
 	return e
 }
 
-func (e *htmlU) Title(v string) HTMLU {
-	e.setAttr("title", v)
+func (e *htmlU) Title(format string, v ...any) HTMLU {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50609,8 +50609,8 @@ type HTMLUl interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLUl
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLUl
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLUl
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLUl
@@ -50841,8 +50841,8 @@ func (e *htmlUl) TabIndex(v int) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) Title(v string) HTMLUl {
-	e.setAttr("title", v)
+func (e *htmlUl) Title(format string, v ...any) HTMLUl {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51085,8 +51085,8 @@ type HTMLVar interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLVar
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLVar
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLVar
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLVar
@@ -51317,8 +51317,8 @@ func (e *htmlVar) TabIndex(v int) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) Title(v string) HTMLVar {
-	e.setAttr("title", v)
+func (e *htmlVar) Title(format string, v ...any) HTMLVar {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51576,8 +51576,8 @@ type HTMLVideo interface {
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLVideo
 
-	// Src specifies the URL of the media file.
-	Src(v url) HTMLVideo
+	// Src specifies the URL of the media file with the given format and values.
+	Src(format string, v ...any) HTMLVideo
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLVideo
@@ -51588,8 +51588,8 @@ type HTMLVideo interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLVideo
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLVideo
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLVideo
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLVideo
@@ -51915,8 +51915,8 @@ func (e *htmlVideo) Spellcheck(v bool) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Src(v url) HTMLVideo {
-	e.setAttr("src", v)
+func (e *htmlVideo) Src(format string, v ...any) HTMLVideo {
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51937,8 +51937,8 @@ func (e *htmlVideo) TabIndex(v int) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Title(v string) HTMLVideo {
-	e.setAttr("title", v)
+func (e *htmlVideo) Title(format string, v ...any) HTMLVideo {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52301,8 +52301,8 @@ type HTMLWbr interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLWbr
 
-	// Title specifies extra information about an element.
-	Title(v string) HTMLWbr
+	// Title specifies extra information about an element with the given format and values.
+	Title(format string, v ...any) HTMLWbr
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLWbr
@@ -52533,8 +52533,8 @@ func (e *htmlWbr) TabIndex(v int) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) Title(v string) HTMLWbr {
-	e.setAttr("title", v)
+func (e *htmlWbr) Title(format string, v ...any) HTMLWbr {
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 

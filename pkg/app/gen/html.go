@@ -1138,8 +1138,8 @@ var attrs = map[string]attr{
 	},
 	"cite": {
 		Name: "Cite",
-		Type: "url",
-		Doc:  "specifies a URL which explains the quote/deleted/inserted text.",
+		Type: "fmt",
+		Doc:  "specifies a URL which explains the quote/deleted/inserted text with the given format and values.",
 	},
 	"class": {
 		Name: "Class",
@@ -1185,8 +1185,8 @@ var attrs = map[string]attr{
 	// D:
 	"data": {
 		Name: "Data",
-		Type: "url",
-		Doc:  "specifies the URL of the resource to be used by the object.",
+		Type: "fmt",
+		Doc:  "specifies the URL of the resource to be used by the object with the given format and values.",
 	},
 	"data-*": {
 		Name: "DataSet",
@@ -1306,8 +1306,8 @@ var attrs = map[string]attr{
 	},
 	"href": {
 		Name: "Href",
-		Type: "url",
-		Doc:  "specifies the URL of the page the link goes to.",
+		Type: "fmt",
+		Doc:  "specifies the URL of the page the link goes to with the given format and values.",
 	},
 	"hreflang": {
 		Name: "HrefLang",
@@ -1550,8 +1550,8 @@ var attrs = map[string]attr{
 	},
 	"src": {
 		Name: "Src",
-		Type: "url",
-		Doc:  "specifies the URL of the media file.",
+		Type: "fmt",
+		Doc:  "specifies the URL of the media file with the given format and values.",
 	},
 	"srcdoc": {
 		Name: "SrcDoc",
@@ -1565,8 +1565,8 @@ var attrs = map[string]attr{
 	},
 	"srcset": {
 		Name: "SrcSet",
-		Type: "url",
-		Doc:  "specifies the URL of the image to use in different situations.",
+		Type: "fmt",
+		Doc:  "specifies the URL of the image to use in different situations with the given format and values.",
 	},
 	"start": {
 		Name: "Start",
@@ -1602,8 +1602,8 @@ var attrs = map[string]attr{
 	},
 	"title": {
 		Name: "Title",
-		Type: "string",
-		Doc:  "specifies extra information about an element.",
+		Type: "fmt",
+		Doc:  "specifies extra information about an element with the given format and values.",
 	},
 	"type": {
 		Name: "Type",

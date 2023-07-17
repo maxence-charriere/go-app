@@ -22,7 +22,7 @@ func TestA(t *testing.T) {
 	elem.Draggable(false)
 	elem.Hidden(true)
 	elem.Hidden(false)
-	elem.Href("http://foo.com")
+	elem.Href("hello %v", 42)
 	elem.HrefLang("foo")
 	elem.ID("foo")
 	elem.Lang("foo")
@@ -36,7 +36,7 @@ func TestA(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -102,7 +102,7 @@ func TestAbbr(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -167,7 +167,7 @@ func TestAddress(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -227,7 +227,7 @@ func TestArea(t *testing.T) {
 	elem.Draggable(false)
 	elem.Hidden(true)
 	elem.Hidden(false)
-	elem.Href("http://foo.com")
+	elem.Href("hello %v", 42)
 	elem.HrefLang("foo")
 	elem.ID("foo")
 	elem.Lang("foo")
@@ -241,7 +241,7 @@ func TestArea(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -305,7 +305,7 @@ func TestArticle(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -370,7 +370,7 @@ func TestAside(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -442,11 +442,11 @@ func TestAudio(t *testing.T) {
 	elem.Role("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
+	elem.Src("hello %v", 42)
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -534,7 +534,7 @@ func TestB(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -591,7 +591,7 @@ func TestBase(t *testing.T) {
 	elem.Draggable(false)
 	elem.Hidden(true)
 	elem.Hidden(false)
-	elem.Href("http://foo.com")
+	elem.Href("hello %v", 42)
 	elem.ID("foo")
 	elem.Lang("foo")
 	elem.Role("foo")
@@ -601,7 +601,7 @@ func TestBase(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -664,7 +664,7 @@ func TestBdi(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -729,7 +729,7 @@ func TestBdo(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -776,7 +776,7 @@ func TestBlockquote(t *testing.T) {
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
-	elem.Cite("http://foo.com")
+	elem.Cite("hello %v", 42)
 	elem.Class("foo bar")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -795,7 +795,7 @@ func TestBlockquote(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -860,7 +860,7 @@ func TestBody(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -939,7 +939,7 @@ func TestBr(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1014,7 +1014,7 @@ func TestButton(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 	elem.Value(42)
 
@@ -1082,7 +1082,7 @@ func TestCanvas(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Width(42)
 
 	h := func(ctx Context, e Event) {}
@@ -1148,7 +1148,7 @@ func TestCaption(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1213,7 +1213,7 @@ func TestCite(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1278,7 +1278,7 @@ func TestCode(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1344,7 +1344,7 @@ func TestCol(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1408,7 +1408,7 @@ func TestColGroup(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1473,7 +1473,7 @@ func TestData(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Value(42)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
@@ -1502,7 +1502,7 @@ func TestDataList(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1567,7 +1567,7 @@ func TestDd(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1614,7 +1614,7 @@ func TestDel(t *testing.T) {
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
-	elem.Cite("http://foo.com")
+	elem.Cite("hello %v", 42)
 	elem.Class("foo bar")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1634,7 +1634,7 @@ func TestDel(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1701,7 +1701,7 @@ func TestDetails(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1767,7 +1767,7 @@ func TestDfn(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1834,7 +1834,7 @@ func TestDialog(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1899,7 +1899,7 @@ func TestDiv(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -1964,7 +1964,7 @@ func TestDl(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2029,7 +2029,7 @@ func TestDt(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2094,7 +2094,7 @@ func TestElem(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.XMLNS("http://www.w3.org/2000/svg")
 
 	h := func(ctx Context, e Event) {}
@@ -2160,7 +2160,7 @@ func TestElemSelfClosing(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.XMLNS("http://www.w3.org/2000/svg")
 
 	h := func(ctx Context, e Event) {}
@@ -2224,7 +2224,7 @@ func TestEm(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2287,11 +2287,11 @@ func TestEmbed(t *testing.T) {
 	elem.Role("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
+	elem.Src("hello %v", 42)
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 	elem.Width(42)
 
@@ -2383,7 +2383,7 @@ func TestFieldSet(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2448,7 +2448,7 @@ func TestFigCaption(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2513,7 +2513,7 @@ func TestFigure(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2578,7 +2578,7 @@ func TestFooter(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2653,7 +2653,7 @@ func TestForm(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2718,7 +2718,7 @@ func TestH1(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2783,7 +2783,7 @@ func TestH2(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2848,7 +2848,7 @@ func TestH3(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2913,7 +2913,7 @@ func TestH4(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -2978,7 +2978,7 @@ func TestH5(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3043,7 +3043,7 @@ func TestH6(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3108,7 +3108,7 @@ func TestHead(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -3136,7 +3136,7 @@ func TestHeader(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3201,7 +3201,7 @@ func TestHr(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3264,7 +3264,7 @@ func TestHtml(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.privateBody(Text("hello"))
 }
 
@@ -3291,7 +3291,7 @@ func TestI(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3363,12 +3363,12 @@ func TestIFrame(t *testing.T) {
 	elem.Sandbox(42)
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
+	elem.Src("hello %v", 42)
 	elem.SrcDoc("foo")
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Width(42)
 
 	h := func(ctx Context, e Event) {}
@@ -3438,12 +3438,12 @@ func TestImg(t *testing.T) {
 	elem.Sizes("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
-	elem.SrcSet("http://foo.com")
+	elem.Src("hello %v", 42)
+	elem.SrcSet("hello %v", 42)
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.UseMap("foo")
 	elem.Width(42)
 
@@ -3563,12 +3563,12 @@ func TestInput(t *testing.T) {
 	elem.Size(42)
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
+	elem.Src("hello %v", 42)
 	elem.Step(42)
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 	elem.Value(42)
 	elem.Width(42)
@@ -3635,7 +3635,7 @@ func TestIns(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3700,7 +3700,7 @@ func TestKbd(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3767,7 +3767,7 @@ func TestLabel(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3832,7 +3832,7 @@ func TestLegend(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -3897,7 +3897,7 @@ func TestLi(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Value(42)
 
 	h := func(ctx Context, e Event) {}
@@ -3957,7 +3957,7 @@ func TestLink(t *testing.T) {
 	elem.Draggable(false)
 	elem.Hidden(true)
 	elem.Hidden(false)
-	elem.Href("http://foo.com")
+	elem.Href("hello %v", 42)
 	elem.HrefLang("foo")
 	elem.ID("foo")
 	elem.Lang("foo")
@@ -3970,7 +3970,7 @@ func TestLink(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -4035,7 +4035,7 @@ func TestMain(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4101,7 +4101,7 @@ func TestMap(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4166,7 +4166,7 @@ func TestMark(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4236,7 +4236,7 @@ func TestMeta(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 }
 
 func TestMeter(t *testing.T) {
@@ -4268,7 +4268,7 @@ func TestMeter(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Value(42)
 
 	h := func(ctx Context, e Event) {}
@@ -4334,7 +4334,7 @@ func TestNav(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4399,7 +4399,7 @@ func TestNoScript(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -4412,7 +4412,7 @@ func TestObject(t *testing.T) {
 	elem.Class("foo bar")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
-	elem.Data("http://foo.com")
+	elem.Data("hello %v", 42)
 	elem.DataSet("foo", "bar")
 	elem.DataSets(map[string]any{"foo": "bar"})
 	elem.Dir("foo")
@@ -4431,7 +4431,7 @@ func TestObject(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 	elem.UseMap("foo")
 	elem.Width(42)
@@ -4525,7 +4525,7 @@ func TestOl(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -4594,7 +4594,7 @@ func TestOptGroup(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4664,7 +4664,7 @@ func TestOption(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Value(42)
 
 	h := func(ctx Context, e Event) {}
@@ -4733,7 +4733,7 @@ func TestOutput(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4798,7 +4798,7 @@ func TestP(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4864,7 +4864,7 @@ func TestParam(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Value(42)
 
 	h := func(ctx Context, e Event) {}
@@ -4928,7 +4928,7 @@ func TestPicture(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -4993,7 +4993,7 @@ func TestPre(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5059,7 +5059,7 @@ func TestProgress(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Value(42)
 
 	h := func(ctx Context, e Event) {}
@@ -5107,7 +5107,7 @@ func TestQ(t *testing.T) {
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
-	elem.Cite("http://foo.com")
+	elem.Cite("hello %v", 42)
 	elem.Class("foo bar")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5126,7 +5126,7 @@ func TestQ(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5191,7 +5191,7 @@ func TestRp(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5256,7 +5256,7 @@ func TestRt(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5321,7 +5321,7 @@ func TestRuby(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5386,7 +5386,7 @@ func TestS(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5451,7 +5451,7 @@ func TestSamp(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5519,11 +5519,11 @@ func TestScript(t *testing.T) {
 	elem.Role("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
+	elem.Src("hello %v", 42)
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -5556,7 +5556,7 @@ func TestSection(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5632,7 +5632,7 @@ func TestSelect(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5697,7 +5697,7 @@ func TestSmall(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5761,12 +5761,12 @@ func TestSource(t *testing.T) {
 	elem.Sizes("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
-	elem.SrcSet("http://foo.com")
+	elem.Src("hello %v", 42)
+	elem.SrcSet("hello %v", 42)
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -5830,7 +5830,7 @@ func TestSpan(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5895,7 +5895,7 @@ func TestStrong(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -5961,7 +5961,7 @@ func TestStyle(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Type("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -6028,7 +6028,7 @@ func TestSub(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6093,7 +6093,7 @@ func TestSummary(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6158,7 +6158,7 @@ func TestSup(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6223,7 +6223,7 @@ func TestTable(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6288,7 +6288,7 @@ func TestTBody(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6356,7 +6356,7 @@ func TestTd(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6421,7 +6421,7 @@ func TestTemplate(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -6464,7 +6464,7 @@ func TestTextarea(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Wrap("foo")
 
 	h := func(ctx Context, e Event) {}
@@ -6530,7 +6530,7 @@ func TestTFoot(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6600,7 +6600,7 @@ func TestTh(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6665,7 +6665,7 @@ func TestTHead(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6731,7 +6731,7 @@ func TestTime(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6796,7 +6796,7 @@ func TestTitle(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -6824,7 +6824,7 @@ func TestTr(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6889,7 +6889,7 @@ func TestU(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -6954,7 +6954,7 @@ func TestUl(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -7019,7 +7019,7 @@ func TestVar(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
@@ -7093,11 +7093,11 @@ func TestVideo(t *testing.T) {
 	elem.Role("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
-	elem.Src("http://foo.com")
+	elem.Src("hello %v", 42)
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 	elem.Width(42)
 
 	h := func(ctx Context, e Event) {}
@@ -7186,7 +7186,7 @@ func TestWbr(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
-	elem.Title("foo")
+	elem.Title("hello %v", 42)
 
 	h := func(ctx Context, e Event) {}
 	elem.On("click", h)
