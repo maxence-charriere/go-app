@@ -19,8 +19,8 @@ type HTMLA interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLA
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLA
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLA
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLA
@@ -40,11 +40,11 @@ type HTMLA interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLA
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLA
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLA
 
-	// Download specifies that the target will be downloaded when a user clicks on the hyperlink.
-	Download(v string) HTMLA
+	// Download specifies that the target will be downloaded when a user clicks on the hyperlink. Uses the given format and values.
+	Download(format string, v ...any) HTMLA
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLA
@@ -55,26 +55,26 @@ type HTMLA interface {
 	// Href specifies the URL of the page the link goes to with the given format and values.
 	Href(format string, v ...any) HTMLA
 
-	// HrefLang specifies the language of the linked document.
-	HrefLang(v string) HTMLA
+	// HrefLang specifies the language of the linked document with the given format and values.
+	HrefLang(format string, v ...any) HTMLA
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLA
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLA
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLA
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLA
 
-	// Media specifies what media/device the linked document is optimized for.
-	Media(v string) HTMLA
+	// Media specifies what media/device the linked document is optimized for. Uses the given format and values.
+	Media(format string, v ...any) HTMLA
 
-	// Ping specifies a list of URLs to be notified if the user follows the hyperlink.
-	Ping(v string) HTMLA
+	// Ping specifies a list of URLs to be notified if the user follows the hyperlink. Uses the given format and values.
+	Ping(format string, v ...any) HTMLA
 
-	// Rel specifies the relationship between the current document and the linked document.
-	Rel(v string) HTMLA
+	// Rel specifies the relationship between the current document and the linked document. uses the given format and values.
+	Rel(format string, v ...any) HTMLA
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLA
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLA
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLA
@@ -88,14 +88,14 @@ type HTMLA interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLA
 
-	// Target specifies the target for where to open the linked document or where to submit the form.
-	Target(v string) HTMLA
+	// Target specifies the target for where to open the linked document or where to submit the form. Uses the given format and values.
+	Target(format string, v ...any) HTMLA
 
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLA
 
-	// Type specifies the type of element.
-	Type(v string) HTMLA
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLA
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLA
@@ -232,8 +232,8 @@ func (e *htmlA) Textf(format string, v ...any) HTMLA {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlA) AccessKey(v string) HTMLA {
-	e.setAttr("accesskey", v)
+func (e *htmlA) AccessKey(format string, v ...any) HTMLA {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -269,13 +269,13 @@ func (e *htmlA) DataSets(ds map[string]any) HTMLA {
 	return e
 }
 
-func (e *htmlA) Dir(v string) HTMLA {
-	e.setAttr("dir", v)
+func (e *htmlA) Dir(format string, v ...any) HTMLA {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlA) Download(v string) HTMLA {
-	e.setAttr("download", v)
+func (e *htmlA) Download(format string, v ...any) HTMLA {
+	e.setAttr("download", FormatString(format, v...))
 	return e
 }
 
@@ -294,38 +294,38 @@ func (e *htmlA) Href(format string, v ...any) HTMLA {
 	return e
 }
 
-func (e *htmlA) HrefLang(v string) HTMLA {
-	e.setAttr("hreflang", v)
+func (e *htmlA) HrefLang(format string, v ...any) HTMLA {
+	e.setAttr("hreflang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlA) ID(v string) HTMLA {
-	e.setAttr("id", v)
+func (e *htmlA) ID(format string, v ...any) HTMLA {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlA) Lang(v string) HTMLA {
-	e.setAttr("lang", v)
+func (e *htmlA) Lang(format string, v ...any) HTMLA {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlA) Media(v string) HTMLA {
-	e.setAttr("media", v)
+func (e *htmlA) Media(format string, v ...any) HTMLA {
+	e.setAttr("media", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlA) Ping(v string) HTMLA {
-	e.setAttr("ping", v)
+func (e *htmlA) Ping(format string, v ...any) HTMLA {
+	e.setAttr("ping", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlA) Rel(v string) HTMLA {
-	e.setAttr("rel", v)
+func (e *htmlA) Rel(format string, v ...any) HTMLA {
+	e.setAttr("rel", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlA) Role(v string) HTMLA {
-	e.setAttr("role", v)
+func (e *htmlA) Role(format string, v ...any) HTMLA {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -356,8 +356,8 @@ func (e *htmlA) TabIndex(v int) HTMLA {
 	return e
 }
 
-func (e *htmlA) Target(v string) HTMLA {
-	e.setAttr("target", v)
+func (e *htmlA) Target(format string, v ...any) HTMLA {
+	e.setAttr("target", FormatString(format, v...))
 	return e
 }
 
@@ -366,8 +366,8 @@ func (e *htmlA) Title(format string, v ...any) HTMLA {
 	return e
 }
 
-func (e *htmlA) Type(v string) HTMLA {
-	e.setAttr("type", v)
+func (e *htmlA) Type(format string, v ...any) HTMLA {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -559,8 +559,8 @@ type HTMLAbbr interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLAbbr
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLAbbr
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLAbbr
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLAbbr
@@ -580,8 +580,8 @@ type HTMLAbbr interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLAbbr
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLAbbr
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLAbbr
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLAbbr
@@ -589,14 +589,14 @@ type HTMLAbbr interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLAbbr
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLAbbr
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLAbbr
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLAbbr
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLAbbr
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLAbbr
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLAbbr
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAbbr
@@ -748,8 +748,8 @@ func (e *htmlAbbr) Textf(format string, v ...any) HTMLAbbr {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlAbbr) AccessKey(v string) HTMLAbbr {
-	e.setAttr("accesskey", v)
+func (e *htmlAbbr) AccessKey(format string, v ...any) HTMLAbbr {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -785,8 +785,8 @@ func (e *htmlAbbr) DataSets(ds map[string]any) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) Dir(v string) HTMLAbbr {
-	e.setAttr("dir", v)
+func (e *htmlAbbr) Dir(format string, v ...any) HTMLAbbr {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -800,18 +800,18 @@ func (e *htmlAbbr) Hidden(v bool) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) ID(v string) HTMLAbbr {
-	e.setAttr("id", v)
+func (e *htmlAbbr) ID(format string, v ...any) HTMLAbbr {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAbbr) Lang(v string) HTMLAbbr {
-	e.setAttr("lang", v)
+func (e *htmlAbbr) Lang(format string, v ...any) HTMLAbbr {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAbbr) Role(v string) HTMLAbbr {
-	e.setAttr("role", v)
+func (e *htmlAbbr) Role(format string, v ...any) HTMLAbbr {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -1035,8 +1035,8 @@ type HTMLAddress interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLAddress
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLAddress
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLAddress
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLAddress
@@ -1056,8 +1056,8 @@ type HTMLAddress interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLAddress
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLAddress
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLAddress
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLAddress
@@ -1065,14 +1065,14 @@ type HTMLAddress interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLAddress
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLAddress
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLAddress
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLAddress
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLAddress
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLAddress
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLAddress
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAddress
@@ -1224,8 +1224,8 @@ func (e *htmlAddress) Textf(format string, v ...any) HTMLAddress {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlAddress) AccessKey(v string) HTMLAddress {
-	e.setAttr("accesskey", v)
+func (e *htmlAddress) AccessKey(format string, v ...any) HTMLAddress {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -1261,8 +1261,8 @@ func (e *htmlAddress) DataSets(ds map[string]any) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) Dir(v string) HTMLAddress {
-	e.setAttr("dir", v)
+func (e *htmlAddress) Dir(format string, v ...any) HTMLAddress {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -1276,18 +1276,18 @@ func (e *htmlAddress) Hidden(v bool) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) ID(v string) HTMLAddress {
-	e.setAttr("id", v)
+func (e *htmlAddress) ID(format string, v ...any) HTMLAddress {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAddress) Lang(v string) HTMLAddress {
-	e.setAttr("lang", v)
+func (e *htmlAddress) Lang(format string, v ...any) HTMLAddress {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAddress) Role(v string) HTMLAddress {
-	e.setAttr("role", v)
+func (e *htmlAddress) Role(format string, v ...any) HTMLAddress {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -1502,11 +1502,11 @@ func (e *htmlAddress) OnWheel(h EventHandler, scope ...any) HTMLAddress {
 type HTMLArea interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLArea
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLArea
 
-	// Alt specifies an alternate text when the original element fails to display.
-	Alt(v string) HTMLArea
+	// Alt specifies an alternate text with the given format and values when the original element fails to display.
+	Alt(format string, v ...any) HTMLArea
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLArea
@@ -1520,8 +1520,8 @@ type HTMLArea interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLArea
 
-	// Coords specifies the coordinates of the area.
-	Coords(v string) HTMLArea
+	// Coords specifies the coordinates of the area with the given format and values.
+	Coords(format string, v ...any) HTMLArea
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLArea
@@ -1529,11 +1529,11 @@ type HTMLArea interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLArea
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLArea
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLArea
 
-	// Download specifies that the target will be downloaded when a user clicks on the hyperlink.
-	Download(v string) HTMLArea
+	// Download specifies that the target will be downloaded when a user clicks on the hyperlink. Uses the given format and values.
+	Download(format string, v ...any) HTMLArea
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLArea
@@ -1544,26 +1544,26 @@ type HTMLArea interface {
 	// Href specifies the URL of the page the link goes to with the given format and values.
 	Href(format string, v ...any) HTMLArea
 
-	// HrefLang specifies the language of the linked document.
-	HrefLang(v string) HTMLArea
+	// HrefLang specifies the language of the linked document with the given format and values.
+	HrefLang(format string, v ...any) HTMLArea
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLArea
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLArea
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLArea
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLArea
 
-	// Media specifies what media/device the linked document is optimized for.
-	Media(v string) HTMLArea
+	// Media specifies what media/device the linked document is optimized for. Uses the given format and values.
+	Media(format string, v ...any) HTMLArea
 
-	// Rel specifies the relationship between the current document and the linked document.
-	Rel(v string) HTMLArea
+	// Rel specifies the relationship between the current document and the linked document. uses the given format and values.
+	Rel(format string, v ...any) HTMLArea
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLArea
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLArea
 
-	// Shape specifies the shape of the area.
-	Shape(v string) HTMLArea
+	// Shape specifies the shape of the area with the given format and values.
+	Shape(format string, v ...any) HTMLArea
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLArea
@@ -1577,14 +1577,14 @@ type HTMLArea interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLArea
 
-	// Target specifies the target for where to open the linked document or where to submit the form.
-	Target(v string) HTMLArea
+	// Target specifies the target for where to open the linked document or where to submit the form. Uses the given format and values.
+	Target(format string, v ...any) HTMLArea
 
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLArea
 
-	// Type specifies the type of element.
-	Type(v string) HTMLArea
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLArea
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLArea
@@ -1708,13 +1708,13 @@ type htmlArea struct {
 	htmlElement
 }
 
-func (e *htmlArea) AccessKey(v string) HTMLArea {
-	e.setAttr("accesskey", v)
+func (e *htmlArea) AccessKey(format string, v ...any) HTMLArea {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) Alt(v string) HTMLArea {
-	e.setAttr("alt", v)
+func (e *htmlArea) Alt(format string, v ...any) HTMLArea {
+	e.setAttr("alt", FormatString(format, v...))
 	return e
 }
 
@@ -1738,8 +1738,8 @@ func (e *htmlArea) ContentEditable(v bool) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Coords(v string) HTMLArea {
-	e.setAttr("coords", v)
+func (e *htmlArea) Coords(format string, v ...any) HTMLArea {
+	e.setAttr("coords", FormatString(format, v...))
 	return e
 }
 
@@ -1755,13 +1755,13 @@ func (e *htmlArea) DataSets(ds map[string]any) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Dir(v string) HTMLArea {
-	e.setAttr("dir", v)
+func (e *htmlArea) Dir(format string, v ...any) HTMLArea {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) Download(v string) HTMLArea {
-	e.setAttr("download", v)
+func (e *htmlArea) Download(format string, v ...any) HTMLArea {
+	e.setAttr("download", FormatString(format, v...))
 	return e
 }
 
@@ -1780,38 +1780,38 @@ func (e *htmlArea) Href(format string, v ...any) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) HrefLang(v string) HTMLArea {
-	e.setAttr("hreflang", v)
+func (e *htmlArea) HrefLang(format string, v ...any) HTMLArea {
+	e.setAttr("hreflang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) ID(v string) HTMLArea {
-	e.setAttr("id", v)
+func (e *htmlArea) ID(format string, v ...any) HTMLArea {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) Lang(v string) HTMLArea {
-	e.setAttr("lang", v)
+func (e *htmlArea) Lang(format string, v ...any) HTMLArea {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) Media(v string) HTMLArea {
-	e.setAttr("media", v)
+func (e *htmlArea) Media(format string, v ...any) HTMLArea {
+	e.setAttr("media", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) Rel(v string) HTMLArea {
-	e.setAttr("rel", v)
+func (e *htmlArea) Rel(format string, v ...any) HTMLArea {
+	e.setAttr("rel", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) Role(v string) HTMLArea {
-	e.setAttr("role", v)
+func (e *htmlArea) Role(format string, v ...any) HTMLArea {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArea) Shape(v string) HTMLArea {
-	e.setAttr("shape", v)
+func (e *htmlArea) Shape(format string, v ...any) HTMLArea {
+	e.setAttr("shape", FormatString(format, v...))
 	return e
 }
 
@@ -1842,8 +1842,8 @@ func (e *htmlArea) TabIndex(v int) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Target(v string) HTMLArea {
-	e.setAttr("target", v)
+func (e *htmlArea) Target(format string, v ...any) HTMLArea {
+	e.setAttr("target", FormatString(format, v...))
 	return e
 }
 
@@ -1852,8 +1852,8 @@ func (e *htmlArea) Title(format string, v ...any) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Type(v string) HTMLArea {
-	e.setAttr("type", v)
+func (e *htmlArea) Type(format string, v ...any) HTMLArea {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -2045,8 +2045,8 @@ type HTMLArticle interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLArticle
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLArticle
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLArticle
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLArticle
@@ -2066,8 +2066,8 @@ type HTMLArticle interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLArticle
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLArticle
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLArticle
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLArticle
@@ -2075,14 +2075,14 @@ type HTMLArticle interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLArticle
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLArticle
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLArticle
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLArticle
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLArticle
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLArticle
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLArticle
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLArticle
@@ -2234,8 +2234,8 @@ func (e *htmlArticle) Textf(format string, v ...any) HTMLArticle {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlArticle) AccessKey(v string) HTMLArticle {
-	e.setAttr("accesskey", v)
+func (e *htmlArticle) AccessKey(format string, v ...any) HTMLArticle {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -2271,8 +2271,8 @@ func (e *htmlArticle) DataSets(ds map[string]any) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) Dir(v string) HTMLArticle {
-	e.setAttr("dir", v)
+func (e *htmlArticle) Dir(format string, v ...any) HTMLArticle {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -2286,18 +2286,18 @@ func (e *htmlArticle) Hidden(v bool) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) ID(v string) HTMLArticle {
-	e.setAttr("id", v)
+func (e *htmlArticle) ID(format string, v ...any) HTMLArticle {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArticle) Lang(v string) HTMLArticle {
-	e.setAttr("lang", v)
+func (e *htmlArticle) Lang(format string, v ...any) HTMLArticle {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlArticle) Role(v string) HTMLArticle {
-	e.setAttr("role", v)
+func (e *htmlArticle) Role(format string, v ...any) HTMLArticle {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -2521,8 +2521,8 @@ type HTMLAside interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLAside
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLAside
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLAside
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLAside
@@ -2542,8 +2542,8 @@ type HTMLAside interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLAside
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLAside
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLAside
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLAside
@@ -2551,14 +2551,14 @@ type HTMLAside interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLAside
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLAside
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLAside
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLAside
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLAside
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLAside
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLAside
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAside
@@ -2710,8 +2710,8 @@ func (e *htmlAside) Textf(format string, v ...any) HTMLAside {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlAside) AccessKey(v string) HTMLAside {
-	e.setAttr("accesskey", v)
+func (e *htmlAside) AccessKey(format string, v ...any) HTMLAside {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -2747,8 +2747,8 @@ func (e *htmlAside) DataSets(ds map[string]any) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) Dir(v string) HTMLAside {
-	e.setAttr("dir", v)
+func (e *htmlAside) Dir(format string, v ...any) HTMLAside {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -2762,18 +2762,18 @@ func (e *htmlAside) Hidden(v bool) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) ID(v string) HTMLAside {
-	e.setAttr("id", v)
+func (e *htmlAside) ID(format string, v ...any) HTMLAside {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAside) Lang(v string) HTMLAside {
-	e.setAttr("lang", v)
+func (e *htmlAside) Lang(format string, v ...any) HTMLAside {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAside) Role(v string) HTMLAside {
-	e.setAttr("role", v)
+func (e *htmlAside) Role(format string, v ...any) HTMLAside {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -2997,8 +2997,8 @@ type HTMLAudio interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLAudio
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLAudio
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLAudio
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLAudio
@@ -3018,8 +3018,8 @@ type HTMLAudio interface {
 	// Controls specifies that audio/video controls should be displayed (such as a play/pause button etc).
 	Controls(v bool) HTMLAudio
 
-	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
-	CrossOrigin(v string) HTMLAudio
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request with the given format and values.
+	CrossOrigin(format string, v ...any) HTMLAudio
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLAudio
@@ -3027,8 +3027,8 @@ type HTMLAudio interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLAudio
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLAudio
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLAudio
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLAudio
@@ -3036,11 +3036,11 @@ type HTMLAudio interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLAudio
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLAudio
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLAudio
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLAudio
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLAudio
 
 	// Loop specifies that the audio/video will start over again, every time it is finished.
 	Loop(v bool) HTMLAudio
@@ -3048,11 +3048,11 @@ type HTMLAudio interface {
 	// Muted specifies that the audio output of the video should be muted.
 	Muted(v bool) HTMLAudio
 
-	// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads.
-	Preload(v string) HTMLAudio
+	// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads. Uses the given format and values.
+	Preload(format string, v ...any) HTMLAudio
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLAudio
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLAudio
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAudio
@@ -3276,8 +3276,8 @@ func (e *htmlAudio) Textf(format string, v ...any) HTMLAudio {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlAudio) AccessKey(v string) HTMLAudio {
-	e.setAttr("accesskey", v)
+func (e *htmlAudio) AccessKey(format string, v ...any) HTMLAudio {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -3311,8 +3311,8 @@ func (e *htmlAudio) Controls(v bool) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) CrossOrigin(v string) HTMLAudio {
-	e.setAttr("crossorigin", v)
+func (e *htmlAudio) CrossOrigin(format string, v ...any) HTMLAudio {
+	e.setAttr("crossorigin", FormatString(format, v...))
 	return e
 }
 
@@ -3328,8 +3328,8 @@ func (e *htmlAudio) DataSets(ds map[string]any) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Dir(v string) HTMLAudio {
-	e.setAttr("dir", v)
+func (e *htmlAudio) Dir(format string, v ...any) HTMLAudio {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -3343,13 +3343,13 @@ func (e *htmlAudio) Hidden(v bool) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) ID(v string) HTMLAudio {
-	e.setAttr("id", v)
+func (e *htmlAudio) ID(format string, v ...any) HTMLAudio {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAudio) Lang(v string) HTMLAudio {
-	e.setAttr("lang", v)
+func (e *htmlAudio) Lang(format string, v ...any) HTMLAudio {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -3363,13 +3363,13 @@ func (e *htmlAudio) Muted(v bool) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Preload(v string) HTMLAudio {
-	e.setAttr("preload", v)
+func (e *htmlAudio) Preload(format string, v ...any) HTMLAudio {
+	e.setAttr("preload", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlAudio) Role(v string) HTMLAudio {
-	e.setAttr("role", v)
+func (e *htmlAudio) Role(format string, v ...any) HTMLAudio {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -3713,8 +3713,8 @@ type HTMLB interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLB
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLB
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLB
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLB
@@ -3734,8 +3734,8 @@ type HTMLB interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLB
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLB
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLB
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLB
@@ -3743,14 +3743,14 @@ type HTMLB interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLB
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLB
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLB
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLB
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLB
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLB
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLB
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLB
@@ -3902,8 +3902,8 @@ func (e *htmlB) Textf(format string, v ...any) HTMLB {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlB) AccessKey(v string) HTMLB {
-	e.setAttr("accesskey", v)
+func (e *htmlB) AccessKey(format string, v ...any) HTMLB {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -3939,8 +3939,8 @@ func (e *htmlB) DataSets(ds map[string]any) HTMLB {
 	return e
 }
 
-func (e *htmlB) Dir(v string) HTMLB {
-	e.setAttr("dir", v)
+func (e *htmlB) Dir(format string, v ...any) HTMLB {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -3954,18 +3954,18 @@ func (e *htmlB) Hidden(v bool) HTMLB {
 	return e
 }
 
-func (e *htmlB) ID(v string) HTMLB {
-	e.setAttr("id", v)
+func (e *htmlB) ID(format string, v ...any) HTMLB {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlB) Lang(v string) HTMLB {
-	e.setAttr("lang", v)
+func (e *htmlB) Lang(format string, v ...any) HTMLB {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlB) Role(v string) HTMLB {
-	e.setAttr("role", v)
+func (e *htmlB) Role(format string, v ...any) HTMLB {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -4180,8 +4180,8 @@ func (e *htmlB) OnWheel(h EventHandler, scope ...any) HTMLB {
 type HTMLBase interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLBase
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLBase
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLBase
@@ -4201,8 +4201,8 @@ type HTMLBase interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLBase
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLBase
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLBase
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLBase
@@ -4213,14 +4213,14 @@ type HTMLBase interface {
 	// Href specifies the URL of the page the link goes to with the given format and values.
 	Href(format string, v ...any) HTMLBase
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLBase
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLBase
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLBase
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLBase
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLBase
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLBase
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBase
@@ -4234,8 +4234,8 @@ type HTMLBase interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBase
 
-	// Target specifies the target for where to open the linked document or where to submit the form.
-	Target(v string) HTMLBase
+	// Target specifies the target for where to open the linked document or where to submit the form. Uses the given format and values.
+	Target(format string, v ...any) HTMLBase
 
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLBase
@@ -4362,8 +4362,8 @@ type htmlBase struct {
 	htmlElement
 }
 
-func (e *htmlBase) AccessKey(v string) HTMLBase {
-	e.setAttr("accesskey", v)
+func (e *htmlBase) AccessKey(format string, v ...any) HTMLBase {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -4399,8 +4399,8 @@ func (e *htmlBase) DataSets(ds map[string]any) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Dir(v string) HTMLBase {
-	e.setAttr("dir", v)
+func (e *htmlBase) Dir(format string, v ...any) HTMLBase {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -4419,18 +4419,18 @@ func (e *htmlBase) Href(format string, v ...any) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) ID(v string) HTMLBase {
-	e.setAttr("id", v)
+func (e *htmlBase) ID(format string, v ...any) HTMLBase {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBase) Lang(v string) HTMLBase {
-	e.setAttr("lang", v)
+func (e *htmlBase) Lang(format string, v ...any) HTMLBase {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBase) Role(v string) HTMLBase {
-	e.setAttr("role", v)
+func (e *htmlBase) Role(format string, v ...any) HTMLBase {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -4461,8 +4461,8 @@ func (e *htmlBase) TabIndex(v int) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Target(v string) HTMLBase {
-	e.setAttr("target", v)
+func (e *htmlBase) Target(format string, v ...any) HTMLBase {
+	e.setAttr("target", FormatString(format, v...))
 	return e
 }
 
@@ -4659,8 +4659,8 @@ type HTMLBdi interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLBdi
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLBdi
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLBdi
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLBdi
@@ -4680,8 +4680,8 @@ type HTMLBdi interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLBdi
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLBdi
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLBdi
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLBdi
@@ -4689,14 +4689,14 @@ type HTMLBdi interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLBdi
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLBdi
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLBdi
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLBdi
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLBdi
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLBdi
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLBdi
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBdi
@@ -4848,8 +4848,8 @@ func (e *htmlBdi) Textf(format string, v ...any) HTMLBdi {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlBdi) AccessKey(v string) HTMLBdi {
-	e.setAttr("accesskey", v)
+func (e *htmlBdi) AccessKey(format string, v ...any) HTMLBdi {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -4885,8 +4885,8 @@ func (e *htmlBdi) DataSets(ds map[string]any) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) Dir(v string) HTMLBdi {
-	e.setAttr("dir", v)
+func (e *htmlBdi) Dir(format string, v ...any) HTMLBdi {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -4900,18 +4900,18 @@ func (e *htmlBdi) Hidden(v bool) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) ID(v string) HTMLBdi {
-	e.setAttr("id", v)
+func (e *htmlBdi) ID(format string, v ...any) HTMLBdi {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBdi) Lang(v string) HTMLBdi {
-	e.setAttr("lang", v)
+func (e *htmlBdi) Lang(format string, v ...any) HTMLBdi {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBdi) Role(v string) HTMLBdi {
-	e.setAttr("role", v)
+func (e *htmlBdi) Role(format string, v ...any) HTMLBdi {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -5135,8 +5135,8 @@ type HTMLBdo interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLBdo
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLBdo
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLBdo
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLBdo
@@ -5156,8 +5156,8 @@ type HTMLBdo interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLBdo
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLBdo
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLBdo
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLBdo
@@ -5165,14 +5165,14 @@ type HTMLBdo interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLBdo
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLBdo
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLBdo
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLBdo
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLBdo
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLBdo
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLBdo
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBdo
@@ -5324,8 +5324,8 @@ func (e *htmlBdo) Textf(format string, v ...any) HTMLBdo {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlBdo) AccessKey(v string) HTMLBdo {
-	e.setAttr("accesskey", v)
+func (e *htmlBdo) AccessKey(format string, v ...any) HTMLBdo {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -5361,8 +5361,8 @@ func (e *htmlBdo) DataSets(ds map[string]any) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) Dir(v string) HTMLBdo {
-	e.setAttr("dir", v)
+func (e *htmlBdo) Dir(format string, v ...any) HTMLBdo {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -5376,18 +5376,18 @@ func (e *htmlBdo) Hidden(v bool) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) ID(v string) HTMLBdo {
-	e.setAttr("id", v)
+func (e *htmlBdo) ID(format string, v ...any) HTMLBdo {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBdo) Lang(v string) HTMLBdo {
-	e.setAttr("lang", v)
+func (e *htmlBdo) Lang(format string, v ...any) HTMLBdo {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBdo) Role(v string) HTMLBdo {
-	e.setAttr("role", v)
+func (e *htmlBdo) Role(format string, v ...any) HTMLBdo {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -5611,8 +5611,8 @@ type HTMLBlockquote interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLBlockquote
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLBlockquote
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLBlockquote
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLBlockquote
@@ -5635,8 +5635,8 @@ type HTMLBlockquote interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLBlockquote
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLBlockquote
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLBlockquote
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLBlockquote
@@ -5644,14 +5644,14 @@ type HTMLBlockquote interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLBlockquote
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLBlockquote
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLBlockquote
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLBlockquote
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLBlockquote
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLBlockquote
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLBlockquote
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBlockquote
@@ -5803,8 +5803,8 @@ func (e *htmlBlockquote) Textf(format string, v ...any) HTMLBlockquote {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlBlockquote) AccessKey(v string) HTMLBlockquote {
-	e.setAttr("accesskey", v)
+func (e *htmlBlockquote) AccessKey(format string, v ...any) HTMLBlockquote {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -5845,8 +5845,8 @@ func (e *htmlBlockquote) DataSets(ds map[string]any) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Dir(v string) HTMLBlockquote {
-	e.setAttr("dir", v)
+func (e *htmlBlockquote) Dir(format string, v ...any) HTMLBlockquote {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -5860,18 +5860,18 @@ func (e *htmlBlockquote) Hidden(v bool) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) ID(v string) HTMLBlockquote {
-	e.setAttr("id", v)
+func (e *htmlBlockquote) ID(format string, v ...any) HTMLBlockquote {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBlockquote) Lang(v string) HTMLBlockquote {
-	e.setAttr("lang", v)
+func (e *htmlBlockquote) Lang(format string, v ...any) HTMLBlockquote {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBlockquote) Role(v string) HTMLBlockquote {
-	e.setAttr("role", v)
+func (e *htmlBlockquote) Role(format string, v ...any) HTMLBlockquote {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -6088,8 +6088,8 @@ type HTMLBody interface {
 
 	privateBody(elems ...UI) HTMLBody
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLBody
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLBody
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLBody
@@ -6109,8 +6109,8 @@ type HTMLBody interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLBody
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLBody
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLBody
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLBody
@@ -6118,14 +6118,14 @@ type HTMLBody interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLBody
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLBody
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLBody
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLBody
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLBody
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLBody
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLBody
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBody
@@ -6314,8 +6314,8 @@ func (e *htmlBody) privateBody(v ...UI) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) AccessKey(v string) HTMLBody {
-	e.setAttr("accesskey", v)
+func (e *htmlBody) AccessKey(format string, v ...any) HTMLBody {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -6351,8 +6351,8 @@ func (e *htmlBody) DataSets(ds map[string]any) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) Dir(v string) HTMLBody {
-	e.setAttr("dir", v)
+func (e *htmlBody) Dir(format string, v ...any) HTMLBody {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -6366,18 +6366,18 @@ func (e *htmlBody) Hidden(v bool) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) ID(v string) HTMLBody {
-	e.setAttr("id", v)
+func (e *htmlBody) ID(format string, v ...any) HTMLBody {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBody) Lang(v string) HTMLBody {
-	e.setAttr("lang", v)
+func (e *htmlBody) Lang(format string, v ...any) HTMLBody {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBody) Role(v string) HTMLBody {
-	e.setAttr("role", v)
+func (e *htmlBody) Role(format string, v ...any) HTMLBody {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -6667,8 +6667,8 @@ func (e *htmlBody) OnWheel(h EventHandler, scope ...any) HTMLBody {
 type HTMLBr interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLBr
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLBr
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLBr
@@ -6688,8 +6688,8 @@ type HTMLBr interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLBr
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLBr
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLBr
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLBr
@@ -6697,14 +6697,14 @@ type HTMLBr interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLBr
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLBr
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLBr
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLBr
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLBr
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLBr
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLBr
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBr
@@ -6843,8 +6843,8 @@ type htmlBr struct {
 	htmlElement
 }
 
-func (e *htmlBr) AccessKey(v string) HTMLBr {
-	e.setAttr("accesskey", v)
+func (e *htmlBr) AccessKey(format string, v ...any) HTMLBr {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -6880,8 +6880,8 @@ func (e *htmlBr) DataSets(ds map[string]any) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) Dir(v string) HTMLBr {
-	e.setAttr("dir", v)
+func (e *htmlBr) Dir(format string, v ...any) HTMLBr {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -6895,18 +6895,18 @@ func (e *htmlBr) Hidden(v bool) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) ID(v string) HTMLBr {
-	e.setAttr("id", v)
+func (e *htmlBr) ID(format string, v ...any) HTMLBr {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBr) Lang(v string) HTMLBr {
-	e.setAttr("lang", v)
+func (e *htmlBr) Lang(format string, v ...any) HTMLBr {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlBr) Role(v string) HTMLBr {
-	e.setAttr("role", v)
+func (e *htmlBr) Role(format string, v ...any) HTMLBr {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -7130,8 +7130,8 @@ type HTMLButton interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLButton
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLButton
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLButton
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLButton
@@ -7154,8 +7154,8 @@ type HTMLButton interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLButton
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLButton
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLButton
 
 	// Disabled specifies that the specified element/group of elements should be disabled.
 	Disabled(v bool) HTMLButton
@@ -7163,38 +7163,38 @@ type HTMLButton interface {
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLButton
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLButton
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLButton
 
-	// FormAction specifies where to send the form-data when a form is submitted. Only for submit type.
-	FormAction(v string) HTMLButton
+	// FormAction specifies where to send the form-data when a form is submitted. Only for submit type. Uses the given format and values.
+	FormAction(format string, v ...any) HTMLButton
 
-	// FormEncType specifies how form-data should be encoded before sending it to a server. Only for submit type.
-	FormEncType(v string) HTMLButton
+	// FormEncType specifies how form-data should be encoded before sending it to a server. Only for submit type. Uses the given format and values.
+	FormEncType(format string, v ...any) HTMLButton
 
-	// FormMethod specifies how to send the form-data (which HTTP method to use). Only for submit type.
-	FormMethod(v string) HTMLButton
+	// FormMethod specifies how to send the form-data (which HTTP method to use). Only for submit type. Uses the given format and values.
+	FormMethod(format string, v ...any) HTMLButton
 
 	// FormNoValidate specifies that the form-data should not be validated on submission. Only for submit type.
 	FormNoValidate(v bool) HTMLButton
 
-	// FormTarget specifies where to display the response after submitting the form. Only for submit type.
-	FormTarget(v string) HTMLButton
+	// FormTarget specifies where to display the response after submitting the form. Only for submit type. Uses the given format and values.
+	FormTarget(format string, v ...any) HTMLButton
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLButton
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLButton
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLButton
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLButton
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLButton
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLButton
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLButton
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLButton
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLButton
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLButton
@@ -7211,8 +7211,8 @@ type HTMLButton interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLButton
 
-	// Type specifies the type of element.
-	Type(v string) HTMLButton
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLButton
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLButton
@@ -7352,8 +7352,8 @@ func (e *htmlButton) Textf(format string, v ...any) HTMLButton {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlButton) AccessKey(v string) HTMLButton {
-	e.setAttr("accesskey", v)
+func (e *htmlButton) AccessKey(format string, v ...any) HTMLButton {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -7394,8 +7394,8 @@ func (e *htmlButton) DataSets(ds map[string]any) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Dir(v string) HTMLButton {
-	e.setAttr("dir", v)
+func (e *htmlButton) Dir(format string, v ...any) HTMLButton {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -7409,23 +7409,23 @@ func (e *htmlButton) Draggable(v bool) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Form(v string) HTMLButton {
-	e.setAttr("form", v)
+func (e *htmlButton) Form(format string, v ...any) HTMLButton {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlButton) FormAction(v string) HTMLButton {
-	e.setAttr("formaction", v)
+func (e *htmlButton) FormAction(format string, v ...any) HTMLButton {
+	e.setAttr("formaction", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlButton) FormEncType(v string) HTMLButton {
-	e.setAttr("formenctype", v)
+func (e *htmlButton) FormEncType(format string, v ...any) HTMLButton {
+	e.setAttr("formenctype", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlButton) FormMethod(v string) HTMLButton {
-	e.setAttr("formmethod", v)
+func (e *htmlButton) FormMethod(format string, v ...any) HTMLButton {
+	e.setAttr("formmethod", FormatString(format, v...))
 	return e
 }
 
@@ -7434,8 +7434,8 @@ func (e *htmlButton) FormNoValidate(v bool) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) FormTarget(v string) HTMLButton {
-	e.setAttr("formtarget", v)
+func (e *htmlButton) FormTarget(format string, v ...any) HTMLButton {
+	e.setAttr("formtarget", FormatString(format, v...))
 	return e
 }
 
@@ -7444,23 +7444,23 @@ func (e *htmlButton) Hidden(v bool) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) ID(v string) HTMLButton {
-	e.setAttr("id", v)
+func (e *htmlButton) ID(format string, v ...any) HTMLButton {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlButton) Lang(v string) HTMLButton {
-	e.setAttr("lang", v)
+func (e *htmlButton) Lang(format string, v ...any) HTMLButton {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlButton) Name(v string) HTMLButton {
-	e.setAttr("name", v)
+func (e *htmlButton) Name(format string, v ...any) HTMLButton {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlButton) Role(v string) HTMLButton {
-	e.setAttr("role", v)
+func (e *htmlButton) Role(format string, v ...any) HTMLButton {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -7496,8 +7496,8 @@ func (e *htmlButton) Title(format string, v ...any) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Type(v string) HTMLButton {
-	e.setAttr("type", v)
+func (e *htmlButton) Type(format string, v ...any) HTMLButton {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -7694,8 +7694,8 @@ type HTMLCanvas interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLCanvas
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLCanvas
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLCanvas
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLCanvas
@@ -7715,8 +7715,8 @@ type HTMLCanvas interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLCanvas
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLCanvas
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLCanvas
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLCanvas
@@ -7727,14 +7727,14 @@ type HTMLCanvas interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLCanvas
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLCanvas
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLCanvas
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLCanvas
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLCanvas
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLCanvas
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLCanvas
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCanvas
@@ -7889,8 +7889,8 @@ func (e *htmlCanvas) Textf(format string, v ...any) HTMLCanvas {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlCanvas) AccessKey(v string) HTMLCanvas {
-	e.setAttr("accesskey", v)
+func (e *htmlCanvas) AccessKey(format string, v ...any) HTMLCanvas {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -7926,8 +7926,8 @@ func (e *htmlCanvas) DataSets(ds map[string]any) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) Dir(v string) HTMLCanvas {
-	e.setAttr("dir", v)
+func (e *htmlCanvas) Dir(format string, v ...any) HTMLCanvas {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -7946,18 +7946,18 @@ func (e *htmlCanvas) Hidden(v bool) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) ID(v string) HTMLCanvas {
-	e.setAttr("id", v)
+func (e *htmlCanvas) ID(format string, v ...any) HTMLCanvas {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCanvas) Lang(v string) HTMLCanvas {
-	e.setAttr("lang", v)
+func (e *htmlCanvas) Lang(format string, v ...any) HTMLCanvas {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCanvas) Role(v string) HTMLCanvas {
-	e.setAttr("role", v)
+func (e *htmlCanvas) Role(format string, v ...any) HTMLCanvas {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -8186,8 +8186,8 @@ type HTMLCaption interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLCaption
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLCaption
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLCaption
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLCaption
@@ -8207,8 +8207,8 @@ type HTMLCaption interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLCaption
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLCaption
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLCaption
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLCaption
@@ -8216,14 +8216,14 @@ type HTMLCaption interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLCaption
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLCaption
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLCaption
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLCaption
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLCaption
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLCaption
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLCaption
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCaption
@@ -8375,8 +8375,8 @@ func (e *htmlCaption) Textf(format string, v ...any) HTMLCaption {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlCaption) AccessKey(v string) HTMLCaption {
-	e.setAttr("accesskey", v)
+func (e *htmlCaption) AccessKey(format string, v ...any) HTMLCaption {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -8412,8 +8412,8 @@ func (e *htmlCaption) DataSets(ds map[string]any) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) Dir(v string) HTMLCaption {
-	e.setAttr("dir", v)
+func (e *htmlCaption) Dir(format string, v ...any) HTMLCaption {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -8427,18 +8427,18 @@ func (e *htmlCaption) Hidden(v bool) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) ID(v string) HTMLCaption {
-	e.setAttr("id", v)
+func (e *htmlCaption) ID(format string, v ...any) HTMLCaption {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCaption) Lang(v string) HTMLCaption {
-	e.setAttr("lang", v)
+func (e *htmlCaption) Lang(format string, v ...any) HTMLCaption {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCaption) Role(v string) HTMLCaption {
-	e.setAttr("role", v)
+func (e *htmlCaption) Role(format string, v ...any) HTMLCaption {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -8662,8 +8662,8 @@ type HTMLCite interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLCite
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLCite
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLCite
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLCite
@@ -8683,8 +8683,8 @@ type HTMLCite interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLCite
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLCite
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLCite
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLCite
@@ -8692,14 +8692,14 @@ type HTMLCite interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLCite
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLCite
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLCite
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLCite
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLCite
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLCite
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLCite
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCite
@@ -8851,8 +8851,8 @@ func (e *htmlCite) Textf(format string, v ...any) HTMLCite {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlCite) AccessKey(v string) HTMLCite {
-	e.setAttr("accesskey", v)
+func (e *htmlCite) AccessKey(format string, v ...any) HTMLCite {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -8888,8 +8888,8 @@ func (e *htmlCite) DataSets(ds map[string]any) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) Dir(v string) HTMLCite {
-	e.setAttr("dir", v)
+func (e *htmlCite) Dir(format string, v ...any) HTMLCite {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -8903,18 +8903,18 @@ func (e *htmlCite) Hidden(v bool) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) ID(v string) HTMLCite {
-	e.setAttr("id", v)
+func (e *htmlCite) ID(format string, v ...any) HTMLCite {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCite) Lang(v string) HTMLCite {
-	e.setAttr("lang", v)
+func (e *htmlCite) Lang(format string, v ...any) HTMLCite {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCite) Role(v string) HTMLCite {
-	e.setAttr("role", v)
+func (e *htmlCite) Role(format string, v ...any) HTMLCite {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -9138,8 +9138,8 @@ type HTMLCode interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLCode
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLCode
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLCode
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLCode
@@ -9159,8 +9159,8 @@ type HTMLCode interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLCode
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLCode
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLCode
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLCode
@@ -9168,14 +9168,14 @@ type HTMLCode interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLCode
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLCode
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLCode
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLCode
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLCode
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLCode
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLCode
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCode
@@ -9327,8 +9327,8 @@ func (e *htmlCode) Textf(format string, v ...any) HTMLCode {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlCode) AccessKey(v string) HTMLCode {
-	e.setAttr("accesskey", v)
+func (e *htmlCode) AccessKey(format string, v ...any) HTMLCode {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -9364,8 +9364,8 @@ func (e *htmlCode) DataSets(ds map[string]any) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) Dir(v string) HTMLCode {
-	e.setAttr("dir", v)
+func (e *htmlCode) Dir(format string, v ...any) HTMLCode {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -9379,18 +9379,18 @@ func (e *htmlCode) Hidden(v bool) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) ID(v string) HTMLCode {
-	e.setAttr("id", v)
+func (e *htmlCode) ID(format string, v ...any) HTMLCode {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCode) Lang(v string) HTMLCode {
-	e.setAttr("lang", v)
+func (e *htmlCode) Lang(format string, v ...any) HTMLCode {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCode) Role(v string) HTMLCode {
-	e.setAttr("role", v)
+func (e *htmlCode) Role(format string, v ...any) HTMLCode {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -9605,8 +9605,8 @@ func (e *htmlCode) OnWheel(h EventHandler, scope ...any) HTMLCode {
 type HTMLCol interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLCol
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLCol
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLCol
@@ -9626,8 +9626,8 @@ type HTMLCol interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLCol
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLCol
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLCol
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLCol
@@ -9635,14 +9635,14 @@ type HTMLCol interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLCol
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLCol
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLCol
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLCol
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLCol
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLCol
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLCol
 
 	// Span specifies the number of columns to span.
 	Span(v int) HTMLCol
@@ -9784,8 +9784,8 @@ type htmlCol struct {
 	htmlElement
 }
 
-func (e *htmlCol) AccessKey(v string) HTMLCol {
-	e.setAttr("accesskey", v)
+func (e *htmlCol) AccessKey(format string, v ...any) HTMLCol {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -9821,8 +9821,8 @@ func (e *htmlCol) DataSets(ds map[string]any) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) Dir(v string) HTMLCol {
-	e.setAttr("dir", v)
+func (e *htmlCol) Dir(format string, v ...any) HTMLCol {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -9836,18 +9836,18 @@ func (e *htmlCol) Hidden(v bool) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) ID(v string) HTMLCol {
-	e.setAttr("id", v)
+func (e *htmlCol) ID(format string, v ...any) HTMLCol {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCol) Lang(v string) HTMLCol {
-	e.setAttr("lang", v)
+func (e *htmlCol) Lang(format string, v ...any) HTMLCol {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlCol) Role(v string) HTMLCol {
-	e.setAttr("role", v)
+func (e *htmlCol) Role(format string, v ...any) HTMLCol {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -10076,8 +10076,8 @@ type HTMLColGroup interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLColGroup
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLColGroup
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLColGroup
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLColGroup
@@ -10097,8 +10097,8 @@ type HTMLColGroup interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLColGroup
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLColGroup
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLColGroup
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLColGroup
@@ -10106,14 +10106,14 @@ type HTMLColGroup interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLColGroup
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLColGroup
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLColGroup
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLColGroup
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLColGroup
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLColGroup
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLColGroup
 
 	// Span specifies the number of columns to span.
 	Span(v int) HTMLColGroup
@@ -10268,8 +10268,8 @@ func (e *htmlColGroup) Textf(format string, v ...any) HTMLColGroup {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlColGroup) AccessKey(v string) HTMLColGroup {
-	e.setAttr("accesskey", v)
+func (e *htmlColGroup) AccessKey(format string, v ...any) HTMLColGroup {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -10305,8 +10305,8 @@ func (e *htmlColGroup) DataSets(ds map[string]any) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) Dir(v string) HTMLColGroup {
-	e.setAttr("dir", v)
+func (e *htmlColGroup) Dir(format string, v ...any) HTMLColGroup {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -10320,18 +10320,18 @@ func (e *htmlColGroup) Hidden(v bool) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) ID(v string) HTMLColGroup {
-	e.setAttr("id", v)
+func (e *htmlColGroup) ID(format string, v ...any) HTMLColGroup {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlColGroup) Lang(v string) HTMLColGroup {
-	e.setAttr("lang", v)
+func (e *htmlColGroup) Lang(format string, v ...any) HTMLColGroup {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlColGroup) Role(v string) HTMLColGroup {
-	e.setAttr("role", v)
+func (e *htmlColGroup) Role(format string, v ...any) HTMLColGroup {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -10560,8 +10560,8 @@ type HTMLData interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLData
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLData
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLData
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLData
@@ -10581,8 +10581,8 @@ type HTMLData interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLData
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLData
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLData
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLData
@@ -10590,14 +10590,14 @@ type HTMLData interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLData
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLData
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLData
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLData
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLData
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLData
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLData
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLData
@@ -10650,8 +10650,8 @@ func (e *htmlData) Textf(format string, v ...any) HTMLData {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlData) AccessKey(v string) HTMLData {
-	e.setAttr("accesskey", v)
+func (e *htmlData) AccessKey(format string, v ...any) HTMLData {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -10687,8 +10687,8 @@ func (e *htmlData) DataSets(ds map[string]any) HTMLData {
 	return e
 }
 
-func (e *htmlData) Dir(v string) HTMLData {
-	e.setAttr("dir", v)
+func (e *htmlData) Dir(format string, v ...any) HTMLData {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -10702,18 +10702,18 @@ func (e *htmlData) Hidden(v bool) HTMLData {
 	return e
 }
 
-func (e *htmlData) ID(v string) HTMLData {
-	e.setAttr("id", v)
+func (e *htmlData) ID(format string, v ...any) HTMLData {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlData) Lang(v string) HTMLData {
-	e.setAttr("lang", v)
+func (e *htmlData) Lang(format string, v ...any) HTMLData {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlData) Role(v string) HTMLData {
-	e.setAttr("role", v)
+func (e *htmlData) Role(format string, v ...any) HTMLData {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -10772,8 +10772,8 @@ type HTMLDataList interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDataList
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDataList
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDataList
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDataList
@@ -10793,8 +10793,8 @@ type HTMLDataList interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDataList
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDataList
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDataList
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDataList
@@ -10802,14 +10802,14 @@ type HTMLDataList interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDataList
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDataList
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDataList
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDataList
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDataList
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDataList
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDataList
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDataList
@@ -10961,8 +10961,8 @@ func (e *htmlDataList) Textf(format string, v ...any) HTMLDataList {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDataList) AccessKey(v string) HTMLDataList {
-	e.setAttr("accesskey", v)
+func (e *htmlDataList) AccessKey(format string, v ...any) HTMLDataList {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -10998,8 +10998,8 @@ func (e *htmlDataList) DataSets(ds map[string]any) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) Dir(v string) HTMLDataList {
-	e.setAttr("dir", v)
+func (e *htmlDataList) Dir(format string, v ...any) HTMLDataList {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -11013,18 +11013,18 @@ func (e *htmlDataList) Hidden(v bool) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) ID(v string) HTMLDataList {
-	e.setAttr("id", v)
+func (e *htmlDataList) ID(format string, v ...any) HTMLDataList {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDataList) Lang(v string) HTMLDataList {
-	e.setAttr("lang", v)
+func (e *htmlDataList) Lang(format string, v ...any) HTMLDataList {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDataList) Role(v string) HTMLDataList {
-	e.setAttr("role", v)
+func (e *htmlDataList) Role(format string, v ...any) HTMLDataList {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -11248,8 +11248,8 @@ type HTMLDd interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDd
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDd
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDd
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDd
@@ -11269,8 +11269,8 @@ type HTMLDd interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDd
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDd
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDd
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDd
@@ -11278,14 +11278,14 @@ type HTMLDd interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDd
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDd
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDd
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDd
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDd
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDd
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDd
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDd
@@ -11437,8 +11437,8 @@ func (e *htmlDd) Textf(format string, v ...any) HTMLDd {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDd) AccessKey(v string) HTMLDd {
-	e.setAttr("accesskey", v)
+func (e *htmlDd) AccessKey(format string, v ...any) HTMLDd {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -11474,8 +11474,8 @@ func (e *htmlDd) DataSets(ds map[string]any) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) Dir(v string) HTMLDd {
-	e.setAttr("dir", v)
+func (e *htmlDd) Dir(format string, v ...any) HTMLDd {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -11489,18 +11489,18 @@ func (e *htmlDd) Hidden(v bool) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) ID(v string) HTMLDd {
-	e.setAttr("id", v)
+func (e *htmlDd) ID(format string, v ...any) HTMLDd {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDd) Lang(v string) HTMLDd {
-	e.setAttr("lang", v)
+func (e *htmlDd) Lang(format string, v ...any) HTMLDd {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDd) Role(v string) HTMLDd {
-	e.setAttr("role", v)
+func (e *htmlDd) Role(format string, v ...any) HTMLDd {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -11724,8 +11724,8 @@ type HTMLDel interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDel
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDel
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDel
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDel
@@ -11748,11 +11748,11 @@ type HTMLDel interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDel
 
-	// DateTime specifies the date and time.
-	DateTime(v string) HTMLDel
+	// DateTime specifies the date and time with the given format and values.
+	DateTime(format string, v ...any) HTMLDel
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDel
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDel
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDel
@@ -11760,14 +11760,14 @@ type HTMLDel interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDel
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDel
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDel
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDel
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDel
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDel
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDel
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDel
@@ -11919,8 +11919,8 @@ func (e *htmlDel) Textf(format string, v ...any) HTMLDel {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDel) AccessKey(v string) HTMLDel {
-	e.setAttr("accesskey", v)
+func (e *htmlDel) AccessKey(format string, v ...any) HTMLDel {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -11961,13 +11961,13 @@ func (e *htmlDel) DataSets(ds map[string]any) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) DateTime(v string) HTMLDel {
-	e.setAttr("datetime", v)
+func (e *htmlDel) DateTime(format string, v ...any) HTMLDel {
+	e.setAttr("datetime", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDel) Dir(v string) HTMLDel {
-	e.setAttr("dir", v)
+func (e *htmlDel) Dir(format string, v ...any) HTMLDel {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -11981,18 +11981,18 @@ func (e *htmlDel) Hidden(v bool) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) ID(v string) HTMLDel {
-	e.setAttr("id", v)
+func (e *htmlDel) ID(format string, v ...any) HTMLDel {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDel) Lang(v string) HTMLDel {
-	e.setAttr("lang", v)
+func (e *htmlDel) Lang(format string, v ...any) HTMLDel {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDel) Role(v string) HTMLDel {
-	e.setAttr("role", v)
+func (e *htmlDel) Role(format string, v ...any) HTMLDel {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -12216,8 +12216,8 @@ type HTMLDetails interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDetails
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDetails
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDetails
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDetails
@@ -12237,8 +12237,8 @@ type HTMLDetails interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDetails
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDetails
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDetails
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDetails
@@ -12246,17 +12246,17 @@ type HTMLDetails interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDetails
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDetails
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDetails
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDetails
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDetails
 
 	// Open specifies that the details should be visible (open) to the user.
 	Open(v bool) HTMLDetails
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDetails
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDetails
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDetails
@@ -12411,8 +12411,8 @@ func (e *htmlDetails) Textf(format string, v ...any) HTMLDetails {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDetails) AccessKey(v string) HTMLDetails {
-	e.setAttr("accesskey", v)
+func (e *htmlDetails) AccessKey(format string, v ...any) HTMLDetails {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -12448,8 +12448,8 @@ func (e *htmlDetails) DataSets(ds map[string]any) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) Dir(v string) HTMLDetails {
-	e.setAttr("dir", v)
+func (e *htmlDetails) Dir(format string, v ...any) HTMLDetails {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -12463,13 +12463,13 @@ func (e *htmlDetails) Hidden(v bool) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) ID(v string) HTMLDetails {
-	e.setAttr("id", v)
+func (e *htmlDetails) ID(format string, v ...any) HTMLDetails {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDetails) Lang(v string) HTMLDetails {
-	e.setAttr("lang", v)
+func (e *htmlDetails) Lang(format string, v ...any) HTMLDetails {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -12478,8 +12478,8 @@ func (e *htmlDetails) Open(v bool) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) Role(v string) HTMLDetails {
-	e.setAttr("role", v)
+func (e *htmlDetails) Role(format string, v ...any) HTMLDetails {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -12708,8 +12708,8 @@ type HTMLDfn interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDfn
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDfn
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDfn
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDfn
@@ -12729,8 +12729,8 @@ type HTMLDfn interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDfn
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDfn
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDfn
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDfn
@@ -12738,14 +12738,14 @@ type HTMLDfn interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDfn
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDfn
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDfn
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDfn
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDfn
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDfn
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDfn
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDfn
@@ -12897,8 +12897,8 @@ func (e *htmlDfn) Textf(format string, v ...any) HTMLDfn {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDfn) AccessKey(v string) HTMLDfn {
-	e.setAttr("accesskey", v)
+func (e *htmlDfn) AccessKey(format string, v ...any) HTMLDfn {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -12934,8 +12934,8 @@ func (e *htmlDfn) DataSets(ds map[string]any) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) Dir(v string) HTMLDfn {
-	e.setAttr("dir", v)
+func (e *htmlDfn) Dir(format string, v ...any) HTMLDfn {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -12949,18 +12949,18 @@ func (e *htmlDfn) Hidden(v bool) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) ID(v string) HTMLDfn {
-	e.setAttr("id", v)
+func (e *htmlDfn) ID(format string, v ...any) HTMLDfn {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDfn) Lang(v string) HTMLDfn {
-	e.setAttr("lang", v)
+func (e *htmlDfn) Lang(format string, v ...any) HTMLDfn {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDfn) Role(v string) HTMLDfn {
-	e.setAttr("role", v)
+func (e *htmlDfn) Role(format string, v ...any) HTMLDfn {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -13184,8 +13184,8 @@ type HTMLDialog interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDialog
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDialog
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDialog
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDialog
@@ -13205,8 +13205,8 @@ type HTMLDialog interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDialog
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDialog
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDialog
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDialog
@@ -13214,17 +13214,17 @@ type HTMLDialog interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDialog
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDialog
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDialog
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDialog
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDialog
 
 	// Open specifies that the details should be visible (open) to the user.
 	Open(v bool) HTMLDialog
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDialog
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDialog
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDialog
@@ -13376,8 +13376,8 @@ func (e *htmlDialog) Textf(format string, v ...any) HTMLDialog {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDialog) AccessKey(v string) HTMLDialog {
-	e.setAttr("accesskey", v)
+func (e *htmlDialog) AccessKey(format string, v ...any) HTMLDialog {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -13413,8 +13413,8 @@ func (e *htmlDialog) DataSets(ds map[string]any) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) Dir(v string) HTMLDialog {
-	e.setAttr("dir", v)
+func (e *htmlDialog) Dir(format string, v ...any) HTMLDialog {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -13428,13 +13428,13 @@ func (e *htmlDialog) Hidden(v bool) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) ID(v string) HTMLDialog {
-	e.setAttr("id", v)
+func (e *htmlDialog) ID(format string, v ...any) HTMLDialog {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDialog) Lang(v string) HTMLDialog {
-	e.setAttr("lang", v)
+func (e *htmlDialog) Lang(format string, v ...any) HTMLDialog {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -13443,8 +13443,8 @@ func (e *htmlDialog) Open(v bool) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) Role(v string) HTMLDialog {
-	e.setAttr("role", v)
+func (e *htmlDialog) Role(format string, v ...any) HTMLDialog {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -13668,8 +13668,8 @@ type HTMLDiv interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDiv
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDiv
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDiv
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDiv
@@ -13689,8 +13689,8 @@ type HTMLDiv interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDiv
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDiv
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDiv
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDiv
@@ -13698,14 +13698,14 @@ type HTMLDiv interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDiv
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDiv
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDiv
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDiv
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDiv
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDiv
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDiv
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDiv
@@ -13857,8 +13857,8 @@ func (e *htmlDiv) Textf(format string, v ...any) HTMLDiv {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDiv) AccessKey(v string) HTMLDiv {
-	e.setAttr("accesskey", v)
+func (e *htmlDiv) AccessKey(format string, v ...any) HTMLDiv {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -13894,8 +13894,8 @@ func (e *htmlDiv) DataSets(ds map[string]any) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) Dir(v string) HTMLDiv {
-	e.setAttr("dir", v)
+func (e *htmlDiv) Dir(format string, v ...any) HTMLDiv {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -13909,18 +13909,18 @@ func (e *htmlDiv) Hidden(v bool) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) ID(v string) HTMLDiv {
-	e.setAttr("id", v)
+func (e *htmlDiv) ID(format string, v ...any) HTMLDiv {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDiv) Lang(v string) HTMLDiv {
-	e.setAttr("lang", v)
+func (e *htmlDiv) Lang(format string, v ...any) HTMLDiv {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDiv) Role(v string) HTMLDiv {
-	e.setAttr("role", v)
+func (e *htmlDiv) Role(format string, v ...any) HTMLDiv {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -14144,8 +14144,8 @@ type HTMLDl interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDl
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDl
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDl
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDl
@@ -14165,8 +14165,8 @@ type HTMLDl interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDl
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDl
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDl
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDl
@@ -14174,14 +14174,14 @@ type HTMLDl interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDl
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDl
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDl
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDl
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDl
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDl
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDl
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDl
@@ -14333,8 +14333,8 @@ func (e *htmlDl) Textf(format string, v ...any) HTMLDl {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDl) AccessKey(v string) HTMLDl {
-	e.setAttr("accesskey", v)
+func (e *htmlDl) AccessKey(format string, v ...any) HTMLDl {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -14370,8 +14370,8 @@ func (e *htmlDl) DataSets(ds map[string]any) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) Dir(v string) HTMLDl {
-	e.setAttr("dir", v)
+func (e *htmlDl) Dir(format string, v ...any) HTMLDl {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -14385,18 +14385,18 @@ func (e *htmlDl) Hidden(v bool) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) ID(v string) HTMLDl {
-	e.setAttr("id", v)
+func (e *htmlDl) ID(format string, v ...any) HTMLDl {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDl) Lang(v string) HTMLDl {
-	e.setAttr("lang", v)
+func (e *htmlDl) Lang(format string, v ...any) HTMLDl {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDl) Role(v string) HTMLDl {
-	e.setAttr("role", v)
+func (e *htmlDl) Role(format string, v ...any) HTMLDl {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -14620,8 +14620,8 @@ type HTMLDt interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLDt
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLDt
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLDt
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLDt
@@ -14641,8 +14641,8 @@ type HTMLDt interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLDt
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLDt
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLDt
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLDt
@@ -14650,14 +14650,14 @@ type HTMLDt interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLDt
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLDt
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLDt
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLDt
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLDt
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLDt
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLDt
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDt
@@ -14809,8 +14809,8 @@ func (e *htmlDt) Textf(format string, v ...any) HTMLDt {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlDt) AccessKey(v string) HTMLDt {
-	e.setAttr("accesskey", v)
+func (e *htmlDt) AccessKey(format string, v ...any) HTMLDt {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -14846,8 +14846,8 @@ func (e *htmlDt) DataSets(ds map[string]any) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) Dir(v string) HTMLDt {
-	e.setAttr("dir", v)
+func (e *htmlDt) Dir(format string, v ...any) HTMLDt {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -14861,18 +14861,18 @@ func (e *htmlDt) Hidden(v bool) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) ID(v string) HTMLDt {
-	e.setAttr("id", v)
+func (e *htmlDt) ID(format string, v ...any) HTMLDt {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDt) Lang(v string) HTMLDt {
-	e.setAttr("lang", v)
+func (e *htmlDt) Lang(format string, v ...any) HTMLDt {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlDt) Role(v string) HTMLDt {
-	e.setAttr("role", v)
+func (e *htmlDt) Role(format string, v ...any) HTMLDt {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -15096,8 +15096,8 @@ type HTMLElem interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLElem
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLElem
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLElem
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLElem
@@ -15117,8 +15117,8 @@ type HTMLElem interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLElem
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLElem
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLElem
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLElem
@@ -15126,14 +15126,14 @@ type HTMLElem interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLElem
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLElem
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLElem
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLElem
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLElem
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLElem
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLElem
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLElem
@@ -15288,8 +15288,8 @@ func (e *htmlElem) Textf(format string, v ...any) HTMLElem {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlElem) AccessKey(v string) HTMLElem {
-	e.setAttr("accesskey", v)
+func (e *htmlElem) AccessKey(format string, v ...any) HTMLElem {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -15325,8 +15325,8 @@ func (e *htmlElem) DataSets(ds map[string]any) HTMLElem {
 	return e
 }
 
-func (e *htmlElem) Dir(v string) HTMLElem {
-	e.setAttr("dir", v)
+func (e *htmlElem) Dir(format string, v ...any) HTMLElem {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -15340,18 +15340,18 @@ func (e *htmlElem) Hidden(v bool) HTMLElem {
 	return e
 }
 
-func (e *htmlElem) ID(v string) HTMLElem {
-	e.setAttr("id", v)
+func (e *htmlElem) ID(format string, v ...any) HTMLElem {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlElem) Lang(v string) HTMLElem {
-	e.setAttr("lang", v)
+func (e *htmlElem) Lang(format string, v ...any) HTMLElem {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlElem) Role(v string) HTMLElem {
-	e.setAttr("role", v)
+func (e *htmlElem) Role(format string, v ...any) HTMLElem {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -15571,8 +15571,8 @@ func (e *htmlElem) OnWheel(h EventHandler, scope ...any) HTMLElem {
 type HTMLElemSelfClosing interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLElemSelfClosing
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLElemSelfClosing
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLElemSelfClosing
@@ -15592,8 +15592,8 @@ type HTMLElemSelfClosing interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLElemSelfClosing
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLElemSelfClosing
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLElemSelfClosing
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLElemSelfClosing
@@ -15601,14 +15601,14 @@ type HTMLElemSelfClosing interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLElemSelfClosing
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLElemSelfClosing
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLElemSelfClosing
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLElemSelfClosing
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLElemSelfClosing
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLElemSelfClosing
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLElemSelfClosing
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLElemSelfClosing
@@ -15750,8 +15750,8 @@ type htmlElemSelfClosing struct {
 	htmlElement
 }
 
-func (e *htmlElemSelfClosing) AccessKey(v string) HTMLElemSelfClosing {
-	e.setAttr("accesskey", v)
+func (e *htmlElemSelfClosing) AccessKey(format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -15787,8 +15787,8 @@ func (e *htmlElemSelfClosing) DataSets(ds map[string]any) HTMLElemSelfClosing {
 	return e
 }
 
-func (e *htmlElemSelfClosing) Dir(v string) HTMLElemSelfClosing {
-	e.setAttr("dir", v)
+func (e *htmlElemSelfClosing) Dir(format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -15802,18 +15802,18 @@ func (e *htmlElemSelfClosing) Hidden(v bool) HTMLElemSelfClosing {
 	return e
 }
 
-func (e *htmlElemSelfClosing) ID(v string) HTMLElemSelfClosing {
-	e.setAttr("id", v)
+func (e *htmlElemSelfClosing) ID(format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlElemSelfClosing) Lang(v string) HTMLElemSelfClosing {
-	e.setAttr("lang", v)
+func (e *htmlElemSelfClosing) Lang(format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlElemSelfClosing) Role(v string) HTMLElemSelfClosing {
-	e.setAttr("role", v)
+func (e *htmlElemSelfClosing) Role(format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -16042,8 +16042,8 @@ type HTMLEm interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLEm
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLEm
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLEm
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLEm
@@ -16063,8 +16063,8 @@ type HTMLEm interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLEm
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLEm
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLEm
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLEm
@@ -16072,14 +16072,14 @@ type HTMLEm interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLEm
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLEm
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLEm
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLEm
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLEm
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLEm
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLEm
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLEm
@@ -16231,8 +16231,8 @@ func (e *htmlEm) Textf(format string, v ...any) HTMLEm {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlEm) AccessKey(v string) HTMLEm {
-	e.setAttr("accesskey", v)
+func (e *htmlEm) AccessKey(format string, v ...any) HTMLEm {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -16268,8 +16268,8 @@ func (e *htmlEm) DataSets(ds map[string]any) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) Dir(v string) HTMLEm {
-	e.setAttr("dir", v)
+func (e *htmlEm) Dir(format string, v ...any) HTMLEm {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -16283,18 +16283,18 @@ func (e *htmlEm) Hidden(v bool) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) ID(v string) HTMLEm {
-	e.setAttr("id", v)
+func (e *htmlEm) ID(format string, v ...any) HTMLEm {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlEm) Lang(v string) HTMLEm {
-	e.setAttr("lang", v)
+func (e *htmlEm) Lang(format string, v ...any) HTMLEm {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlEm) Role(v string) HTMLEm {
-	e.setAttr("role", v)
+func (e *htmlEm) Role(format string, v ...any) HTMLEm {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -16509,8 +16509,8 @@ func (e *htmlEm) OnWheel(h EventHandler, scope ...any) HTMLEm {
 type HTMLEmbed interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLEmbed
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLEmbed
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLEmbed
@@ -16530,8 +16530,8 @@ type HTMLEmbed interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLEmbed
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLEmbed
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLEmbed
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLEmbed
@@ -16542,14 +16542,14 @@ type HTMLEmbed interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLEmbed
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLEmbed
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLEmbed
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLEmbed
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLEmbed
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLEmbed
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLEmbed
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLEmbed
@@ -16569,8 +16569,8 @@ type HTMLEmbed interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLEmbed
 
-	// Type specifies the type of element.
-	Type(v string) HTMLEmbed
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLEmbed
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLEmbed
@@ -16766,8 +16766,8 @@ type htmlEmbed struct {
 	htmlElement
 }
 
-func (e *htmlEmbed) AccessKey(v string) HTMLEmbed {
-	e.setAttr("accesskey", v)
+func (e *htmlEmbed) AccessKey(format string, v ...any) HTMLEmbed {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -16803,8 +16803,8 @@ func (e *htmlEmbed) DataSets(ds map[string]any) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Dir(v string) HTMLEmbed {
-	e.setAttr("dir", v)
+func (e *htmlEmbed) Dir(format string, v ...any) HTMLEmbed {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -16823,18 +16823,18 @@ func (e *htmlEmbed) Hidden(v bool) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) ID(v string) HTMLEmbed {
-	e.setAttr("id", v)
+func (e *htmlEmbed) ID(format string, v ...any) HTMLEmbed {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlEmbed) Lang(v string) HTMLEmbed {
-	e.setAttr("lang", v)
+func (e *htmlEmbed) Lang(format string, v ...any) HTMLEmbed {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlEmbed) Role(v string) HTMLEmbed {
-	e.setAttr("role", v)
+func (e *htmlEmbed) Role(format string, v ...any) HTMLEmbed {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -16875,8 +16875,8 @@ func (e *htmlEmbed) Title(format string, v ...any) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Type(v string) HTMLEmbed {
-	e.setAttr("type", v)
+func (e *htmlEmbed) Type(format string, v ...any) HTMLEmbed {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -17188,8 +17188,8 @@ type HTMLFieldSet interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLFieldSet
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLFieldSet
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLFieldSet
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLFieldSet
@@ -17209,8 +17209,8 @@ type HTMLFieldSet interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLFieldSet
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLFieldSet
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLFieldSet
 
 	// Disabled specifies that the specified element/group of elements should be disabled.
 	Disabled(v bool) HTMLFieldSet
@@ -17218,23 +17218,23 @@ type HTMLFieldSet interface {
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLFieldSet
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLFieldSet
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLFieldSet
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLFieldSet
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLFieldSet
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLFieldSet
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLFieldSet
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLFieldSet
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLFieldSet
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLFieldSet
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLFieldSet
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLFieldSet
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFieldSet
@@ -17386,8 +17386,8 @@ func (e *htmlFieldSet) Textf(format string, v ...any) HTMLFieldSet {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlFieldSet) AccessKey(v string) HTMLFieldSet {
-	e.setAttr("accesskey", v)
+func (e *htmlFieldSet) AccessKey(format string, v ...any) HTMLFieldSet {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -17423,8 +17423,8 @@ func (e *htmlFieldSet) DataSets(ds map[string]any) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Dir(v string) HTMLFieldSet {
-	e.setAttr("dir", v)
+func (e *htmlFieldSet) Dir(format string, v ...any) HTMLFieldSet {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -17438,8 +17438,8 @@ func (e *htmlFieldSet) Draggable(v bool) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Form(v string) HTMLFieldSet {
-	e.setAttr("form", v)
+func (e *htmlFieldSet) Form(format string, v ...any) HTMLFieldSet {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
@@ -17448,23 +17448,23 @@ func (e *htmlFieldSet) Hidden(v bool) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) ID(v string) HTMLFieldSet {
-	e.setAttr("id", v)
+func (e *htmlFieldSet) ID(format string, v ...any) HTMLFieldSet {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFieldSet) Lang(v string) HTMLFieldSet {
-	e.setAttr("lang", v)
+func (e *htmlFieldSet) Lang(format string, v ...any) HTMLFieldSet {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFieldSet) Name(v string) HTMLFieldSet {
-	e.setAttr("name", v)
+func (e *htmlFieldSet) Name(format string, v ...any) HTMLFieldSet {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFieldSet) Role(v string) HTMLFieldSet {
-	e.setAttr("role", v)
+func (e *htmlFieldSet) Role(format string, v ...any) HTMLFieldSet {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -17688,8 +17688,8 @@ type HTMLFigCaption interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLFigCaption
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLFigCaption
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLFigCaption
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLFigCaption
@@ -17709,8 +17709,8 @@ type HTMLFigCaption interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLFigCaption
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLFigCaption
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLFigCaption
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLFigCaption
@@ -17718,14 +17718,14 @@ type HTMLFigCaption interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLFigCaption
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLFigCaption
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLFigCaption
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLFigCaption
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLFigCaption
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLFigCaption
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLFigCaption
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFigCaption
@@ -17877,8 +17877,8 @@ func (e *htmlFigCaption) Textf(format string, v ...any) HTMLFigCaption {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlFigCaption) AccessKey(v string) HTMLFigCaption {
-	e.setAttr("accesskey", v)
+func (e *htmlFigCaption) AccessKey(format string, v ...any) HTMLFigCaption {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -17914,8 +17914,8 @@ func (e *htmlFigCaption) DataSets(ds map[string]any) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) Dir(v string) HTMLFigCaption {
-	e.setAttr("dir", v)
+func (e *htmlFigCaption) Dir(format string, v ...any) HTMLFigCaption {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -17929,18 +17929,18 @@ func (e *htmlFigCaption) Hidden(v bool) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) ID(v string) HTMLFigCaption {
-	e.setAttr("id", v)
+func (e *htmlFigCaption) ID(format string, v ...any) HTMLFigCaption {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFigCaption) Lang(v string) HTMLFigCaption {
-	e.setAttr("lang", v)
+func (e *htmlFigCaption) Lang(format string, v ...any) HTMLFigCaption {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFigCaption) Role(v string) HTMLFigCaption {
-	e.setAttr("role", v)
+func (e *htmlFigCaption) Role(format string, v ...any) HTMLFigCaption {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -18164,8 +18164,8 @@ type HTMLFigure interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLFigure
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLFigure
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLFigure
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLFigure
@@ -18185,8 +18185,8 @@ type HTMLFigure interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLFigure
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLFigure
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLFigure
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLFigure
@@ -18194,14 +18194,14 @@ type HTMLFigure interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLFigure
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLFigure
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLFigure
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLFigure
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLFigure
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLFigure
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLFigure
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFigure
@@ -18353,8 +18353,8 @@ func (e *htmlFigure) Textf(format string, v ...any) HTMLFigure {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlFigure) AccessKey(v string) HTMLFigure {
-	e.setAttr("accesskey", v)
+func (e *htmlFigure) AccessKey(format string, v ...any) HTMLFigure {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -18390,8 +18390,8 @@ func (e *htmlFigure) DataSets(ds map[string]any) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) Dir(v string) HTMLFigure {
-	e.setAttr("dir", v)
+func (e *htmlFigure) Dir(format string, v ...any) HTMLFigure {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -18405,18 +18405,18 @@ func (e *htmlFigure) Hidden(v bool) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) ID(v string) HTMLFigure {
-	e.setAttr("id", v)
+func (e *htmlFigure) ID(format string, v ...any) HTMLFigure {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFigure) Lang(v string) HTMLFigure {
-	e.setAttr("lang", v)
+func (e *htmlFigure) Lang(format string, v ...any) HTMLFigure {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFigure) Role(v string) HTMLFigure {
-	e.setAttr("role", v)
+func (e *htmlFigure) Role(format string, v ...any) HTMLFigure {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -18640,8 +18640,8 @@ type HTMLFooter interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLFooter
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLFooter
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLFooter
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLFooter
@@ -18661,8 +18661,8 @@ type HTMLFooter interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLFooter
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLFooter
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLFooter
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLFooter
@@ -18670,14 +18670,14 @@ type HTMLFooter interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLFooter
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLFooter
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLFooter
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLFooter
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLFooter
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLFooter
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLFooter
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFooter
@@ -18829,8 +18829,8 @@ func (e *htmlFooter) Textf(format string, v ...any) HTMLFooter {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlFooter) AccessKey(v string) HTMLFooter {
-	e.setAttr("accesskey", v)
+func (e *htmlFooter) AccessKey(format string, v ...any) HTMLFooter {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -18866,8 +18866,8 @@ func (e *htmlFooter) DataSets(ds map[string]any) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) Dir(v string) HTMLFooter {
-	e.setAttr("dir", v)
+func (e *htmlFooter) Dir(format string, v ...any) HTMLFooter {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -18881,18 +18881,18 @@ func (e *htmlFooter) Hidden(v bool) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) ID(v string) HTMLFooter {
-	e.setAttr("id", v)
+func (e *htmlFooter) ID(format string, v ...any) HTMLFooter {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFooter) Lang(v string) HTMLFooter {
-	e.setAttr("lang", v)
+func (e *htmlFooter) Lang(format string, v ...any) HTMLFooter {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlFooter) Role(v string) HTMLFooter {
-	e.setAttr("role", v)
+func (e *htmlFooter) Role(format string, v ...any) HTMLFooter {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -19119,11 +19119,11 @@ type HTMLForm interface {
 	// AcceptCharset specifies the character encodings that are to be used for the form submission.
 	AcceptCharset(v string) HTMLForm
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLForm
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLForm
 
-	// Action specifies where to send the form-data when a form is submitted.
-	Action(v string) HTMLForm
+	// Action specifies where to send the form-data with the given format and values when a form is submitted.
+	Action(format string, v ...any) HTMLForm
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLForm
@@ -19146,35 +19146,35 @@ type HTMLForm interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLForm
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLForm
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLForm
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLForm
 
-	// EncType specifies how the form-data should be encoded when submitting it to the server (only for post method).
-	EncType(v string) HTMLForm
+	// EncType specifies how the form-data should be encoded when submitting it to the server (only for post method). Uses the given format and values.
+	EncType(format string, v ...any) HTMLForm
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLForm
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLForm
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLForm
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLForm
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLForm
 
-	// Method specifies the HTTP method to use when sending form-data.
-	Method(v string) HTMLForm
+	// Method specifies the HTTP method to use when sending form-data. Uses the given format and values.
+	Method(format string, v ...any) HTMLForm
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLForm
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLForm
 
 	// NoValidate specifies that the form should not be validated when submitted.
 	NoValidate(v bool) HTMLForm
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLForm
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLForm
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLForm
@@ -19188,8 +19188,8 @@ type HTMLForm interface {
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLForm
 
-	// Target specifies the target for where to open the linked document or where to submit the form.
-	Target(v string) HTMLForm
+	// Target specifies the target for where to open the linked document or where to submit the form. Uses the given format and values.
+	Target(format string, v ...any) HTMLForm
 
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLForm
@@ -19334,13 +19334,13 @@ func (e *htmlForm) AcceptCharset(v string) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) AccessKey(v string) HTMLForm {
-	e.setAttr("accesskey", v)
+func (e *htmlForm) AccessKey(format string, v ...any) HTMLForm {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlForm) Action(v string) HTMLForm {
-	e.setAttr("action", v)
+func (e *htmlForm) Action(format string, v ...any) HTMLForm {
+	e.setAttr("action", FormatString(format, v...))
 	return e
 }
 
@@ -19386,8 +19386,8 @@ func (e *htmlForm) DataSets(ds map[string]any) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Dir(v string) HTMLForm {
-	e.setAttr("dir", v)
+func (e *htmlForm) Dir(format string, v ...any) HTMLForm {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -19396,8 +19396,8 @@ func (e *htmlForm) Draggable(v bool) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) EncType(v string) HTMLForm {
-	e.setAttr("enctype", v)
+func (e *htmlForm) EncType(format string, v ...any) HTMLForm {
+	e.setAttr("enctype", FormatString(format, v...))
 	return e
 }
 
@@ -19406,23 +19406,23 @@ func (e *htmlForm) Hidden(v bool) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) ID(v string) HTMLForm {
-	e.setAttr("id", v)
+func (e *htmlForm) ID(format string, v ...any) HTMLForm {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlForm) Lang(v string) HTMLForm {
-	e.setAttr("lang", v)
+func (e *htmlForm) Lang(format string, v ...any) HTMLForm {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlForm) Method(v string) HTMLForm {
-	e.setAttr("method", v)
+func (e *htmlForm) Method(format string, v ...any) HTMLForm {
+	e.setAttr("method", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlForm) Name(v string) HTMLForm {
-	e.setAttr("name", v)
+func (e *htmlForm) Name(format string, v ...any) HTMLForm {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
@@ -19431,8 +19431,8 @@ func (e *htmlForm) NoValidate(v bool) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Role(v string) HTMLForm {
-	e.setAttr("role", v)
+func (e *htmlForm) Role(format string, v ...any) HTMLForm {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -19463,8 +19463,8 @@ func (e *htmlForm) TabIndex(v int) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Target(v string) HTMLForm {
-	e.setAttr("target", v)
+func (e *htmlForm) Target(format string, v ...any) HTMLForm {
+	e.setAttr("target", FormatString(format, v...))
 	return e
 }
 
@@ -19661,8 +19661,8 @@ type HTMLH1 interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLH1
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLH1
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLH1
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLH1
@@ -19682,8 +19682,8 @@ type HTMLH1 interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLH1
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLH1
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLH1
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLH1
@@ -19691,14 +19691,14 @@ type HTMLH1 interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLH1
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLH1
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLH1
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLH1
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLH1
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLH1
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLH1
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH1
@@ -19850,8 +19850,8 @@ func (e *htmlH1) Textf(format string, v ...any) HTMLH1 {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlH1) AccessKey(v string) HTMLH1 {
-	e.setAttr("accesskey", v)
+func (e *htmlH1) AccessKey(format string, v ...any) HTMLH1 {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -19887,8 +19887,8 @@ func (e *htmlH1) DataSets(ds map[string]any) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) Dir(v string) HTMLH1 {
-	e.setAttr("dir", v)
+func (e *htmlH1) Dir(format string, v ...any) HTMLH1 {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -19902,18 +19902,18 @@ func (e *htmlH1) Hidden(v bool) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) ID(v string) HTMLH1 {
-	e.setAttr("id", v)
+func (e *htmlH1) ID(format string, v ...any) HTMLH1 {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH1) Lang(v string) HTMLH1 {
-	e.setAttr("lang", v)
+func (e *htmlH1) Lang(format string, v ...any) HTMLH1 {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH1) Role(v string) HTMLH1 {
-	e.setAttr("role", v)
+func (e *htmlH1) Role(format string, v ...any) HTMLH1 {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -20137,8 +20137,8 @@ type HTMLH2 interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLH2
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLH2
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLH2
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLH2
@@ -20158,8 +20158,8 @@ type HTMLH2 interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLH2
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLH2
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLH2
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLH2
@@ -20167,14 +20167,14 @@ type HTMLH2 interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLH2
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLH2
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLH2
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLH2
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLH2
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLH2
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLH2
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH2
@@ -20326,8 +20326,8 @@ func (e *htmlH2) Textf(format string, v ...any) HTMLH2 {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlH2) AccessKey(v string) HTMLH2 {
-	e.setAttr("accesskey", v)
+func (e *htmlH2) AccessKey(format string, v ...any) HTMLH2 {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -20363,8 +20363,8 @@ func (e *htmlH2) DataSets(ds map[string]any) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) Dir(v string) HTMLH2 {
-	e.setAttr("dir", v)
+func (e *htmlH2) Dir(format string, v ...any) HTMLH2 {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -20378,18 +20378,18 @@ func (e *htmlH2) Hidden(v bool) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) ID(v string) HTMLH2 {
-	e.setAttr("id", v)
+func (e *htmlH2) ID(format string, v ...any) HTMLH2 {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH2) Lang(v string) HTMLH2 {
-	e.setAttr("lang", v)
+func (e *htmlH2) Lang(format string, v ...any) HTMLH2 {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH2) Role(v string) HTMLH2 {
-	e.setAttr("role", v)
+func (e *htmlH2) Role(format string, v ...any) HTMLH2 {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -20613,8 +20613,8 @@ type HTMLH3 interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLH3
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLH3
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLH3
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLH3
@@ -20634,8 +20634,8 @@ type HTMLH3 interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLH3
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLH3
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLH3
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLH3
@@ -20643,14 +20643,14 @@ type HTMLH3 interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLH3
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLH3
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLH3
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLH3
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLH3
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLH3
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLH3
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH3
@@ -20802,8 +20802,8 @@ func (e *htmlH3) Textf(format string, v ...any) HTMLH3 {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlH3) AccessKey(v string) HTMLH3 {
-	e.setAttr("accesskey", v)
+func (e *htmlH3) AccessKey(format string, v ...any) HTMLH3 {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -20839,8 +20839,8 @@ func (e *htmlH3) DataSets(ds map[string]any) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) Dir(v string) HTMLH3 {
-	e.setAttr("dir", v)
+func (e *htmlH3) Dir(format string, v ...any) HTMLH3 {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -20854,18 +20854,18 @@ func (e *htmlH3) Hidden(v bool) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) ID(v string) HTMLH3 {
-	e.setAttr("id", v)
+func (e *htmlH3) ID(format string, v ...any) HTMLH3 {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH3) Lang(v string) HTMLH3 {
-	e.setAttr("lang", v)
+func (e *htmlH3) Lang(format string, v ...any) HTMLH3 {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH3) Role(v string) HTMLH3 {
-	e.setAttr("role", v)
+func (e *htmlH3) Role(format string, v ...any) HTMLH3 {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -21089,8 +21089,8 @@ type HTMLH4 interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLH4
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLH4
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLH4
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLH4
@@ -21110,8 +21110,8 @@ type HTMLH4 interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLH4
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLH4
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLH4
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLH4
@@ -21119,14 +21119,14 @@ type HTMLH4 interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLH4
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLH4
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLH4
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLH4
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLH4
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLH4
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLH4
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH4
@@ -21278,8 +21278,8 @@ func (e *htmlH4) Textf(format string, v ...any) HTMLH4 {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlH4) AccessKey(v string) HTMLH4 {
-	e.setAttr("accesskey", v)
+func (e *htmlH4) AccessKey(format string, v ...any) HTMLH4 {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -21315,8 +21315,8 @@ func (e *htmlH4) DataSets(ds map[string]any) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) Dir(v string) HTMLH4 {
-	e.setAttr("dir", v)
+func (e *htmlH4) Dir(format string, v ...any) HTMLH4 {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -21330,18 +21330,18 @@ func (e *htmlH4) Hidden(v bool) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) ID(v string) HTMLH4 {
-	e.setAttr("id", v)
+func (e *htmlH4) ID(format string, v ...any) HTMLH4 {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH4) Lang(v string) HTMLH4 {
-	e.setAttr("lang", v)
+func (e *htmlH4) Lang(format string, v ...any) HTMLH4 {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH4) Role(v string) HTMLH4 {
-	e.setAttr("role", v)
+func (e *htmlH4) Role(format string, v ...any) HTMLH4 {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -21565,8 +21565,8 @@ type HTMLH5 interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLH5
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLH5
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLH5
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLH5
@@ -21586,8 +21586,8 @@ type HTMLH5 interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLH5
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLH5
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLH5
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLH5
@@ -21595,14 +21595,14 @@ type HTMLH5 interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLH5
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLH5
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLH5
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLH5
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLH5
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLH5
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLH5
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH5
@@ -21754,8 +21754,8 @@ func (e *htmlH5) Textf(format string, v ...any) HTMLH5 {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlH5) AccessKey(v string) HTMLH5 {
-	e.setAttr("accesskey", v)
+func (e *htmlH5) AccessKey(format string, v ...any) HTMLH5 {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -21791,8 +21791,8 @@ func (e *htmlH5) DataSets(ds map[string]any) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) Dir(v string) HTMLH5 {
-	e.setAttr("dir", v)
+func (e *htmlH5) Dir(format string, v ...any) HTMLH5 {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -21806,18 +21806,18 @@ func (e *htmlH5) Hidden(v bool) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) ID(v string) HTMLH5 {
-	e.setAttr("id", v)
+func (e *htmlH5) ID(format string, v ...any) HTMLH5 {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH5) Lang(v string) HTMLH5 {
-	e.setAttr("lang", v)
+func (e *htmlH5) Lang(format string, v ...any) HTMLH5 {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH5) Role(v string) HTMLH5 {
-	e.setAttr("role", v)
+func (e *htmlH5) Role(format string, v ...any) HTMLH5 {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -22041,8 +22041,8 @@ type HTMLH6 interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLH6
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLH6
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLH6
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLH6
@@ -22062,8 +22062,8 @@ type HTMLH6 interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLH6
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLH6
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLH6
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLH6
@@ -22071,14 +22071,14 @@ type HTMLH6 interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLH6
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLH6
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLH6
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLH6
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLH6
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLH6
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLH6
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH6
@@ -22230,8 +22230,8 @@ func (e *htmlH6) Textf(format string, v ...any) HTMLH6 {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlH6) AccessKey(v string) HTMLH6 {
-	e.setAttr("accesskey", v)
+func (e *htmlH6) AccessKey(format string, v ...any) HTMLH6 {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -22267,8 +22267,8 @@ func (e *htmlH6) DataSets(ds map[string]any) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) Dir(v string) HTMLH6 {
-	e.setAttr("dir", v)
+func (e *htmlH6) Dir(format string, v ...any) HTMLH6 {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -22282,18 +22282,18 @@ func (e *htmlH6) Hidden(v bool) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) ID(v string) HTMLH6 {
-	e.setAttr("id", v)
+func (e *htmlH6) ID(format string, v ...any) HTMLH6 {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH6) Lang(v string) HTMLH6 {
-	e.setAttr("lang", v)
+func (e *htmlH6) Lang(format string, v ...any) HTMLH6 {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlH6) Role(v string) HTMLH6 {
-	e.setAttr("role", v)
+func (e *htmlH6) Role(format string, v ...any) HTMLH6 {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -22517,8 +22517,8 @@ type HTMLHead interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLHead
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLHead
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLHead
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLHead
@@ -22538,8 +22538,8 @@ type HTMLHead interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLHead
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLHead
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLHead
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLHead
@@ -22547,14 +22547,14 @@ type HTMLHead interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLHead
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLHead
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLHead
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLHead
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLHead
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLHead
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLHead
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHead
@@ -22604,8 +22604,8 @@ func (e *htmlHead) Textf(format string, v ...any) HTMLHead {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlHead) AccessKey(v string) HTMLHead {
-	e.setAttr("accesskey", v)
+func (e *htmlHead) AccessKey(format string, v ...any) HTMLHead {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -22641,8 +22641,8 @@ func (e *htmlHead) DataSets(ds map[string]any) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) Dir(v string) HTMLHead {
-	e.setAttr("dir", v)
+func (e *htmlHead) Dir(format string, v ...any) HTMLHead {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -22656,18 +22656,18 @@ func (e *htmlHead) Hidden(v bool) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) ID(v string) HTMLHead {
-	e.setAttr("id", v)
+func (e *htmlHead) ID(format string, v ...any) HTMLHead {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHead) Lang(v string) HTMLHead {
-	e.setAttr("lang", v)
+func (e *htmlHead) Lang(format string, v ...any) HTMLHead {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHead) Role(v string) HTMLHead {
-	e.setAttr("role", v)
+func (e *htmlHead) Role(format string, v ...any) HTMLHead {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -22721,8 +22721,8 @@ type HTMLHeader interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLHeader
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLHeader
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLHeader
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLHeader
@@ -22742,8 +22742,8 @@ type HTMLHeader interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLHeader
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLHeader
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLHeader
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLHeader
@@ -22751,14 +22751,14 @@ type HTMLHeader interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLHeader
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLHeader
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLHeader
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLHeader
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLHeader
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLHeader
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLHeader
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHeader
@@ -22910,8 +22910,8 @@ func (e *htmlHeader) Textf(format string, v ...any) HTMLHeader {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlHeader) AccessKey(v string) HTMLHeader {
-	e.setAttr("accesskey", v)
+func (e *htmlHeader) AccessKey(format string, v ...any) HTMLHeader {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -22947,8 +22947,8 @@ func (e *htmlHeader) DataSets(ds map[string]any) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) Dir(v string) HTMLHeader {
-	e.setAttr("dir", v)
+func (e *htmlHeader) Dir(format string, v ...any) HTMLHeader {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -22962,18 +22962,18 @@ func (e *htmlHeader) Hidden(v bool) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) ID(v string) HTMLHeader {
-	e.setAttr("id", v)
+func (e *htmlHeader) ID(format string, v ...any) HTMLHeader {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHeader) Lang(v string) HTMLHeader {
-	e.setAttr("lang", v)
+func (e *htmlHeader) Lang(format string, v ...any) HTMLHeader {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHeader) Role(v string) HTMLHeader {
-	e.setAttr("role", v)
+func (e *htmlHeader) Role(format string, v ...any) HTMLHeader {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -23188,8 +23188,8 @@ func (e *htmlHeader) OnWheel(h EventHandler, scope ...any) HTMLHeader {
 type HTMLHr interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLHr
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLHr
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLHr
@@ -23209,8 +23209,8 @@ type HTMLHr interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLHr
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLHr
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLHr
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLHr
@@ -23218,14 +23218,14 @@ type HTMLHr interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLHr
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLHr
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLHr
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLHr
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLHr
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLHr
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLHr
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHr
@@ -23364,8 +23364,8 @@ type htmlHr struct {
 	htmlElement
 }
 
-func (e *htmlHr) AccessKey(v string) HTMLHr {
-	e.setAttr("accesskey", v)
+func (e *htmlHr) AccessKey(format string, v ...any) HTMLHr {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -23401,8 +23401,8 @@ func (e *htmlHr) DataSets(ds map[string]any) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) Dir(v string) HTMLHr {
-	e.setAttr("dir", v)
+func (e *htmlHr) Dir(format string, v ...any) HTMLHr {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -23416,18 +23416,18 @@ func (e *htmlHr) Hidden(v bool) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) ID(v string) HTMLHr {
-	e.setAttr("id", v)
+func (e *htmlHr) ID(format string, v ...any) HTMLHr {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHr) Lang(v string) HTMLHr {
-	e.setAttr("lang", v)
+func (e *htmlHr) Lang(format string, v ...any) HTMLHr {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHr) Role(v string) HTMLHr {
-	e.setAttr("role", v)
+func (e *htmlHr) Role(format string, v ...any) HTMLHr {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -23644,8 +23644,8 @@ type HTMLHtml interface {
 
 	privateBody(elems ...UI) HTMLHtml
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLHtml
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLHtml
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLHtml
@@ -23665,8 +23665,8 @@ type HTMLHtml interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLHtml
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLHtml
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLHtml
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLHtml
@@ -23674,14 +23674,14 @@ type HTMLHtml interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLHtml
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLHtml
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLHtml
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLHtml
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLHtml
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLHtml
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLHtml
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHtml
@@ -23723,8 +23723,8 @@ func (e *htmlHtml) privateBody(v ...UI) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) AccessKey(v string) HTMLHtml {
-	e.setAttr("accesskey", v)
+func (e *htmlHtml) AccessKey(format string, v ...any) HTMLHtml {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -23760,8 +23760,8 @@ func (e *htmlHtml) DataSets(ds map[string]any) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) Dir(v string) HTMLHtml {
-	e.setAttr("dir", v)
+func (e *htmlHtml) Dir(format string, v ...any) HTMLHtml {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -23775,18 +23775,18 @@ func (e *htmlHtml) Hidden(v bool) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) ID(v string) HTMLHtml {
-	e.setAttr("id", v)
+func (e *htmlHtml) ID(format string, v ...any) HTMLHtml {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHtml) Lang(v string) HTMLHtml {
-	e.setAttr("lang", v)
+func (e *htmlHtml) Lang(format string, v ...any) HTMLHtml {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlHtml) Role(v string) HTMLHtml {
-	e.setAttr("role", v)
+func (e *htmlHtml) Role(format string, v ...any) HTMLHtml {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -23840,8 +23840,8 @@ type HTMLI interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLI
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLI
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLI
@@ -23861,8 +23861,8 @@ type HTMLI interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLI
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLI
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLI
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLI
@@ -23870,14 +23870,14 @@ type HTMLI interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLI
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLI
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLI
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLI
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLI
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLI
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLI
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLI
@@ -24029,8 +24029,8 @@ func (e *htmlI) Textf(format string, v ...any) HTMLI {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlI) AccessKey(v string) HTMLI {
-	e.setAttr("accesskey", v)
+func (e *htmlI) AccessKey(format string, v ...any) HTMLI {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -24066,8 +24066,8 @@ func (e *htmlI) DataSets(ds map[string]any) HTMLI {
 	return e
 }
 
-func (e *htmlI) Dir(v string) HTMLI {
-	e.setAttr("dir", v)
+func (e *htmlI) Dir(format string, v ...any) HTMLI {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -24081,18 +24081,18 @@ func (e *htmlI) Hidden(v bool) HTMLI {
 	return e
 }
 
-func (e *htmlI) ID(v string) HTMLI {
-	e.setAttr("id", v)
+func (e *htmlI) ID(format string, v ...any) HTMLI {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlI) Lang(v string) HTMLI {
-	e.setAttr("lang", v)
+func (e *htmlI) Lang(format string, v ...any) HTMLI {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlI) Role(v string) HTMLI {
-	e.setAttr("role", v)
+func (e *htmlI) Role(format string, v ...any) HTMLI {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -24316,11 +24316,11 @@ type HTMLIFrame interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLIFrame
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLIFrame
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLIFrame
 
-	// Allow specifies a feature policy. Can be called multiple times to set multiple policies.
-	Allow(v string) HTMLIFrame
+	// Allow specifies a feature policy with the given format and values. Can be called multiple times to set multiple policies.
+	Allow(format string, v ...any) HTMLIFrame
 
 	// AllowFullscreen reports whether an iframe can activate fullscreen mode.
 	AllowFullscreen(v bool) HTMLIFrame
@@ -24346,8 +24346,8 @@ type HTMLIFrame interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLIFrame
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLIFrame
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLIFrame
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLIFrame
@@ -24358,23 +24358,23 @@ type HTMLIFrame interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLIFrame
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLIFrame
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLIFrame
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLIFrame
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLIFrame
 
-	// Loading indicates how the browser should load the iframe (eager|lazy).
-	Loading(v string) HTMLIFrame
+	// Loading indicates how the browser should load the iframe (eager|lazy). Uses the given format and values.
+	Loading(format string, v ...any) HTMLIFrame
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLIFrame
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLIFrame
 
-	// ReferrerPolicy specifies how much/which referrer information that will be sent when processing the iframe attributes
-	ReferrerPolicy(v string) HTMLIFrame
+	// ReferrerPolicy specifies how much/which referrer information that will be sent when processing the iframe attributes. Uses the given format and values.
+	ReferrerPolicy(format string, v ...any) HTMLIFrame
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLIFrame
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLIFrame
 
 	// Sandbox enables an extra set of restrictions for the content in an iframe.
 	Sandbox(v any) HTMLIFrame
@@ -24385,8 +24385,8 @@ type HTMLIFrame interface {
 	// Src specifies the URL of the media file with the given format and values.
 	Src(format string, v ...any) HTMLIFrame
 
-	// SrcDoc specifies the HTML content of the page to show in the iframe.
-	SrcDoc(v string) HTMLIFrame
+	// SrcDoc specifies the HTML content of the page to show in the iframe with the given format and values.
+	SrcDoc(format string, v ...any) HTMLIFrame
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLIFrame
@@ -24541,13 +24541,13 @@ func (e *htmlIFrame) Textf(format string, v ...any) HTMLIFrame {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlIFrame) AccessKey(v string) HTMLIFrame {
-	e.setAttr("accesskey", v)
+func (e *htmlIFrame) AccessKey(format string, v ...any) HTMLIFrame {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIFrame) Allow(v string) HTMLIFrame {
-	e.setAttr("allow", v)
+func (e *htmlIFrame) Allow(format string, v ...any) HTMLIFrame {
+	e.setAttr("allow", FormatString(format, v...))
 	return e
 }
 
@@ -24603,8 +24603,8 @@ func (e *htmlIFrame) DataSets(ds map[string]any) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Dir(v string) HTMLIFrame {
-	e.setAttr("dir", v)
+func (e *htmlIFrame) Dir(format string, v ...any) HTMLIFrame {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -24623,33 +24623,33 @@ func (e *htmlIFrame) Hidden(v bool) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) ID(v string) HTMLIFrame {
-	e.setAttr("id", v)
+func (e *htmlIFrame) ID(format string, v ...any) HTMLIFrame {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIFrame) Lang(v string) HTMLIFrame {
-	e.setAttr("lang", v)
+func (e *htmlIFrame) Lang(format string, v ...any) HTMLIFrame {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIFrame) Loading(v string) HTMLIFrame {
-	e.setAttr("loading", v)
+func (e *htmlIFrame) Loading(format string, v ...any) HTMLIFrame {
+	e.setAttr("loading", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIFrame) Name(v string) HTMLIFrame {
-	e.setAttr("name", v)
+func (e *htmlIFrame) Name(format string, v ...any) HTMLIFrame {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIFrame) ReferrerPolicy(v string) HTMLIFrame {
-	e.setAttr("referrerpolicy", v)
+func (e *htmlIFrame) ReferrerPolicy(format string, v ...any) HTMLIFrame {
+	e.setAttr("referrerpolicy", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIFrame) Role(v string) HTMLIFrame {
-	e.setAttr("role", v)
+func (e *htmlIFrame) Role(format string, v ...any) HTMLIFrame {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -24673,8 +24673,8 @@ func (e *htmlIFrame) Src(format string, v ...any) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) SrcDoc(v string) HTMLIFrame {
-	e.setAttr("srcdoc", v)
+func (e *htmlIFrame) SrcDoc(format string, v ...any) HTMLIFrame {
+	e.setAttr("srcdoc", FormatString(format, v...))
 	return e
 }
 
@@ -24889,11 +24889,11 @@ func (e *htmlIFrame) OnWheel(h EventHandler, scope ...any) HTMLIFrame {
 type HTMLImg interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLImg
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLImg
 
-	// Alt specifies an alternate text when the original element fails to display.
-	Alt(v string) HTMLImg
+	// Alt specifies an alternate text with the given format and values when the original element fails to display.
+	Alt(format string, v ...any) HTMLImg
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLImg
@@ -24907,8 +24907,8 @@ type HTMLImg interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLImg
 
-	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
-	CrossOrigin(v string) HTMLImg
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request with the given format and values.
+	CrossOrigin(format string, v ...any) HTMLImg
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLImg
@@ -24916,8 +24916,8 @@ type HTMLImg interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLImg
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLImg
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLImg
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLImg
@@ -24928,20 +24928,20 @@ type HTMLImg interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLImg
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLImg
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLImg
 
 	// IsMap specifies an image as a server-side image-map.
 	IsMap(v bool) HTMLImg
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLImg
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLImg
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLImg
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLImg
 
-	// Sizes specifies the size of the linked resource.
-	Sizes(v string) HTMLImg
+	// Sizes specifies the size of the linked resource with the given format and values.
+	Sizes(format string, v ...any) HTMLImg
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLImg
@@ -24964,8 +24964,8 @@ type HTMLImg interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLImg
 
-	// UseMap specifies an image as a client-side image-map.
-	UseMap(v string) HTMLImg
+	// UseMap specifies an image as a client-side image-map. Uses the given format and values.
+	UseMap(format string, v ...any) HTMLImg
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLImg
@@ -25164,13 +25164,13 @@ type htmlImg struct {
 	htmlElement
 }
 
-func (e *htmlImg) AccessKey(v string) HTMLImg {
-	e.setAttr("accesskey", v)
+func (e *htmlImg) AccessKey(format string, v ...any) HTMLImg {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlImg) Alt(v string) HTMLImg {
-	e.setAttr("alt", v)
+func (e *htmlImg) Alt(format string, v ...any) HTMLImg {
+	e.setAttr("alt", FormatString(format, v...))
 	return e
 }
 
@@ -25194,8 +25194,8 @@ func (e *htmlImg) ContentEditable(v bool) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) CrossOrigin(v string) HTMLImg {
-	e.setAttr("crossorigin", v)
+func (e *htmlImg) CrossOrigin(format string, v ...any) HTMLImg {
+	e.setAttr("crossorigin", FormatString(format, v...))
 	return e
 }
 
@@ -25211,8 +25211,8 @@ func (e *htmlImg) DataSets(ds map[string]any) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Dir(v string) HTMLImg {
-	e.setAttr("dir", v)
+func (e *htmlImg) Dir(format string, v ...any) HTMLImg {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -25231,8 +25231,8 @@ func (e *htmlImg) Hidden(v bool) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) ID(v string) HTMLImg {
-	e.setAttr("id", v)
+func (e *htmlImg) ID(format string, v ...any) HTMLImg {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
@@ -25241,18 +25241,18 @@ func (e *htmlImg) IsMap(v bool) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Lang(v string) HTMLImg {
-	e.setAttr("lang", v)
+func (e *htmlImg) Lang(format string, v ...any) HTMLImg {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlImg) Role(v string) HTMLImg {
-	e.setAttr("role", v)
+func (e *htmlImg) Role(format string, v ...any) HTMLImg {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlImg) Sizes(v string) HTMLImg {
-	e.setAttr("sizes", v)
+func (e *htmlImg) Sizes(format string, v ...any) HTMLImg {
+	e.setAttr("sizes", FormatString(format, v...))
 	return e
 }
 
@@ -25298,8 +25298,8 @@ func (e *htmlImg) Title(format string, v ...any) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) UseMap(v string) HTMLImg {
-	e.setAttr("usemap", v)
+func (e *htmlImg) UseMap(format string, v ...any) HTMLImg {
+	e.setAttr("usemap", FormatString(format, v...))
 	return e
 }
 
@@ -25607,14 +25607,14 @@ func (e *htmlImg) OnWheel(h EventHandler, scope ...any) HTMLImg {
 type HTMLInput interface {
 	UI
 
-	// Accept specifies the types of files that the server accepts (only for file type).
-	Accept(v string) HTMLInput
+	// Accept specifies the types of files that the server accepts (only for file type) with the given format and values.
+	Accept(format string, v ...any) HTMLInput
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLInput
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLInput
 
-	// Alt specifies an alternate text when the original element fails to display.
-	Alt(v string) HTMLInput
+	// Alt specifies an alternate text with the given format and values when the original element fails to display.
+	Alt(format string, v ...any) HTMLInput
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLInput
@@ -25628,8 +25628,8 @@ type HTMLInput interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLInput
 
-	// Capture specifies the capture input method in file upload controls
-	Capture(v string) HTMLInput
+	// Capture specifies the capture input method in file upload controls with the given format and values.
+	Capture(format string, v ...any) HTMLInput
 
 	// Checked specifies that an input element should be pre-selected when the page loads (for checkbox or radio types).
 	Checked(v bool) HTMLInput
@@ -25646,11 +25646,11 @@ type HTMLInput interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLInput
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLInput
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLInput
 
-	// DirName specifies that the text direction will be submitted.
-	DirName(v string) HTMLInput
+	// DirName specifies that the text direction will be submitted using the given format and values.
+	DirName(format string, v ...any) HTMLInput
 
 	// Disabled specifies that the specified element/group of elements should be disabled.
 	Disabled(v bool) HTMLInput
@@ -25658,23 +25658,23 @@ type HTMLInput interface {
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLInput
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLInput
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLInput
 
-	// FormAction specifies where to send the form-data when a form is submitted. Only for submit type.
-	FormAction(v string) HTMLInput
+	// FormAction specifies where to send the form-data when a form is submitted. Only for submit type. Uses the given format and values.
+	FormAction(format string, v ...any) HTMLInput
 
-	// FormEncType specifies how form-data should be encoded before sending it to a server. Only for submit type.
-	FormEncType(v string) HTMLInput
+	// FormEncType specifies how form-data should be encoded before sending it to a server. Only for submit type. Uses the given format and values.
+	FormEncType(format string, v ...any) HTMLInput
 
-	// FormMethod specifies how to send the form-data (which HTTP method to use). Only for submit type.
-	FormMethod(v string) HTMLInput
+	// FormMethod specifies how to send the form-data (which HTTP method to use). Only for submit type. Uses the given format and values.
+	FormMethod(format string, v ...any) HTMLInput
 
 	// FormNoValidate specifies that the form-data should not be validated on submission. Only for submit type.
 	FormNoValidate(v bool) HTMLInput
 
-	// FormTarget specifies where to display the response after submitting the form. Only for submit type.
-	FormTarget(v string) HTMLInput
+	// FormTarget specifies where to display the response after submitting the form. Only for submit type. Uses the given format and values.
+	FormTarget(format string, v ...any) HTMLInput
 
 	// Height specifies the height of the element (in pixels).
 	Height(v int) HTMLInput
@@ -25682,14 +25682,14 @@ type HTMLInput interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLInput
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLInput
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLInput
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLInput
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLInput
 
-	// List refers to a datalist element that contains pre-defined options for an input element.
-	List(v string) HTMLInput
+	// List refers to a datalist element that contains pre-defined options for an input element. Uses the given format and values.
+	List(format string, v ...any) HTMLInput
 
 	// Max Specifies the maximum value.
 	Max(v any) HTMLInput
@@ -25703,14 +25703,14 @@ type HTMLInput interface {
 	// Multiple specifies that a user can enter more than one value.
 	Multiple(v bool) HTMLInput
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLInput
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLInput
 
-	// Pattern specifies a regular expression that an input element's value is checked against.
-	Pattern(v string) HTMLInput
+	// Pattern specifies a regular expression that an input element's value is checked against. Uses the given format and values.
+	Pattern(format string, v ...any) HTMLInput
 
-	// Placeholder specifies a short hint that describes the expected value of the element.
-	Placeholder(v string) HTMLInput
+	// Placeholder specifies a short hint that describes the expected value of the element. Uses the given format and values.
+	Placeholder(format string, v ...any) HTMLInput
 
 	// ReadOnly specifies that the element is read-only.
 	ReadOnly(v bool) HTMLInput
@@ -25718,8 +25718,8 @@ type HTMLInput interface {
 	// Required specifies that the element must be filled out before submitting the form.
 	Required(v bool) HTMLInput
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLInput
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLInput
 
 	// Size specifies the width.
 	Size(v int) HTMLInput
@@ -25745,8 +25745,8 @@ type HTMLInput interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLInput
 
-	// Type specifies the type of element.
-	Type(v string) HTMLInput
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLInput
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLInput
@@ -25879,18 +25879,18 @@ type htmlInput struct {
 	htmlElement
 }
 
-func (e *htmlInput) Accept(v string) HTMLInput {
-	e.setAttr("accept", v)
+func (e *htmlInput) Accept(format string, v ...any) HTMLInput {
+	e.setAttr("accept", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) AccessKey(v string) HTMLInput {
-	e.setAttr("accesskey", v)
+func (e *htmlInput) AccessKey(format string, v ...any) HTMLInput {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) Alt(v string) HTMLInput {
-	e.setAttr("alt", v)
+func (e *htmlInput) Alt(format string, v ...any) HTMLInput {
+	e.setAttr("alt", FormatString(format, v...))
 	return e
 }
 
@@ -25919,8 +25919,8 @@ func (e *htmlInput) AutoFocus(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Capture(v string) HTMLInput {
-	e.setAttr("capture", v)
+func (e *htmlInput) Capture(format string, v ...any) HTMLInput {
+	e.setAttr("capture", FormatString(format, v...))
 	return e
 }
 
@@ -25951,13 +25951,13 @@ func (e *htmlInput) DataSets(ds map[string]any) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Dir(v string) HTMLInput {
-	e.setAttr("dir", v)
+func (e *htmlInput) Dir(format string, v ...any) HTMLInput {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) DirName(v string) HTMLInput {
-	e.setAttr("dirname", v)
+func (e *htmlInput) DirName(format string, v ...any) HTMLInput {
+	e.setAttr("dirname", FormatString(format, v...))
 	return e
 }
 
@@ -25971,23 +25971,23 @@ func (e *htmlInput) Draggable(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Form(v string) HTMLInput {
-	e.setAttr("form", v)
+func (e *htmlInput) Form(format string, v ...any) HTMLInput {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) FormAction(v string) HTMLInput {
-	e.setAttr("formaction", v)
+func (e *htmlInput) FormAction(format string, v ...any) HTMLInput {
+	e.setAttr("formaction", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) FormEncType(v string) HTMLInput {
-	e.setAttr("formenctype", v)
+func (e *htmlInput) FormEncType(format string, v ...any) HTMLInput {
+	e.setAttr("formenctype", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) FormMethod(v string) HTMLInput {
-	e.setAttr("formmethod", v)
+func (e *htmlInput) FormMethod(format string, v ...any) HTMLInput {
+	e.setAttr("formmethod", FormatString(format, v...))
 	return e
 }
 
@@ -25996,8 +25996,8 @@ func (e *htmlInput) FormNoValidate(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) FormTarget(v string) HTMLInput {
-	e.setAttr("formtarget", v)
+func (e *htmlInput) FormTarget(format string, v ...any) HTMLInput {
+	e.setAttr("formtarget", FormatString(format, v...))
 	return e
 }
 
@@ -26011,18 +26011,18 @@ func (e *htmlInput) Hidden(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) ID(v string) HTMLInput {
-	e.setAttr("id", v)
+func (e *htmlInput) ID(format string, v ...any) HTMLInput {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) Lang(v string) HTMLInput {
-	e.setAttr("lang", v)
+func (e *htmlInput) Lang(format string, v ...any) HTMLInput {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) List(v string) HTMLInput {
-	e.setAttr("list", v)
+func (e *htmlInput) List(format string, v ...any) HTMLInput {
+	e.setAttr("list", FormatString(format, v...))
 	return e
 }
 
@@ -26046,18 +26046,18 @@ func (e *htmlInput) Multiple(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Name(v string) HTMLInput {
-	e.setAttr("name", v)
+func (e *htmlInput) Name(format string, v ...any) HTMLInput {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) Pattern(v string) HTMLInput {
-	e.setAttr("pattern", v)
+func (e *htmlInput) Pattern(format string, v ...any) HTMLInput {
+	e.setAttr("pattern", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlInput) Placeholder(v string) HTMLInput {
-	e.setAttr("placeholder", v)
+func (e *htmlInput) Placeholder(format string, v ...any) HTMLInput {
+	e.setAttr("placeholder", FormatString(format, v...))
 	return e
 }
 
@@ -26071,8 +26071,8 @@ func (e *htmlInput) Required(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Role(v string) HTMLInput {
-	e.setAttr("role", v)
+func (e *htmlInput) Role(format string, v ...any) HTMLInput {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -26123,8 +26123,8 @@ func (e *htmlInput) Title(format string, v ...any) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Type(v string) HTMLInput {
-	e.setAttr("type", v)
+func (e *htmlInput) Type(format string, v ...any) HTMLInput {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -26331,8 +26331,8 @@ type HTMLIns interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLIns
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLIns
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLIns
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLIns
@@ -26352,8 +26352,8 @@ type HTMLIns interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLIns
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLIns
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLIns
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLIns
@@ -26361,14 +26361,14 @@ type HTMLIns interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLIns
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLIns
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLIns
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLIns
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLIns
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLIns
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLIns
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLIns
@@ -26520,8 +26520,8 @@ func (e *htmlIns) Textf(format string, v ...any) HTMLIns {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlIns) AccessKey(v string) HTMLIns {
-	e.setAttr("accesskey", v)
+func (e *htmlIns) AccessKey(format string, v ...any) HTMLIns {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -26557,8 +26557,8 @@ func (e *htmlIns) DataSets(ds map[string]any) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) Dir(v string) HTMLIns {
-	e.setAttr("dir", v)
+func (e *htmlIns) Dir(format string, v ...any) HTMLIns {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -26572,18 +26572,18 @@ func (e *htmlIns) Hidden(v bool) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) ID(v string) HTMLIns {
-	e.setAttr("id", v)
+func (e *htmlIns) ID(format string, v ...any) HTMLIns {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIns) Lang(v string) HTMLIns {
-	e.setAttr("lang", v)
+func (e *htmlIns) Lang(format string, v ...any) HTMLIns {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlIns) Role(v string) HTMLIns {
-	e.setAttr("role", v)
+func (e *htmlIns) Role(format string, v ...any) HTMLIns {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -26807,8 +26807,8 @@ type HTMLKbd interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLKbd
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLKbd
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLKbd
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLKbd
@@ -26828,8 +26828,8 @@ type HTMLKbd interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLKbd
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLKbd
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLKbd
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLKbd
@@ -26837,14 +26837,14 @@ type HTMLKbd interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLKbd
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLKbd
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLKbd
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLKbd
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLKbd
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLKbd
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLKbd
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLKbd
@@ -26996,8 +26996,8 @@ func (e *htmlKbd) Textf(format string, v ...any) HTMLKbd {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlKbd) AccessKey(v string) HTMLKbd {
-	e.setAttr("accesskey", v)
+func (e *htmlKbd) AccessKey(format string, v ...any) HTMLKbd {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -27033,8 +27033,8 @@ func (e *htmlKbd) DataSets(ds map[string]any) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) Dir(v string) HTMLKbd {
-	e.setAttr("dir", v)
+func (e *htmlKbd) Dir(format string, v ...any) HTMLKbd {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -27048,18 +27048,18 @@ func (e *htmlKbd) Hidden(v bool) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) ID(v string) HTMLKbd {
-	e.setAttr("id", v)
+func (e *htmlKbd) ID(format string, v ...any) HTMLKbd {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlKbd) Lang(v string) HTMLKbd {
-	e.setAttr("lang", v)
+func (e *htmlKbd) Lang(format string, v ...any) HTMLKbd {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlKbd) Role(v string) HTMLKbd {
-	e.setAttr("role", v)
+func (e *htmlKbd) Role(format string, v ...any) HTMLKbd {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -27283,8 +27283,8 @@ type HTMLLabel interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLLabel
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLLabel
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLLabel
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLLabel
@@ -27304,29 +27304,29 @@ type HTMLLabel interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLLabel
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLLabel
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLLabel
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLLabel
 
-	// For specifies which form element(s) a label/calculation is bound to.
-	For(v string) HTMLLabel
+	// For specifies which form element(s) a label/calculation is bound to. Uses the given format and values.
+	For(format string, v ...any) HTMLLabel
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLLabel
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLLabel
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLLabel
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLLabel
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLLabel
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLLabel
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLLabel
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLLabel
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLLabel
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLLabel
@@ -27478,8 +27478,8 @@ func (e *htmlLabel) Textf(format string, v ...any) HTMLLabel {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlLabel) AccessKey(v string) HTMLLabel {
-	e.setAttr("accesskey", v)
+func (e *htmlLabel) AccessKey(format string, v ...any) HTMLLabel {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -27515,8 +27515,8 @@ func (e *htmlLabel) DataSets(ds map[string]any) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) Dir(v string) HTMLLabel {
-	e.setAttr("dir", v)
+func (e *htmlLabel) Dir(format string, v ...any) HTMLLabel {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -27525,13 +27525,13 @@ func (e *htmlLabel) Draggable(v bool) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) For(v string) HTMLLabel {
-	e.setAttr("for", v)
+func (e *htmlLabel) For(format string, v ...any) HTMLLabel {
+	e.setAttr("for", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLabel) Form(v string) HTMLLabel {
-	e.setAttr("form", v)
+func (e *htmlLabel) Form(format string, v ...any) HTMLLabel {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
@@ -27540,18 +27540,18 @@ func (e *htmlLabel) Hidden(v bool) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) ID(v string) HTMLLabel {
-	e.setAttr("id", v)
+func (e *htmlLabel) ID(format string, v ...any) HTMLLabel {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLabel) Lang(v string) HTMLLabel {
-	e.setAttr("lang", v)
+func (e *htmlLabel) Lang(format string, v ...any) HTMLLabel {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLabel) Role(v string) HTMLLabel {
-	e.setAttr("role", v)
+func (e *htmlLabel) Role(format string, v ...any) HTMLLabel {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -27775,8 +27775,8 @@ type HTMLLegend interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLLegend
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLLegend
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLLegend
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLLegend
@@ -27796,8 +27796,8 @@ type HTMLLegend interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLLegend
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLLegend
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLLegend
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLLegend
@@ -27805,14 +27805,14 @@ type HTMLLegend interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLLegend
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLLegend
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLLegend
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLLegend
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLLegend
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLLegend
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLLegend
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLLegend
@@ -27964,8 +27964,8 @@ func (e *htmlLegend) Textf(format string, v ...any) HTMLLegend {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlLegend) AccessKey(v string) HTMLLegend {
-	e.setAttr("accesskey", v)
+func (e *htmlLegend) AccessKey(format string, v ...any) HTMLLegend {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -28001,8 +28001,8 @@ func (e *htmlLegend) DataSets(ds map[string]any) HTMLLegend {
 	return e
 }
 
-func (e *htmlLegend) Dir(v string) HTMLLegend {
-	e.setAttr("dir", v)
+func (e *htmlLegend) Dir(format string, v ...any) HTMLLegend {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -28016,18 +28016,18 @@ func (e *htmlLegend) Hidden(v bool) HTMLLegend {
 	return e
 }
 
-func (e *htmlLegend) ID(v string) HTMLLegend {
-	e.setAttr("id", v)
+func (e *htmlLegend) ID(format string, v ...any) HTMLLegend {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLegend) Lang(v string) HTMLLegend {
-	e.setAttr("lang", v)
+func (e *htmlLegend) Lang(format string, v ...any) HTMLLegend {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLegend) Role(v string) HTMLLegend {
-	e.setAttr("role", v)
+func (e *htmlLegend) Role(format string, v ...any) HTMLLegend {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -28251,8 +28251,8 @@ type HTMLLi interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLLi
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLLi
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLLi
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLLi
@@ -28272,8 +28272,8 @@ type HTMLLi interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLLi
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLLi
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLLi
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLLi
@@ -28281,14 +28281,14 @@ type HTMLLi interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLLi
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLLi
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLLi
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLLi
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLLi
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLLi
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLLi
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLLi
@@ -28443,8 +28443,8 @@ func (e *htmlLi) Textf(format string, v ...any) HTMLLi {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlLi) AccessKey(v string) HTMLLi {
-	e.setAttr("accesskey", v)
+func (e *htmlLi) AccessKey(format string, v ...any) HTMLLi {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -28480,8 +28480,8 @@ func (e *htmlLi) DataSets(ds map[string]any) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) Dir(v string) HTMLLi {
-	e.setAttr("dir", v)
+func (e *htmlLi) Dir(format string, v ...any) HTMLLi {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -28495,18 +28495,18 @@ func (e *htmlLi) Hidden(v bool) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) ID(v string) HTMLLi {
-	e.setAttr("id", v)
+func (e *htmlLi) ID(format string, v ...any) HTMLLi {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLi) Lang(v string) HTMLLi {
-	e.setAttr("lang", v)
+func (e *htmlLi) Lang(format string, v ...any) HTMLLi {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLi) Role(v string) HTMLLi {
-	e.setAttr("role", v)
+func (e *htmlLi) Role(format string, v ...any) HTMLLi {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -28726,14 +28726,14 @@ func (e *htmlLi) OnWheel(h EventHandler, scope ...any) HTMLLi {
 type HTMLLink interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLLink
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLLink
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLLink
 
-	// As specifies a resource type to preload.
-	As(v string) HTMLLink
+	// As specifies a resource type to preload with the given format and values.
+	As(format string, v ...any) HTMLLink
 
 	// Attr sets the named attribute with the given value.
 	Attr(n string, v any) HTMLLink
@@ -28744,8 +28744,8 @@ type HTMLLink interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLink
 
-	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
-	CrossOrigin(v string) HTMLLink
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request with the given format and values.
+	CrossOrigin(format string, v ...any) HTMLLink
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLLink
@@ -28753,8 +28753,8 @@ type HTMLLink interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLLink
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLLink
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLLink
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLLink
@@ -28765,26 +28765,26 @@ type HTMLLink interface {
 	// Href specifies the URL of the page the link goes to with the given format and values.
 	Href(format string, v ...any) HTMLLink
 
-	// HrefLang specifies the language of the linked document.
-	HrefLang(v string) HTMLLink
+	// HrefLang specifies the language of the linked document with the given format and values.
+	HrefLang(format string, v ...any) HTMLLink
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLLink
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLLink
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLLink
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLLink
 
-	// Media specifies what media/device the linked document is optimized for.
-	Media(v string) HTMLLink
+	// Media specifies what media/device the linked document is optimized for. Uses the given format and values.
+	Media(format string, v ...any) HTMLLink
 
-	// Rel specifies the relationship between the current document and the linked document.
-	Rel(v string) HTMLLink
+	// Rel specifies the relationship between the current document and the linked document. uses the given format and values.
+	Rel(format string, v ...any) HTMLLink
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLLink
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLLink
 
-	// Sizes specifies the size of the linked resource.
-	Sizes(v string) HTMLLink
+	// Sizes specifies the size of the linked resource with the given format and values.
+	Sizes(format string, v ...any) HTMLLink
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLLink
@@ -28801,8 +28801,8 @@ type HTMLLink interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLLink
 
-	// Type specifies the type of element.
-	Type(v string) HTMLLink
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLLink
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLink
@@ -28929,8 +28929,8 @@ type htmlLink struct {
 	htmlElement
 }
 
-func (e *htmlLink) AccessKey(v string) HTMLLink {
-	e.setAttr("accesskey", v)
+func (e *htmlLink) AccessKey(format string, v ...any) HTMLLink {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -28939,8 +28939,8 @@ func (e *htmlLink) Aria(k string, v any) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) As(v string) HTMLLink {
-	e.setAttr("as", v)
+func (e *htmlLink) As(format string, v ...any) HTMLLink {
+	e.setAttr("as", FormatString(format, v...))
 	return e
 }
 
@@ -28959,8 +28959,8 @@ func (e *htmlLink) ContentEditable(v bool) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) CrossOrigin(v string) HTMLLink {
-	e.setAttr("crossorigin", v)
+func (e *htmlLink) CrossOrigin(format string, v ...any) HTMLLink {
+	e.setAttr("crossorigin", FormatString(format, v...))
 	return e
 }
 
@@ -28976,8 +28976,8 @@ func (e *htmlLink) DataSets(ds map[string]any) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Dir(v string) HTMLLink {
-	e.setAttr("dir", v)
+func (e *htmlLink) Dir(format string, v ...any) HTMLLink {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -28996,38 +28996,38 @@ func (e *htmlLink) Href(format string, v ...any) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) HrefLang(v string) HTMLLink {
-	e.setAttr("hreflang", v)
+func (e *htmlLink) HrefLang(format string, v ...any) HTMLLink {
+	e.setAttr("hreflang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLink) ID(v string) HTMLLink {
-	e.setAttr("id", v)
+func (e *htmlLink) ID(format string, v ...any) HTMLLink {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLink) Lang(v string) HTMLLink {
-	e.setAttr("lang", v)
+func (e *htmlLink) Lang(format string, v ...any) HTMLLink {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLink) Media(v string) HTMLLink {
-	e.setAttr("media", v)
+func (e *htmlLink) Media(format string, v ...any) HTMLLink {
+	e.setAttr("media", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLink) Rel(v string) HTMLLink {
-	e.setAttr("rel", v)
+func (e *htmlLink) Rel(format string, v ...any) HTMLLink {
+	e.setAttr("rel", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLink) Role(v string) HTMLLink {
-	e.setAttr("role", v)
+func (e *htmlLink) Role(format string, v ...any) HTMLLink {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlLink) Sizes(v string) HTMLLink {
-	e.setAttr("sizes", v)
+func (e *htmlLink) Sizes(format string, v ...any) HTMLLink {
+	e.setAttr("sizes", FormatString(format, v...))
 	return e
 }
 
@@ -29063,8 +29063,8 @@ func (e *htmlLink) Title(format string, v ...any) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Type(v string) HTMLLink {
-	e.setAttr("type", v)
+func (e *htmlLink) Type(format string, v ...any) HTMLLink {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -29261,8 +29261,8 @@ type HTMLMain interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLMain
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLMain
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLMain
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLMain
@@ -29282,8 +29282,8 @@ type HTMLMain interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLMain
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLMain
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLMain
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLMain
@@ -29291,14 +29291,14 @@ type HTMLMain interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLMain
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLMain
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLMain
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLMain
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLMain
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLMain
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLMain
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMain
@@ -29450,8 +29450,8 @@ func (e *htmlMain) Textf(format string, v ...any) HTMLMain {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlMain) AccessKey(v string) HTMLMain {
-	e.setAttr("accesskey", v)
+func (e *htmlMain) AccessKey(format string, v ...any) HTMLMain {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -29487,8 +29487,8 @@ func (e *htmlMain) DataSets(ds map[string]any) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) Dir(v string) HTMLMain {
-	e.setAttr("dir", v)
+func (e *htmlMain) Dir(format string, v ...any) HTMLMain {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -29502,18 +29502,18 @@ func (e *htmlMain) Hidden(v bool) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) ID(v string) HTMLMain {
-	e.setAttr("id", v)
+func (e *htmlMain) ID(format string, v ...any) HTMLMain {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMain) Lang(v string) HTMLMain {
-	e.setAttr("lang", v)
+func (e *htmlMain) Lang(format string, v ...any) HTMLMain {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMain) Role(v string) HTMLMain {
-	e.setAttr("role", v)
+func (e *htmlMain) Role(format string, v ...any) HTMLMain {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -29737,8 +29737,8 @@ type HTMLMap interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLMap
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLMap
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLMap
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLMap
@@ -29758,8 +29758,8 @@ type HTMLMap interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLMap
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLMap
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLMap
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLMap
@@ -29767,17 +29767,17 @@ type HTMLMap interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLMap
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLMap
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLMap
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLMap
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLMap
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLMap
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLMap
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLMap
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLMap
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMap
@@ -29929,8 +29929,8 @@ func (e *htmlMap) Textf(format string, v ...any) HTMLMap {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlMap) AccessKey(v string) HTMLMap {
-	e.setAttr("accesskey", v)
+func (e *htmlMap) AccessKey(format string, v ...any) HTMLMap {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -29966,8 +29966,8 @@ func (e *htmlMap) DataSets(ds map[string]any) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) Dir(v string) HTMLMap {
-	e.setAttr("dir", v)
+func (e *htmlMap) Dir(format string, v ...any) HTMLMap {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -29981,23 +29981,23 @@ func (e *htmlMap) Hidden(v bool) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) ID(v string) HTMLMap {
-	e.setAttr("id", v)
+func (e *htmlMap) ID(format string, v ...any) HTMLMap {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMap) Lang(v string) HTMLMap {
-	e.setAttr("lang", v)
+func (e *htmlMap) Lang(format string, v ...any) HTMLMap {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMap) Name(v string) HTMLMap {
-	e.setAttr("name", v)
+func (e *htmlMap) Name(format string, v ...any) HTMLMap {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMap) Role(v string) HTMLMap {
-	e.setAttr("role", v)
+func (e *htmlMap) Role(format string, v ...any) HTMLMap {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -30221,8 +30221,8 @@ type HTMLMark interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLMark
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLMark
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLMark
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLMark
@@ -30242,8 +30242,8 @@ type HTMLMark interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLMark
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLMark
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLMark
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLMark
@@ -30251,14 +30251,14 @@ type HTMLMark interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLMark
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLMark
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLMark
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLMark
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLMark
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLMark
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLMark
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMark
@@ -30410,8 +30410,8 @@ func (e *htmlMark) Textf(format string, v ...any) HTMLMark {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlMark) AccessKey(v string) HTMLMark {
-	e.setAttr("accesskey", v)
+func (e *htmlMark) AccessKey(format string, v ...any) HTMLMark {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -30447,8 +30447,8 @@ func (e *htmlMark) DataSets(ds map[string]any) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) Dir(v string) HTMLMark {
-	e.setAttr("dir", v)
+func (e *htmlMark) Dir(format string, v ...any) HTMLMark {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -30462,18 +30462,18 @@ func (e *htmlMark) Hidden(v bool) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) ID(v string) HTMLMark {
-	e.setAttr("id", v)
+func (e *htmlMark) ID(format string, v ...any) HTMLMark {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMark) Lang(v string) HTMLMark {
-	e.setAttr("lang", v)
+func (e *htmlMark) Lang(format string, v ...any) HTMLMark {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMark) Role(v string) HTMLMark {
-	e.setAttr("role", v)
+func (e *htmlMark) Role(format string, v ...any) HTMLMark {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -30688,8 +30688,8 @@ func (e *htmlMark) OnWheel(h EventHandler, scope ...any) HTMLMark {
 type HTMLMeta interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLMeta
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLMeta
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLMeta
@@ -30697,14 +30697,14 @@ type HTMLMeta interface {
 	// Attr sets the named attribute with the given value.
 	Attr(n string, v any) HTMLMeta
 
-	// Charset specifies the character encoding.
-	Charset(v string) HTMLMeta
+	// Charset specifies the character encoding with the given format and values.
+	Charset(format string, v ...any) HTMLMeta
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMeta
 
-	// Content gives the value associated with the http-equiv or name attribute.
-	Content(v string) HTMLMeta
+	// Content specifies the value associated with the http-equiv or name attribute using the given format and values.
+	Content(format string, v ...any) HTMLMeta
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMeta
@@ -30715,8 +30715,8 @@ type HTMLMeta interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLMeta
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLMeta
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLMeta
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLMeta
@@ -30727,20 +30727,20 @@ type HTMLMeta interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLMeta
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLMeta
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLMeta
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLMeta
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLMeta
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLMeta
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLMeta
 
-	// Property specifies the property name.
-	Property(v string) HTMLMeta
+	// Property specifies the property name with the given format and values.
+	Property(format string, v ...any) HTMLMeta
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLMeta
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLMeta
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMeta
@@ -30777,8 +30777,8 @@ type htmlMeta struct {
 	htmlElement
 }
 
-func (e *htmlMeta) AccessKey(v string) HTMLMeta {
-	e.setAttr("accesskey", v)
+func (e *htmlMeta) AccessKey(format string, v ...any) HTMLMeta {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -30792,8 +30792,8 @@ func (e *htmlMeta) Attr(n string, v any) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Charset(v string) HTMLMeta {
-	e.setAttr("charset", v)
+func (e *htmlMeta) Charset(format string, v ...any) HTMLMeta {
+	e.setAttr("charset", FormatString(format, v...))
 	return e
 }
 
@@ -30802,8 +30802,8 @@ func (e *htmlMeta) Class(v ...string) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Content(v string) HTMLMeta {
-	e.setAttr("content", v)
+func (e *htmlMeta) Content(format string, v ...any) HTMLMeta {
+	e.setAttr("content", FormatString(format, v...))
 	return e
 }
 
@@ -30824,8 +30824,8 @@ func (e *htmlMeta) DataSets(ds map[string]any) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Dir(v string) HTMLMeta {
-	e.setAttr("dir", v)
+func (e *htmlMeta) Dir(format string, v ...any) HTMLMeta {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -30844,28 +30844,28 @@ func (e *htmlMeta) Hidden(v bool) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) ID(v string) HTMLMeta {
-	e.setAttr("id", v)
+func (e *htmlMeta) ID(format string, v ...any) HTMLMeta {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMeta) Lang(v string) HTMLMeta {
-	e.setAttr("lang", v)
+func (e *htmlMeta) Lang(format string, v ...any) HTMLMeta {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMeta) Name(v string) HTMLMeta {
-	e.setAttr("name", v)
+func (e *htmlMeta) Name(format string, v ...any) HTMLMeta {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMeta) Property(v string) HTMLMeta {
-	e.setAttr("property", v)
+func (e *htmlMeta) Property(format string, v ...any) HTMLMeta {
+	e.setAttr("property", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMeta) Role(v string) HTMLMeta {
-	e.setAttr("role", v)
+func (e *htmlMeta) Role(format string, v ...any) HTMLMeta {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -30919,8 +30919,8 @@ type HTMLMeter interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLMeter
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLMeter
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLMeter
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLMeter
@@ -30940,14 +30940,14 @@ type HTMLMeter interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLMeter
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLMeter
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLMeter
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLMeter
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLMeter
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLMeter
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLMeter
@@ -30955,11 +30955,11 @@ type HTMLMeter interface {
 	// High specifies the range that is considered to be a high value.
 	High(v float64) HTMLMeter
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLMeter
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLMeter
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLMeter
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLMeter
 
 	// Low specifies the range that is considered to be a low value.
 	Low(v float64) HTMLMeter
@@ -30973,8 +30973,8 @@ type HTMLMeter interface {
 	// Optimum specifies what value is the optimal value for the gauge.
 	Optimum(v float64) HTMLMeter
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLMeter
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLMeter
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMeter
@@ -31129,8 +31129,8 @@ func (e *htmlMeter) Textf(format string, v ...any) HTMLMeter {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlMeter) AccessKey(v string) HTMLMeter {
-	e.setAttr("accesskey", v)
+func (e *htmlMeter) AccessKey(format string, v ...any) HTMLMeter {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -31166,8 +31166,8 @@ func (e *htmlMeter) DataSets(ds map[string]any) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Dir(v string) HTMLMeter {
-	e.setAttr("dir", v)
+func (e *htmlMeter) Dir(format string, v ...any) HTMLMeter {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -31176,8 +31176,8 @@ func (e *htmlMeter) Draggable(v bool) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Form(v string) HTMLMeter {
-	e.setAttr("form", v)
+func (e *htmlMeter) Form(format string, v ...any) HTMLMeter {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
@@ -31191,13 +31191,13 @@ func (e *htmlMeter) High(v float64) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) ID(v string) HTMLMeter {
-	e.setAttr("id", v)
+func (e *htmlMeter) ID(format string, v ...any) HTMLMeter {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlMeter) Lang(v string) HTMLMeter {
-	e.setAttr("lang", v)
+func (e *htmlMeter) Lang(format string, v ...any) HTMLMeter {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -31221,8 +31221,8 @@ func (e *htmlMeter) Optimum(v float64) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Role(v string) HTMLMeter {
-	e.setAttr("role", v)
+func (e *htmlMeter) Role(format string, v ...any) HTMLMeter {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -31451,8 +31451,8 @@ type HTMLNav interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLNav
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLNav
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLNav
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLNav
@@ -31472,8 +31472,8 @@ type HTMLNav interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLNav
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLNav
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLNav
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLNav
@@ -31481,14 +31481,14 @@ type HTMLNav interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLNav
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLNav
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLNav
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLNav
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLNav
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLNav
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLNav
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLNav
@@ -31640,8 +31640,8 @@ func (e *htmlNav) Textf(format string, v ...any) HTMLNav {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlNav) AccessKey(v string) HTMLNav {
-	e.setAttr("accesskey", v)
+func (e *htmlNav) AccessKey(format string, v ...any) HTMLNav {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -31677,8 +31677,8 @@ func (e *htmlNav) DataSets(ds map[string]any) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) Dir(v string) HTMLNav {
-	e.setAttr("dir", v)
+func (e *htmlNav) Dir(format string, v ...any) HTMLNav {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -31692,18 +31692,18 @@ func (e *htmlNav) Hidden(v bool) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) ID(v string) HTMLNav {
-	e.setAttr("id", v)
+func (e *htmlNav) ID(format string, v ...any) HTMLNav {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlNav) Lang(v string) HTMLNav {
-	e.setAttr("lang", v)
+func (e *htmlNav) Lang(format string, v ...any) HTMLNav {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlNav) Role(v string) HTMLNav {
-	e.setAttr("role", v)
+func (e *htmlNav) Role(format string, v ...any) HTMLNav {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -31927,8 +31927,8 @@ type HTMLNoScript interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLNoScript
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLNoScript
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLNoScript
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLNoScript
@@ -31948,8 +31948,8 @@ type HTMLNoScript interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLNoScript
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLNoScript
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLNoScript
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLNoScript
@@ -31957,14 +31957,14 @@ type HTMLNoScript interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLNoScript
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLNoScript
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLNoScript
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLNoScript
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLNoScript
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLNoScript
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLNoScript
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLNoScript
@@ -32014,8 +32014,8 @@ func (e *htmlNoScript) Textf(format string, v ...any) HTMLNoScript {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlNoScript) AccessKey(v string) HTMLNoScript {
-	e.setAttr("accesskey", v)
+func (e *htmlNoScript) AccessKey(format string, v ...any) HTMLNoScript {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -32051,8 +32051,8 @@ func (e *htmlNoScript) DataSets(ds map[string]any) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) Dir(v string) HTMLNoScript {
-	e.setAttr("dir", v)
+func (e *htmlNoScript) Dir(format string, v ...any) HTMLNoScript {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -32066,18 +32066,18 @@ func (e *htmlNoScript) Hidden(v bool) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) ID(v string) HTMLNoScript {
-	e.setAttr("id", v)
+func (e *htmlNoScript) ID(format string, v ...any) HTMLNoScript {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlNoScript) Lang(v string) HTMLNoScript {
-	e.setAttr("lang", v)
+func (e *htmlNoScript) Lang(format string, v ...any) HTMLNoScript {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlNoScript) Role(v string) HTMLNoScript {
-	e.setAttr("role", v)
+func (e *htmlNoScript) Role(format string, v ...any) HTMLNoScript {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -32131,8 +32131,8 @@ type HTMLObject interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLObject
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLObject
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLObject
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLObject
@@ -32155,14 +32155,14 @@ type HTMLObject interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLObject
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLObject
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLObject
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLObject
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLObject
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLObject
 
 	// Height specifies the height of the element (in pixels).
 	Height(v int) HTMLObject
@@ -32170,17 +32170,17 @@ type HTMLObject interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLObject
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLObject
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLObject
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLObject
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLObject
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLObject
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLObject
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLObject
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLObject
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLObject
@@ -32197,11 +32197,11 @@ type HTMLObject interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLObject
 
-	// Type specifies the type of element.
-	Type(v string) HTMLObject
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLObject
 
-	// UseMap specifies an image as a client-side image-map.
-	UseMap(v string) HTMLObject
+	// UseMap specifies an image as a client-side image-map. Uses the given format and values.
+	UseMap(format string, v ...any) HTMLObject
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLObject
@@ -32410,8 +32410,8 @@ func (e *htmlObject) Textf(format string, v ...any) HTMLObject {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlObject) AccessKey(v string) HTMLObject {
-	e.setAttr("accesskey", v)
+func (e *htmlObject) AccessKey(format string, v ...any) HTMLObject {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -32452,8 +32452,8 @@ func (e *htmlObject) DataSets(ds map[string]any) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Dir(v string) HTMLObject {
-	e.setAttr("dir", v)
+func (e *htmlObject) Dir(format string, v ...any) HTMLObject {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -32462,8 +32462,8 @@ func (e *htmlObject) Draggable(v bool) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Form(v string) HTMLObject {
-	e.setAttr("form", v)
+func (e *htmlObject) Form(format string, v ...any) HTMLObject {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
@@ -32477,23 +32477,23 @@ func (e *htmlObject) Hidden(v bool) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) ID(v string) HTMLObject {
-	e.setAttr("id", v)
+func (e *htmlObject) ID(format string, v ...any) HTMLObject {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlObject) Lang(v string) HTMLObject {
-	e.setAttr("lang", v)
+func (e *htmlObject) Lang(format string, v ...any) HTMLObject {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlObject) Name(v string) HTMLObject {
-	e.setAttr("name", v)
+func (e *htmlObject) Name(format string, v ...any) HTMLObject {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlObject) Role(v string) HTMLObject {
-	e.setAttr("role", v)
+func (e *htmlObject) Role(format string, v ...any) HTMLObject {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -32529,13 +32529,13 @@ func (e *htmlObject) Title(format string, v ...any) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Type(v string) HTMLObject {
-	e.setAttr("type", v)
+func (e *htmlObject) Type(format string, v ...any) HTMLObject {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlObject) UseMap(v string) HTMLObject {
-	e.setAttr("usemap", v)
+func (e *htmlObject) UseMap(format string, v ...any) HTMLObject {
+	e.setAttr("usemap", FormatString(format, v...))
 	return e
 }
 
@@ -32847,8 +32847,8 @@ type HTMLOl interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLOl
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLOl
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLOl
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLOl
@@ -32868,8 +32868,8 @@ type HTMLOl interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLOl
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLOl
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLOl
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLOl
@@ -32877,17 +32877,17 @@ type HTMLOl interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLOl
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLOl
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLOl
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLOl
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLOl
 
 	// Reversed specifies that the list order should be descending (9,8,7...).
 	Reversed(v bool) HTMLOl
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLOl
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLOl
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLOl
@@ -32907,8 +32907,8 @@ type HTMLOl interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLOl
 
-	// Type specifies the type of element.
-	Type(v string) HTMLOl
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLOl
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOl
@@ -33045,8 +33045,8 @@ func (e *htmlOl) Textf(format string, v ...any) HTMLOl {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlOl) AccessKey(v string) HTMLOl {
-	e.setAttr("accesskey", v)
+func (e *htmlOl) AccessKey(format string, v ...any) HTMLOl {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -33082,8 +33082,8 @@ func (e *htmlOl) DataSets(ds map[string]any) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Dir(v string) HTMLOl {
-	e.setAttr("dir", v)
+func (e *htmlOl) Dir(format string, v ...any) HTMLOl {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -33097,13 +33097,13 @@ func (e *htmlOl) Hidden(v bool) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) ID(v string) HTMLOl {
-	e.setAttr("id", v)
+func (e *htmlOl) ID(format string, v ...any) HTMLOl {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOl) Lang(v string) HTMLOl {
-	e.setAttr("lang", v)
+func (e *htmlOl) Lang(format string, v ...any) HTMLOl {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -33112,8 +33112,8 @@ func (e *htmlOl) Reversed(v bool) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Role(v string) HTMLOl {
-	e.setAttr("role", v)
+func (e *htmlOl) Role(format string, v ...any) HTMLOl {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -33154,8 +33154,8 @@ func (e *htmlOl) Title(format string, v ...any) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Type(v string) HTMLOl {
-	e.setAttr("type", v)
+func (e *htmlOl) Type(format string, v ...any) HTMLOl {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -33347,8 +33347,8 @@ type HTMLOptGroup interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLOptGroup
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLOptGroup
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLOptGroup
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLOptGroup
@@ -33368,8 +33368,8 @@ type HTMLOptGroup interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLOptGroup
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLOptGroup
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLOptGroup
 
 	// Disabled specifies that the specified element/group of elements should be disabled.
 	Disabled(v bool) HTMLOptGroup
@@ -33380,17 +33380,17 @@ type HTMLOptGroup interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLOptGroup
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLOptGroup
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLOptGroup
 
-	// Label specifies a shorter label for the option.
-	Label(v string) HTMLOptGroup
+	// Label specifies a shorter label for the option with the given format and values.
+	Label(format string, v ...any) HTMLOptGroup
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLOptGroup
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLOptGroup
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLOptGroup
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLOptGroup
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLOptGroup
@@ -33542,8 +33542,8 @@ func (e *htmlOptGroup) Textf(format string, v ...any) HTMLOptGroup {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlOptGroup) AccessKey(v string) HTMLOptGroup {
-	e.setAttr("accesskey", v)
+func (e *htmlOptGroup) AccessKey(format string, v ...any) HTMLOptGroup {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -33579,8 +33579,8 @@ func (e *htmlOptGroup) DataSets(ds map[string]any) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) Dir(v string) HTMLOptGroup {
-	e.setAttr("dir", v)
+func (e *htmlOptGroup) Dir(format string, v ...any) HTMLOptGroup {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -33599,23 +33599,23 @@ func (e *htmlOptGroup) Hidden(v bool) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) ID(v string) HTMLOptGroup {
-	e.setAttr("id", v)
+func (e *htmlOptGroup) ID(format string, v ...any) HTMLOptGroup {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOptGroup) Label(v string) HTMLOptGroup {
-	e.setAttr("label", v)
+func (e *htmlOptGroup) Label(format string, v ...any) HTMLOptGroup {
+	e.setAttr("label", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOptGroup) Lang(v string) HTMLOptGroup {
-	e.setAttr("lang", v)
+func (e *htmlOptGroup) Lang(format string, v ...any) HTMLOptGroup {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOptGroup) Role(v string) HTMLOptGroup {
-	e.setAttr("role", v)
+func (e *htmlOptGroup) Role(format string, v ...any) HTMLOptGroup {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -33839,8 +33839,8 @@ type HTMLOption interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLOption
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLOption
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLOption
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLOption
@@ -33860,8 +33860,8 @@ type HTMLOption interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLOption
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLOption
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLOption
 
 	// Disabled specifies that the specified element/group of elements should be disabled.
 	Disabled(v bool) HTMLOption
@@ -33872,17 +33872,17 @@ type HTMLOption interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLOption
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLOption
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLOption
 
-	// Label specifies a shorter label for the option.
-	Label(v string) HTMLOption
+	// Label specifies a shorter label for the option with the given format and values.
+	Label(format string, v ...any) HTMLOption
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLOption
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLOption
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLOption
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLOption
 
 	// Selected specifies that an option should be pre-selected when the page loads.
 	Selected(v bool) HTMLOption
@@ -34040,8 +34040,8 @@ func (e *htmlOption) Textf(format string, v ...any) HTMLOption {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlOption) AccessKey(v string) HTMLOption {
-	e.setAttr("accesskey", v)
+func (e *htmlOption) AccessKey(format string, v ...any) HTMLOption {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -34077,8 +34077,8 @@ func (e *htmlOption) DataSets(ds map[string]any) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) Dir(v string) HTMLOption {
-	e.setAttr("dir", v)
+func (e *htmlOption) Dir(format string, v ...any) HTMLOption {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -34097,23 +34097,23 @@ func (e *htmlOption) Hidden(v bool) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) ID(v string) HTMLOption {
-	e.setAttr("id", v)
+func (e *htmlOption) ID(format string, v ...any) HTMLOption {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOption) Label(v string) HTMLOption {
-	e.setAttr("label", v)
+func (e *htmlOption) Label(format string, v ...any) HTMLOption {
+	e.setAttr("label", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOption) Lang(v string) HTMLOption {
-	e.setAttr("lang", v)
+func (e *htmlOption) Lang(format string, v ...any) HTMLOption {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOption) Role(v string) HTMLOption {
-	e.setAttr("role", v)
+func (e *htmlOption) Role(format string, v ...any) HTMLOption {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -34347,8 +34347,8 @@ type HTMLOutput interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLOutput
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLOutput
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLOutput
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLOutput
@@ -34368,32 +34368,32 @@ type HTMLOutput interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLOutput
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLOutput
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLOutput
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLOutput
 
-	// For specifies which form element(s) a label/calculation is bound to.
-	For(v string) HTMLOutput
+	// For specifies which form element(s) a label/calculation is bound to. Uses the given format and values.
+	For(format string, v ...any) HTMLOutput
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLOutput
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLOutput
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLOutput
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLOutput
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLOutput
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLOutput
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLOutput
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLOutput
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLOutput
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLOutput
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLOutput
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLOutput
@@ -34545,8 +34545,8 @@ func (e *htmlOutput) Textf(format string, v ...any) HTMLOutput {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlOutput) AccessKey(v string) HTMLOutput {
-	e.setAttr("accesskey", v)
+func (e *htmlOutput) AccessKey(format string, v ...any) HTMLOutput {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -34582,8 +34582,8 @@ func (e *htmlOutput) DataSets(ds map[string]any) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) Dir(v string) HTMLOutput {
-	e.setAttr("dir", v)
+func (e *htmlOutput) Dir(format string, v ...any) HTMLOutput {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -34592,13 +34592,13 @@ func (e *htmlOutput) Draggable(v bool) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) For(v string) HTMLOutput {
-	e.setAttr("for", v)
+func (e *htmlOutput) For(format string, v ...any) HTMLOutput {
+	e.setAttr("for", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOutput) Form(v string) HTMLOutput {
-	e.setAttr("form", v)
+func (e *htmlOutput) Form(format string, v ...any) HTMLOutput {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
@@ -34607,23 +34607,23 @@ func (e *htmlOutput) Hidden(v bool) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) ID(v string) HTMLOutput {
-	e.setAttr("id", v)
+func (e *htmlOutput) ID(format string, v ...any) HTMLOutput {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOutput) Lang(v string) HTMLOutput {
-	e.setAttr("lang", v)
+func (e *htmlOutput) Lang(format string, v ...any) HTMLOutput {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOutput) Name(v string) HTMLOutput {
-	e.setAttr("name", v)
+func (e *htmlOutput) Name(format string, v ...any) HTMLOutput {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlOutput) Role(v string) HTMLOutput {
-	e.setAttr("role", v)
+func (e *htmlOutput) Role(format string, v ...any) HTMLOutput {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -34847,8 +34847,8 @@ type HTMLP interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLP
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLP
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLP
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLP
@@ -34868,8 +34868,8 @@ type HTMLP interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLP
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLP
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLP
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLP
@@ -34877,14 +34877,14 @@ type HTMLP interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLP
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLP
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLP
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLP
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLP
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLP
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLP
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLP
@@ -35036,8 +35036,8 @@ func (e *htmlP) Textf(format string, v ...any) HTMLP {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlP) AccessKey(v string) HTMLP {
-	e.setAttr("accesskey", v)
+func (e *htmlP) AccessKey(format string, v ...any) HTMLP {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -35073,8 +35073,8 @@ func (e *htmlP) DataSets(ds map[string]any) HTMLP {
 	return e
 }
 
-func (e *htmlP) Dir(v string) HTMLP {
-	e.setAttr("dir", v)
+func (e *htmlP) Dir(format string, v ...any) HTMLP {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -35088,18 +35088,18 @@ func (e *htmlP) Hidden(v bool) HTMLP {
 	return e
 }
 
-func (e *htmlP) ID(v string) HTMLP {
-	e.setAttr("id", v)
+func (e *htmlP) ID(format string, v ...any) HTMLP {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlP) Lang(v string) HTMLP {
-	e.setAttr("lang", v)
+func (e *htmlP) Lang(format string, v ...any) HTMLP {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlP) Role(v string) HTMLP {
-	e.setAttr("role", v)
+func (e *htmlP) Role(format string, v ...any) HTMLP {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -35314,8 +35314,8 @@ func (e *htmlP) OnWheel(h EventHandler, scope ...any) HTMLP {
 type HTMLParam interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLParam
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLParam
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLParam
@@ -35335,8 +35335,8 @@ type HTMLParam interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLParam
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLParam
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLParam
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLParam
@@ -35344,17 +35344,17 @@ type HTMLParam interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLParam
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLParam
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLParam
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLParam
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLParam
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLParam
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLParam
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLParam
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLParam
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLParam
@@ -35496,8 +35496,8 @@ type htmlParam struct {
 	htmlElement
 }
 
-func (e *htmlParam) AccessKey(v string) HTMLParam {
-	e.setAttr("accesskey", v)
+func (e *htmlParam) AccessKey(format string, v ...any) HTMLParam {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -35533,8 +35533,8 @@ func (e *htmlParam) DataSets(ds map[string]any) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) Dir(v string) HTMLParam {
-	e.setAttr("dir", v)
+func (e *htmlParam) Dir(format string, v ...any) HTMLParam {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -35548,23 +35548,23 @@ func (e *htmlParam) Hidden(v bool) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) ID(v string) HTMLParam {
-	e.setAttr("id", v)
+func (e *htmlParam) ID(format string, v ...any) HTMLParam {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlParam) Lang(v string) HTMLParam {
-	e.setAttr("lang", v)
+func (e *htmlParam) Lang(format string, v ...any) HTMLParam {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlParam) Name(v string) HTMLParam {
-	e.setAttr("name", v)
+func (e *htmlParam) Name(format string, v ...any) HTMLParam {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlParam) Role(v string) HTMLParam {
-	e.setAttr("role", v)
+func (e *htmlParam) Role(format string, v ...any) HTMLParam {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -35793,8 +35793,8 @@ type HTMLPicture interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLPicture
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLPicture
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLPicture
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLPicture
@@ -35814,8 +35814,8 @@ type HTMLPicture interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLPicture
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLPicture
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLPicture
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLPicture
@@ -35823,14 +35823,14 @@ type HTMLPicture interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLPicture
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLPicture
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLPicture
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLPicture
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLPicture
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLPicture
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLPicture
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLPicture
@@ -35982,8 +35982,8 @@ func (e *htmlPicture) Textf(format string, v ...any) HTMLPicture {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlPicture) AccessKey(v string) HTMLPicture {
-	e.setAttr("accesskey", v)
+func (e *htmlPicture) AccessKey(format string, v ...any) HTMLPicture {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -36019,8 +36019,8 @@ func (e *htmlPicture) DataSets(ds map[string]any) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) Dir(v string) HTMLPicture {
-	e.setAttr("dir", v)
+func (e *htmlPicture) Dir(format string, v ...any) HTMLPicture {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -36034,18 +36034,18 @@ func (e *htmlPicture) Hidden(v bool) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) ID(v string) HTMLPicture {
-	e.setAttr("id", v)
+func (e *htmlPicture) ID(format string, v ...any) HTMLPicture {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlPicture) Lang(v string) HTMLPicture {
-	e.setAttr("lang", v)
+func (e *htmlPicture) Lang(format string, v ...any) HTMLPicture {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlPicture) Role(v string) HTMLPicture {
-	e.setAttr("role", v)
+func (e *htmlPicture) Role(format string, v ...any) HTMLPicture {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -36269,8 +36269,8 @@ type HTMLPre interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLPre
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLPre
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLPre
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLPre
@@ -36290,8 +36290,8 @@ type HTMLPre interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLPre
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLPre
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLPre
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLPre
@@ -36299,14 +36299,14 @@ type HTMLPre interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLPre
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLPre
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLPre
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLPre
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLPre
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLPre
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLPre
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLPre
@@ -36458,8 +36458,8 @@ func (e *htmlPre) Textf(format string, v ...any) HTMLPre {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlPre) AccessKey(v string) HTMLPre {
-	e.setAttr("accesskey", v)
+func (e *htmlPre) AccessKey(format string, v ...any) HTMLPre {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -36495,8 +36495,8 @@ func (e *htmlPre) DataSets(ds map[string]any) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) Dir(v string) HTMLPre {
-	e.setAttr("dir", v)
+func (e *htmlPre) Dir(format string, v ...any) HTMLPre {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -36510,18 +36510,18 @@ func (e *htmlPre) Hidden(v bool) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) ID(v string) HTMLPre {
-	e.setAttr("id", v)
+func (e *htmlPre) ID(format string, v ...any) HTMLPre {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlPre) Lang(v string) HTMLPre {
-	e.setAttr("lang", v)
+func (e *htmlPre) Lang(format string, v ...any) HTMLPre {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlPre) Role(v string) HTMLPre {
-	e.setAttr("role", v)
+func (e *htmlPre) Role(format string, v ...any) HTMLPre {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -36745,8 +36745,8 @@ type HTMLProgress interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLProgress
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLProgress
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLProgress
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLProgress
@@ -36766,8 +36766,8 @@ type HTMLProgress interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLProgress
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLProgress
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLProgress
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLProgress
@@ -36775,17 +36775,17 @@ type HTMLProgress interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLProgress
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLProgress
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLProgress
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLProgress
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLProgress
 
 	// Max Specifies the maximum value.
 	Max(v any) HTMLProgress
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLProgress
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLProgress
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLProgress
@@ -36940,8 +36940,8 @@ func (e *htmlProgress) Textf(format string, v ...any) HTMLProgress {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlProgress) AccessKey(v string) HTMLProgress {
-	e.setAttr("accesskey", v)
+func (e *htmlProgress) AccessKey(format string, v ...any) HTMLProgress {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -36977,8 +36977,8 @@ func (e *htmlProgress) DataSets(ds map[string]any) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Dir(v string) HTMLProgress {
-	e.setAttr("dir", v)
+func (e *htmlProgress) Dir(format string, v ...any) HTMLProgress {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -36992,13 +36992,13 @@ func (e *htmlProgress) Hidden(v bool) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) ID(v string) HTMLProgress {
-	e.setAttr("id", v)
+func (e *htmlProgress) ID(format string, v ...any) HTMLProgress {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlProgress) Lang(v string) HTMLProgress {
-	e.setAttr("lang", v)
+func (e *htmlProgress) Lang(format string, v ...any) HTMLProgress {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -37007,8 +37007,8 @@ func (e *htmlProgress) Max(v any) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Role(v string) HTMLProgress {
-	e.setAttr("role", v)
+func (e *htmlProgress) Role(format string, v ...any) HTMLProgress {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -37237,8 +37237,8 @@ type HTMLQ interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLQ
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLQ
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLQ
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLQ
@@ -37261,8 +37261,8 @@ type HTMLQ interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLQ
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLQ
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLQ
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLQ
@@ -37270,14 +37270,14 @@ type HTMLQ interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLQ
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLQ
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLQ
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLQ
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLQ
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLQ
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLQ
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLQ
@@ -37429,8 +37429,8 @@ func (e *htmlQ) Textf(format string, v ...any) HTMLQ {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlQ) AccessKey(v string) HTMLQ {
-	e.setAttr("accesskey", v)
+func (e *htmlQ) AccessKey(format string, v ...any) HTMLQ {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -37471,8 +37471,8 @@ func (e *htmlQ) DataSets(ds map[string]any) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Dir(v string) HTMLQ {
-	e.setAttr("dir", v)
+func (e *htmlQ) Dir(format string, v ...any) HTMLQ {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -37486,18 +37486,18 @@ func (e *htmlQ) Hidden(v bool) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) ID(v string) HTMLQ {
-	e.setAttr("id", v)
+func (e *htmlQ) ID(format string, v ...any) HTMLQ {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlQ) Lang(v string) HTMLQ {
-	e.setAttr("lang", v)
+func (e *htmlQ) Lang(format string, v ...any) HTMLQ {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlQ) Role(v string) HTMLQ {
-	e.setAttr("role", v)
+func (e *htmlQ) Role(format string, v ...any) HTMLQ {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -37721,8 +37721,8 @@ type HTMLRp interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLRp
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLRp
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLRp
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLRp
@@ -37742,8 +37742,8 @@ type HTMLRp interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLRp
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLRp
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLRp
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLRp
@@ -37751,14 +37751,14 @@ type HTMLRp interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLRp
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLRp
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLRp
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLRp
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLRp
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLRp
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLRp
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLRp
@@ -37910,8 +37910,8 @@ func (e *htmlRp) Textf(format string, v ...any) HTMLRp {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlRp) AccessKey(v string) HTMLRp {
-	e.setAttr("accesskey", v)
+func (e *htmlRp) AccessKey(format string, v ...any) HTMLRp {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -37947,8 +37947,8 @@ func (e *htmlRp) DataSets(ds map[string]any) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) Dir(v string) HTMLRp {
-	e.setAttr("dir", v)
+func (e *htmlRp) Dir(format string, v ...any) HTMLRp {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -37962,18 +37962,18 @@ func (e *htmlRp) Hidden(v bool) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) ID(v string) HTMLRp {
-	e.setAttr("id", v)
+func (e *htmlRp) ID(format string, v ...any) HTMLRp {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlRp) Lang(v string) HTMLRp {
-	e.setAttr("lang", v)
+func (e *htmlRp) Lang(format string, v ...any) HTMLRp {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlRp) Role(v string) HTMLRp {
-	e.setAttr("role", v)
+func (e *htmlRp) Role(format string, v ...any) HTMLRp {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -38197,8 +38197,8 @@ type HTMLRt interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLRt
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLRt
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLRt
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLRt
@@ -38218,8 +38218,8 @@ type HTMLRt interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLRt
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLRt
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLRt
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLRt
@@ -38227,14 +38227,14 @@ type HTMLRt interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLRt
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLRt
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLRt
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLRt
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLRt
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLRt
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLRt
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLRt
@@ -38386,8 +38386,8 @@ func (e *htmlRt) Textf(format string, v ...any) HTMLRt {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlRt) AccessKey(v string) HTMLRt {
-	e.setAttr("accesskey", v)
+func (e *htmlRt) AccessKey(format string, v ...any) HTMLRt {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -38423,8 +38423,8 @@ func (e *htmlRt) DataSets(ds map[string]any) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) Dir(v string) HTMLRt {
-	e.setAttr("dir", v)
+func (e *htmlRt) Dir(format string, v ...any) HTMLRt {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -38438,18 +38438,18 @@ func (e *htmlRt) Hidden(v bool) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) ID(v string) HTMLRt {
-	e.setAttr("id", v)
+func (e *htmlRt) ID(format string, v ...any) HTMLRt {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlRt) Lang(v string) HTMLRt {
-	e.setAttr("lang", v)
+func (e *htmlRt) Lang(format string, v ...any) HTMLRt {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlRt) Role(v string) HTMLRt {
-	e.setAttr("role", v)
+func (e *htmlRt) Role(format string, v ...any) HTMLRt {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -38673,8 +38673,8 @@ type HTMLRuby interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLRuby
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLRuby
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLRuby
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLRuby
@@ -38694,8 +38694,8 @@ type HTMLRuby interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLRuby
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLRuby
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLRuby
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLRuby
@@ -38703,14 +38703,14 @@ type HTMLRuby interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLRuby
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLRuby
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLRuby
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLRuby
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLRuby
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLRuby
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLRuby
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLRuby
@@ -38862,8 +38862,8 @@ func (e *htmlRuby) Textf(format string, v ...any) HTMLRuby {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlRuby) AccessKey(v string) HTMLRuby {
-	e.setAttr("accesskey", v)
+func (e *htmlRuby) AccessKey(format string, v ...any) HTMLRuby {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -38899,8 +38899,8 @@ func (e *htmlRuby) DataSets(ds map[string]any) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) Dir(v string) HTMLRuby {
-	e.setAttr("dir", v)
+func (e *htmlRuby) Dir(format string, v ...any) HTMLRuby {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -38914,18 +38914,18 @@ func (e *htmlRuby) Hidden(v bool) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) ID(v string) HTMLRuby {
-	e.setAttr("id", v)
+func (e *htmlRuby) ID(format string, v ...any) HTMLRuby {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlRuby) Lang(v string) HTMLRuby {
-	e.setAttr("lang", v)
+func (e *htmlRuby) Lang(format string, v ...any) HTMLRuby {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlRuby) Role(v string) HTMLRuby {
-	e.setAttr("role", v)
+func (e *htmlRuby) Role(format string, v ...any) HTMLRuby {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -39149,8 +39149,8 @@ type HTMLS interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLS
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLS
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLS
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLS
@@ -39170,8 +39170,8 @@ type HTMLS interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLS
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLS
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLS
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLS
@@ -39179,14 +39179,14 @@ type HTMLS interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLS
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLS
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLS
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLS
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLS
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLS
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLS
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLS
@@ -39338,8 +39338,8 @@ func (e *htmlS) Textf(format string, v ...any) HTMLS {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlS) AccessKey(v string) HTMLS {
-	e.setAttr("accesskey", v)
+func (e *htmlS) AccessKey(format string, v ...any) HTMLS {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -39375,8 +39375,8 @@ func (e *htmlS) DataSets(ds map[string]any) HTMLS {
 	return e
 }
 
-func (e *htmlS) Dir(v string) HTMLS {
-	e.setAttr("dir", v)
+func (e *htmlS) Dir(format string, v ...any) HTMLS {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -39390,18 +39390,18 @@ func (e *htmlS) Hidden(v bool) HTMLS {
 	return e
 }
 
-func (e *htmlS) ID(v string) HTMLS {
-	e.setAttr("id", v)
+func (e *htmlS) ID(format string, v ...any) HTMLS {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlS) Lang(v string) HTMLS {
-	e.setAttr("lang", v)
+func (e *htmlS) Lang(format string, v ...any) HTMLS {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlS) Role(v string) HTMLS {
-	e.setAttr("role", v)
+func (e *htmlS) Role(format string, v ...any) HTMLS {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -39625,8 +39625,8 @@ type HTMLSamp interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSamp
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSamp
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSamp
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSamp
@@ -39646,8 +39646,8 @@ type HTMLSamp interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSamp
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSamp
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSamp
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSamp
@@ -39655,14 +39655,14 @@ type HTMLSamp interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSamp
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSamp
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSamp
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSamp
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSamp
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSamp
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSamp
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSamp
@@ -39814,8 +39814,8 @@ func (e *htmlSamp) Textf(format string, v ...any) HTMLSamp {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSamp) AccessKey(v string) HTMLSamp {
-	e.setAttr("accesskey", v)
+func (e *htmlSamp) AccessKey(format string, v ...any) HTMLSamp {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -39851,8 +39851,8 @@ func (e *htmlSamp) DataSets(ds map[string]any) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) Dir(v string) HTMLSamp {
-	e.setAttr("dir", v)
+func (e *htmlSamp) Dir(format string, v ...any) HTMLSamp {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -39866,18 +39866,18 @@ func (e *htmlSamp) Hidden(v bool) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) ID(v string) HTMLSamp {
-	e.setAttr("id", v)
+func (e *htmlSamp) ID(format string, v ...any) HTMLSamp {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSamp) Lang(v string) HTMLSamp {
-	e.setAttr("lang", v)
+func (e *htmlSamp) Lang(format string, v ...any) HTMLSamp {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSamp) Role(v string) HTMLSamp {
-	e.setAttr("role", v)
+func (e *htmlSamp) Role(format string, v ...any) HTMLSamp {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -40101,8 +40101,8 @@ type HTMLScript interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLScript
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLScript
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLScript
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLScript
@@ -40113,8 +40113,8 @@ type HTMLScript interface {
 	// Attr sets the named attribute with the given value.
 	Attr(n string, v any) HTMLScript
 
-	// Charset specifies the character encoding.
-	Charset(v string) HTMLScript
+	// Charset specifies the character encoding with the given format and values.
+	Charset(format string, v ...any) HTMLScript
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLScript
@@ -40122,8 +40122,8 @@ type HTMLScript interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLScript
 
-	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
-	CrossOrigin(v string) HTMLScript
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request with the given format and values.
+	CrossOrigin(format string, v ...any) HTMLScript
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLScript
@@ -40134,8 +40134,8 @@ type HTMLScript interface {
 	// Defer specifies that the script is executed when the page has finished parsing (only for external scripts).
 	Defer(v bool) HTMLScript
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLScript
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLScript
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLScript
@@ -40143,14 +40143,14 @@ type HTMLScript interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLScript
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLScript
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLScript
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLScript
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLScript
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLScript
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLScript
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLScript
@@ -40170,8 +40170,8 @@ type HTMLScript interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLScript
 
-	// Type specifies the type of element.
-	Type(v string) HTMLScript
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLScript
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLScript
@@ -40209,8 +40209,8 @@ func (e *htmlScript) Textf(format string, v ...any) HTMLScript {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlScript) AccessKey(v string) HTMLScript {
-	e.setAttr("accesskey", v)
+func (e *htmlScript) AccessKey(format string, v ...any) HTMLScript {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -40229,8 +40229,8 @@ func (e *htmlScript) Attr(n string, v any) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Charset(v string) HTMLScript {
-	e.setAttr("charset", v)
+func (e *htmlScript) Charset(format string, v ...any) HTMLScript {
+	e.setAttr("charset", FormatString(format, v...))
 	return e
 }
 
@@ -40244,8 +40244,8 @@ func (e *htmlScript) ContentEditable(v bool) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) CrossOrigin(v string) HTMLScript {
-	e.setAttr("crossorigin", v)
+func (e *htmlScript) CrossOrigin(format string, v ...any) HTMLScript {
+	e.setAttr("crossorigin", FormatString(format, v...))
 	return e
 }
 
@@ -40266,8 +40266,8 @@ func (e *htmlScript) Defer(v bool) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Dir(v string) HTMLScript {
-	e.setAttr("dir", v)
+func (e *htmlScript) Dir(format string, v ...any) HTMLScript {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -40281,18 +40281,18 @@ func (e *htmlScript) Hidden(v bool) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) ID(v string) HTMLScript {
-	e.setAttr("id", v)
+func (e *htmlScript) ID(format string, v ...any) HTMLScript {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlScript) Lang(v string) HTMLScript {
-	e.setAttr("lang", v)
+func (e *htmlScript) Lang(format string, v ...any) HTMLScript {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlScript) Role(v string) HTMLScript {
-	e.setAttr("role", v)
+func (e *htmlScript) Role(format string, v ...any) HTMLScript {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -40333,8 +40333,8 @@ func (e *htmlScript) Title(format string, v ...any) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Type(v string) HTMLScript {
-	e.setAttr("type", v)
+func (e *htmlScript) Type(format string, v ...any) HTMLScript {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -40361,8 +40361,8 @@ type HTMLSection interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSection
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSection
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSection
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSection
@@ -40382,8 +40382,8 @@ type HTMLSection interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSection
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSection
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSection
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSection
@@ -40391,14 +40391,14 @@ type HTMLSection interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSection
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSection
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSection
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSection
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSection
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSection
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSection
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSection
@@ -40550,8 +40550,8 @@ func (e *htmlSection) Textf(format string, v ...any) HTMLSection {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSection) AccessKey(v string) HTMLSection {
-	e.setAttr("accesskey", v)
+func (e *htmlSection) AccessKey(format string, v ...any) HTMLSection {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -40587,8 +40587,8 @@ func (e *htmlSection) DataSets(ds map[string]any) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) Dir(v string) HTMLSection {
-	e.setAttr("dir", v)
+func (e *htmlSection) Dir(format string, v ...any) HTMLSection {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -40602,18 +40602,18 @@ func (e *htmlSection) Hidden(v bool) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) ID(v string) HTMLSection {
-	e.setAttr("id", v)
+func (e *htmlSection) ID(format string, v ...any) HTMLSection {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSection) Lang(v string) HTMLSection {
-	e.setAttr("lang", v)
+func (e *htmlSection) Lang(format string, v ...any) HTMLSection {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSection) Role(v string) HTMLSection {
-	e.setAttr("role", v)
+func (e *htmlSection) Role(format string, v ...any) HTMLSection {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -40837,8 +40837,8 @@ type HTMLSelect interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSelect
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSelect
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSelect
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSelect
@@ -40861,8 +40861,8 @@ type HTMLSelect interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSelect
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSelect
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSelect
 
 	// Disabled specifies that the specified element/group of elements should be disabled.
 	Disabled(v bool) HTMLSelect
@@ -40870,29 +40870,29 @@ type HTMLSelect interface {
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSelect
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLSelect
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLSelect
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSelect
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSelect
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSelect
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSelect
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSelect
 
 	// Multiple specifies that a user can enter more than one value.
 	Multiple(v bool) HTMLSelect
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLSelect
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLSelect
 
 	// Required specifies that the element must be filled out before submitting the form.
 	Required(v bool) HTMLSelect
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSelect
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSelect
 
 	// Size specifies the width.
 	Size(v int) HTMLSelect
@@ -41047,8 +41047,8 @@ func (e *htmlSelect) Textf(format string, v ...any) HTMLSelect {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSelect) AccessKey(v string) HTMLSelect {
-	e.setAttr("accesskey", v)
+func (e *htmlSelect) AccessKey(format string, v ...any) HTMLSelect {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -41089,8 +41089,8 @@ func (e *htmlSelect) DataSets(ds map[string]any) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Dir(v string) HTMLSelect {
-	e.setAttr("dir", v)
+func (e *htmlSelect) Dir(format string, v ...any) HTMLSelect {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -41104,8 +41104,8 @@ func (e *htmlSelect) Draggable(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Form(v string) HTMLSelect {
-	e.setAttr("form", v)
+func (e *htmlSelect) Form(format string, v ...any) HTMLSelect {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
@@ -41114,13 +41114,13 @@ func (e *htmlSelect) Hidden(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) ID(v string) HTMLSelect {
-	e.setAttr("id", v)
+func (e *htmlSelect) ID(format string, v ...any) HTMLSelect {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSelect) Lang(v string) HTMLSelect {
-	e.setAttr("lang", v)
+func (e *htmlSelect) Lang(format string, v ...any) HTMLSelect {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -41129,8 +41129,8 @@ func (e *htmlSelect) Multiple(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Name(v string) HTMLSelect {
-	e.setAttr("name", v)
+func (e *htmlSelect) Name(format string, v ...any) HTMLSelect {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
@@ -41139,8 +41139,8 @@ func (e *htmlSelect) Required(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Role(v string) HTMLSelect {
-	e.setAttr("role", v)
+func (e *htmlSelect) Role(format string, v ...any) HTMLSelect {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -41369,8 +41369,8 @@ type HTMLSmall interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSmall
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSmall
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSmall
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSmall
@@ -41390,8 +41390,8 @@ type HTMLSmall interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSmall
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSmall
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSmall
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSmall
@@ -41399,14 +41399,14 @@ type HTMLSmall interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSmall
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSmall
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSmall
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSmall
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSmall
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSmall
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSmall
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSmall
@@ -41558,8 +41558,8 @@ func (e *htmlSmall) Textf(format string, v ...any) HTMLSmall {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSmall) AccessKey(v string) HTMLSmall {
-	e.setAttr("accesskey", v)
+func (e *htmlSmall) AccessKey(format string, v ...any) HTMLSmall {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -41595,8 +41595,8 @@ func (e *htmlSmall) DataSets(ds map[string]any) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) Dir(v string) HTMLSmall {
-	e.setAttr("dir", v)
+func (e *htmlSmall) Dir(format string, v ...any) HTMLSmall {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -41610,18 +41610,18 @@ func (e *htmlSmall) Hidden(v bool) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) ID(v string) HTMLSmall {
-	e.setAttr("id", v)
+func (e *htmlSmall) ID(format string, v ...any) HTMLSmall {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSmall) Lang(v string) HTMLSmall {
-	e.setAttr("lang", v)
+func (e *htmlSmall) Lang(format string, v ...any) HTMLSmall {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSmall) Role(v string) HTMLSmall {
-	e.setAttr("role", v)
+func (e *htmlSmall) Role(format string, v ...any) HTMLSmall {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -41836,8 +41836,8 @@ func (e *htmlSmall) OnWheel(h EventHandler, scope ...any) HTMLSmall {
 type HTMLSource interface {
 	UI
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSource
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSource
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSource
@@ -41857,8 +41857,8 @@ type HTMLSource interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSource
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSource
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSource
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSource
@@ -41866,20 +41866,20 @@ type HTMLSource interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSource
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSource
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSource
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSource
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSource
 
-	// Media specifies what media/device the linked document is optimized for.
-	Media(v string) HTMLSource
+	// Media specifies what media/device the linked document is optimized for. Uses the given format and values.
+	Media(format string, v ...any) HTMLSource
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSource
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSource
 
-	// Sizes specifies the size of the linked resource.
-	Sizes(v string) HTMLSource
+	// Sizes specifies the size of the linked resource with the given format and values.
+	Sizes(format string, v ...any) HTMLSource
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSource
@@ -41902,8 +41902,8 @@ type HTMLSource interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLSource
 
-	// Type specifies the type of element.
-	Type(v string) HTMLSource
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLSource
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSource
@@ -42027,8 +42027,8 @@ type htmlSource struct {
 	htmlElement
 }
 
-func (e *htmlSource) AccessKey(v string) HTMLSource {
-	e.setAttr("accesskey", v)
+func (e *htmlSource) AccessKey(format string, v ...any) HTMLSource {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -42064,8 +42064,8 @@ func (e *htmlSource) DataSets(ds map[string]any) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Dir(v string) HTMLSource {
-	e.setAttr("dir", v)
+func (e *htmlSource) Dir(format string, v ...any) HTMLSource {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -42079,28 +42079,28 @@ func (e *htmlSource) Hidden(v bool) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) ID(v string) HTMLSource {
-	e.setAttr("id", v)
+func (e *htmlSource) ID(format string, v ...any) HTMLSource {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSource) Lang(v string) HTMLSource {
-	e.setAttr("lang", v)
+func (e *htmlSource) Lang(format string, v ...any) HTMLSource {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSource) Media(v string) HTMLSource {
-	e.setAttr("media", v)
+func (e *htmlSource) Media(format string, v ...any) HTMLSource {
+	e.setAttr("media", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSource) Role(v string) HTMLSource {
-	e.setAttr("role", v)
+func (e *htmlSource) Role(format string, v ...any) HTMLSource {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSource) Sizes(v string) HTMLSource {
-	e.setAttr("sizes", v)
+func (e *htmlSource) Sizes(format string, v ...any) HTMLSource {
+	e.setAttr("sizes", FormatString(format, v...))
 	return e
 }
 
@@ -42146,8 +42146,8 @@ func (e *htmlSource) Title(format string, v ...any) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Type(v string) HTMLSource {
-	e.setAttr("type", v)
+func (e *htmlSource) Type(format string, v ...any) HTMLSource {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -42339,8 +42339,8 @@ type HTMLSpan interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSpan
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSpan
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSpan
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSpan
@@ -42360,8 +42360,8 @@ type HTMLSpan interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSpan
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSpan
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSpan
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSpan
@@ -42369,14 +42369,14 @@ type HTMLSpan interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSpan
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSpan
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSpan
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSpan
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSpan
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSpan
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSpan
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSpan
@@ -42528,8 +42528,8 @@ func (e *htmlSpan) Textf(format string, v ...any) HTMLSpan {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSpan) AccessKey(v string) HTMLSpan {
-	e.setAttr("accesskey", v)
+func (e *htmlSpan) AccessKey(format string, v ...any) HTMLSpan {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -42565,8 +42565,8 @@ func (e *htmlSpan) DataSets(ds map[string]any) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) Dir(v string) HTMLSpan {
-	e.setAttr("dir", v)
+func (e *htmlSpan) Dir(format string, v ...any) HTMLSpan {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -42580,18 +42580,18 @@ func (e *htmlSpan) Hidden(v bool) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) ID(v string) HTMLSpan {
-	e.setAttr("id", v)
+func (e *htmlSpan) ID(format string, v ...any) HTMLSpan {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSpan) Lang(v string) HTMLSpan {
-	e.setAttr("lang", v)
+func (e *htmlSpan) Lang(format string, v ...any) HTMLSpan {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSpan) Role(v string) HTMLSpan {
-	e.setAttr("role", v)
+func (e *htmlSpan) Role(format string, v ...any) HTMLSpan {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -42815,8 +42815,8 @@ type HTMLStrong interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLStrong
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLStrong
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLStrong
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLStrong
@@ -42836,8 +42836,8 @@ type HTMLStrong interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLStrong
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLStrong
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLStrong
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLStrong
@@ -42845,14 +42845,14 @@ type HTMLStrong interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLStrong
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLStrong
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLStrong
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLStrong
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLStrong
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLStrong
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLStrong
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLStrong
@@ -43004,8 +43004,8 @@ func (e *htmlStrong) Textf(format string, v ...any) HTMLStrong {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlStrong) AccessKey(v string) HTMLStrong {
-	e.setAttr("accesskey", v)
+func (e *htmlStrong) AccessKey(format string, v ...any) HTMLStrong {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -43041,8 +43041,8 @@ func (e *htmlStrong) DataSets(ds map[string]any) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) Dir(v string) HTMLStrong {
-	e.setAttr("dir", v)
+func (e *htmlStrong) Dir(format string, v ...any) HTMLStrong {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -43056,18 +43056,18 @@ func (e *htmlStrong) Hidden(v bool) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) ID(v string) HTMLStrong {
-	e.setAttr("id", v)
+func (e *htmlStrong) ID(format string, v ...any) HTMLStrong {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlStrong) Lang(v string) HTMLStrong {
-	e.setAttr("lang", v)
+func (e *htmlStrong) Lang(format string, v ...any) HTMLStrong {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlStrong) Role(v string) HTMLStrong {
-	e.setAttr("role", v)
+func (e *htmlStrong) Role(format string, v ...any) HTMLStrong {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -43291,8 +43291,8 @@ type HTMLStyle interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLStyle
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLStyle
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLStyle
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLStyle
@@ -43312,8 +43312,8 @@ type HTMLStyle interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLStyle
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLStyle
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLStyle
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLStyle
@@ -43321,17 +43321,17 @@ type HTMLStyle interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLStyle
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLStyle
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLStyle
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLStyle
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLStyle
 
-	// Media specifies what media/device the linked document is optimized for.
-	Media(v string) HTMLStyle
+	// Media specifies what media/device the linked document is optimized for. Uses the given format and values.
+	Media(format string, v ...any) HTMLStyle
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLStyle
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLStyle
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLStyle
@@ -43348,8 +43348,8 @@ type HTMLStyle interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLStyle
 
-	// Type specifies the type of element.
-	Type(v string) HTMLStyle
+	// Type specifies the type of element with the given format and values.
+	Type(format string, v ...any) HTMLStyle
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLStyle
@@ -43489,8 +43489,8 @@ func (e *htmlStyle) Textf(format string, v ...any) HTMLStyle {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlStyle) AccessKey(v string) HTMLStyle {
-	e.setAttr("accesskey", v)
+func (e *htmlStyle) AccessKey(format string, v ...any) HTMLStyle {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -43526,8 +43526,8 @@ func (e *htmlStyle) DataSets(ds map[string]any) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) Dir(v string) HTMLStyle {
-	e.setAttr("dir", v)
+func (e *htmlStyle) Dir(format string, v ...any) HTMLStyle {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -43541,23 +43541,23 @@ func (e *htmlStyle) Hidden(v bool) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) ID(v string) HTMLStyle {
-	e.setAttr("id", v)
+func (e *htmlStyle) ID(format string, v ...any) HTMLStyle {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlStyle) Lang(v string) HTMLStyle {
-	e.setAttr("lang", v)
+func (e *htmlStyle) Lang(format string, v ...any) HTMLStyle {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlStyle) Media(v string) HTMLStyle {
-	e.setAttr("media", v)
+func (e *htmlStyle) Media(format string, v ...any) HTMLStyle {
+	e.setAttr("media", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlStyle) Role(v string) HTMLStyle {
-	e.setAttr("role", v)
+func (e *htmlStyle) Role(format string, v ...any) HTMLStyle {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -43593,8 +43593,8 @@ func (e *htmlStyle) Title(format string, v ...any) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) Type(v string) HTMLStyle {
-	e.setAttr("type", v)
+func (e *htmlStyle) Type(format string, v ...any) HTMLStyle {
+	e.setAttr("type", FormatString(format, v...))
 	return e
 }
 
@@ -43791,8 +43791,8 @@ type HTMLSub interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSub
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSub
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSub
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSub
@@ -43812,8 +43812,8 @@ type HTMLSub interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSub
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSub
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSub
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSub
@@ -43821,14 +43821,14 @@ type HTMLSub interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSub
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSub
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSub
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSub
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSub
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSub
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSub
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSub
@@ -43980,8 +43980,8 @@ func (e *htmlSub) Textf(format string, v ...any) HTMLSub {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSub) AccessKey(v string) HTMLSub {
-	e.setAttr("accesskey", v)
+func (e *htmlSub) AccessKey(format string, v ...any) HTMLSub {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -44017,8 +44017,8 @@ func (e *htmlSub) DataSets(ds map[string]any) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) Dir(v string) HTMLSub {
-	e.setAttr("dir", v)
+func (e *htmlSub) Dir(format string, v ...any) HTMLSub {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -44032,18 +44032,18 @@ func (e *htmlSub) Hidden(v bool) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) ID(v string) HTMLSub {
-	e.setAttr("id", v)
+func (e *htmlSub) ID(format string, v ...any) HTMLSub {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSub) Lang(v string) HTMLSub {
-	e.setAttr("lang", v)
+func (e *htmlSub) Lang(format string, v ...any) HTMLSub {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSub) Role(v string) HTMLSub {
-	e.setAttr("role", v)
+func (e *htmlSub) Role(format string, v ...any) HTMLSub {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -44267,8 +44267,8 @@ type HTMLSummary interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSummary
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSummary
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSummary
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSummary
@@ -44288,8 +44288,8 @@ type HTMLSummary interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSummary
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSummary
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSummary
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSummary
@@ -44297,14 +44297,14 @@ type HTMLSummary interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSummary
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSummary
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSummary
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSummary
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSummary
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSummary
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSummary
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSummary
@@ -44456,8 +44456,8 @@ func (e *htmlSummary) Textf(format string, v ...any) HTMLSummary {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSummary) AccessKey(v string) HTMLSummary {
-	e.setAttr("accesskey", v)
+func (e *htmlSummary) AccessKey(format string, v ...any) HTMLSummary {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -44493,8 +44493,8 @@ func (e *htmlSummary) DataSets(ds map[string]any) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) Dir(v string) HTMLSummary {
-	e.setAttr("dir", v)
+func (e *htmlSummary) Dir(format string, v ...any) HTMLSummary {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -44508,18 +44508,18 @@ func (e *htmlSummary) Hidden(v bool) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) ID(v string) HTMLSummary {
-	e.setAttr("id", v)
+func (e *htmlSummary) ID(format string, v ...any) HTMLSummary {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSummary) Lang(v string) HTMLSummary {
-	e.setAttr("lang", v)
+func (e *htmlSummary) Lang(format string, v ...any) HTMLSummary {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSummary) Role(v string) HTMLSummary {
-	e.setAttr("role", v)
+func (e *htmlSummary) Role(format string, v ...any) HTMLSummary {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -44743,8 +44743,8 @@ type HTMLSup interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLSup
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSup
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLSup
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLSup
@@ -44764,8 +44764,8 @@ type HTMLSup interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLSup
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSup
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLSup
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLSup
@@ -44773,14 +44773,14 @@ type HTMLSup interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLSup
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLSup
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLSup
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSup
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLSup
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSup
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLSup
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSup
@@ -44932,8 +44932,8 @@ func (e *htmlSup) Textf(format string, v ...any) HTMLSup {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlSup) AccessKey(v string) HTMLSup {
-	e.setAttr("accesskey", v)
+func (e *htmlSup) AccessKey(format string, v ...any) HTMLSup {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -44969,8 +44969,8 @@ func (e *htmlSup) DataSets(ds map[string]any) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) Dir(v string) HTMLSup {
-	e.setAttr("dir", v)
+func (e *htmlSup) Dir(format string, v ...any) HTMLSup {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -44984,18 +44984,18 @@ func (e *htmlSup) Hidden(v bool) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) ID(v string) HTMLSup {
-	e.setAttr("id", v)
+func (e *htmlSup) ID(format string, v ...any) HTMLSup {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSup) Lang(v string) HTMLSup {
-	e.setAttr("lang", v)
+func (e *htmlSup) Lang(format string, v ...any) HTMLSup {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlSup) Role(v string) HTMLSup {
-	e.setAttr("role", v)
+func (e *htmlSup) Role(format string, v ...any) HTMLSup {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -45219,8 +45219,8 @@ type HTMLTable interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTable
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTable
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTable
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTable
@@ -45240,8 +45240,8 @@ type HTMLTable interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTable
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTable
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTable
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTable
@@ -45249,14 +45249,14 @@ type HTMLTable interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTable
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTable
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTable
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTable
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTable
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTable
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTable
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTable
@@ -45408,8 +45408,8 @@ func (e *htmlTable) Textf(format string, v ...any) HTMLTable {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTable) AccessKey(v string) HTMLTable {
-	e.setAttr("accesskey", v)
+func (e *htmlTable) AccessKey(format string, v ...any) HTMLTable {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -45445,8 +45445,8 @@ func (e *htmlTable) DataSets(ds map[string]any) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) Dir(v string) HTMLTable {
-	e.setAttr("dir", v)
+func (e *htmlTable) Dir(format string, v ...any) HTMLTable {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -45460,18 +45460,18 @@ func (e *htmlTable) Hidden(v bool) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) ID(v string) HTMLTable {
-	e.setAttr("id", v)
+func (e *htmlTable) ID(format string, v ...any) HTMLTable {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTable) Lang(v string) HTMLTable {
-	e.setAttr("lang", v)
+func (e *htmlTable) Lang(format string, v ...any) HTMLTable {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTable) Role(v string) HTMLTable {
-	e.setAttr("role", v)
+func (e *htmlTable) Role(format string, v ...any) HTMLTable {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -45695,8 +45695,8 @@ type HTMLTBody interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTBody
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTBody
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTBody
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTBody
@@ -45716,8 +45716,8 @@ type HTMLTBody interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTBody
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTBody
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTBody
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTBody
@@ -45725,14 +45725,14 @@ type HTMLTBody interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTBody
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTBody
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTBody
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTBody
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTBody
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTBody
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTBody
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTBody
@@ -45884,8 +45884,8 @@ func (e *htmlTBody) Textf(format string, v ...any) HTMLTBody {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTBody) AccessKey(v string) HTMLTBody {
-	e.setAttr("accesskey", v)
+func (e *htmlTBody) AccessKey(format string, v ...any) HTMLTBody {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -45921,8 +45921,8 @@ func (e *htmlTBody) DataSets(ds map[string]any) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) Dir(v string) HTMLTBody {
-	e.setAttr("dir", v)
+func (e *htmlTBody) Dir(format string, v ...any) HTMLTBody {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -45936,18 +45936,18 @@ func (e *htmlTBody) Hidden(v bool) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) ID(v string) HTMLTBody {
-	e.setAttr("id", v)
+func (e *htmlTBody) ID(format string, v ...any) HTMLTBody {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTBody) Lang(v string) HTMLTBody {
-	e.setAttr("lang", v)
+func (e *htmlTBody) Lang(format string, v ...any) HTMLTBody {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTBody) Role(v string) HTMLTBody {
-	e.setAttr("role", v)
+func (e *htmlTBody) Role(format string, v ...any) HTMLTBody {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -46171,8 +46171,8 @@ type HTMLTd interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTd
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTd
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTd
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTd
@@ -46195,26 +46195,26 @@ type HTMLTd interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTd
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTd
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTd
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTd
 
-	// Headers specifies one or more headers cells a cell is related to.
-	Headers(v string) HTMLTd
+	// Headers specifies one or more headers cells a cell is related to. Uses the given format and values.
+	Headers(format string, v ...any) HTMLTd
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTd
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTd
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTd
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTd
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTd
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTd
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTd
 
 	// Rowspan specifies the number of rows a table cell should span.
 	Rowspan(v int) HTMLTd
@@ -46369,8 +46369,8 @@ func (e *htmlTd) Textf(format string, v ...any) HTMLTd {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTd) AccessKey(v string) HTMLTd {
-	e.setAttr("accesskey", v)
+func (e *htmlTd) AccessKey(format string, v ...any) HTMLTd {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -46411,8 +46411,8 @@ func (e *htmlTd) DataSets(ds map[string]any) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Dir(v string) HTMLTd {
-	e.setAttr("dir", v)
+func (e *htmlTd) Dir(format string, v ...any) HTMLTd {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -46421,8 +46421,8 @@ func (e *htmlTd) Draggable(v bool) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Headers(v string) HTMLTd {
-	e.setAttr("headers", v)
+func (e *htmlTd) Headers(format string, v ...any) HTMLTd {
+	e.setAttr("headers", FormatString(format, v...))
 	return e
 }
 
@@ -46431,18 +46431,18 @@ func (e *htmlTd) Hidden(v bool) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) ID(v string) HTMLTd {
-	e.setAttr("id", v)
+func (e *htmlTd) ID(format string, v ...any) HTMLTd {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTd) Lang(v string) HTMLTd {
-	e.setAttr("lang", v)
+func (e *htmlTd) Lang(format string, v ...any) HTMLTd {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTd) Role(v string) HTMLTd {
-	e.setAttr("role", v)
+func (e *htmlTd) Role(format string, v ...any) HTMLTd {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -46671,8 +46671,8 @@ type HTMLTemplate interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTemplate
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTemplate
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTemplate
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTemplate
@@ -46692,8 +46692,8 @@ type HTMLTemplate interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTemplate
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTemplate
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTemplate
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTemplate
@@ -46701,14 +46701,14 @@ type HTMLTemplate interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTemplate
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTemplate
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTemplate
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTemplate
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTemplate
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTemplate
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTemplate
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTemplate
@@ -46758,8 +46758,8 @@ func (e *htmlTemplate) Textf(format string, v ...any) HTMLTemplate {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTemplate) AccessKey(v string) HTMLTemplate {
-	e.setAttr("accesskey", v)
+func (e *htmlTemplate) AccessKey(format string, v ...any) HTMLTemplate {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -46795,8 +46795,8 @@ func (e *htmlTemplate) DataSets(ds map[string]any) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) Dir(v string) HTMLTemplate {
-	e.setAttr("dir", v)
+func (e *htmlTemplate) Dir(format string, v ...any) HTMLTemplate {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -46810,18 +46810,18 @@ func (e *htmlTemplate) Hidden(v bool) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) ID(v string) HTMLTemplate {
-	e.setAttr("id", v)
+func (e *htmlTemplate) ID(format string, v ...any) HTMLTemplate {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTemplate) Lang(v string) HTMLTemplate {
-	e.setAttr("lang", v)
+func (e *htmlTemplate) Lang(format string, v ...any) HTMLTemplate {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTemplate) Role(v string) HTMLTemplate {
-	e.setAttr("role", v)
+func (e *htmlTemplate) Role(format string, v ...any) HTMLTemplate {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -46875,8 +46875,8 @@ type HTMLTextarea interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTextarea
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTextarea
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTextarea
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTextarea
@@ -46902,11 +46902,11 @@ type HTMLTextarea interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTextarea
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTextarea
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTextarea
 
-	// DirName specifies that the text direction will be submitted.
-	DirName(v string) HTMLTextarea
+	// DirName specifies that the text direction will be submitted using the given format and values.
+	DirName(format string, v ...any) HTMLTextarea
 
 	// Disabled specifies that the specified element/group of elements should be disabled.
 	Disabled(v bool) HTMLTextarea
@@ -46914,26 +46914,26 @@ type HTMLTextarea interface {
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTextarea
 
-	// Form specifies the name of the form the element belongs to.
-	Form(v string) HTMLTextarea
+	// Form specifies the name of the form the element belongs to. Uses the given format and values.
+	Form(format string, v ...any) HTMLTextarea
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTextarea
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTextarea
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTextarea
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTextarea
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTextarea
 
 	// MaxLength specifies the maximum number of characters allowed in an element.
 	MaxLength(v int) HTMLTextarea
 
-	// Name specifies the name of the element.
-	Name(v string) HTMLTextarea
+	// Name specifies the name of the element with the given format and values.
+	Name(format string, v ...any) HTMLTextarea
 
-	// Placeholder specifies a short hint that describes the expected value of the element.
-	Placeholder(v string) HTMLTextarea
+	// Placeholder specifies a short hint that describes the expected value of the element. Uses the given format and values.
+	Placeholder(format string, v ...any) HTMLTextarea
 
 	// ReadOnly specifies that the element is read-only.
 	ReadOnly(v bool) HTMLTextarea
@@ -46941,8 +46941,8 @@ type HTMLTextarea interface {
 	// Required specifies that the element must be filled out before submitting the form.
 	Required(v bool) HTMLTextarea
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTextarea
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTextarea
 
 	// Rows specifies the visible number of lines in a text area.
 	Rows(v int) HTMLTextarea
@@ -46962,8 +46962,8 @@ type HTMLTextarea interface {
 	// Title specifies extra information about an element with the given format and values.
 	Title(format string, v ...any) HTMLTextarea
 
-	// Wrap specifies how the text in a text area is to be wrapped when submitted in a form.
-	Wrap(v string) HTMLTextarea
+	// Wrap specifies how the text in a text area is to be wrapped when submitted in a form. Uses the given format and values.
+	Wrap(format string, v ...any) HTMLTextarea
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTextarea
@@ -47102,8 +47102,8 @@ func (e *htmlTextarea) Textf(format string, v ...any) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {
-	e.setAttr("accesskey", v)
+func (e *htmlTextarea) AccessKey(format string, v ...any) HTMLTextarea {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -47149,13 +47149,13 @@ func (e *htmlTextarea) DataSets(ds map[string]any) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Dir(v string) HTMLTextarea {
-	e.setAttr("dir", v)
+func (e *htmlTextarea) Dir(format string, v ...any) HTMLTextarea {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTextarea) DirName(v string) HTMLTextarea {
-	e.setAttr("dirname", v)
+func (e *htmlTextarea) DirName(format string, v ...any) HTMLTextarea {
+	e.setAttr("dirname", FormatString(format, v...))
 	return e
 }
 
@@ -47169,8 +47169,8 @@ func (e *htmlTextarea) Draggable(v bool) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Form(v string) HTMLTextarea {
-	e.setAttr("form", v)
+func (e *htmlTextarea) Form(format string, v ...any) HTMLTextarea {
+	e.setAttr("form", FormatString(format, v...))
 	return e
 }
 
@@ -47179,13 +47179,13 @@ func (e *htmlTextarea) Hidden(v bool) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) ID(v string) HTMLTextarea {
-	e.setAttr("id", v)
+func (e *htmlTextarea) ID(format string, v ...any) HTMLTextarea {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTextarea) Lang(v string) HTMLTextarea {
-	e.setAttr("lang", v)
+func (e *htmlTextarea) Lang(format string, v ...any) HTMLTextarea {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -47194,13 +47194,13 @@ func (e *htmlTextarea) MaxLength(v int) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Name(v string) HTMLTextarea {
-	e.setAttr("name", v)
+func (e *htmlTextarea) Name(format string, v ...any) HTMLTextarea {
+	e.setAttr("name", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTextarea) Placeholder(v string) HTMLTextarea {
-	e.setAttr("placeholder", v)
+func (e *htmlTextarea) Placeholder(format string, v ...any) HTMLTextarea {
+	e.setAttr("placeholder", FormatString(format, v...))
 	return e
 }
 
@@ -47214,8 +47214,8 @@ func (e *htmlTextarea) Required(v bool) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Role(v string) HTMLTextarea {
-	e.setAttr("role", v)
+func (e *htmlTextarea) Role(format string, v ...any) HTMLTextarea {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -47256,8 +47256,8 @@ func (e *htmlTextarea) Title(format string, v ...any) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Wrap(v string) HTMLTextarea {
-	e.setAttr("wrap", v)
+func (e *htmlTextarea) Wrap(format string, v ...any) HTMLTextarea {
+	e.setAttr("wrap", FormatString(format, v...))
 	return e
 }
 
@@ -47449,8 +47449,8 @@ type HTMLTFoot interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTFoot
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTFoot
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTFoot
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTFoot
@@ -47470,8 +47470,8 @@ type HTMLTFoot interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTFoot
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTFoot
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTFoot
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTFoot
@@ -47479,14 +47479,14 @@ type HTMLTFoot interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTFoot
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTFoot
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTFoot
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTFoot
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTFoot
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTFoot
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTFoot
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTFoot
@@ -47638,8 +47638,8 @@ func (e *htmlTFoot) Textf(format string, v ...any) HTMLTFoot {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTFoot) AccessKey(v string) HTMLTFoot {
-	e.setAttr("accesskey", v)
+func (e *htmlTFoot) AccessKey(format string, v ...any) HTMLTFoot {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -47675,8 +47675,8 @@ func (e *htmlTFoot) DataSets(ds map[string]any) HTMLTFoot {
 	return e
 }
 
-func (e *htmlTFoot) Dir(v string) HTMLTFoot {
-	e.setAttr("dir", v)
+func (e *htmlTFoot) Dir(format string, v ...any) HTMLTFoot {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -47690,18 +47690,18 @@ func (e *htmlTFoot) Hidden(v bool) HTMLTFoot {
 	return e
 }
 
-func (e *htmlTFoot) ID(v string) HTMLTFoot {
-	e.setAttr("id", v)
+func (e *htmlTFoot) ID(format string, v ...any) HTMLTFoot {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTFoot) Lang(v string) HTMLTFoot {
-	e.setAttr("lang", v)
+func (e *htmlTFoot) Lang(format string, v ...any) HTMLTFoot {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTFoot) Role(v string) HTMLTFoot {
-	e.setAttr("role", v)
+func (e *htmlTFoot) Role(format string, v ...any) HTMLTFoot {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -47925,11 +47925,11 @@ type HTMLTh interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTh
 
-	// Abbr specifies an abbreviated version of the content in a header cell.
-	Abbr(v string) HTMLTh
+	// Abbr specifies an abbreviated version of the content in a header cell with the given format and values.
+	Abbr(format string, v ...any) HTMLTh
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTh
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTh
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTh
@@ -47952,32 +47952,32 @@ type HTMLTh interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTh
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTh
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTh
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTh
 
-	// Headers specifies one or more headers cells a cell is related to.
-	Headers(v string) HTMLTh
+	// Headers specifies one or more headers cells a cell is related to. Uses the given format and values.
+	Headers(format string, v ...any) HTMLTh
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTh
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTh
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTh
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTh
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTh
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTh
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTh
 
 	// Rowspan specifies the number of rows a table cell should span.
 	Rowspan(v int) HTMLTh
 
-	// Scope specifies whether a header cell is a header for a column, row, or group of columns or rows.
-	Scope(v string) HTMLTh
+	// Scope specifies whether a header cell is a header for a column, row, or group of columns or rows. Uses the given format and values.
+	Scope(format string, v ...any) HTMLTh
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTh
@@ -48129,13 +48129,13 @@ func (e *htmlTh) Textf(format string, v ...any) HTMLTh {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTh) Abbr(v string) HTMLTh {
-	e.setAttr("abbr", v)
+func (e *htmlTh) Abbr(format string, v ...any) HTMLTh {
+	e.setAttr("abbr", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTh) AccessKey(v string) HTMLTh {
-	e.setAttr("accesskey", v)
+func (e *htmlTh) AccessKey(format string, v ...any) HTMLTh {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -48176,8 +48176,8 @@ func (e *htmlTh) DataSets(ds map[string]any) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Dir(v string) HTMLTh {
-	e.setAttr("dir", v)
+func (e *htmlTh) Dir(format string, v ...any) HTMLTh {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -48186,8 +48186,8 @@ func (e *htmlTh) Draggable(v bool) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Headers(v string) HTMLTh {
-	e.setAttr("headers", v)
+func (e *htmlTh) Headers(format string, v ...any) HTMLTh {
+	e.setAttr("headers", FormatString(format, v...))
 	return e
 }
 
@@ -48196,18 +48196,18 @@ func (e *htmlTh) Hidden(v bool) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) ID(v string) HTMLTh {
-	e.setAttr("id", v)
+func (e *htmlTh) ID(format string, v ...any) HTMLTh {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTh) Lang(v string) HTMLTh {
-	e.setAttr("lang", v)
+func (e *htmlTh) Lang(format string, v ...any) HTMLTh {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTh) Role(v string) HTMLTh {
-	e.setAttr("role", v)
+func (e *htmlTh) Role(format string, v ...any) HTMLTh {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -48216,8 +48216,8 @@ func (e *htmlTh) Rowspan(v int) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Scope(v string) HTMLTh {
-	e.setAttr("scope", v)
+func (e *htmlTh) Scope(format string, v ...any) HTMLTh {
+	e.setAttr("scope", FormatString(format, v...))
 	return e
 }
 
@@ -48441,8 +48441,8 @@ type HTMLTHead interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTHead
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTHead
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTHead
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTHead
@@ -48462,8 +48462,8 @@ type HTMLTHead interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTHead
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTHead
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTHead
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTHead
@@ -48471,14 +48471,14 @@ type HTMLTHead interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTHead
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTHead
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTHead
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTHead
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTHead
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTHead
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTHead
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTHead
@@ -48630,8 +48630,8 @@ func (e *htmlTHead) Textf(format string, v ...any) HTMLTHead {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTHead) AccessKey(v string) HTMLTHead {
-	e.setAttr("accesskey", v)
+func (e *htmlTHead) AccessKey(format string, v ...any) HTMLTHead {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -48667,8 +48667,8 @@ func (e *htmlTHead) DataSets(ds map[string]any) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) Dir(v string) HTMLTHead {
-	e.setAttr("dir", v)
+func (e *htmlTHead) Dir(format string, v ...any) HTMLTHead {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -48682,18 +48682,18 @@ func (e *htmlTHead) Hidden(v bool) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) ID(v string) HTMLTHead {
-	e.setAttr("id", v)
+func (e *htmlTHead) ID(format string, v ...any) HTMLTHead {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTHead) Lang(v string) HTMLTHead {
-	e.setAttr("lang", v)
+func (e *htmlTHead) Lang(format string, v ...any) HTMLTHead {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTHead) Role(v string) HTMLTHead {
-	e.setAttr("role", v)
+func (e *htmlTHead) Role(format string, v ...any) HTMLTHead {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -48917,8 +48917,8 @@ type HTMLTime interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTime
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTime
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTime
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTime
@@ -48938,11 +48938,11 @@ type HTMLTime interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTime
 
-	// DateTime specifies the date and time.
-	DateTime(v string) HTMLTime
+	// DateTime specifies the date and time with the given format and values.
+	DateTime(format string, v ...any) HTMLTime
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTime
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTime
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTime
@@ -48950,14 +48950,14 @@ type HTMLTime interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTime
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTime
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTime
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTime
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTime
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTime
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTime
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTime
@@ -49109,8 +49109,8 @@ func (e *htmlTime) Textf(format string, v ...any) HTMLTime {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTime) AccessKey(v string) HTMLTime {
-	e.setAttr("accesskey", v)
+func (e *htmlTime) AccessKey(format string, v ...any) HTMLTime {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -49146,13 +49146,13 @@ func (e *htmlTime) DataSets(ds map[string]any) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) DateTime(v string) HTMLTime {
-	e.setAttr("datetime", v)
+func (e *htmlTime) DateTime(format string, v ...any) HTMLTime {
+	e.setAttr("datetime", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTime) Dir(v string) HTMLTime {
-	e.setAttr("dir", v)
+func (e *htmlTime) Dir(format string, v ...any) HTMLTime {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -49166,18 +49166,18 @@ func (e *htmlTime) Hidden(v bool) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) ID(v string) HTMLTime {
-	e.setAttr("id", v)
+func (e *htmlTime) ID(format string, v ...any) HTMLTime {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTime) Lang(v string) HTMLTime {
-	e.setAttr("lang", v)
+func (e *htmlTime) Lang(format string, v ...any) HTMLTime {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTime) Role(v string) HTMLTime {
-	e.setAttr("role", v)
+func (e *htmlTime) Role(format string, v ...any) HTMLTime {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -49401,8 +49401,8 @@ type HTMLTitle interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTitle
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTitle
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTitle
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTitle
@@ -49422,8 +49422,8 @@ type HTMLTitle interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTitle
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTitle
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTitle
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTitle
@@ -49431,14 +49431,14 @@ type HTMLTitle interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTitle
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTitle
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTitle
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTitle
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTitle
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTitle
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTitle
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTitle
@@ -49488,8 +49488,8 @@ func (e *htmlTitle) Textf(format string, v ...any) HTMLTitle {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTitle) AccessKey(v string) HTMLTitle {
-	e.setAttr("accesskey", v)
+func (e *htmlTitle) AccessKey(format string, v ...any) HTMLTitle {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -49525,8 +49525,8 @@ func (e *htmlTitle) DataSets(ds map[string]any) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) Dir(v string) HTMLTitle {
-	e.setAttr("dir", v)
+func (e *htmlTitle) Dir(format string, v ...any) HTMLTitle {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -49540,18 +49540,18 @@ func (e *htmlTitle) Hidden(v bool) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) ID(v string) HTMLTitle {
-	e.setAttr("id", v)
+func (e *htmlTitle) ID(format string, v ...any) HTMLTitle {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTitle) Lang(v string) HTMLTitle {
-	e.setAttr("lang", v)
+func (e *htmlTitle) Lang(format string, v ...any) HTMLTitle {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTitle) Role(v string) HTMLTitle {
-	e.setAttr("role", v)
+func (e *htmlTitle) Role(format string, v ...any) HTMLTitle {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -49605,8 +49605,8 @@ type HTMLTr interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLTr
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTr
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLTr
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLTr
@@ -49626,8 +49626,8 @@ type HTMLTr interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLTr
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTr
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLTr
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLTr
@@ -49635,14 +49635,14 @@ type HTMLTr interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLTr
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLTr
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLTr
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTr
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLTr
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLTr
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLTr
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTr
@@ -49794,8 +49794,8 @@ func (e *htmlTr) Textf(format string, v ...any) HTMLTr {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlTr) AccessKey(v string) HTMLTr {
-	e.setAttr("accesskey", v)
+func (e *htmlTr) AccessKey(format string, v ...any) HTMLTr {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -49831,8 +49831,8 @@ func (e *htmlTr) DataSets(ds map[string]any) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) Dir(v string) HTMLTr {
-	e.setAttr("dir", v)
+func (e *htmlTr) Dir(format string, v ...any) HTMLTr {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -49846,18 +49846,18 @@ func (e *htmlTr) Hidden(v bool) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) ID(v string) HTMLTr {
-	e.setAttr("id", v)
+func (e *htmlTr) ID(format string, v ...any) HTMLTr {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTr) Lang(v string) HTMLTr {
-	e.setAttr("lang", v)
+func (e *htmlTr) Lang(format string, v ...any) HTMLTr {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlTr) Role(v string) HTMLTr {
-	e.setAttr("role", v)
+func (e *htmlTr) Role(format string, v ...any) HTMLTr {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -50081,8 +50081,8 @@ type HTMLU interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLU
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLU
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLU
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLU
@@ -50102,8 +50102,8 @@ type HTMLU interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLU
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLU
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLU
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLU
@@ -50111,14 +50111,14 @@ type HTMLU interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLU
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLU
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLU
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLU
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLU
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLU
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLU
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLU
@@ -50270,8 +50270,8 @@ func (e *htmlU) Textf(format string, v ...any) HTMLU {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlU) AccessKey(v string) HTMLU {
-	e.setAttr("accesskey", v)
+func (e *htmlU) AccessKey(format string, v ...any) HTMLU {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -50307,8 +50307,8 @@ func (e *htmlU) DataSets(ds map[string]any) HTMLU {
 	return e
 }
 
-func (e *htmlU) Dir(v string) HTMLU {
-	e.setAttr("dir", v)
+func (e *htmlU) Dir(format string, v ...any) HTMLU {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -50322,18 +50322,18 @@ func (e *htmlU) Hidden(v bool) HTMLU {
 	return e
 }
 
-func (e *htmlU) ID(v string) HTMLU {
-	e.setAttr("id", v)
+func (e *htmlU) ID(format string, v ...any) HTMLU {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlU) Lang(v string) HTMLU {
-	e.setAttr("lang", v)
+func (e *htmlU) Lang(format string, v ...any) HTMLU {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlU) Role(v string) HTMLU {
-	e.setAttr("role", v)
+func (e *htmlU) Role(format string, v ...any) HTMLU {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -50557,8 +50557,8 @@ type HTMLUl interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLUl
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLUl
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLUl
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLUl
@@ -50578,8 +50578,8 @@ type HTMLUl interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLUl
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLUl
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLUl
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLUl
@@ -50587,14 +50587,14 @@ type HTMLUl interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLUl
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLUl
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLUl
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLUl
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLUl
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLUl
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLUl
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLUl
@@ -50746,8 +50746,8 @@ func (e *htmlUl) Textf(format string, v ...any) HTMLUl {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlUl) AccessKey(v string) HTMLUl {
-	e.setAttr("accesskey", v)
+func (e *htmlUl) AccessKey(format string, v ...any) HTMLUl {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -50783,8 +50783,8 @@ func (e *htmlUl) DataSets(ds map[string]any) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) Dir(v string) HTMLUl {
-	e.setAttr("dir", v)
+func (e *htmlUl) Dir(format string, v ...any) HTMLUl {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -50798,18 +50798,18 @@ func (e *htmlUl) Hidden(v bool) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) ID(v string) HTMLUl {
-	e.setAttr("id", v)
+func (e *htmlUl) ID(format string, v ...any) HTMLUl {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlUl) Lang(v string) HTMLUl {
-	e.setAttr("lang", v)
+func (e *htmlUl) Lang(format string, v ...any) HTMLUl {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlUl) Role(v string) HTMLUl {
-	e.setAttr("role", v)
+func (e *htmlUl) Role(format string, v ...any) HTMLUl {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -51033,8 +51033,8 @@ type HTMLVar interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLVar
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLVar
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLVar
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLVar
@@ -51054,8 +51054,8 @@ type HTMLVar interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLVar
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLVar
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLVar
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLVar
@@ -51063,14 +51063,14 @@ type HTMLVar interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLVar
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLVar
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLVar
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLVar
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLVar
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLVar
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLVar
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLVar
@@ -51222,8 +51222,8 @@ func (e *htmlVar) Textf(format string, v ...any) HTMLVar {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlVar) AccessKey(v string) HTMLVar {
-	e.setAttr("accesskey", v)
+func (e *htmlVar) AccessKey(format string, v ...any) HTMLVar {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -51259,8 +51259,8 @@ func (e *htmlVar) DataSets(ds map[string]any) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) Dir(v string) HTMLVar {
-	e.setAttr("dir", v)
+func (e *htmlVar) Dir(format string, v ...any) HTMLVar {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -51274,18 +51274,18 @@ func (e *htmlVar) Hidden(v bool) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) ID(v string) HTMLVar {
-	e.setAttr("id", v)
+func (e *htmlVar) ID(format string, v ...any) HTMLVar {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlVar) Lang(v string) HTMLVar {
-	e.setAttr("lang", v)
+func (e *htmlVar) Lang(format string, v ...any) HTMLVar {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlVar) Role(v string) HTMLVar {
-	e.setAttr("role", v)
+func (e *htmlVar) Role(format string, v ...any) HTMLVar {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -51509,8 +51509,8 @@ type HTMLVideo interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLVideo
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLVideo
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLVideo
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLVideo
@@ -51530,8 +51530,8 @@ type HTMLVideo interface {
 	// Controls specifies that audio/video controls should be displayed (such as a play/pause button etc).
 	Controls(v bool) HTMLVideo
 
-	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
-	CrossOrigin(v string) HTMLVideo
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request with the given format and values.
+	CrossOrigin(format string, v ...any) HTMLVideo
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLVideo
@@ -51539,8 +51539,8 @@ type HTMLVideo interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLVideo
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLVideo
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLVideo
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLVideo
@@ -51551,11 +51551,11 @@ type HTMLVideo interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLVideo
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLVideo
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLVideo
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLVideo
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLVideo
 
 	// Loop specifies that the audio/video will start over again, every time it is finished.
 	Loop(v bool) HTMLVideo
@@ -51563,14 +51563,14 @@ type HTMLVideo interface {
 	// Muted specifies that the audio output of the video should be muted.
 	Muted(v bool) HTMLVideo
 
-	// Poster specifies an image to be shown while the video is downloading, or until the user hits the play button.
-	Poster(v string) HTMLVideo
+	// Poster specifies an image to be shown while the video is downloading, or until the user hits the play button. Uses the given format and values.
+	Poster(format string, v ...any) HTMLVideo
 
-	// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads.
-	Preload(v string) HTMLVideo
+	// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads. Uses the given format and values.
+	Preload(format string, v ...any) HTMLVideo
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLVideo
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLVideo
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLVideo
@@ -51797,8 +51797,8 @@ func (e *htmlVideo) Textf(format string, v ...any) HTMLVideo {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlVideo) AccessKey(v string) HTMLVideo {
-	e.setAttr("accesskey", v)
+func (e *htmlVideo) AccessKey(format string, v ...any) HTMLVideo {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -51832,8 +51832,8 @@ func (e *htmlVideo) Controls(v bool) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) CrossOrigin(v string) HTMLVideo {
-	e.setAttr("crossorigin", v)
+func (e *htmlVideo) CrossOrigin(format string, v ...any) HTMLVideo {
+	e.setAttr("crossorigin", FormatString(format, v...))
 	return e
 }
 
@@ -51849,8 +51849,8 @@ func (e *htmlVideo) DataSets(ds map[string]any) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Dir(v string) HTMLVideo {
-	e.setAttr("dir", v)
+func (e *htmlVideo) Dir(format string, v ...any) HTMLVideo {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -51869,13 +51869,13 @@ func (e *htmlVideo) Hidden(v bool) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) ID(v string) HTMLVideo {
-	e.setAttr("id", v)
+func (e *htmlVideo) ID(format string, v ...any) HTMLVideo {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlVideo) Lang(v string) HTMLVideo {
-	e.setAttr("lang", v)
+func (e *htmlVideo) Lang(format string, v ...any) HTMLVideo {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
@@ -51889,18 +51889,18 @@ func (e *htmlVideo) Muted(v bool) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Poster(v string) HTMLVideo {
-	e.setAttr("poster", v)
+func (e *htmlVideo) Poster(format string, v ...any) HTMLVideo {
+	e.setAttr("poster", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlVideo) Preload(v string) HTMLVideo {
-	e.setAttr("preload", v)
+func (e *htmlVideo) Preload(format string, v ...any) HTMLVideo {
+	e.setAttr("preload", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlVideo) Role(v string) HTMLVideo {
-	e.setAttr("role", v)
+func (e *htmlVideo) Role(format string, v ...any) HTMLVideo {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 
@@ -52249,8 +52249,8 @@ type HTMLWbr interface {
 	// Textf sets the content of the element with the given format and values.
 	Textf(format string, v ...any) HTMLWbr
 
-	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLWbr
+	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
+	AccessKey(format string, v ...any) HTMLWbr
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLWbr
@@ -52270,8 +52270,8 @@ type HTMLWbr interface {
 	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
 	DataSets(ds map[string]any) HTMLWbr
 
-	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLWbr
+	// Dir specifies the text direction for the content in an element with the given format and values.
+	Dir(format string, v ...any) HTMLWbr
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLWbr
@@ -52279,14 +52279,14 @@ type HTMLWbr interface {
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLWbr
 
-	// ID specifies a unique id for an element.
-	ID(v string) HTMLWbr
+	// ID specifies a unique id for an element with the given format and values.
+	ID(format string, v ...any) HTMLWbr
 
-	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLWbr
+	// Lang specifies the language of the element's content with the given format and values.
+	Lang(format string, v ...any) HTMLWbr
 
-	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLWbr
+	// Role specifies to parsing software the exact function of an element (and its children). Uses the given format and values.
+	Role(format string, v ...any) HTMLWbr
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLWbr
@@ -52438,8 +52438,8 @@ func (e *htmlWbr) Textf(format string, v ...any) HTMLWbr {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlWbr) AccessKey(v string) HTMLWbr {
-	e.setAttr("accesskey", v)
+func (e *htmlWbr) AccessKey(format string, v ...any) HTMLWbr {
+	e.setAttr("accesskey", FormatString(format, v...))
 	return e
 }
 
@@ -52475,8 +52475,8 @@ func (e *htmlWbr) DataSets(ds map[string]any) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) Dir(v string) HTMLWbr {
-	e.setAttr("dir", v)
+func (e *htmlWbr) Dir(format string, v ...any) HTMLWbr {
+	e.setAttr("dir", FormatString(format, v...))
 	return e
 }
 
@@ -52490,18 +52490,18 @@ func (e *htmlWbr) Hidden(v bool) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) ID(v string) HTMLWbr {
-	e.setAttr("id", v)
+func (e *htmlWbr) ID(format string, v ...any) HTMLWbr {
+	e.setAttr("id", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlWbr) Lang(v string) HTMLWbr {
-	e.setAttr("lang", v)
+func (e *htmlWbr) Lang(format string, v ...any) HTMLWbr {
+	e.setAttr("lang", FormatString(format, v...))
 	return e
 }
 
-func (e *htmlWbr) Role(v string) HTMLWbr {
-	e.setAttr("role", v)
+func (e *htmlWbr) Role(format string, v ...any) HTMLWbr {
+	e.setAttr("role", FormatString(format, v...))
 	return e
 }
 

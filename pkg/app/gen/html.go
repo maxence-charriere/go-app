@@ -1040,18 +1040,18 @@ var attrs = map[string]attr{
 	// A:
 	"abbr": {
 		Name: "Abbr",
-		Type: "string",
-		Doc:  "specifies an abbreviated version of the content in a header cell.",
+		Type: "fmt",
+		Doc:  "specifies an abbreviated version of the content in a header cell with the given format and values.",
 	},
 	"accept": {
 		Name: "Accept",
-		Type: "string",
-		Doc:  "specifies the types of files that the server accepts (only for file type).",
+		Type: "fmt",
+		Doc:  "specifies the types of files that the server accepts (only for file type) with the given format and values.",
 	},
 	"allow": {
 		Name: "Allow",
-		Type: "string",
-		Doc:  "specifies a feature policy. Can be called multiple times to set multiple policies.",
+		Type: "fmt",
+		Doc:  "specifies a feature policy with the given format and values. Can be called multiple times to set multiple policies.",
 	},
 	"allowfullscreen": {
 		Name: "AllowFullscreen",
@@ -1081,23 +1081,23 @@ var attrs = map[string]attr{
 	},
 	"accesskey": {
 		Name: "AccessKey",
-		Type: "string",
-		Doc:  "specifies a shortcut key to activate/focus an element.",
+		Type: "fmt",
+		Doc:  "specifies a shortcut key with the given format and values to activate/focus an element.",
 	},
 	"action": {
 		Name: "Action",
-		Type: "string",
-		Doc:  "specifies where to send the form-data when a form is submitted.",
+		Type: "fmt",
+		Doc:  "specifies where to send the form-data with the given format and values when a form is submitted.",
 	},
 	"alt": {
 		Name: "Alt",
-		Type: "string",
-		Doc:  "specifies an alternate text when the original element fails to display.",
+		Type: "fmt",
+		Doc:  "specifies an alternate text with the given format and values when the original element fails to display.",
 	},
 	"as": {
 		Name: "As",
-		Type: "string",
-		Doc:  "specifies a resource type to preload.",
+		Type: "fmt",
+		Doc:  "specifies a resource type to preload with the given format and values.",
 	},
 	"async": {
 		Name: "Async",
@@ -1123,13 +1123,13 @@ var attrs = map[string]attr{
 	// C:
 	"capture": {
 		Name: "Capture",
-		Type: "string",
-		Doc:  "specifies the capture input method in file upload controls",
+		Type: "fmt",
+		Doc:  "specifies the capture input method in file upload controls with the given format and values.",
 	},
 	"charset": {
 		Name: "Charset",
-		Type: "string",
-		Doc:  "specifies the character encoding.",
+		Type: "fmt",
+		Doc:  "specifies the character encoding with the given format and values.",
 	},
 	"checked": {
 		Name: "Checked",
@@ -1158,8 +1158,8 @@ var attrs = map[string]attr{
 	},
 	"content": {
 		Name: "Content",
-		Type: "string",
-		Doc:  "gives the value associated with the http-equiv or name attribute.",
+		Type: "fmt",
+		Doc:  "specifies the value associated with the http-equiv or name attribute using the given format and values.",
 	},
 	"contenteditable": {
 		Name: "ContentEditable",
@@ -1173,13 +1173,13 @@ var attrs = map[string]attr{
 	},
 	"coords": {
 		Name: "Coords",
-		Type: "string",
-		Doc:  "specifies the coordinates of the area.",
+		Type: "fmt",
+		Doc:  "specifies the coordinates of the area with the given format and values.",
 	},
 	"crossorigin": {
 		Name: "CrossOrigin",
-		Type: "string",
-		Doc:  "sets the mode of the request to an HTTP CORS Request.",
+		Type: "fmt",
+		Doc:  "sets the mode of the request to an HTTP CORS Request with the given format and values.",
 	},
 
 	// D:
@@ -1200,8 +1200,8 @@ var attrs = map[string]attr{
 	},
 	"datetime": {
 		Name: "DateTime",
-		Type: "string",
-		Doc:  "specifies the date and time.",
+		Type: "fmt",
+		Doc:  "specifies the date and time with the given format and values.",
 	},
 	"default": {
 		Name: "Default",
@@ -1215,13 +1215,13 @@ var attrs = map[string]attr{
 	},
 	"dir": {
 		Name: "Dir",
-		Type: "string",
-		Doc:  "specifies the text direction for the content in an element.",
+		Type: "fmt",
+		Doc:  "specifies the text direction for the content in an element with the given format and values.",
 	},
 	"dirname": {
 		Name: "DirName",
-		Type: "string",
-		Doc:  "specifies that the text direction will be submitted.",
+		Type: "fmt",
+		Doc:  "specifies that the text direction will be submitted using the given format and values.",
 	},
 	"disabled": {
 		Name: "Disabled",
@@ -1230,8 +1230,8 @@ var attrs = map[string]attr{
 	},
 	"download": {
 		Name: "Download",
-		Type: "string",
-		Doc:  "specifies that the target will be downloaded when a user clicks on the hyperlink.",
+		Type: "fmt",
+		Doc:  "specifies that the target will be downloaded when a user clicks on the hyperlink. Uses the given format and values.",
 	},
 	"draggable": {
 		Name: "Draggable",
@@ -1242,35 +1242,35 @@ var attrs = map[string]attr{
 	// E:
 	"enctype": {
 		Name: "EncType",
-		Type: "string",
-		Doc:  "specifies how the form-data should be encoded when submitting it to the server (only for post method).",
+		Type: "fmt",
+		Doc:  "specifies how the form-data should be encoded when submitting it to the server (only for post method). Uses the given format and values.",
 	},
 
 	// F:
 	"for": {
 		Name: "For",
-		Type: "string",
-		Doc:  "specifies which form element(s) a label/calculation is bound to.",
+		Type: "fmt",
+		Doc:  "specifies which form element(s) a label/calculation is bound to. Uses the given format and values.",
 	},
 	"form": {
 		Name: "Form",
-		Type: "string",
-		Doc:  "specifies the name of the form the element belongs to.",
+		Type: "fmt",
+		Doc:  "specifies the name of the form the element belongs to. Uses the given format and values.",
 	},
 	"formaction": {
 		Name: "FormAction",
-		Type: "string",
-		Doc:  "specifies where to send the form-data when a form is submitted. Only for submit type.",
+		Type: "fmt",
+		Doc:  "specifies where to send the form-data when a form is submitted. Only for submit type. Uses the given format and values.",
 	},
 	"formenctype": {
 		Name: "FormEncType",
-		Type: "string",
-		Doc:  "specifies how form-data should be encoded before sending it to a server. Only for submit type.",
+		Type: "fmt",
+		Doc:  "specifies how form-data should be encoded before sending it to a server. Only for submit type. Uses the given format and values.",
 	},
 	"formmethod": {
 		Name: "FormMethod",
-		Type: "string",
-		Doc:  "specifies how to send the form-data (which HTTP method to use). Only for submit type.",
+		Type: "fmt",
+		Doc:  "specifies how to send the form-data (which HTTP method to use). Only for submit type. Uses the given format and values.",
 	},
 	"formnovalidate": {
 		Name: "FormNoValidate",
@@ -1279,15 +1279,15 @@ var attrs = map[string]attr{
 	},
 	"formtarget": {
 		Name: "FormTarget",
-		Type: "string",
-		Doc:  "specifies where to display the response after submitting the form. Only for submit type.",
+		Type: "fmt",
+		Doc:  "specifies where to display the response after submitting the form. Only for submit type. Uses the given format and values.",
 	},
 
 	// H:
 	"headers": {
 		Name: "Headers",
-		Type: "string",
-		Doc:  "specifies one or more headers cells a cell is related to.",
+		Type: "fmt",
+		Doc:  "specifies one or more headers cells a cell is related to. Uses the given format and values.",
 	},
 	"height": {
 		Name: "Height",
@@ -1311,8 +1311,8 @@ var attrs = map[string]attr{
 	},
 	"hreflang": {
 		Name: "HrefLang",
-		Type: "string",
-		Doc:  "specifies the language of the linked document.",
+		Type: "fmt",
+		Doc:  "specifies the language of the linked document with the given format and values.",
 	},
 	"http-equiv": {
 		Name:         "HTTPEquiv",
@@ -1324,8 +1324,8 @@ var attrs = map[string]attr{
 	// I:
 	"id": {
 		Name: "ID",
-		Type: "string",
-		Doc:  "specifies a unique id for an element.",
+		Type: "fmt",
+		Doc:  "specifies a unique id for an element with the given format and values.",
 	},
 	"ismap": {
 		Name: "IsMap",
@@ -1336,30 +1336,30 @@ var attrs = map[string]attr{
 	// K:
 	"kind": {
 		Name: "Kind",
-		Type: "string",
-		Doc:  "specifies the kind of text track.",
+		Type: "fmt",
+		Doc:  "specifies the kind of text track with the given format and values.",
 	},
 
 	// L:
 	"label": {
 		Name: "Label",
-		Type: "string",
-		Doc:  "specifies a shorter label for the option.",
+		Type: "fmt",
+		Doc:  "specifies a shorter label for the option with the given format and values.",
 	},
 	"lang": {
 		Name: "Lang",
-		Type: "string",
-		Doc:  "specifies the language of the element's content.",
+		Type: "fmt",
+		Doc:  "specifies the language of the element's content with the given format and values.",
 	},
 	"list": {
 		Name: "List",
-		Type: "string",
-		Doc:  "refers to a datalist element that contains pre-defined options for an input element.",
+		Type: "fmt",
+		Doc:  "refers to a datalist element that contains pre-defined options for an input element. Uses the given format and values.",
 	},
 	"loading": {
 		Name: "Loading",
-		Type: "string",
-		Doc:  "indicates how the browser should load the iframe (eager|lazy).",
+		Type: "fmt",
+		Doc:  "indicates how the browser should load the iframe (eager|lazy). Uses the given format and values.",
 	},
 	"loop": {
 		Name: "Loop",
@@ -1385,13 +1385,13 @@ var attrs = map[string]attr{
 	},
 	"media": {
 		Name: "Media",
-		Type: "string",
-		Doc:  "specifies what media/device the linked document is optimized for.",
+		Type: "fmt",
+		Doc:  "specifies what media/device the linked document is optimized for. Uses the given format and values.",
 	},
 	"method": {
 		Name: "Method",
-		Type: "string",
-		Doc:  "specifies the HTTP method to use when sending form-data.",
+		Type: "fmt",
+		Doc:  "specifies the HTTP method to use when sending form-data. Uses the given format and values.",
 	},
 	"min": {
 		Name: "Min",
@@ -1412,8 +1412,8 @@ var attrs = map[string]attr{
 	// N:
 	"name": {
 		Name: "Name",
-		Type: "string",
-		Doc:  "specifies the name of the element.",
+		Type: "fmt",
+		Doc:  "specifies the name of the element with the given format and values.",
 	},
 	"novalidate": {
 		Name: "NoValidate",
@@ -1436,33 +1436,33 @@ var attrs = map[string]attr{
 	// P:
 	"pattern": {
 		Name: "Pattern",
-		Type: "string",
-		Doc:  "specifies a regular expression that an input element's value is checked against.",
+		Type: "fmt",
+		Doc:  "specifies a regular expression that an input element's value is checked against. Uses the given format and values.",
 	},
 	"ping": {
 		Name: "Ping",
-		Type: "string",
-		Doc:  "specifies a list of URLs to be notified if the user follows the hyperlink.",
+		Type: "fmt",
+		Doc:  "specifies a list of URLs to be notified if the user follows the hyperlink. Uses the given format and values.",
 	},
 	"placeholder": {
 		Name: "Placeholder",
-		Type: "string",
-		Doc:  "specifies a short hint that describes the expected value of the element.",
+		Type: "fmt",
+		Doc:  "specifies a short hint that describes the expected value of the element. Uses the given format and values.",
 	},
 	"poster": {
 		Name: "Poster",
-		Type: "string",
-		Doc:  "specifies an image to be shown while the video is downloading, or until the user hits the play button.",
+		Type: "fmt",
+		Doc:  "specifies an image to be shown while the video is downloading, or until the user hits the play button. Uses the given format and values.",
 	},
 	"preload": {
 		Name: "Preload",
-		Type: "string",
-		Doc:  "specifies if and how the author thinks the audio/video should be loaded when the page loads.",
+		Type: "fmt",
+		Doc:  "specifies if and how the author thinks the audio/video should be loaded when the page loads. Uses the given format and values.",
 	},
 	"property": {
 		Name: "Property",
-		Type: "string",
-		Doc:  "specifies the property name.",
+		Type: "fmt",
+		Doc:  "specifies the property name with the given format and values.",
 	},
 
 	// R:
@@ -1473,13 +1473,13 @@ var attrs = map[string]attr{
 	},
 	"referrerpolicy": {
 		Name: "ReferrerPolicy",
-		Type: "string",
-		Doc:  "specifies how much/which referrer information that will be sent when processing the iframe attributes",
+		Type: "fmt",
+		Doc:  "specifies how much/which referrer information that will be sent when processing the iframe attributes. Uses the given format and values.",
 	},
 	"rel": {
 		Name: "Rel",
-		Type: "string",
-		Doc:  "specifies the relationship between the current document and the linked document.",
+		Type: "fmt",
+		Doc:  "specifies the relationship between the current document and the linked document. uses the given format and values.",
 	},
 	"required": {
 		Name: "Required",
@@ -1493,8 +1493,8 @@ var attrs = map[string]attr{
 	},
 	"role": {
 		Name: "Role",
-		Type: "string",
-		Doc:  "specifies to parsing software the exact function of an element (and its children).",
+		Type: "fmt",
+		Doc:  "specifies to parsing software the exact function of an element (and its children). Uses the given format and values.",
 	},
 	"rows": {
 		Name: "Rows",
@@ -1515,8 +1515,8 @@ var attrs = map[string]attr{
 	},
 	"scope": {
 		Name: "Scope",
-		Type: "string",
-		Doc:  "specifies whether a header cell is a header for a column, row, or group of columns or rows.",
+		Type: "fmt",
+		Doc:  "specifies whether a header cell is a header for a column, row, or group of columns or rows. Uses the given format and values.",
 	},
 	"selected": {
 		Name: "Selected",
@@ -1525,8 +1525,8 @@ var attrs = map[string]attr{
 	},
 	"shape": {
 		Name: "Shape",
-		Type: "string",
-		Doc:  "specifies the shape of the area.",
+		Type: "fmt",
+		Doc:  "specifies the shape of the area with the given format and values.",
 	},
 	"size": {
 		Name: "Size",
@@ -1535,8 +1535,8 @@ var attrs = map[string]attr{
 	},
 	"sizes": {
 		Name: "Sizes",
-		Type: "string",
-		Doc:  "specifies the size of the linked resource.",
+		Type: "fmt",
+		Doc:  "specifies the size of the linked resource with the given format and values.",
 	},
 	"span": {
 		Name: "Span",
@@ -1555,13 +1555,13 @@ var attrs = map[string]attr{
 	},
 	"srcdoc": {
 		Name: "SrcDoc",
-		Type: "string",
-		Doc:  "specifies the HTML content of the page to show in the iframe.",
+		Type: "fmt",
+		Doc:  "specifies the HTML content of the page to show in the iframe with the given format and values.",
 	},
 	"srclang": {
 		Name: "SrcLang",
-		Type: "string",
-		Doc:  `specifies the language of the track text data (required if kind = "subtitles").`,
+		Type: "fmt",
+		Doc:  `specifies the language of the track text data (required if kind = "subtitles"). Uses the given format and values.`,
 	},
 	"srcset": {
 		Name: "SrcSet",
@@ -1597,8 +1597,8 @@ var attrs = map[string]attr{
 	},
 	"target": {
 		Name: "Target",
-		Type: "string",
-		Doc:  "specifies the target for where to open the linked document or where to submit the form.",
+		Type: "fmt",
+		Doc:  "specifies the target for where to open the linked document or where to submit the form. Uses the given format and values.",
 	},
 	"title": {
 		Name: "Title",
@@ -1607,15 +1607,15 @@ var attrs = map[string]attr{
 	},
 	"type": {
 		Name: "Type",
-		Type: "string",
-		Doc:  "specifies the type of element.",
+		Type: "fmt",
+		Doc:  "specifies the type of element with the given format and values.",
 	},
 
 	// U:
 	"usemap": {
 		Name: "UseMap",
-		Type: "string",
-		Doc:  "specifies an image as a client-side image-map.",
+		Type: "fmt",
+		Doc:  "specifies an image as a client-side image-map. Uses the given format and values.",
 	},
 
 	// V:
@@ -1633,8 +1633,8 @@ var attrs = map[string]attr{
 	},
 	"wrap": {
 		Name: "Wrap",
-		Type: "string",
-		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form.",
+		Type: "fmt",
+		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form. Uses the given format and values.",
 	},
 	"xmlns": {
 		Name: "XMLNS",
