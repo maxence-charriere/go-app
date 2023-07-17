@@ -1605,11 +1605,6 @@ var attrs = map[string]attr{
 		Type: "string",
 		Doc:  "specifies extra information about an element.",
 	},
-	"titlef": {
-		Name: "Titlef",
-		Type: "fmt",
-		Doc:  "specifies extra information about an element with the given format and values.",
-	},
 	"type": {
 		Name: "Type",
 		Type: "string",
@@ -1684,7 +1679,6 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"styles",
 		"tabindex",
 		"title",
-		"titlef",
 		"attribute",
 	)...)
 
@@ -2438,15 +2432,6 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 				}
 	
 				e.setAttr("%s", s)
-				return e
-			}`, attrName)
-		}
-
-	case "url":
-		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
-		if !isInterface {
-			fmt.Fprintf(w, `{
-				e.setAttr("%s", v)
 				return e
 			}`, attrName)
 		}

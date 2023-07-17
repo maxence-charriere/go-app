@@ -54,7 +54,7 @@ type HTMLA interface {
 	Hidden(v bool) HTMLA
 
 	// Href specifies the URL of the page the link goes to.
-	Href(v string) HTMLA
+	Href(v url) HTMLA
 
 	// HrefLang specifies the language of the linked document.
 	HrefLang(v string) HTMLA
@@ -94,9 +94,6 @@ type HTMLA interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLA
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLA
 
 	// Type specifies the type of element.
 	Type(v string) HTMLA
@@ -293,7 +290,7 @@ func (e *htmlA) Hidden(v bool) HTMLA {
 	return e
 }
 
-func (e *htmlA) Href(v string) HTMLA {
+func (e *htmlA) Href(v url) HTMLA {
 	e.setAttr("href", v)
 	return e
 }
@@ -367,11 +364,6 @@ func (e *htmlA) Target(v string) HTMLA {
 
 func (e *htmlA) Title(v string) HTMLA {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlA) Titlef(format string, v ...any) HTMLA {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -622,9 +614,6 @@ type HTMLAbbr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAbbr
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLAbbr
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAbbr
 
@@ -856,11 +845,6 @@ func (e *htmlAbbr) TabIndex(v int) HTMLAbbr {
 
 func (e *htmlAbbr) Title(v string) HTMLAbbr {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlAbbr) Titlef(format string, v ...any) HTMLAbbr {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1106,9 +1090,6 @@ type HTMLAddress interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAddress
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLAddress
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAddress
 
@@ -1343,11 +1324,6 @@ func (e *htmlAddress) Title(v string) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) Titlef(format string, v ...any) HTMLAddress {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlAddress) On(event string, h EventHandler, scope ...any) HTMLAddress {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -1567,7 +1543,7 @@ type HTMLArea interface {
 	Hidden(v bool) HTMLArea
 
 	// Href specifies the URL of the page the link goes to.
-	Href(v string) HTMLArea
+	Href(v url) HTMLArea
 
 	// HrefLang specifies the language of the linked document.
 	HrefLang(v string) HTMLArea
@@ -1607,9 +1583,6 @@ type HTMLArea interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLArea
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLArea
 
 	// Type specifies the type of element.
 	Type(v string) HTMLArea
@@ -1803,7 +1776,7 @@ func (e *htmlArea) Hidden(v bool) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Href(v string) HTMLArea {
+func (e *htmlArea) Href(v url) HTMLArea {
 	e.setAttr("href", v)
 	return e
 }
@@ -1877,11 +1850,6 @@ func (e *htmlArea) Target(v string) HTMLArea {
 
 func (e *htmlArea) Title(v string) HTMLArea {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlArea) Titlef(format string, v ...any) HTMLArea {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2132,9 +2100,6 @@ type HTMLArticle interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLArticle
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLArticle
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLArticle
 
@@ -2366,11 +2331,6 @@ func (e *htmlArticle) TabIndex(v int) HTMLArticle {
 
 func (e *htmlArticle) Title(v string) HTMLArticle {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlArticle) Titlef(format string, v ...any) HTMLArticle {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2616,9 +2576,6 @@ type HTMLAside interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAside
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLAside
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAside
 
@@ -2850,11 +2807,6 @@ func (e *htmlAside) TabIndex(v int) HTMLAside {
 
 func (e *htmlAside) Title(v string) HTMLAside {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlAside) Titlef(format string, v ...any) HTMLAside {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3107,7 +3059,7 @@ type HTMLAudio interface {
 	Spellcheck(v bool) HTMLAudio
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLAudio
+	Src(v url) HTMLAudio
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAudio
@@ -3120,9 +3072,6 @@ type HTMLAudio interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAudio
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLAudio
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAudio
@@ -3435,7 +3384,7 @@ func (e *htmlAudio) Spellcheck(v bool) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Src(v string) HTMLAudio {
+func (e *htmlAudio) Src(v url) HTMLAudio {
 	e.setAttr("src", v)
 	return e
 }
@@ -3459,11 +3408,6 @@ func (e *htmlAudio) TabIndex(v int) HTMLAudio {
 
 func (e *htmlAudio) Title(v string) HTMLAudio {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlAudio) Titlef(format string, v ...any) HTMLAudio {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3824,9 +3768,6 @@ type HTMLB interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLB
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLB
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLB
 
@@ -4061,11 +4002,6 @@ func (e *htmlB) Title(v string) HTMLB {
 	return e
 }
 
-func (e *htmlB) Titlef(format string, v ...any) HTMLB {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlB) On(event string, h EventHandler, scope ...any) HTMLB {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -4276,7 +4212,7 @@ type HTMLBase interface {
 	Hidden(v bool) HTMLBase
 
 	// Href specifies the URL of the page the link goes to.
-	Href(v string) HTMLBase
+	Href(v url) HTMLBase
 
 	// ID specifies a unique id for an element.
 	ID(v string) HTMLBase
@@ -4304,9 +4240,6 @@ type HTMLBase interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBase
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLBase
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBase
@@ -4482,7 +4415,7 @@ func (e *htmlBase) Hidden(v bool) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Href(v string) HTMLBase {
+func (e *htmlBase) Href(v url) HTMLBase {
 	e.setAttr("href", v)
 	return e
 }
@@ -4536,11 +4469,6 @@ func (e *htmlBase) Target(v string) HTMLBase {
 
 func (e *htmlBase) Title(v string) HTMLBase {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlBase) Titlef(format string, v ...any) HTMLBase {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4786,9 +4714,6 @@ type HTMLBdi interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdi
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLBdi
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBdi
 
@@ -5020,11 +4945,6 @@ func (e *htmlBdi) TabIndex(v int) HTMLBdi {
 
 func (e *htmlBdi) Title(v string) HTMLBdi {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlBdi) Titlef(format string, v ...any) HTMLBdi {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5270,9 +5190,6 @@ type HTMLBdo interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdo
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLBdo
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBdo
 
@@ -5507,11 +5424,6 @@ func (e *htmlBdo) Title(v string) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) Titlef(format string, v ...any) HTMLBdo {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlBdo) On(event string, h EventHandler, scope ...any) HTMLBdo {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -5710,7 +5622,7 @@ type HTMLBlockquote interface {
 	Attr(n string, v any) HTMLBlockquote
 
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
-	Cite(v string) HTMLBlockquote
+	Cite(v url) HTMLBlockquote
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBlockquote
@@ -5756,9 +5668,6 @@ type HTMLBlockquote interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBlockquote
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLBlockquote
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBlockquote
@@ -5910,7 +5819,7 @@ func (e *htmlBlockquote) Attr(n string, v any) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Cite(v string) HTMLBlockquote {
+func (e *htmlBlockquote) Cite(v url) HTMLBlockquote {
 	e.setAttr("cite", v)
 	return e
 }
@@ -5996,11 +5905,6 @@ func (e *htmlBlockquote) TabIndex(v int) HTMLBlockquote {
 
 func (e *htmlBlockquote) Title(v string) HTMLBlockquote {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlBlockquote) Titlef(format string, v ...any) HTMLBlockquote {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6238,9 +6142,6 @@ type HTMLBody interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBody
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLBody
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBody
@@ -6510,11 +6411,6 @@ func (e *htmlBody) TabIndex(v int) HTMLBody {
 
 func (e *htmlBody) Title(v string) HTMLBody {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlBody) Titlef(format string, v ...any) HTMLBody {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6826,9 +6722,6 @@ type HTMLBr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBr
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLBr
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBr
 
@@ -7047,11 +6940,6 @@ func (e *htmlBr) TabIndex(v int) HTMLBr {
 
 func (e *htmlBr) Title(v string) HTMLBr {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlBr) Titlef(format string, v ...any) HTMLBr {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7323,9 +7211,6 @@ type HTMLButton interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLButton
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLButton
 
 	// Type specifies the type of element.
 	Type(v string) HTMLButton
@@ -7612,11 +7497,6 @@ func (e *htmlButton) Title(v string) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Titlef(format string, v ...any) HTMLButton {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlButton) Type(v string) HTMLButton {
 	e.setAttr("type", v)
 	return e
@@ -7872,9 +7752,6 @@ type HTMLCanvas interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCanvas
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLCanvas
-
 	// Width specifies the width of the element.
 	Width(v int) HTMLCanvas
 
@@ -8114,11 +7991,6 @@ func (e *htmlCanvas) TabIndex(v int) HTMLCanvas {
 
 func (e *htmlCanvas) Title(v string) HTMLCanvas {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlCanvas) Titlef(format string, v ...any) HTMLCanvas {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8369,9 +8241,6 @@ type HTMLCaption interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCaption
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLCaption
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCaption
 
@@ -8603,11 +8472,6 @@ func (e *htmlCaption) TabIndex(v int) HTMLCaption {
 
 func (e *htmlCaption) Title(v string) HTMLCaption {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlCaption) Titlef(format string, v ...any) HTMLCaption {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8853,9 +8717,6 @@ type HTMLCite interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCite
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLCite
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCite
 
@@ -9087,11 +8948,6 @@ func (e *htmlCite) TabIndex(v int) HTMLCite {
 
 func (e *htmlCite) Title(v string) HTMLCite {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlCite) Titlef(format string, v ...any) HTMLCite {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9337,9 +9193,6 @@ type HTMLCode interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCode
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLCode
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCode
 
@@ -9571,11 +9424,6 @@ func (e *htmlCode) TabIndex(v int) HTMLCode {
 
 func (e *htmlCode) Title(v string) HTMLCode {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlCode) Titlef(format string, v ...any) HTMLCode {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9815,9 +9663,6 @@ type HTMLCol interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCol
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLCol
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCol
 
@@ -10041,11 +9886,6 @@ func (e *htmlCol) TabIndex(v int) HTMLCol {
 
 func (e *htmlCol) Title(v string) HTMLCol {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlCol) Titlef(format string, v ...any) HTMLCol {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10294,9 +10134,6 @@ type HTMLColGroup interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLColGroup
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLColGroup
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLColGroup
 
@@ -10533,11 +10370,6 @@ func (e *htmlColGroup) TabIndex(v int) HTMLColGroup {
 
 func (e *htmlColGroup) Title(v string) HTMLColGroup {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlColGroup) Titlef(format string, v ...any) HTMLColGroup {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10783,9 +10615,6 @@ type HTMLData interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLData
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLData
-
 	// Value specifies the value of the element.
 	Value(v any) HTMLData
 
@@ -10921,11 +10750,6 @@ func (e *htmlData) Title(v string) HTMLData {
 	return e
 }
 
-func (e *htmlData) Titlef(format string, v ...any) HTMLData {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlData) Value(v any) HTMLData {
 	e.setAttr("value", v)
 	return e
@@ -11002,9 +10826,6 @@ type HTMLDataList interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDataList
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDataList
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDataList
@@ -11237,11 +11058,6 @@ func (e *htmlDataList) TabIndex(v int) HTMLDataList {
 
 func (e *htmlDataList) Title(v string) HTMLDataList {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDataList) Titlef(format string, v ...any) HTMLDataList {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11487,9 +11303,6 @@ type HTMLDd interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDd
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDd
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDd
 
@@ -11724,11 +11537,6 @@ func (e *htmlDd) Title(v string) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) Titlef(format string, v ...any) HTMLDd {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlDd) On(event string, h EventHandler, scope ...any) HTMLDd {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -11927,7 +11735,7 @@ type HTMLDel interface {
 	Attr(n string, v any) HTMLDel
 
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
-	Cite(v string) HTMLDel
+	Cite(v url) HTMLDel
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDel
@@ -11976,9 +11784,6 @@ type HTMLDel interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDel
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDel
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDel
@@ -12130,7 +11935,7 @@ func (e *htmlDel) Attr(n string, v any) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) Cite(v string) HTMLDel {
+func (e *htmlDel) Cite(v url) HTMLDel {
 	e.setAttr("cite", v)
 	return e
 }
@@ -12221,11 +12026,6 @@ func (e *htmlDel) TabIndex(v int) HTMLDel {
 
 func (e *htmlDel) Title(v string) HTMLDel {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDel) Titlef(format string, v ...any) HTMLDel {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12474,9 +12274,6 @@ type HTMLDetails interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDetails
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDetails
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDetails
 
@@ -12716,11 +12513,6 @@ func (e *htmlDetails) TabIndex(v int) HTMLDetails {
 
 func (e *htmlDetails) Title(v string) HTMLDetails {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDetails) Titlef(format string, v ...any) HTMLDetails {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12971,9 +12763,6 @@ type HTMLDfn interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDfn
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDfn
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDfn
 
@@ -13205,11 +12994,6 @@ func (e *htmlDfn) TabIndex(v int) HTMLDfn {
 
 func (e *htmlDfn) Title(v string) HTMLDfn {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDfn) Titlef(format string, v ...any) HTMLDfn {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13458,9 +13242,6 @@ type HTMLDialog interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDialog
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDialog
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDialog
 
@@ -13697,11 +13478,6 @@ func (e *htmlDialog) TabIndex(v int) HTMLDialog {
 
 func (e *htmlDialog) Title(v string) HTMLDialog {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDialog) Titlef(format string, v ...any) HTMLDialog {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13947,9 +13723,6 @@ type HTMLDiv interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDiv
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDiv
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDiv
 
@@ -14181,11 +13954,6 @@ func (e *htmlDiv) TabIndex(v int) HTMLDiv {
 
 func (e *htmlDiv) Title(v string) HTMLDiv {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDiv) Titlef(format string, v ...any) HTMLDiv {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14431,9 +14199,6 @@ type HTMLDl interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDl
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDl
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDl
 
@@ -14665,11 +14430,6 @@ func (e *htmlDl) TabIndex(v int) HTMLDl {
 
 func (e *htmlDl) Title(v string) HTMLDl {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDl) Titlef(format string, v ...any) HTMLDl {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14915,9 +14675,6 @@ type HTMLDt interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDt
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLDt
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDt
 
@@ -15149,11 +14906,6 @@ func (e *htmlDt) TabIndex(v int) HTMLDt {
 
 func (e *htmlDt) Title(v string) HTMLDt {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlDt) Titlef(format string, v ...any) HTMLDt {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15399,9 +15151,6 @@ type HTMLElem interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLElem
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLElem
-
 	// XMLNS specifies the xml namespace of the element.
 	XMLNS(v string) HTMLElem
 
@@ -15636,11 +15385,6 @@ func (e *htmlElem) TabIndex(v int) HTMLElem {
 
 func (e *htmlElem) Title(v string) HTMLElem {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlElem) Titlef(format string, v ...any) HTMLElem {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15882,9 +15626,6 @@ type HTMLElemSelfClosing interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLElemSelfClosing
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLElemSelfClosing
-
 	// XMLNS specifies the xml namespace of the element.
 	XMLNS(v string) HTMLElemSelfClosing
 
@@ -16106,11 +15847,6 @@ func (e *htmlElemSelfClosing) TabIndex(v int) HTMLElemSelfClosing {
 
 func (e *htmlElemSelfClosing) Title(v string) HTMLElemSelfClosing {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlElemSelfClosing) Titlef(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16361,9 +16097,6 @@ type HTMLEm interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLEm
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLEm
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLEm
 
@@ -16598,11 +16331,6 @@ func (e *htmlEm) Title(v string) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) Titlef(format string, v ...any) HTMLEm {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlEm) On(event string, h EventHandler, scope ...any) HTMLEm {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -16828,7 +16556,7 @@ type HTMLEmbed interface {
 	Spellcheck(v bool) HTMLEmbed
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLEmbed
+	Src(v url) HTMLEmbed
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLEmbed
@@ -16841,9 +16569,6 @@ type HTMLEmbed interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLEmbed
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLEmbed
 
 	// Type specifies the type of element.
 	Type(v string) HTMLEmbed
@@ -17124,7 +16849,7 @@ func (e *htmlEmbed) Spellcheck(v bool) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Src(v string) HTMLEmbed {
+func (e *htmlEmbed) Src(v url) HTMLEmbed {
 	e.setAttr("src", v)
 	return e
 }
@@ -17148,11 +16873,6 @@ func (e *htmlEmbed) TabIndex(v int) HTMLEmbed {
 
 func (e *htmlEmbed) Title(v string) HTMLEmbed {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlEmbed) Titlef(format string, v ...any) HTMLEmbed {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17532,9 +17252,6 @@ type HTMLFieldSet interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFieldSet
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLFieldSet
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFieldSet
 
@@ -17784,11 +17501,6 @@ func (e *htmlFieldSet) Title(v string) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Titlef(format string, v ...any) HTMLFieldSet {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlFieldSet) On(event string, h EventHandler, scope ...any) HTMLFieldSet {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -18031,9 +17743,6 @@ type HTMLFigCaption interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigCaption
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLFigCaption
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFigCaption
 
@@ -18265,11 +17974,6 @@ func (e *htmlFigCaption) TabIndex(v int) HTMLFigCaption {
 
 func (e *htmlFigCaption) Title(v string) HTMLFigCaption {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlFigCaption) Titlef(format string, v ...any) HTMLFigCaption {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18515,9 +18219,6 @@ type HTMLFigure interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigure
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLFigure
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFigure
 
@@ -18749,11 +18450,6 @@ func (e *htmlFigure) TabIndex(v int) HTMLFigure {
 
 func (e *htmlFigure) Title(v string) HTMLFigure {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlFigure) Titlef(format string, v ...any) HTMLFigure {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18999,9 +18695,6 @@ type HTMLFooter interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFooter
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLFooter
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFooter
 
@@ -19233,11 +18926,6 @@ func (e *htmlFooter) TabIndex(v int) HTMLFooter {
 
 func (e *htmlFooter) Title(v string) HTMLFooter {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlFooter) Titlef(format string, v ...any) HTMLFooter {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19506,9 +19194,6 @@ type HTMLForm interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLForm
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLForm
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLForm
@@ -19789,11 +19474,6 @@ func (e *htmlForm) Title(v string) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Titlef(format string, v ...any) HTMLForm {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlForm) On(event string, h EventHandler, scope ...any) HTMLForm {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -20036,9 +19716,6 @@ type HTMLH1 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH1
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLH1
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH1
 
@@ -20270,11 +19947,6 @@ func (e *htmlH1) TabIndex(v int) HTMLH1 {
 
 func (e *htmlH1) Title(v string) HTMLH1 {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlH1) Titlef(format string, v ...any) HTMLH1 {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20520,9 +20192,6 @@ type HTMLH2 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH2
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLH2
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH2
 
@@ -20754,11 +20423,6 @@ func (e *htmlH2) TabIndex(v int) HTMLH2 {
 
 func (e *htmlH2) Title(v string) HTMLH2 {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlH2) Titlef(format string, v ...any) HTMLH2 {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21004,9 +20668,6 @@ type HTMLH3 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH3
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLH3
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH3
 
@@ -21238,11 +20899,6 @@ func (e *htmlH3) TabIndex(v int) HTMLH3 {
 
 func (e *htmlH3) Title(v string) HTMLH3 {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlH3) Titlef(format string, v ...any) HTMLH3 {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21488,9 +21144,6 @@ type HTMLH4 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH4
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLH4
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH4
 
@@ -21722,11 +21375,6 @@ func (e *htmlH4) TabIndex(v int) HTMLH4 {
 
 func (e *htmlH4) Title(v string) HTMLH4 {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlH4) Titlef(format string, v ...any) HTMLH4 {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21972,9 +21620,6 @@ type HTMLH5 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH5
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLH5
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH5
 
@@ -22206,11 +21851,6 @@ func (e *htmlH5) TabIndex(v int) HTMLH5 {
 
 func (e *htmlH5) Title(v string) HTMLH5 {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlH5) Titlef(format string, v ...any) HTMLH5 {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22456,9 +22096,6 @@ type HTMLH6 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH6
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLH6
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH6
 
@@ -22690,11 +22327,6 @@ func (e *htmlH6) TabIndex(v int) HTMLH6 {
 
 func (e *htmlH6) Title(v string) HTMLH6 {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlH6) Titlef(format string, v ...any) HTMLH6 {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22940,9 +22572,6 @@ type HTMLHead interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHead
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLHead
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHead
 }
@@ -23075,11 +22704,6 @@ func (e *htmlHead) Title(v string) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) Titlef(format string, v ...any) HTMLHead {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlHead) On(event string, h EventHandler, scope ...any) HTMLHead {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -23151,9 +22775,6 @@ type HTMLHeader interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHeader
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLHeader
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHeader
@@ -23386,11 +23007,6 @@ func (e *htmlHeader) TabIndex(v int) HTMLHeader {
 
 func (e *htmlHeader) Title(v string) HTMLHeader {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlHeader) Titlef(format string, v ...any) HTMLHeader {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23627,9 +23243,6 @@ type HTMLHr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHr
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLHr
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHr
 
@@ -23848,11 +23461,6 @@ func (e *htmlHr) TabIndex(v int) HTMLHr {
 
 func (e *htmlHr) Title(v string) HTMLHr {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlHr) Titlef(format string, v ...any) HTMLHr {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24091,9 +23699,6 @@ type HTMLHtml interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHtml
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLHtml
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHtml
 }
@@ -24218,11 +23823,6 @@ func (e *htmlHtml) Title(v string) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) Titlef(format string, v ...any) HTMLHtml {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlHtml) On(event string, h EventHandler, scope ...any) HTMLHtml {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -24294,9 +23894,6 @@ type HTMLI interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLI
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLI
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLI
@@ -24529,11 +24126,6 @@ func (e *htmlI) TabIndex(v int) HTMLI {
 
 func (e *htmlI) Title(v string) HTMLI {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlI) Titlef(format string, v ...any) HTMLI {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24792,7 +24384,7 @@ type HTMLIFrame interface {
 	Spellcheck(v bool) HTMLIFrame
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLIFrame
+	Src(v url) HTMLIFrame
 
 	// SrcDoc specifies the HTML content of the page to show in the iframe.
 	SrcDoc(v string) HTMLIFrame
@@ -24808,9 +24400,6 @@ type HTMLIFrame interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLIFrame
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLIFrame
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLIFrame
@@ -25080,7 +24669,7 @@ func (e *htmlIFrame) Spellcheck(v bool) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Src(v string) HTMLIFrame {
+func (e *htmlIFrame) Src(v url) HTMLIFrame {
 	e.setAttr("src", v)
 	return e
 }
@@ -25109,11 +24698,6 @@ func (e *htmlIFrame) TabIndex(v int) HTMLIFrame {
 
 func (e *htmlIFrame) Title(v string) HTMLIFrame {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlIFrame) Titlef(format string, v ...any) HTMLIFrame {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25364,10 +24948,10 @@ type HTMLImg interface {
 	Spellcheck(v bool) HTMLImg
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLImg
+	Src(v url) HTMLImg
 
 	// SrcSet specifies the URL of the image to use in different situations.
-	SrcSet(v string) HTMLImg
+	SrcSet(v url) HTMLImg
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLImg
@@ -25380,9 +24964,6 @@ type HTMLImg interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLImg
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLImg
 
 	// UseMap specifies an image as a client-side image-map.
 	UseMap(v string) HTMLImg
@@ -25686,12 +25267,12 @@ func (e *htmlImg) Spellcheck(v bool) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Src(v string) HTMLImg {
+func (e *htmlImg) Src(v url) HTMLImg {
 	e.setAttr("src", v)
 	return e
 }
 
-func (e *htmlImg) SrcSet(v string) HTMLImg {
+func (e *htmlImg) SrcSet(v url) HTMLImg {
 	e.setAttr("srcset", v)
 	return e
 }
@@ -25715,11 +25296,6 @@ func (e *htmlImg) TabIndex(v int) HTMLImg {
 
 func (e *htmlImg) Title(v string) HTMLImg {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlImg) Titlef(format string, v ...any) HTMLImg {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26153,7 +25729,7 @@ type HTMLInput interface {
 	Spellcheck(v bool) HTMLInput
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLInput
+	Src(v url) HTMLInput
 
 	// Step specifies the legal number intervals for an input field.
 	Step(v float64) HTMLInput
@@ -26169,9 +25745,6 @@ type HTMLInput interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLInput
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLInput
 
 	// Type specifies the type of element.
 	Type(v string) HTMLInput
@@ -26519,7 +26092,7 @@ func (e *htmlInput) Spellcheck(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Src(v string) HTMLInput {
+func (e *htmlInput) Src(v url) HTMLInput {
 	e.setAttr("src", v)
 	return e
 }
@@ -26548,11 +26121,6 @@ func (e *htmlInput) TabIndex(v int) HTMLInput {
 
 func (e *htmlInput) Title(v string) HTMLInput {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlInput) Titlef(format string, v ...any) HTMLInput {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26818,9 +26386,6 @@ type HTMLIns interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLIns
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLIns
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLIns
 
@@ -27052,11 +26617,6 @@ func (e *htmlIns) TabIndex(v int) HTMLIns {
 
 func (e *htmlIns) Title(v string) HTMLIns {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlIns) Titlef(format string, v ...any) HTMLIns {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27302,9 +26862,6 @@ type HTMLKbd interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLKbd
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLKbd
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLKbd
 
@@ -27536,11 +27093,6 @@ func (e *htmlKbd) TabIndex(v int) HTMLKbd {
 
 func (e *htmlKbd) Title(v string) HTMLKbd {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlKbd) Titlef(format string, v ...any) HTMLKbd {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27792,9 +27344,6 @@ type HTMLLabel interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLabel
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLLabel
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLabel
 
@@ -28036,11 +27585,6 @@ func (e *htmlLabel) TabIndex(v int) HTMLLabel {
 
 func (e *htmlLabel) Title(v string) HTMLLabel {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlLabel) Titlef(format string, v ...any) HTMLLabel {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28286,9 +27830,6 @@ type HTMLLegend interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLegend
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLLegend
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLegend
 
@@ -28520,11 +28061,6 @@ func (e *htmlLegend) TabIndex(v int) HTMLLegend {
 
 func (e *htmlLegend) Title(v string) HTMLLegend {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlLegend) Titlef(format string, v ...any) HTMLLegend {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28770,9 +28306,6 @@ type HTMLLi interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLi
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLLi
-
 	// Value specifies the value of the element.
 	Value(v any) HTMLLi
 
@@ -29010,11 +28543,6 @@ func (e *htmlLi) Title(v string) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) Titlef(format string, v ...any) HTMLLi {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlLi) Value(v any) HTMLLi {
 	e.setAttr("value", v)
 	return e
@@ -29236,7 +28764,7 @@ type HTMLLink interface {
 	Hidden(v bool) HTMLLink
 
 	// Href specifies the URL of the page the link goes to.
-	Href(v string) HTMLLink
+	Href(v url) HTMLLink
 
 	// HrefLang specifies the language of the linked document.
 	HrefLang(v string) HTMLLink
@@ -29273,9 +28801,6 @@ type HTMLLink interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLink
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLLink
 
 	// Type specifies the type of element.
 	Type(v string) HTMLLink
@@ -29467,7 +28992,7 @@ func (e *htmlLink) Hidden(v bool) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Href(v string) HTMLLink {
+func (e *htmlLink) Href(v url) HTMLLink {
 	e.setAttr("href", v)
 	return e
 }
@@ -29536,11 +29061,6 @@ func (e *htmlLink) TabIndex(v int) HTMLLink {
 
 func (e *htmlLink) Title(v string) HTMLLink {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlLink) Titlef(format string, v ...any) HTMLLink {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29796,9 +29316,6 @@ type HTMLMain interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMain
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLMain
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMain
 
@@ -30030,11 +29547,6 @@ func (e *htmlMain) TabIndex(v int) HTMLMain {
 
 func (e *htmlMain) Title(v string) HTMLMain {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlMain) Titlef(format string, v ...any) HTMLMain {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30283,9 +29795,6 @@ type HTMLMap interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMap
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLMap
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMap
 
@@ -30522,11 +30031,6 @@ func (e *htmlMap) TabIndex(v int) HTMLMap {
 
 func (e *htmlMap) Title(v string) HTMLMap {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlMap) Titlef(format string, v ...any) HTMLMap {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30772,9 +30276,6 @@ type HTMLMark interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMark
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLMark
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMark
 
@@ -31006,11 +30507,6 @@ func (e *htmlMark) TabIndex(v int) HTMLMark {
 
 func (e *htmlMark) Title(v string) HTMLMark {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlMark) Titlef(format string, v ...any) HTMLMark {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31262,9 +30758,6 @@ type HTMLMeta interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMeta
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLMeta
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMeta
 }
@@ -31409,11 +30902,6 @@ func (e *htmlMeta) Title(v string) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Titlef(format string, v ...any) HTMLMeta {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlMeta) On(event string, h EventHandler, scope ...any) HTMLMeta {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -31503,9 +30991,6 @@ type HTMLMeter interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMeter
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLMeter
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLMeter
@@ -31774,11 +31259,6 @@ func (e *htmlMeter) Title(v string) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Titlef(format string, v ...any) HTMLMeter {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlMeter) Value(v any) HTMLMeter {
 	e.setAttr("value", v)
 	return e
@@ -32026,9 +31506,6 @@ type HTMLNav interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNav
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLNav
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLNav
 
@@ -32260,11 +31737,6 @@ func (e *htmlNav) TabIndex(v int) HTMLNav {
 
 func (e *htmlNav) Title(v string) HTMLNav {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlNav) Titlef(format string, v ...any) HTMLNav {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32510,9 +31982,6 @@ type HTMLNoScript interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNoScript
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLNoScript
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLNoScript
 }
@@ -32645,11 +32114,6 @@ func (e *htmlNoScript) Title(v string) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) Titlef(format string, v ...any) HTMLNoScript {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlNoScript) On(event string, h EventHandler, scope ...any) HTMLNoScript {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -32684,7 +32148,7 @@ type HTMLObject interface {
 	ContentEditable(v bool) HTMLObject
 
 	// Data specifies the URL of the resource to be used by the object.
-	Data(v string) HTMLObject
+	Data(v url) HTMLObject
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLObject
@@ -32733,9 +32197,6 @@ type HTMLObject interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLObject
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLObject
 
 	// Type specifies the type of element.
 	Type(v string) HTMLObject
@@ -32975,7 +32436,7 @@ func (e *htmlObject) ContentEditable(v bool) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Data(v string) HTMLObject {
+func (e *htmlObject) Data(v url) HTMLObject {
 	e.setAttr("data", v)
 	return e
 }
@@ -33066,11 +32527,6 @@ func (e *htmlObject) TabIndex(v int) HTMLObject {
 
 func (e *htmlObject) Title(v string) HTMLObject {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlObject) Titlef(format string, v ...any) HTMLObject {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33452,9 +32908,6 @@ type HTMLOl interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOl
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLOl
-
 	// Type specifies the type of element.
 	Type(v string) HTMLOl
 
@@ -33699,11 +33152,6 @@ func (e *htmlOl) TabIndex(v int) HTMLOl {
 
 func (e *htmlOl) Title(v string) HTMLOl {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlOl) Titlef(format string, v ...any) HTMLOl {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33960,9 +33408,6 @@ type HTMLOptGroup interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOptGroup
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLOptGroup
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOptGroup
 
@@ -34204,11 +33649,6 @@ func (e *htmlOptGroup) TabIndex(v int) HTMLOptGroup {
 
 func (e *htmlOptGroup) Title(v string) HTMLOptGroup {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlOptGroup) Titlef(format string, v ...any) HTMLOptGroup {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34463,9 +33903,6 @@ type HTMLOption interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOption
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLOption
-
 	// Value specifies the value of the element.
 	Value(v any) HTMLOption
 
@@ -34715,11 +34152,6 @@ func (e *htmlOption) TabIndex(v int) HTMLOption {
 
 func (e *htmlOption) Title(v string) HTMLOption {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlOption) Titlef(format string, v ...any) HTMLOption {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34979,9 +34411,6 @@ type HTMLOutput interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOutput
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLOutput
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOutput
 
@@ -35231,11 +34660,6 @@ func (e *htmlOutput) Title(v string) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) Titlef(format string, v ...any) HTMLOutput {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlOutput) On(event string, h EventHandler, scope ...any) HTMLOutput {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -35478,9 +34902,6 @@ type HTMLP interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLP
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLP
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLP
 
@@ -35712,11 +35133,6 @@ func (e *htmlP) TabIndex(v int) HTMLP {
 
 func (e *htmlP) Title(v string) HTMLP {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlP) Titlef(format string, v ...any) HTMLP {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35956,9 +35372,6 @@ type HTMLParam interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLParam
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLParam
-
 	// Value specifies the value of the element.
 	Value(v any) HTMLParam
 
@@ -36185,11 +35598,6 @@ func (e *htmlParam) TabIndex(v int) HTMLParam {
 
 func (e *htmlParam) Title(v string) HTMLParam {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlParam) Titlef(format string, v ...any) HTMLParam {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36440,9 +35848,6 @@ type HTMLPicture interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPicture
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLPicture
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLPicture
 
@@ -36674,11 +36079,6 @@ func (e *htmlPicture) TabIndex(v int) HTMLPicture {
 
 func (e *htmlPicture) Title(v string) HTMLPicture {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlPicture) Titlef(format string, v ...any) HTMLPicture {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36924,9 +36324,6 @@ type HTMLPre interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPre
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLPre
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLPre
 
@@ -37158,11 +36555,6 @@ func (e *htmlPre) TabIndex(v int) HTMLPre {
 
 func (e *htmlPre) Title(v string) HTMLPre {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlPre) Titlef(format string, v ...any) HTMLPre {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37411,9 +36803,6 @@ type HTMLProgress interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLProgress
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLProgress
-
 	// Value specifies the value of the element.
 	Value(v any) HTMLProgress
 
@@ -37656,11 +37045,6 @@ func (e *htmlProgress) Title(v string) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Titlef(format string, v ...any) HTMLProgress {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlProgress) Value(v any) HTMLProgress {
 	e.setAttr("value", v)
 	return e
@@ -37864,7 +37248,7 @@ type HTMLQ interface {
 	Attr(n string, v any) HTMLQ
 
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
-	Cite(v string) HTMLQ
+	Cite(v url) HTMLQ
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLQ
@@ -37910,9 +37294,6 @@ type HTMLQ interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLQ
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLQ
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLQ
@@ -38064,7 +37445,7 @@ func (e *htmlQ) Attr(n string, v any) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Cite(v string) HTMLQ {
+func (e *htmlQ) Cite(v url) HTMLQ {
 	e.setAttr("cite", v)
 	return e
 }
@@ -38150,11 +37531,6 @@ func (e *htmlQ) TabIndex(v int) HTMLQ {
 
 func (e *htmlQ) Title(v string) HTMLQ {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlQ) Titlef(format string, v ...any) HTMLQ {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38400,9 +37776,6 @@ type HTMLRp interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRp
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLRp
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRp
 
@@ -38634,11 +38007,6 @@ func (e *htmlRp) TabIndex(v int) HTMLRp {
 
 func (e *htmlRp) Title(v string) HTMLRp {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlRp) Titlef(format string, v ...any) HTMLRp {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38884,9 +38252,6 @@ type HTMLRt interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRt
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLRt
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRt
 
@@ -39118,11 +38483,6 @@ func (e *htmlRt) TabIndex(v int) HTMLRt {
 
 func (e *htmlRt) Title(v string) HTMLRt {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlRt) Titlef(format string, v ...any) HTMLRt {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39368,9 +38728,6 @@ type HTMLRuby interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRuby
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLRuby
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRuby
 
@@ -39602,11 +38959,6 @@ func (e *htmlRuby) TabIndex(v int) HTMLRuby {
 
 func (e *htmlRuby) Title(v string) HTMLRuby {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlRuby) Titlef(format string, v ...any) HTMLRuby {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39852,9 +39204,6 @@ type HTMLS interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLS
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLS
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLS
 
@@ -40086,11 +39435,6 @@ func (e *htmlS) TabIndex(v int) HTMLS {
 
 func (e *htmlS) Title(v string) HTMLS {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlS) Titlef(format string, v ...any) HTMLS {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40336,9 +39680,6 @@ type HTMLSamp interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSamp
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSamp
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSamp
 
@@ -40570,11 +39911,6 @@ func (e *htmlSamp) TabIndex(v int) HTMLSamp {
 
 func (e *htmlSamp) Title(v string) HTMLSamp {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlSamp) Titlef(format string, v ...any) HTMLSamp {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40821,7 +40157,7 @@ type HTMLScript interface {
 	Spellcheck(v bool) HTMLScript
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLScript
+	Src(v url) HTMLScript
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLScript
@@ -40834,9 +40170,6 @@ type HTMLScript interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLScript
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLScript
 
 	// Type specifies the type of element.
 	Type(v string) HTMLScript
@@ -40974,7 +40307,7 @@ func (e *htmlScript) Spellcheck(v bool) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Src(v string) HTMLScript {
+func (e *htmlScript) Src(v url) HTMLScript {
 	e.setAttr("src", v)
 	return e
 }
@@ -40998,11 +40331,6 @@ func (e *htmlScript) TabIndex(v int) HTMLScript {
 
 func (e *htmlScript) Title(v string) HTMLScript {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlScript) Titlef(format string, v ...any) HTMLScript {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41087,9 +40415,6 @@ type HTMLSection interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSection
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSection
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSection
@@ -41322,11 +40647,6 @@ func (e *htmlSection) TabIndex(v int) HTMLSection {
 
 func (e *htmlSection) Title(v string) HTMLSection {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlSection) Titlef(format string, v ...any) HTMLSection {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41592,9 +40912,6 @@ type HTMLSelect interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSelect
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSelect
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSelect
@@ -41865,11 +41182,6 @@ func (e *htmlSelect) Title(v string) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Titlef(format string, v ...any) HTMLSelect {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlSelect) On(event string, h EventHandler, scope ...any) HTMLSelect {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -42112,9 +41424,6 @@ type HTMLSmall interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSmall
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSmall
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSmall
 
@@ -42349,11 +41658,6 @@ func (e *htmlSmall) Title(v string) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) Titlef(format string, v ...any) HTMLSmall {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlSmall) On(event string, h EventHandler, scope ...any) HTMLSmall {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -42582,10 +41886,10 @@ type HTMLSource interface {
 	Spellcheck(v bool) HTMLSource
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLSource
+	Src(v url) HTMLSource
 
 	// SrcSet specifies the URL of the image to use in different situations.
-	SrcSet(v string) HTMLSource
+	SrcSet(v url) HTMLSource
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSource
@@ -42598,9 +41902,6 @@ type HTMLSource interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSource
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSource
 
 	// Type specifies the type of element.
 	Type(v string) HTMLSource
@@ -42814,12 +42115,12 @@ func (e *htmlSource) Spellcheck(v bool) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Src(v string) HTMLSource {
+func (e *htmlSource) Src(v url) HTMLSource {
 	e.setAttr("src", v)
 	return e
 }
 
-func (e *htmlSource) SrcSet(v string) HTMLSource {
+func (e *htmlSource) SrcSet(v url) HTMLSource {
 	e.setAttr("srcset", v)
 	return e
 }
@@ -42843,11 +42144,6 @@ func (e *htmlSource) TabIndex(v int) HTMLSource {
 
 func (e *htmlSource) Title(v string) HTMLSource {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlSource) Titlef(format string, v ...any) HTMLSource {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43098,9 +42394,6 @@ type HTMLSpan interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSpan
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSpan
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSpan
 
@@ -43332,11 +42625,6 @@ func (e *htmlSpan) TabIndex(v int) HTMLSpan {
 
 func (e *htmlSpan) Title(v string) HTMLSpan {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlSpan) Titlef(format string, v ...any) HTMLSpan {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43582,9 +42870,6 @@ type HTMLStrong interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLStrong
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLStrong
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLStrong
 
@@ -43816,11 +43101,6 @@ func (e *htmlStrong) TabIndex(v int) HTMLStrong {
 
 func (e *htmlStrong) Title(v string) HTMLStrong {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlStrong) Titlef(format string, v ...any) HTMLStrong {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44069,9 +43349,6 @@ type HTMLStyle interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLStyle
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLStyle
-
 	// Type specifies the type of element.
 	Type(v string) HTMLStyle
 
@@ -44314,11 +43591,6 @@ func (e *htmlStyle) TabIndex(v int) HTMLStyle {
 
 func (e *htmlStyle) Title(v string) HTMLStyle {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlStyle) Titlef(format string, v ...any) HTMLStyle {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44574,9 +43846,6 @@ type HTMLSub interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSub
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSub
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSub
 
@@ -44808,11 +44077,6 @@ func (e *htmlSub) TabIndex(v int) HTMLSub {
 
 func (e *htmlSub) Title(v string) HTMLSub {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlSub) Titlef(format string, v ...any) HTMLSub {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45058,9 +44322,6 @@ type HTMLSummary interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSummary
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSummary
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSummary
 
@@ -45292,11 +44553,6 @@ func (e *htmlSummary) TabIndex(v int) HTMLSummary {
 
 func (e *htmlSummary) Title(v string) HTMLSummary {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlSummary) Titlef(format string, v ...any) HTMLSummary {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45542,9 +44798,6 @@ type HTMLSup interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSup
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLSup
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSup
 
@@ -45776,11 +45029,6 @@ func (e *htmlSup) TabIndex(v int) HTMLSup {
 
 func (e *htmlSup) Title(v string) HTMLSup {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlSup) Titlef(format string, v ...any) HTMLSup {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46026,9 +45274,6 @@ type HTMLTable interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTable
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTable
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTable
 
@@ -46260,11 +45505,6 @@ func (e *htmlTable) TabIndex(v int) HTMLTable {
 
 func (e *htmlTable) Title(v string) HTMLTable {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlTable) Titlef(format string, v ...any) HTMLTable {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46510,9 +45750,6 @@ type HTMLTBody interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTBody
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTBody
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTBody
 
@@ -46744,11 +45981,6 @@ func (e *htmlTBody) TabIndex(v int) HTMLTBody {
 
 func (e *htmlTBody) Title(v string) HTMLTBody {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlTBody) Titlef(format string, v ...any) HTMLTBody {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47003,9 +46235,6 @@ type HTMLTd interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTd
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTd
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTd
 
@@ -47255,11 +46484,6 @@ func (e *htmlTd) Title(v string) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Titlef(format string, v ...any) HTMLTd {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlTd) On(event string, h EventHandler, scope ...any) HTMLTd {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -47502,9 +46726,6 @@ type HTMLTemplate interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTemplate
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTemplate
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTemplate
 }
@@ -47637,11 +46858,6 @@ func (e *htmlTemplate) Title(v string) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) Titlef(format string, v ...any) HTMLTemplate {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlTemplate) On(event string, h EventHandler, scope ...any) HTMLTemplate {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -47746,9 +46962,6 @@ type HTMLTextarea interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTextarea
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTextarea
 
 	// Wrap specifies how the text in a text area is to be wrapped when submitted in a form.
 	Wrap(v string) HTMLTextarea
@@ -48044,11 +47257,6 @@ func (e *htmlTextarea) Title(v string) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Titlef(format string, v ...any) HTMLTextarea {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlTextarea) Wrap(v string) HTMLTextarea {
 	e.setAttr("wrap", v)
 	return e
@@ -48296,9 +47504,6 @@ type HTMLTFoot interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTFoot
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTFoot
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTFoot
 
@@ -48530,11 +47735,6 @@ func (e *htmlTFoot) TabIndex(v int) HTMLTFoot {
 
 func (e *htmlTFoot) Title(v string) HTMLTFoot {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlTFoot) Titlef(format string, v ...any) HTMLTFoot {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48795,9 +47995,6 @@ type HTMLTh interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTh
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTh
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTh
 
@@ -49057,11 +48254,6 @@ func (e *htmlTh) Title(v string) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Titlef(format string, v ...any) HTMLTh {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlTh) On(event string, h EventHandler, scope ...any) HTMLTh {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -49304,9 +48496,6 @@ type HTMLTHead interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTHead
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTHead
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTHead
 
@@ -49538,11 +48727,6 @@ func (e *htmlTHead) TabIndex(v int) HTMLTHead {
 
 func (e *htmlTHead) Title(v string) HTMLTHead {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlTHead) Titlef(format string, v ...any) HTMLTHead {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49791,9 +48975,6 @@ type HTMLTime interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTime
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTime
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTime
 
@@ -50030,11 +49211,6 @@ func (e *htmlTime) TabIndex(v int) HTMLTime {
 
 func (e *htmlTime) Title(v string) HTMLTime {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlTime) Titlef(format string, v ...any) HTMLTime {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50280,9 +49456,6 @@ type HTMLTitle interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTitle
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTitle
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTitle
 }
@@ -50415,11 +49588,6 @@ func (e *htmlTitle) Title(v string) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) Titlef(format string, v ...any) HTMLTitle {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
-	return e
-}
-
 func (e *htmlTitle) On(event string, h EventHandler, scope ...any) HTMLTitle {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -50491,9 +49659,6 @@ type HTMLTr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTr
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLTr
 
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTr
@@ -50726,11 +49891,6 @@ func (e *htmlTr) TabIndex(v int) HTMLTr {
 
 func (e *htmlTr) Title(v string) HTMLTr {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlTr) Titlef(format string, v ...any) HTMLTr {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50976,9 +50136,6 @@ type HTMLU interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLU
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLU
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLU
 
@@ -51210,11 +50367,6 @@ func (e *htmlU) TabIndex(v int) HTMLU {
 
 func (e *htmlU) Title(v string) HTMLU {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlU) Titlef(format string, v ...any) HTMLU {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51460,9 +50612,6 @@ type HTMLUl interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLUl
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLUl
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLUl
 
@@ -51694,11 +50843,6 @@ func (e *htmlUl) TabIndex(v int) HTMLUl {
 
 func (e *htmlUl) Title(v string) HTMLUl {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlUl) Titlef(format string, v ...any) HTMLUl {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51944,9 +51088,6 @@ type HTMLVar interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLVar
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLVar
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLVar
 
@@ -52178,11 +51319,6 @@ func (e *htmlVar) TabIndex(v int) HTMLVar {
 
 func (e *htmlVar) Title(v string) HTMLVar {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlVar) Titlef(format string, v ...any) HTMLVar {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52441,7 +51577,7 @@ type HTMLVideo interface {
 	Spellcheck(v bool) HTMLVideo
 
 	// Src specifies the URL of the media file.
-	Src(v string) HTMLVideo
+	Src(v url) HTMLVideo
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLVideo
@@ -52454,9 +51590,6 @@ type HTMLVideo interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLVideo
-
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLVideo
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLVideo
@@ -52782,7 +51915,7 @@ func (e *htmlVideo) Spellcheck(v bool) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Src(v string) HTMLVideo {
+func (e *htmlVideo) Src(v url) HTMLVideo {
 	e.setAttr("src", v)
 	return e
 }
@@ -52806,11 +51939,6 @@ func (e *htmlVideo) TabIndex(v int) HTMLVideo {
 
 func (e *htmlVideo) Title(v string) HTMLVideo {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlVideo) Titlef(format string, v ...any) HTMLVideo {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53176,9 +52304,6 @@ type HTMLWbr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLWbr
 
-	// Titlef specifies extra information about an element with the given format and values.
-	Titlef(format string, v ...any) HTMLWbr
-
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLWbr
 
@@ -53410,11 +52535,6 @@ func (e *htmlWbr) TabIndex(v int) HTMLWbr {
 
 func (e *htmlWbr) Title(v string) HTMLWbr {
 	e.setAttr("title", v)
-	return e
-}
-
-func (e *htmlWbr) Titlef(format string, v ...any) HTMLWbr {
-	e.setAttr("titlef", fmt.Sprintf(format, v...))
 	return e
 }
 
