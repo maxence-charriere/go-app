@@ -291,7 +291,7 @@ func (e *htmlA) Hidden(v bool) HTMLA {
 }
 
 func (e *htmlA) Href(format string, v ...any) HTMLA {
-	e.setAttr("href", fmt.Sprintf(format, v...))
+	e.setAttr("href", formatString(format, v...))
 	return e
 }
 
@@ -363,7 +363,7 @@ func (e *htmlA) Target(v string) HTMLA {
 }
 
 func (e *htmlA) Title(format string, v ...any) HTMLA {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -844,7 +844,7 @@ func (e *htmlAbbr) TabIndex(v int) HTMLAbbr {
 }
 
 func (e *htmlAbbr) Title(format string, v ...any) HTMLAbbr {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -1320,7 +1320,7 @@ func (e *htmlAddress) TabIndex(v int) HTMLAddress {
 }
 
 func (e *htmlAddress) Title(format string, v ...any) HTMLAddress {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -1777,7 +1777,7 @@ func (e *htmlArea) Hidden(v bool) HTMLArea {
 }
 
 func (e *htmlArea) Href(format string, v ...any) HTMLArea {
-	e.setAttr("href", fmt.Sprintf(format, v...))
+	e.setAttr("href", formatString(format, v...))
 	return e
 }
 
@@ -1849,7 +1849,7 @@ func (e *htmlArea) Target(v string) HTMLArea {
 }
 
 func (e *htmlArea) Title(format string, v ...any) HTMLArea {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -2330,7 +2330,7 @@ func (e *htmlArticle) TabIndex(v int) HTMLArticle {
 }
 
 func (e *htmlArticle) Title(format string, v ...any) HTMLArticle {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -2806,7 +2806,7 @@ func (e *htmlAside) TabIndex(v int) HTMLAside {
 }
 
 func (e *htmlAside) Title(format string, v ...any) HTMLAside {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -3385,7 +3385,7 @@ func (e *htmlAudio) Spellcheck(v bool) HTMLAudio {
 }
 
 func (e *htmlAudio) Src(format string, v ...any) HTMLAudio {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
@@ -3407,7 +3407,7 @@ func (e *htmlAudio) TabIndex(v int) HTMLAudio {
 }
 
 func (e *htmlAudio) Title(format string, v ...any) HTMLAudio {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -3998,7 +3998,7 @@ func (e *htmlB) TabIndex(v int) HTMLB {
 }
 
 func (e *htmlB) Title(format string, v ...any) HTMLB {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -4416,7 +4416,7 @@ func (e *htmlBase) Hidden(v bool) HTMLBase {
 }
 
 func (e *htmlBase) Href(format string, v ...any) HTMLBase {
-	e.setAttr("href", fmt.Sprintf(format, v...))
+	e.setAttr("href", formatString(format, v...))
 	return e
 }
 
@@ -4468,7 +4468,7 @@ func (e *htmlBase) Target(v string) HTMLBase {
 }
 
 func (e *htmlBase) Title(format string, v ...any) HTMLBase {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -4944,7 +4944,7 @@ func (e *htmlBdi) TabIndex(v int) HTMLBdi {
 }
 
 func (e *htmlBdi) Title(format string, v ...any) HTMLBdi {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -5420,7 +5420,7 @@ func (e *htmlBdo) TabIndex(v int) HTMLBdo {
 }
 
 func (e *htmlBdo) Title(format string, v ...any) HTMLBdo {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -5820,7 +5820,7 @@ func (e *htmlBlockquote) Attr(n string, v any) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Cite(format string, v ...any) HTMLBlockquote {
-	e.setAttr("cite", fmt.Sprintf(format, v...))
+	e.setAttr("cite", formatString(format, v...))
 	return e
 }
 
@@ -5904,7 +5904,7 @@ func (e *htmlBlockquote) TabIndex(v int) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Title(format string, v ...any) HTMLBlockquote {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -6410,7 +6410,7 @@ func (e *htmlBody) TabIndex(v int) HTMLBody {
 }
 
 func (e *htmlBody) Title(format string, v ...any) HTMLBody {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -6939,7 +6939,7 @@ func (e *htmlBr) TabIndex(v int) HTMLBr {
 }
 
 func (e *htmlBr) Title(format string, v ...any) HTMLBr {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -7493,7 +7493,7 @@ func (e *htmlButton) TabIndex(v int) HTMLButton {
 }
 
 func (e *htmlButton) Title(format string, v ...any) HTMLButton {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -7990,7 +7990,7 @@ func (e *htmlCanvas) TabIndex(v int) HTMLCanvas {
 }
 
 func (e *htmlCanvas) Title(format string, v ...any) HTMLCanvas {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -8471,7 +8471,7 @@ func (e *htmlCaption) TabIndex(v int) HTMLCaption {
 }
 
 func (e *htmlCaption) Title(format string, v ...any) HTMLCaption {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -8947,7 +8947,7 @@ func (e *htmlCite) TabIndex(v int) HTMLCite {
 }
 
 func (e *htmlCite) Title(format string, v ...any) HTMLCite {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -9423,7 +9423,7 @@ func (e *htmlCode) TabIndex(v int) HTMLCode {
 }
 
 func (e *htmlCode) Title(format string, v ...any) HTMLCode {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -9885,7 +9885,7 @@ func (e *htmlCol) TabIndex(v int) HTMLCol {
 }
 
 func (e *htmlCol) Title(format string, v ...any) HTMLCol {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -10369,7 +10369,7 @@ func (e *htmlColGroup) TabIndex(v int) HTMLColGroup {
 }
 
 func (e *htmlColGroup) Title(format string, v ...any) HTMLColGroup {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -10746,7 +10746,7 @@ func (e *htmlData) TabIndex(v int) HTMLData {
 }
 
 func (e *htmlData) Title(format string, v ...any) HTMLData {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -11057,7 +11057,7 @@ func (e *htmlDataList) TabIndex(v int) HTMLDataList {
 }
 
 func (e *htmlDataList) Title(format string, v ...any) HTMLDataList {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -11533,7 +11533,7 @@ func (e *htmlDd) TabIndex(v int) HTMLDd {
 }
 
 func (e *htmlDd) Title(format string, v ...any) HTMLDd {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -11936,7 +11936,7 @@ func (e *htmlDel) Attr(n string, v any) HTMLDel {
 }
 
 func (e *htmlDel) Cite(format string, v ...any) HTMLDel {
-	e.setAttr("cite", fmt.Sprintf(format, v...))
+	e.setAttr("cite", formatString(format, v...))
 	return e
 }
 
@@ -12025,7 +12025,7 @@ func (e *htmlDel) TabIndex(v int) HTMLDel {
 }
 
 func (e *htmlDel) Title(format string, v ...any) HTMLDel {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -12512,7 +12512,7 @@ func (e *htmlDetails) TabIndex(v int) HTMLDetails {
 }
 
 func (e *htmlDetails) Title(format string, v ...any) HTMLDetails {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -12993,7 +12993,7 @@ func (e *htmlDfn) TabIndex(v int) HTMLDfn {
 }
 
 func (e *htmlDfn) Title(format string, v ...any) HTMLDfn {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -13477,7 +13477,7 @@ func (e *htmlDialog) TabIndex(v int) HTMLDialog {
 }
 
 func (e *htmlDialog) Title(format string, v ...any) HTMLDialog {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -13953,7 +13953,7 @@ func (e *htmlDiv) TabIndex(v int) HTMLDiv {
 }
 
 func (e *htmlDiv) Title(format string, v ...any) HTMLDiv {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -14429,7 +14429,7 @@ func (e *htmlDl) TabIndex(v int) HTMLDl {
 }
 
 func (e *htmlDl) Title(format string, v ...any) HTMLDl {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -14905,7 +14905,7 @@ func (e *htmlDt) TabIndex(v int) HTMLDt {
 }
 
 func (e *htmlDt) Title(format string, v ...any) HTMLDt {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -15384,7 +15384,7 @@ func (e *htmlElem) TabIndex(v int) HTMLElem {
 }
 
 func (e *htmlElem) Title(format string, v ...any) HTMLElem {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -15846,7 +15846,7 @@ func (e *htmlElemSelfClosing) TabIndex(v int) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) Title(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -16327,7 +16327,7 @@ func (e *htmlEm) TabIndex(v int) HTMLEm {
 }
 
 func (e *htmlEm) Title(format string, v ...any) HTMLEm {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -16850,7 +16850,7 @@ func (e *htmlEmbed) Spellcheck(v bool) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Src(format string, v ...any) HTMLEmbed {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
@@ -16872,7 +16872,7 @@ func (e *htmlEmbed) TabIndex(v int) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Title(format string, v ...any) HTMLEmbed {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -17497,7 +17497,7 @@ func (e *htmlFieldSet) TabIndex(v int) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) Title(format string, v ...any) HTMLFieldSet {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -17973,7 +17973,7 @@ func (e *htmlFigCaption) TabIndex(v int) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) Title(format string, v ...any) HTMLFigCaption {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -18449,7 +18449,7 @@ func (e *htmlFigure) TabIndex(v int) HTMLFigure {
 }
 
 func (e *htmlFigure) Title(format string, v ...any) HTMLFigure {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -18925,7 +18925,7 @@ func (e *htmlFooter) TabIndex(v int) HTMLFooter {
 }
 
 func (e *htmlFooter) Title(format string, v ...any) HTMLFooter {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -19470,7 +19470,7 @@ func (e *htmlForm) Target(v string) HTMLForm {
 }
 
 func (e *htmlForm) Title(format string, v ...any) HTMLForm {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -19946,7 +19946,7 @@ func (e *htmlH1) TabIndex(v int) HTMLH1 {
 }
 
 func (e *htmlH1) Title(format string, v ...any) HTMLH1 {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -20422,7 +20422,7 @@ func (e *htmlH2) TabIndex(v int) HTMLH2 {
 }
 
 func (e *htmlH2) Title(format string, v ...any) HTMLH2 {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -20898,7 +20898,7 @@ func (e *htmlH3) TabIndex(v int) HTMLH3 {
 }
 
 func (e *htmlH3) Title(format string, v ...any) HTMLH3 {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -21374,7 +21374,7 @@ func (e *htmlH4) TabIndex(v int) HTMLH4 {
 }
 
 func (e *htmlH4) Title(format string, v ...any) HTMLH4 {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -21850,7 +21850,7 @@ func (e *htmlH5) TabIndex(v int) HTMLH5 {
 }
 
 func (e *htmlH5) Title(format string, v ...any) HTMLH5 {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -22326,7 +22326,7 @@ func (e *htmlH6) TabIndex(v int) HTMLH6 {
 }
 
 func (e *htmlH6) Title(format string, v ...any) HTMLH6 {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -22700,7 +22700,7 @@ func (e *htmlHead) TabIndex(v int) HTMLHead {
 }
 
 func (e *htmlHead) Title(format string, v ...any) HTMLHead {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -23006,7 +23006,7 @@ func (e *htmlHeader) TabIndex(v int) HTMLHeader {
 }
 
 func (e *htmlHeader) Title(format string, v ...any) HTMLHeader {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -23460,7 +23460,7 @@ func (e *htmlHr) TabIndex(v int) HTMLHr {
 }
 
 func (e *htmlHr) Title(format string, v ...any) HTMLHr {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -23819,7 +23819,7 @@ func (e *htmlHtml) TabIndex(v int) HTMLHtml {
 }
 
 func (e *htmlHtml) Title(format string, v ...any) HTMLHtml {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -24125,7 +24125,7 @@ func (e *htmlI) TabIndex(v int) HTMLI {
 }
 
 func (e *htmlI) Title(format string, v ...any) HTMLI {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -24670,7 +24670,7 @@ func (e *htmlIFrame) Spellcheck(v bool) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Src(format string, v ...any) HTMLIFrame {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
@@ -24697,7 +24697,7 @@ func (e *htmlIFrame) TabIndex(v int) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Title(format string, v ...any) HTMLIFrame {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -25268,12 +25268,12 @@ func (e *htmlImg) Spellcheck(v bool) HTMLImg {
 }
 
 func (e *htmlImg) Src(format string, v ...any) HTMLImg {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
 func (e *htmlImg) SrcSet(format string, v ...any) HTMLImg {
-	e.setAttr("srcset", fmt.Sprintf(format, v...))
+	e.setAttr("srcset", formatString(format, v...))
 	return e
 }
 
@@ -25295,7 +25295,7 @@ func (e *htmlImg) TabIndex(v int) HTMLImg {
 }
 
 func (e *htmlImg) Title(format string, v ...any) HTMLImg {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -26093,7 +26093,7 @@ func (e *htmlInput) Spellcheck(v bool) HTMLInput {
 }
 
 func (e *htmlInput) Src(format string, v ...any) HTMLInput {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
@@ -26120,7 +26120,7 @@ func (e *htmlInput) TabIndex(v int) HTMLInput {
 }
 
 func (e *htmlInput) Title(format string, v ...any) HTMLInput {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -26616,7 +26616,7 @@ func (e *htmlIns) TabIndex(v int) HTMLIns {
 }
 
 func (e *htmlIns) Title(format string, v ...any) HTMLIns {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -27092,7 +27092,7 @@ func (e *htmlKbd) TabIndex(v int) HTMLKbd {
 }
 
 func (e *htmlKbd) Title(format string, v ...any) HTMLKbd {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -27584,7 +27584,7 @@ func (e *htmlLabel) TabIndex(v int) HTMLLabel {
 }
 
 func (e *htmlLabel) Title(format string, v ...any) HTMLLabel {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -28060,7 +28060,7 @@ func (e *htmlLegend) TabIndex(v int) HTMLLegend {
 }
 
 func (e *htmlLegend) Title(format string, v ...any) HTMLLegend {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -28539,7 +28539,7 @@ func (e *htmlLi) TabIndex(v int) HTMLLi {
 }
 
 func (e *htmlLi) Title(format string, v ...any) HTMLLi {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -28993,7 +28993,7 @@ func (e *htmlLink) Hidden(v bool) HTMLLink {
 }
 
 func (e *htmlLink) Href(format string, v ...any) HTMLLink {
-	e.setAttr("href", fmt.Sprintf(format, v...))
+	e.setAttr("href", formatString(format, v...))
 	return e
 }
 
@@ -29060,7 +29060,7 @@ func (e *htmlLink) TabIndex(v int) HTMLLink {
 }
 
 func (e *htmlLink) Title(format string, v ...any) HTMLLink {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -29546,7 +29546,7 @@ func (e *htmlMain) TabIndex(v int) HTMLMain {
 }
 
 func (e *htmlMain) Title(format string, v ...any) HTMLMain {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -30030,7 +30030,7 @@ func (e *htmlMap) TabIndex(v int) HTMLMap {
 }
 
 func (e *htmlMap) Title(format string, v ...any) HTMLMap {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -30506,7 +30506,7 @@ func (e *htmlMark) TabIndex(v int) HTMLMark {
 }
 
 func (e *htmlMark) Title(format string, v ...any) HTMLMark {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -30898,7 +30898,7 @@ func (e *htmlMeta) TabIndex(v int) HTMLMeta {
 }
 
 func (e *htmlMeta) Title(format string, v ...any) HTMLMeta {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -31255,7 +31255,7 @@ func (e *htmlMeter) TabIndex(v int) HTMLMeter {
 }
 
 func (e *htmlMeter) Title(format string, v ...any) HTMLMeter {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -31736,7 +31736,7 @@ func (e *htmlNav) TabIndex(v int) HTMLNav {
 }
 
 func (e *htmlNav) Title(format string, v ...any) HTMLNav {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -32110,7 +32110,7 @@ func (e *htmlNoScript) TabIndex(v int) HTMLNoScript {
 }
 
 func (e *htmlNoScript) Title(format string, v ...any) HTMLNoScript {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -32437,7 +32437,7 @@ func (e *htmlObject) ContentEditable(v bool) HTMLObject {
 }
 
 func (e *htmlObject) Data(format string, v ...any) HTMLObject {
-	e.setAttr("data", fmt.Sprintf(format, v...))
+	e.setAttr("data", formatString(format, v...))
 	return e
 }
 
@@ -32526,7 +32526,7 @@ func (e *htmlObject) TabIndex(v int) HTMLObject {
 }
 
 func (e *htmlObject) Title(format string, v ...any) HTMLObject {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -33151,7 +33151,7 @@ func (e *htmlOl) TabIndex(v int) HTMLOl {
 }
 
 func (e *htmlOl) Title(format string, v ...any) HTMLOl {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -33648,7 +33648,7 @@ func (e *htmlOptGroup) TabIndex(v int) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) Title(format string, v ...any) HTMLOptGroup {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -34151,7 +34151,7 @@ func (e *htmlOption) TabIndex(v int) HTMLOption {
 }
 
 func (e *htmlOption) Title(format string, v ...any) HTMLOption {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -34656,7 +34656,7 @@ func (e *htmlOutput) TabIndex(v int) HTMLOutput {
 }
 
 func (e *htmlOutput) Title(format string, v ...any) HTMLOutput {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -35132,7 +35132,7 @@ func (e *htmlP) TabIndex(v int) HTMLP {
 }
 
 func (e *htmlP) Title(format string, v ...any) HTMLP {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -35597,7 +35597,7 @@ func (e *htmlParam) TabIndex(v int) HTMLParam {
 }
 
 func (e *htmlParam) Title(format string, v ...any) HTMLParam {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -36078,7 +36078,7 @@ func (e *htmlPicture) TabIndex(v int) HTMLPicture {
 }
 
 func (e *htmlPicture) Title(format string, v ...any) HTMLPicture {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -36554,7 +36554,7 @@ func (e *htmlPre) TabIndex(v int) HTMLPre {
 }
 
 func (e *htmlPre) Title(format string, v ...any) HTMLPre {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -37041,7 +37041,7 @@ func (e *htmlProgress) TabIndex(v int) HTMLProgress {
 }
 
 func (e *htmlProgress) Title(format string, v ...any) HTMLProgress {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -37446,7 +37446,7 @@ func (e *htmlQ) Attr(n string, v any) HTMLQ {
 }
 
 func (e *htmlQ) Cite(format string, v ...any) HTMLQ {
-	e.setAttr("cite", fmt.Sprintf(format, v...))
+	e.setAttr("cite", formatString(format, v...))
 	return e
 }
 
@@ -37530,7 +37530,7 @@ func (e *htmlQ) TabIndex(v int) HTMLQ {
 }
 
 func (e *htmlQ) Title(format string, v ...any) HTMLQ {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -38006,7 +38006,7 @@ func (e *htmlRp) TabIndex(v int) HTMLRp {
 }
 
 func (e *htmlRp) Title(format string, v ...any) HTMLRp {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -38482,7 +38482,7 @@ func (e *htmlRt) TabIndex(v int) HTMLRt {
 }
 
 func (e *htmlRt) Title(format string, v ...any) HTMLRt {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -38958,7 +38958,7 @@ func (e *htmlRuby) TabIndex(v int) HTMLRuby {
 }
 
 func (e *htmlRuby) Title(format string, v ...any) HTMLRuby {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -39434,7 +39434,7 @@ func (e *htmlS) TabIndex(v int) HTMLS {
 }
 
 func (e *htmlS) Title(format string, v ...any) HTMLS {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -39910,7 +39910,7 @@ func (e *htmlSamp) TabIndex(v int) HTMLSamp {
 }
 
 func (e *htmlSamp) Title(format string, v ...any) HTMLSamp {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -40308,7 +40308,7 @@ func (e *htmlScript) Spellcheck(v bool) HTMLScript {
 }
 
 func (e *htmlScript) Src(format string, v ...any) HTMLScript {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
@@ -40330,7 +40330,7 @@ func (e *htmlScript) TabIndex(v int) HTMLScript {
 }
 
 func (e *htmlScript) Title(format string, v ...any) HTMLScript {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -40646,7 +40646,7 @@ func (e *htmlSection) TabIndex(v int) HTMLSection {
 }
 
 func (e *htmlSection) Title(format string, v ...any) HTMLSection {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -41178,7 +41178,7 @@ func (e *htmlSelect) TabIndex(v int) HTMLSelect {
 }
 
 func (e *htmlSelect) Title(format string, v ...any) HTMLSelect {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -41654,7 +41654,7 @@ func (e *htmlSmall) TabIndex(v int) HTMLSmall {
 }
 
 func (e *htmlSmall) Title(format string, v ...any) HTMLSmall {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -42116,12 +42116,12 @@ func (e *htmlSource) Spellcheck(v bool) HTMLSource {
 }
 
 func (e *htmlSource) Src(format string, v ...any) HTMLSource {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
 func (e *htmlSource) SrcSet(format string, v ...any) HTMLSource {
-	e.setAttr("srcset", fmt.Sprintf(format, v...))
+	e.setAttr("srcset", formatString(format, v...))
 	return e
 }
 
@@ -42143,7 +42143,7 @@ func (e *htmlSource) TabIndex(v int) HTMLSource {
 }
 
 func (e *htmlSource) Title(format string, v ...any) HTMLSource {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -42624,7 +42624,7 @@ func (e *htmlSpan) TabIndex(v int) HTMLSpan {
 }
 
 func (e *htmlSpan) Title(format string, v ...any) HTMLSpan {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -43100,7 +43100,7 @@ func (e *htmlStrong) TabIndex(v int) HTMLStrong {
 }
 
 func (e *htmlStrong) Title(format string, v ...any) HTMLStrong {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -43590,7 +43590,7 @@ func (e *htmlStyle) TabIndex(v int) HTMLStyle {
 }
 
 func (e *htmlStyle) Title(format string, v ...any) HTMLStyle {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -44076,7 +44076,7 @@ func (e *htmlSub) TabIndex(v int) HTMLSub {
 }
 
 func (e *htmlSub) Title(format string, v ...any) HTMLSub {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -44552,7 +44552,7 @@ func (e *htmlSummary) TabIndex(v int) HTMLSummary {
 }
 
 func (e *htmlSummary) Title(format string, v ...any) HTMLSummary {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -45028,7 +45028,7 @@ func (e *htmlSup) TabIndex(v int) HTMLSup {
 }
 
 func (e *htmlSup) Title(format string, v ...any) HTMLSup {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -45504,7 +45504,7 @@ func (e *htmlTable) TabIndex(v int) HTMLTable {
 }
 
 func (e *htmlTable) Title(format string, v ...any) HTMLTable {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -45980,7 +45980,7 @@ func (e *htmlTBody) TabIndex(v int) HTMLTBody {
 }
 
 func (e *htmlTBody) Title(format string, v ...any) HTMLTBody {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -46480,7 +46480,7 @@ func (e *htmlTd) TabIndex(v int) HTMLTd {
 }
 
 func (e *htmlTd) Title(format string, v ...any) HTMLTd {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -46854,7 +46854,7 @@ func (e *htmlTemplate) TabIndex(v int) HTMLTemplate {
 }
 
 func (e *htmlTemplate) Title(format string, v ...any) HTMLTemplate {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -47253,7 +47253,7 @@ func (e *htmlTextarea) TabIndex(v int) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Title(format string, v ...any) HTMLTextarea {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -47734,7 +47734,7 @@ func (e *htmlTFoot) TabIndex(v int) HTMLTFoot {
 }
 
 func (e *htmlTFoot) Title(format string, v ...any) HTMLTFoot {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -48250,7 +48250,7 @@ func (e *htmlTh) TabIndex(v int) HTMLTh {
 }
 
 func (e *htmlTh) Title(format string, v ...any) HTMLTh {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -48726,7 +48726,7 @@ func (e *htmlTHead) TabIndex(v int) HTMLTHead {
 }
 
 func (e *htmlTHead) Title(format string, v ...any) HTMLTHead {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -49210,7 +49210,7 @@ func (e *htmlTime) TabIndex(v int) HTMLTime {
 }
 
 func (e *htmlTime) Title(format string, v ...any) HTMLTime {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -49584,7 +49584,7 @@ func (e *htmlTitle) TabIndex(v int) HTMLTitle {
 }
 
 func (e *htmlTitle) Title(format string, v ...any) HTMLTitle {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -49890,7 +49890,7 @@ func (e *htmlTr) TabIndex(v int) HTMLTr {
 }
 
 func (e *htmlTr) Title(format string, v ...any) HTMLTr {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -50366,7 +50366,7 @@ func (e *htmlU) TabIndex(v int) HTMLU {
 }
 
 func (e *htmlU) Title(format string, v ...any) HTMLU {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -50842,7 +50842,7 @@ func (e *htmlUl) TabIndex(v int) HTMLUl {
 }
 
 func (e *htmlUl) Title(format string, v ...any) HTMLUl {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -51318,7 +51318,7 @@ func (e *htmlVar) TabIndex(v int) HTMLVar {
 }
 
 func (e *htmlVar) Title(format string, v ...any) HTMLVar {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -51916,7 +51916,7 @@ func (e *htmlVideo) Spellcheck(v bool) HTMLVideo {
 }
 
 func (e *htmlVideo) Src(format string, v ...any) HTMLVideo {
-	e.setAttr("src", fmt.Sprintf(format, v...))
+	e.setAttr("src", formatString(format, v...))
 	return e
 }
 
@@ -51938,7 +51938,7 @@ func (e *htmlVideo) TabIndex(v int) HTMLVideo {
 }
 
 func (e *htmlVideo) Title(format string, v ...any) HTMLVideo {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 
@@ -52534,7 +52534,7 @@ func (e *htmlWbr) TabIndex(v int) HTMLWbr {
 }
 
 func (e *htmlWbr) Title(format string, v ...any) HTMLWbr {
-	e.setAttr("title", fmt.Sprintf(format, v...))
+	e.setAttr("title", formatString(format, v...))
 	return e
 }
 

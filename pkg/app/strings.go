@@ -129,3 +129,10 @@ func jsonString(v any) string {
 	}
 	return string(b)
 }
+
+func formatString(format string, v ...any) string {
+	if len(v) == 0 {
+		return format
+	}
+	return fmt.Sprintf(format, v...)
+}

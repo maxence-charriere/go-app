@@ -2458,7 +2458,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(format string, v ...any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("%s", fmt.Sprintf(format, v...))
+				e.setAttr("%s", formatString(format, v...))
 				return e
 			}`, attrName)
 		}
