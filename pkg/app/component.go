@@ -411,11 +411,7 @@ func (c *Compo) replaceRoot(v UI) error {
 	}
 
 	var parent UI
-	for {
-		parent = c.getParent()
-		if parent == nil || parent.Kind() == HTML {
-			break
-		}
+	for parent = c.getParent(); parent != nil && parent.Kind() != HTML; parent = parent.getParent() {
 	}
 
 	if parent == nil {
@@ -425,8 +421,8 @@ func (c *Compo) replaceRoot(v UI) error {
 			WithTag("reason", "coponent does not have html element parents")
 	}
 
-	c.root = new
 	new.setParent(c.self())
+	c.root = new
 
 	oldjs := old.JSValue()
 	newjs := v.JSValue()
