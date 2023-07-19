@@ -5,7 +5,7 @@ var goappNav = function () {};
 var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"9e2dac22883b2a92f3c086b001ec59c64a26c2d3"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"3459d8c935299b0a92937becf0424da54c82f488"};
 const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLengthHeader = "";
 
