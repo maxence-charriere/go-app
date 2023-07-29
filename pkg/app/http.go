@@ -837,9 +837,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 					return link
 				}),
-				Range(page.preloads()).Slice(func(i int) UI {
-					p := page.preloads()[i]
-					if p.Href == "" || p.Type == "" || p.As == "" {
+				Range(page.Preloads()).Slice(func(i int) UI {
+					p := page.Preloads()[i]
+					if p.Href == "" || p.As == "" {
 						return nil
 					}
 

@@ -484,6 +484,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"crossorigin",
+			"fetchpriority",
 			"height",
 			"ismap",
 			"sizes",
@@ -586,6 +587,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"as",
 			"crossorigin",
+			"fetchpriority",
 			"href",
 			"hreflang",
 			"media",
@@ -1247,6 +1249,11 @@ var attrs = map[string]attr{
 	},
 
 	// F:
+	"fetchpriority": {
+		Name: "FetchPriority",
+		Type: "string",
+		Doc:  "specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.",
+	},
 	"for": {
 		Name: "For",
 		Type: "fmt",

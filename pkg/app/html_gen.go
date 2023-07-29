@@ -24922,6 +24922,9 @@ type HTMLImg interface {
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLImg
 
+	// FetchPriority specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.
+	FetchPriority(v string) HTMLImg
+
 	// Height specifies the height of the element (in pixels).
 	Height(v int) HTMLImg
 
@@ -25218,6 +25221,11 @@ func (e *htmlImg) Dir(format string, v ...any) HTMLImg {
 
 func (e *htmlImg) Draggable(v bool) HTMLImg {
 	e.setAttr("draggable", v)
+	return e
+}
+
+func (e *htmlImg) FetchPriority(v string) HTMLImg {
+	e.setAttr("fetchpriority", v)
 	return e
 }
 
@@ -28759,6 +28767,9 @@ type HTMLLink interface {
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLLink
 
+	// FetchPriority specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.
+	FetchPriority(v string) HTMLLink
+
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLLink
 
@@ -28983,6 +28994,11 @@ func (e *htmlLink) Dir(format string, v ...any) HTMLLink {
 
 func (e *htmlLink) Draggable(v bool) HTMLLink {
 	e.setAttr("draggable", v)
+	return e
+}
+
+func (e *htmlLink) FetchPriority(v string) HTMLLink {
+	e.setAttr("fetchpriority", v)
 	return e
 }
 

@@ -38,10 +38,10 @@ type Page interface {
 	SetKeywords(v ...string)
 
 	// Returns the page resources to preload.
-	preloads() []preload
+	Preloads() []Preload
 
-	// Sets a resource to preload.
-	SetPreload(typ string, as string, href string)
+	// Sets resources to preload.
+	SetPreloads(v ...Preload)
 
 	// Set the page loading label.
 	SetLoadingLabel(v string)
@@ -76,7 +76,7 @@ type requestPage struct {
 	description    string
 	author         string
 	keywords       string
-	preloadList    []preload
+	preloads       []Preload
 	loadingLabel   string
 	image          string
 	width          int
@@ -124,16 +124,12 @@ func (p *requestPage) SetKeywords(v ...string) {
 	p.keywords = strings.Join(v, ", ")
 }
 
-func (p *requestPage) preloads() []preload {
-	return p.preloadList
+func (p *requestPage) Preloads() []Preload {
+	return p.preloads
 }
 
-func (p *requestPage) SetPreload(typ string, as string, href string) {
-	p.preloadList = append(p.preloadList, preload{
-		Type: typ,
-		As:   as,
-		Href: p.resolveStaticResource(href),
-	})
+func (p *requestPage) SetPreloads(v ...Preload) {
+	p.preloads = v
 }
 
 func (p *requestPage) SetLoadingLabel(v string) {
@@ -225,11 +221,11 @@ func (p browserPage) SetKeywords(v ...string) {
 func (p browserPage) SetLoadingLabel(v string) {
 }
 
-func (p browserPage) preloads() []preload {
+func (p browserPage) Preloads() []Preload {
 	return nil
 }
 
-func (p browserPage) SetPreload(typ string, as string, url string) {
+func (p browserPage) SetPreloads(v ...Preload) {
 }
 
 func (p browserPage) Image() string {
@@ -305,8 +301,9 @@ func (p browserPage) metaByProperty(v string) Value {
 	return meta
 }
 
-type preload struct {
-	Type string
-	As   string
-	Href string
+type Preload struct {
+	Type     string
+	As       string
+	Href     string
+	Priority string
 }
