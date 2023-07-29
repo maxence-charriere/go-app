@@ -302,8 +302,8 @@ func (p browserPage) metaByProperty(v string) Value {
 }
 
 type Preload struct {
-	Type     string
-	As       string
-	Href     string
-	Priority string
+	Type          string
+	As            string
+	Href          string
+	FetchPriority string
 }

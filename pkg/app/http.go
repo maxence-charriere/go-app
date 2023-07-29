@@ -852,7 +852,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Type(p.Type).
 						Rel("preload").
 						Href(url).
-						As(p.As)
+						As(p.As).
+						FetchPriority(p.FetchPriority)
 
 					if crossOrigin != "" {
 						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
