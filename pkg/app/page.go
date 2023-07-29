@@ -129,6 +129,9 @@ func (p *requestPage) Preloads() []Preload {
 }
 
 func (p *requestPage) SetPreloads(v ...Preload) {
+	for i, r := range v {
+		v[i].Href = p.resolveStaticResource(r.Href)
+	}
 	p.preloads = v
 }
 
