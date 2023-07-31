@@ -802,7 +802,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Name(k).
 						Content(v)
 				}),
-
 				Title().Text(page.Title()),
 				Range(h.Preconnect).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Preconnect[i])
@@ -831,6 +830,30 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Rel("preload").
 						Href(url).
 						As("font")
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
+				Range(page.Preloads()).Slice(func(i int) UI {
+					p := page.Preloads()[i]
+					if p.Href == "" || p.As == "" {
+						return nil
+					}
+
+					url, crossOrigin, _ := parseSrc(p.Href)
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Type(p.Type).
+						Rel("preload").
+						Href(url).
+						As(p.As).
+						FetchPriority(p.FetchPriority)
 
 					if crossOrigin != "" {
 						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
