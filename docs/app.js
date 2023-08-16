@@ -5,7 +5,7 @@ var goappNav = function () {};
 var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"3459d8c935299b0a92937becf0424da54c82f488"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"cde2c2d5fcd9ebffa288bfa8b20f7bc1fbdc6389"};
 const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLengthHeader = "";
 
@@ -49,21 +49,18 @@ function goappWatchForUpdate() {
 }
 
 function goappSetupNotifyUpdate(registration) {
-  registration.onupdatefound = () => {
-    const installingWorker = registration.installing;
-
-    installingWorker.onstatechange = () => {
-      if (installingWorker.state != "installed") {
-        return;
-      }
-
+  registration.addEventListener("updatefound", (event) => {
+    const newSW = registration.installing;
+    newSW.addEventListener("statechange", (event) => {
       if (!navigator.serviceWorker.controller) {
         return;
       }
-
+      if (newSW.state != "installed") {
+        return;
+      }
       goappOnUpdate();
-    };
-  };
+    });
+  });
 }
 
 function goappSetupAutoUpdate(registration) {
