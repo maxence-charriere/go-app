@@ -352,7 +352,7 @@ func (h *Handler) initPWAResources() {
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
-		Body:        []byte(wasmExecJS),
+		Body:        []byte(wasmExecJS()),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
