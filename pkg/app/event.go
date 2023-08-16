@@ -17,6 +17,14 @@ func (e Event) PreventDefault() {
 	e.Call("preventDefault")
 }
 
+// If several listeners are attached to the same element for the same event type,
+// they are called in the order in which they were added. If
+// StopImmediatePropagation() is invoked during one such call, no remaining
+// listeners will be called, either on that element or any other element.
+func (e Event) StopImmediatePropagation() {
+	e.Call("stopImmediatePropagation")
+}
+
 type eventHandlers map[string]eventHandler
 
 func (h eventHandlers) Set(event string, eh EventHandler, scope ...any) {

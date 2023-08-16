@@ -5,7 +5,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -36,7 +35,7 @@ func main() {
 			Documentation: "The default template used to generate app-worker.js.",
 		},
 		{
-			Var: "wasmExecJS",
+			Var: "wasmExecJSGoCurrent",
 			Filename: filepath.Join(
 				runtime.GOROOT(),
 				"misc",
@@ -61,7 +60,7 @@ func main() {
 	fmt.Fprintln(f, "const(")
 
 	for _, g := range gen {
-		b, err := ioutil.ReadFile(g.Filename)
+		b, err := os.ReadFile(g.Filename)
 		if err != nil {
 			panic(err)
 		}

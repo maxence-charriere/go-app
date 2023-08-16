@@ -10,7 +10,6 @@ import (
 )
 
 const (
-	wasmExecJS   = ""
 	appJS        = ""
 	appWorkerJS  = ""
 	manifestJSON = ""
@@ -24,4 +23,8 @@ var (
 
 func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 	panic(errBadInstruction)
+}
+
+func wasmExecJS() string {
+	return ""
 }

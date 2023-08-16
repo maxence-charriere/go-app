@@ -108,14 +108,15 @@ func AppendClass(class string, v ...string) string {
 	b.WriteString(strings.TrimSpace(class))
 
 	for _, c := range v {
-		if len(c) == 0 {
+		c = strings.TrimSpace(c)
+		if c == "" {
 			continue
 		}
 
 		if b.Len() != 0 {
 			b.WriteByte(' ')
 		}
-		b.WriteString(strings.TrimSpace(c))
+		b.WriteString(c)
 	}
 
 	return b.String()
@@ -127,4 +128,15 @@ func jsonString(v any) string {
 		panic(errors.New("converting value to json string failed").Wrap(err))
 	}
 	return string(b)
+}
+
+// Formats a string with the given format and values.
+// It uses fmt.Sprintf when len(v) != 0.
+//
+// TODO: Write a faster Sprintf to use with values.
+func FormatString(format string, v ...any) string {
+	if len(v) == 0 {
+		return format
+	}
+	return fmt.Sprintf(format, v...)
 }

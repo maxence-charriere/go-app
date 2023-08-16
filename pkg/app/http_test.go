@@ -162,7 +162,7 @@ func TestHandlerServeWasmExecJS(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Equal(t, wasmExecJS, w.Body.String())
+	require.Equal(t, wasmExecJS(), w.Body.String())
 	t.Log(w.Body.String())
 }
 

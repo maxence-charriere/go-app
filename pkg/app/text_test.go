@@ -8,6 +8,10 @@ func TestTextMountDismout(t *testing.T) {
 			scenario: "text",
 			node:     Text("hello"),
 		},
+		{
+			scenario: "textf",
+			node:     Textf("hello %s", "Maxence"),
+		},
 	})
 }
 

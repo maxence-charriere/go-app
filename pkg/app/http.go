@@ -61,6 +61,9 @@ type Handler struct {
 	// DEFAULT: en.
 	Lang string
 
+	// The custom libraries to load with the page.
+	Libraries []Library
+
 	// The page title.
 	Title string
 
@@ -198,6 +201,7 @@ type Handler struct {
 
 	once                 sync.Once
 	etag                 string
+	libraries            map[string][]byte
 	proxyResources       map[string]ProxyResource
 	cachedProxyResources *memoryCache
 	cachedPWAResources   *memoryCache
@@ -207,6 +211,7 @@ func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
 	h.initImage()
+	h.initLibraries()
 	h.initLinks()
 	h.initScripts()
 	h.initServiceWorker()
@@ -238,15 +243,31 @@ func (h *Handler) initImage() {
 	}
 }
 
+func (h *Handler) initLibraries() {
+	libs := make(map[string][]byte)
+	for _, l := range h.Libraries {
+		path, styles := l.Styles()
+		if !strings.HasPrefix(path, "/") || len(styles) == 0 {
+			continue
+		}
+		libs[path] = []byte(styles)
+	}
+	h.libraries = libs
+}
+
 func (h *Handler) initLinks() {
 	for i, path := range h.Preconnect {
 		h.Preconnect[i] = h.resolveStaticPath(path)
 	}
 
-	for i, path := range h.Styles {
-		h.Styles[i] = h.resolveStaticPath(path)
+	styles := []string{h.resolvePackagePath("/app.css")}
+	for path := range h.libraries {
+		styles = append(styles, h.resolvePackagePath(path))
 	}
-	h.Styles = append([]string{h.resolvePackagePath("/app.css")}, h.Styles...)
+	for _, path := range h.Styles {
+		styles = append(styles, h.resolveStaticPath(path))
+	}
+	h.Styles = styles
 
 	for i, path := range h.Fonts {
 		h.Fonts[i] = h.resolveStaticPath(path)
@@ -335,7 +356,7 @@ func (h *Handler) initPWAResources() {
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
-		Body:        []byte(wasmExecJS),
+		Body:        []byte(wasmExecJS()),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
@@ -593,6 +614,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if library, ok := h.libraries[path]; ok {
+		h.serveLibrary(w, r, library)
+		return
+	}
+
 	h.servePage(w, r)
 }
 
@@ -780,7 +806,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Name(k).
 						Content(v)
 				}),
-
 				Title().Text(page.Title()),
 				Range(h.Preconnect).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Preconnect[i])
@@ -809,6 +834,30 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Rel("preload").
 						Href(url).
 						As("font")
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
+				Range(page.Preloads()).Slice(func(i int) UI {
+					p := page.Preloads()[i]
+					if p.Href == "" || p.As == "" {
+						return nil
+					}
+
+					url, crossOrigin, _ := parseSrc(p.Href)
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Type(p.Type).
+						Rel("preload").
+						Href(url).
+						As(p.As).
+						FetchPriority(p.FetchPriority)
 
 					if crossOrigin != "" {
 						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
@@ -897,8 +946,13 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")
-	w.WriteHeader(http.StatusOK)
 	w.Write(b.Bytes())
+}
+
+func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library []byte) {
+	w.Header().Set("Content-Length", strconv.Itoa(len(library)))
+	w.Header().Set("Content-Type", "text/css")
+	w.Write(library)
 }
 
 func (h *Handler) resolvePackagePath(path string) string {
