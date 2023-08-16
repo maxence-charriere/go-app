@@ -131,8 +131,10 @@ func TestAppendClass(t *testing.T) {
 	}
 
 	for _, u := range utests {
-		res := AppendClass(u.class, u.addedClasses...)
-		require.Equal(t, u.expectedResult, res)
+		t.Run(u.scenario, func(t *testing.T) {
+			res := AppendClass(u.class, u.addedClasses...)
+			require.Equal(t, u.expectedResult, res)
+		})
 	}
 }
 

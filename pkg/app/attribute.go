@@ -13,11 +13,13 @@ func (a attributes) Set(name string, value any) {
 		a[name] += toAttributeValue(value) + ";"
 
 	case "class":
-		s := a[name]
-		if s != "" {
-			s += " "
+		if v := strings.TrimSpace(toAttributeValue(value)); v != "" {
+			s := a[name]
+			if s != "" {
+				s += " "
+			}
+			a[name] = s + v
 		}
-		a[name] = s + toAttributeValue(value)
 
 	case "srcset":
 		s := a[name]

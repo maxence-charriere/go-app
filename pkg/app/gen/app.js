@@ -49,21 +49,18 @@ function goappWatchForUpdate() {
 }
 
 function goappSetupNotifyUpdate(registration) {
-  registration.onupdatefound = () => {
-    const installingWorker = registration.installing;
-
-    installingWorker.onstatechange = () => {
-      if (installingWorker.state != "installed") {
-        return;
-      }
-
+  registration.addEventListener("updatefound", (event) => {
+    const newSW = registration.installing;
+    newSW.addEventListener("statechange", (event) => {
       if (!navigator.serviceWorker.controller) {
         return;
       }
-
+      if (newSW.state != "installed") {
+        return;
+      }
       goappOnUpdate();
-    };
-  };
+    });
+  });
 }
 
 function goappSetupAutoUpdate(registration) {
