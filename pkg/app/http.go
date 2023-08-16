@@ -294,12 +294,16 @@ func (h *Handler) initCacheableResources() {
 
 func (h *Handler) initIcon() {
 	if h.Icon.Default == "" {
-		h.Icon.Default = "https://github.com/maxence-charriere/go-app/blob/master/docs/web/icon.png"
-		h.Icon.Large = "https://github.com/maxence-charriere/go-app/blob/master/docs/web/icon.png"
+		h.Icon.Default = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"
+		h.Icon.Large = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"
 	}
 
 	if h.Icon.AppleTouch == "" {
 		h.Icon.AppleTouch = h.Icon.Default
+	}
+
+	if h.Icon.SVG == "" {
+		h.Icon.SVG = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.svg"
 	}
 
 	h.Icon.Default = h.resolveStaticPath(h.Icon.Default)
