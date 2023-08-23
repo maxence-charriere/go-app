@@ -49,6 +49,7 @@ func (v value) InstanceOf(t Value) bool {
 }
 
 func (v value) Invoke(args ...any) Value {
+	args = cleanArgs(args...)
 	return val(v.Value.Invoke(args...))
 }
 
@@ -334,7 +335,7 @@ func jsval(v Value) js.Value {
 
 // JSValue returns the underlying syscall/js value of the given Javascript
 // value.
-func JSValue(v Value) js.Value {
+func JSValue(v Value) any {
 	return jsval(v)
 }
 
@@ -367,8 +368,12 @@ func cleanArg(v any) any {
 	case []any:
 		s := make([]any, len(v))
 		for i, val := range v {
-			s[i] = cleanArgs(val)
+			s[i] = cleanArg(val)
 		}
+		return s
+
+	case function:
+		return v.fn
 
 	case Wrapper:
 		return jsval(v.JSValue())

@@ -215,6 +215,13 @@ func (w *browserWindow) addHistory(u *url.URL) {
 func (w *browserWindow) replaceHistory(u *url.URL) {
 }
 
+// JSValue returns the underlying syscall/js value of the given Javascript
+// value.
+// Returns the parameter v for non-wasm builds.
+func JSValue(v Value) any {
+	return v
+}
+
 func copyBytesToGo(dst []byte, src Value) int {
 	return 0
 }
