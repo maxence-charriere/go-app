@@ -3,7 +3,7 @@ package app
 var (
 	// NotFound is the ui element that is displayed when a request is not
 	// routed.
-	NotFound UI = &notFound{}
+	NotFound Composer = &notFound{}
 )
 
 type notFound struct {
