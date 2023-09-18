@@ -841,6 +841,24 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 					return link
 				}),
+				Range(h.Styles).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Styles[i])
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Type("text/css").
+						Rel("preload").
+						Href(url).
+						As("style")
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
 				Range(page.Preloads()).Slice(func(i int) UI {
 					p := page.Preloads()[i]
 					if p.Href == "" || p.As == "" {
@@ -858,24 +876,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Href(url).
 						As(p.As).
 						FetchPriority(p.FetchPriority)
-
-					if crossOrigin != "" {
-						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					return link
-				}),
-				Range(h.Styles).Slice(func(i int) UI {
-					url, crossOrigin, _ := parseSrc(h.Styles[i])
-					if url == "" {
-						return nil
-					}
-
-					link := Link().
-						Type("text/css").
-						Rel("preload").
-						Href(url).
-						As("style")
 
 					if crossOrigin != "" {
 						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
