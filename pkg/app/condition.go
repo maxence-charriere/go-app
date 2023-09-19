@@ -44,10 +44,9 @@ type Condition interface {
 // If returns a Condition that will display the given UI element based on the
 // evaluation of the provided boolean expression.
 func If(expr bool, elem func() UI) Condition {
-	if !expr {
-		return condition{}
-	}
-	return condition{body: FilterUIElems(elem())}
+	return IfSlice(expr, func() []UI {
+		return []UI{elem()}
+	})
 }
 
 // IfSlice returns a Condition that will display the given slice of UI elements
@@ -64,12 +63,9 @@ type condition struct {
 }
 
 func (c condition) ElseIf(expr bool, elem func() UI) Condition {
-	if len(c.body) != 0 || !expr {
-		return c
-	}
-
-	c.body = FilterUIElems(elem())
-	return c
+	return c.ElseIfSlice(expr, func() []UI {
+		return []UI{elem()}
+	})
 }
 
 func (c condition) ElseIfSlice(expr bool, elems func() []UI) Condition {
@@ -82,7 +78,9 @@ func (c condition) ElseIfSlice(expr bool, elems func() []UI) Condition {
 }
 
 func (c condition) Else(elem func() UI) Condition {
-	return c.ElseIf(true, elem)
+	return c.ElseSlice(func() []UI {
+		return []UI{elem()}
+	})
 }
 
 func (c condition) ElseSlice(elems func() []UI) Condition {
