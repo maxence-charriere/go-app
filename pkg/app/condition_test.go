@@ -7,21 +7,20 @@ func TestCondition(t *testing.T) {
 		{
 			scenario: "if is interpreted",
 			a: Div().Body(
-				If(false,
-					H1(),
-				),
+				If(false, func() UI {
+					return H1()
+				}),
 			),
 			b: Div().Body(
-				If(true,
-					H1(),
-				),
+				If(true, func() UI {
+					return H1()
+				}),
 			),
 			matches: []TestUIDescriptor{
 				{
 					Path:     TestPath(),
 					Expected: Div(),
 				},
-
 				{
 					Path:     TestPath(0),
 					Expected: H1(),
@@ -31,14 +30,14 @@ func TestCondition(t *testing.T) {
 		{
 			scenario: "if is not interpreted",
 			a: Div().Body(
-				If(true,
-					H1(),
-				),
+				If(true, func() UI {
+					return H1()
+				}),
 			),
 			b: Div().Body(
-				If(false,
-					H1(),
-				),
+				If(false, func() UI {
+					return H1()
+				}),
 			),
 			matches: []TestUIDescriptor{
 				{
@@ -54,18 +53,18 @@ func TestCondition(t *testing.T) {
 		{
 			scenario: "else if is interpreted",
 			a: Div().Body(
-				If(true,
-					H1(),
-				).ElseIf(false,
-					H2(),
-				),
+				If(true, func() UI {
+					return H1()
+				}).ElseIf(false, func() UI {
+					return H2()
+				}),
 			),
 			b: Div().Body(
-				If(false,
-					H1(),
-				).ElseIf(true,
-					H2(),
-				),
+				If(false, func() UI {
+					return H1()
+				}).ElseIf(true, func() UI {
+					return H2()
+				}),
 			),
 			matches: []TestUIDescriptor{
 				{
@@ -82,18 +81,18 @@ func TestCondition(t *testing.T) {
 		{
 			scenario: "else if is not interpreted",
 			a: Div().Body(
-				If(false,
-					H1(),
-				).ElseIf(true,
-					H2(),
-				),
+				If(false, func() UI {
+					return H1()
+				}).ElseIf(true, func() UI {
+					return H2()
+				}),
 			),
 			b: Div().Body(
-				If(false,
-					H1(),
-				).ElseIf(false,
-					H2(),
-				),
+				If(false, func() UI {
+					return H1()
+				}).ElseIf(false, func() UI {
+					return H2()
+				}),
 			),
 			matches: []TestUIDescriptor{
 				{
@@ -110,22 +109,22 @@ func TestCondition(t *testing.T) {
 		{
 			scenario: "else is interpreted",
 			a: Div().Body(
-				If(false,
-					H1(),
-				).ElseIf(true,
-					H2(),
-				).Else(
-					H3(),
-				),
+				If(false, func() UI {
+					return H1()
+				}).ElseIf(true, func() UI {
+					return H2()
+				}).Else(func() UI {
+					return H3()
+				}),
 			),
 			b: Div().Body(
-				If(false,
-					H1(),
-				).ElseIf(false,
-					H2(),
-				).Else(
-					H3(),
-				),
+				If(false, func() UI {
+					return H1()
+				}).ElseIf(false, func() UI {
+					return H2()
+				}).Else(func() UI {
+					return H3()
+				}),
 			),
 			matches: []TestUIDescriptor{
 				{
@@ -142,22 +141,22 @@ func TestCondition(t *testing.T) {
 		{
 			scenario: "else is not interpreted",
 			a: Div().Body(
-				If(false,
-					H1(),
-				).ElseIf(true,
-					H2(),
-				).Else(
-					H3(),
-				),
+				If(false, func() UI {
+					return H1()
+				}).ElseIf(true, func() UI {
+					return H2()
+				}).Else(func() UI {
+					return H3()
+				}),
 			),
 			b: Div().Body(
-				If(true,
-					H1(),
-				).ElseIf(false,
-					H2(),
-				).Else(
-					H3(),
-				),
+				If(true, func() UI {
+					return H1()
+				}).ElseIf(false, func() UI {
+					return H2()
+				}).Else(func() UI {
+					return H3()
+				}),
 			),
 			matches: []TestUIDescriptor{
 				{
@@ -172,4 +171,12 @@ func TestCondition(t *testing.T) {
 			},
 		},
 	})
+}
+
+func BenchmarkCondition(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		If(true, func() UI {
+			return Div()
+		})
+	}
 }
