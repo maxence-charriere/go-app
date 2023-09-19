@@ -27,7 +27,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - name: Run Unit Tests
-        run: go test -race ./pkg/app
+        run: |
+          go test -race ./pkg/app
+          go test -race ./pkg/errors
+          go test -race ./pkg/logs
+          go test -race ./pkg/cache
+          go test -race ./pkg/cli
 
   client:
     name: WebAssembly Unit Tests
@@ -46,3 +51,5 @@ jobs:
       - name: Run Unit Tests
         run: |
           GOARCH=wasm GOOS=js go test ./pkg/app
+          GOARCH=wasm GOOS=js go test ./pkg/errors
+          GOARCH=wasm GOOS=js go test ./pkg/logs
