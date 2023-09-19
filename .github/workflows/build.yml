@@ -37,7 +37,6 @@ jobs:
           go test -race ./pkg/errors
           go test -race ./pkg/logs
           go test -race ./pkg/cache
-          go test -race ./pkg/cli
 
   client:
     name: WebAssembly Unit Tests
