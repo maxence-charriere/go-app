@@ -487,11 +487,11 @@ type foo struct {
 }
 
 func (f *foo) Render() UI {
-	return If(f.Bar != "",
-		&bar{Value: f.Bar},
-	).Else(
-		Text("bar"),
-	)
+	return If(f.Bar != "", func() UI {
+		return &bar{Value: f.Bar}
+	}).Else(func() UI {
+		return Text("bar")
+	})
 }
 
 type bar struct {
