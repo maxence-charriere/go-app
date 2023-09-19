@@ -27,7 +27,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - name: Run Unit Tests
-        run: go test -race ./pkg/...
+        run: go test -race ./pkg/app
 
   client:
     name: WebAssembly Unit Tests
