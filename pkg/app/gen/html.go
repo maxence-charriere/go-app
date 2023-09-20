@@ -28,10 +28,10 @@ const (
 )
 
 var tags = []tag{
+	// A:
 	{
-		// A:
 		Name: "A",
-		Doc:  "defines a hyperlink.",
+		Doc:  "that creates a hyperlink, allowing navigation to other web pages or resources.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"download",
 			"href",
@@ -46,20 +46,20 @@ var tags = []tag{
 	},
 	{
 		Name:          "Abbr",
-		Doc:           "defines an abbreviation or an acronym.",
+		Doc:           "that represents an abbreviation or an acronym, providing a longer description or meaning of the content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Address",
-		Doc:           "defines contact information for the author/owner of a document.",
+		Doc:           "that designates contact information for the author or owner of a document or web page.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Area",
 		Type: selfClosing,
-		Doc:  "defines an area inside an image-map.",
+		Doc:  "that defines a clickable region within an image map, usually linking to another resource.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"coords",
@@ -76,19 +76,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Article",
-		Doc:           "defines an article.",
+		Doc:           "that marks a self-contained composition in a document, like a blog post or news story.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Aside",
-		Doc:           "defines content aside from the page content.",
+		Doc:           "that represents content tangentially related to the main content, and can be considered separate.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Audio",
-		Doc:  "defines sound content.",
+		Doc:  "that embeds an audio player for playing sound or music content.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
@@ -104,14 +104,14 @@ var tags = []tag{
 	// B:
 	{
 		Name:          "B",
-		Doc:           "defines bold text.",
+		Doc:           "that applies bold styling to its content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Base",
 		Type: selfClosing,
-		Doc:  "specifies the base URL/target for all relative URLs in a document.",
+		Doc:  "that specifies the base URL and target for all relative URLs in the document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"href",
 			"target",
@@ -120,19 +120,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Bdi",
-		Doc:           "isolates a part of text that might be formatted in a different direction from other text outside it.",
+		Doc:           "that isolates a section of text, allowing it to be formatted in a different direction than the surrounding content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Bdo",
-		Doc:           "overrides the current text direction.",
+		Doc:           "that controls the text direction of its content, overriding other directional settings.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Blockquote",
-		Doc:  "defines a section that is quoted from another source.",
+		Doc:  "that represents a section of text quoted from another source.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"cite",
 		)...),
@@ -141,7 +141,7 @@ var tags = []tag{
 	{
 		Name:  "Body",
 		Type:  privateParent,
-		Doc:   "defines the document's body.",
+		Doc:   "that encloses the main content of the HTML document.",
 		Attrs: withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
 			"onafterprint",
@@ -164,13 +164,13 @@ var tags = []tag{
 	{
 		Name:          "Br",
 		Type:          selfClosing,
-		Doc:           "defines a single line break.",
+		Doc:           "that inserts a line break within inline content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Button",
-		Doc:  "defines a clickable button.",
+		Doc:  "that creates a clickable button, typically used for form submission or triggering interactions.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autofocus",
 			"disabled",
@@ -190,7 +190,7 @@ var tags = []tag{
 	// C:
 	{
 		Name: "Canvas",
-		Doc:  "is used to draw graphics on the fly.",
+		Doc:  "that provides a space where graphics can be rendered dynamically, such as 2D drawings or 3D visualizations.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"height",
 			"width",
@@ -199,26 +199,26 @@ var tags = []tag{
 	},
 	{
 		Name:          "Caption",
-		Doc:           "defines a table caption.",
+		Doc:           "that represents the title or description of a table, usually appearing above or below the table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Cite",
-		Doc:           "defines the title of a work.",
+		Doc:           "that indicates the title or reference of a creative work, such as a book, film, or research paper.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Code",
-		Doc:           "defines a piece of computer code.",
+		Doc:           "that displays a single line of code or a code snippet, preserving its formatting.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Col",
 		Type: selfClosing,
-		Doc:  "specifies column properties for each column within a colgroup element.",
+		Doc:  "that defines the properties for a single column or a group of columns within a table, when nested within a `<colgroup>` element.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"span",
 		)...),
@@ -226,7 +226,7 @@ var tags = []tag{
 	},
 	{
 		Name: "ColGroup",
-		Doc:  "specifies a group of one or more columns in a table for formatting.",
+		Doc:  "that groups one or more `<col>` elements, providing a way to apply styles and attributes to multiple columns simultaneously.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"span",
 		)...),
@@ -236,26 +236,26 @@ var tags = []tag{
 	// D:
 	{
 		Name: "Data",
-		Doc:  "links the given content with a machine-readable translation.",
+		Doc:  "that pairs content with its machine-readable translation or value.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"value",
 		)...),
 	},
 	{
 		Name:          "DataList",
-		Doc:           "specifies a list of pre-defined options for input controls.",
+		Doc:           "that offers a predefined set of options for input controls.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Dd",
-		Doc:           "defines a description/value of a term in a description list.",
+		Doc:           "that provides the description or value for a term in a description list.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Del",
-		Doc:  "defines text that has been deleted from a document.",
+		Doc:  "that denotes text segments that have been deleted or modified in the content.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"cite",
 			"datetime",
@@ -264,7 +264,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Details",
-		Doc:  "defines additional details that the user can view or hide.",
+		Doc:  "that encapsulates content users can toggle visibility for, such as additional information or context.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"open",
 		)...),
@@ -274,13 +274,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "Dfn",
-		Doc:           "represents the defining instance of a term.",
+		Doc:           "that marks the defining occurrence or clarification of a term or phrase.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Dialog",
-		Doc:  "defines a dialog box or window.",
+		Doc:  "that represents a popup dialog box or an interactive window overlay.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"open",
 		)...),
@@ -288,19 +288,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Div",
-		Doc:           "defines a section in a document.",
+		Doc:           "that creates a generic container for flow content, usually combined with styles or scripts.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Dl",
-		Doc:           "defines a description list.",
+		Doc:           "that structures a list of terms alongside their associated descriptions.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Dt",
-		Doc:           "defines a term/name in a description list.",
+		Doc:           "that specifies a term or name within a description list.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -308,7 +308,7 @@ var tags = []tag{
 	// E:
 	{
 		Name: "Elem",
-		Doc:  "represents an customizable HTML element.",
+		Doc:  "that is customizable.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"xmlns",
 		)...),
@@ -317,7 +317,7 @@ var tags = []tag{
 	{
 		Name: "ElemSelfClosing",
 		Type: selfClosing,
-		Doc:  "represents a self closing custom HTML element.",
+		Doc:  "that is self-closing and customizable.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"xmlns",
 		)...),
@@ -325,14 +325,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Em",
-		Doc:           "defines emphasized text.",
+		Doc:           "that marks text for emphasis, typically rendered as italicized text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Embed",
 		Type: selfClosing,
-		Doc:  "defines a container for an external (non-HTML) application.",
+		Doc:  "that offers a container for integrating non-HTML content or applications.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"height",
 			"src",
@@ -345,7 +345,7 @@ var tags = []tag{
 	// F:
 	{
 		Name: "FieldSet",
-		Doc:  "groups related elements in a form.",
+		Doc:  "that clusters related input controls and labels within a form.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"disabled",
 			"form",
@@ -355,25 +355,25 @@ var tags = []tag{
 	},
 	{
 		Name:          "FigCaption",
-		Doc:           "defines a caption for a figure element.",
+		Doc:           "that supplies a caption or explanation for content within the <figure> element.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Figure",
-		Doc:           "specifies self-contained content.",
+		Doc:           "that encapsulates media content or illustrations with an optional caption.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Footer",
-		Doc:           "defines a footer for a document or section.",
+		Doc:           "that denotes the footer of a section or the whole document, often containing metadata or author info.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Form",
-		Doc:  "defines an HTML form for user input.",
+		Doc:  "that constructs a user input form, allowing for various control elements and submission options.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"accept-charset",
 			"action",
@@ -390,75 +390,75 @@ var tags = []tag{
 	// H:
 	{
 		Name:          "H1",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 1 HTML heading, indicating the most important topic or section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H2",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 2 HTML heading, indicating a main subsection under H1.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H3",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 3 HTML heading, indicating a subsection under H2.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H4",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 4 HTML heading, indicating topics that fall under the H3 section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H5",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 5 HTML heading, typically used for finer details under an H4 section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H6",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 6 HTML heading, used for the smallest granularity of topics or details.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:  "Head",
-		Doc:   "defines information about the document.",
+		Doc:   "that defines information about the document.",
 		Attrs: withGlobalAttrs(attrsByNames()...),
 	},
 	{
 		Name:          "Header",
-		Doc:           "defines a header for a document or section.",
+		Doc:           "that defines a header for a document or section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Hr",
 		Type:          selfClosing,
-		Doc:           "defines a thematic change in the content.",
+		Doc:           "that defines a thematic change in the content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:  "Html",
 		Type:  privateParent,
-		Doc:   "defines the root of an HTML document.",
+		Doc:   "that defines the root of an HTML document.",
 		Attrs: withGlobalAttrs(),
 	},
 
 	// I:
 	{
 		Name:          "I",
-		Doc:           "defines a part of text in an alternate voice or mood.",
+		Doc:           "that defines a part of text in an alternate voice or mood.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "IFrame",
-		Doc:  "defines an inline frame.",
+		Doc:  "that defines an inline frame.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"allow",
 			"allowfullscreen",
@@ -480,7 +480,7 @@ var tags = []tag{
 	{
 		Name: "Img",
 		Type: selfClosing,
-		Doc:  "defines an image.",
+		Doc:  "that defines an image.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"crossorigin",
@@ -502,7 +502,7 @@ var tags = []tag{
 	{
 		Name: "Input",
 		Type: selfClosing,
-		Doc:  "defines an input control.",
+		Doc:  "that defines an input control.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"accept",
 			"alt",
@@ -543,7 +543,7 @@ var tags = []tag{
 	},
 	{
 		Name:          "Ins",
-		Doc:           "defines a text that has been inserted into a document.",
+		Doc:           "that defines text that has been inserted into a document.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -551,7 +551,7 @@ var tags = []tag{
 	// K:
 	{
 		Name:          "Kbd",
-		Doc:           "defines keyboard input.",
+		Doc:           "that represents keyboard input.",
 		Attrs:         withGlobalAttrs(attrsByNames()...),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -559,7 +559,7 @@ var tags = []tag{
 	// L:
 	{
 		Name: "Label",
-		Doc:  "defines a label for an input element.",
+		Doc:  "that represents a label for an input element.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"for",
 			"form",
@@ -568,13 +568,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "Legend",
-		Doc:           "defines a caption for a fieldset element.",
+		Doc:           "that represents a caption for a fieldset element.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Li",
-		Doc:  "defines a list item.",
+		Doc:  "that represents a list item.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"value",
 		)...),
@@ -583,7 +583,7 @@ var tags = []tag{
 	{
 		Name: "Link",
 		Type: selfClosing,
-		Doc:  "defines the relationship between a document and an external resource (most used to link to style sheets).",
+		Doc:  "that describes the relationship between a document and an external resource (most commonly used to link to style sheets).",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"as",
 			"crossorigin",
@@ -603,13 +603,13 @@ var tags = []tag{
 	// M:
 	{
 		Name:          "Main",
-		Doc:           "specifies the main content of a document.",
+		Doc:           "that specifies the main content of a document.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Map",
-		Doc:  "defines a client-side image-map.",
+		Doc:  "that represents a client-side image-map.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"name",
 		)...),
@@ -617,14 +617,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Mark",
-		Doc:           "defines marked/highlighted text.",
+		Doc:           "that represents marked/highlighted text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Meta",
 		Type: selfClosing,
-		Doc:  ".",
+		Doc:  "that provides metadata about the HTML document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"charset",
 			"content",
@@ -635,7 +635,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Meter",
-		Doc:  "defines a scalar measurement within a known range (a gauge).",
+		Doc:  "that represents a scalar measurement within a known range (like a gauge).",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"form",
 			"high",
@@ -651,20 +651,20 @@ var tags = []tag{
 	// N:
 	{
 		Name:          "Nav",
-		Doc:           "defines navigation links.",
+		Doc:           "that represents navigation links.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:  "NoScript",
-		Doc:   "defines an alternate content for users that do not support client-side scripts.",
+		Doc:   "that provides alternate content for users who do not support client-side scripts.",
 		Attrs: withGlobalAttrs(attrsByNames()...),
 	},
 
 	// O:
 	{
 		Name: "Object",
-		Doc:  "defines an embedded object.",
+		Doc:  "that embeds an object within the document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"data",
 			"form",
@@ -678,7 +678,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Ol",
-		Doc:  "defines an ordered list.",
+		Doc:  "that represents an ordered list.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"reversed",
 			"start",
@@ -688,7 +688,7 @@ var tags = []tag{
 	},
 	{
 		Name: "OptGroup",
-		Doc:  "defines a group of related options in a drop-down list.",
+		Doc:  "that groups related options in a drop-down list.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"disabled",
 			"label",
@@ -697,7 +697,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Option",
-		Doc:  "defines an option in a drop-down list.",
+		Doc:  "that represents an option in a drop-down list.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"disabled",
 			"label",
@@ -708,7 +708,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Output",
-		Doc:  ".",
+		Doc:  "that displays the result of a calculation or user action.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"for",
 			"form",
@@ -720,14 +720,14 @@ var tags = []tag{
 	// P:
 	{
 		Name:          "P",
-		Doc:           "defines a paragraph.",
+		Doc:           "that represents a paragraph.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Param",
 		Type: selfClosing,
-		Doc:  "defines a parameter for an object.",
+		Doc:  "that defines a parameter for an embedded object.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"name",
 			"value",
@@ -736,19 +736,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Picture",
-		Doc:           "defines a container for multiple image resources.",
+		Doc:           "that provides a container for multiple image sources.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Pre",
-		Doc:           "defines preformatted text.",
+		Doc:           "that displays preformatted text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Progress",
-		Doc:  "represents the progress of a task.",
+		Doc:  "that visualizes the progress of a task.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"max",
 			"value",
@@ -759,7 +759,7 @@ var tags = []tag{
 	// Q:
 	{
 		Name: "Q",
-		Doc:  "defines a short quotation.",
+		Doc:  "that represents a short quotation.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"cite",
 		)...),
@@ -769,19 +769,19 @@ var tags = []tag{
 	// R:
 	{
 		Name:          "Rp",
-		Doc:           "defines what to show in browsers that do not support ruby annotations.",
+		Doc:           "that indicates text for browsers not supporting ruby annotations.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Rt",
-		Doc:           "defines an explanation/pronunciation of characters (for East Asian typography).",
+		Doc:           "that provides explanation or pronunciation of characters (used in East Asian typography).",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Ruby",
-		Doc:           "defines a ruby annotation (for East Asian typography).",
+		Doc:           "that marks a ruby annotation (used for East Asian typography).",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -789,19 +789,19 @@ var tags = []tag{
 	// S:
 	{
 		Name:          "S",
-		Doc:           "Defines text that is no longer correct.",
+		Doc:           "that represents text which is no longer correct or relevant.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Samp",
-		Doc:           "defines sample output from a computer program.",
+		Doc:           "that displays sample output from a computer program.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Script",
-		Doc:  "defines a client-side script.",
+		Doc:  "that embeds or references a client-side script.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"async",
 			"charset",
@@ -814,13 +814,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "Section",
-		Doc:           "defines a section in a document.",
+		Doc:           "that represents a standalone section in a document.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Select",
-		Doc:  "defines a drop-down list.",
+		Doc:  "that creates a drop-down list or list box for form input.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autofocus",
 			"disabled",
@@ -834,14 +834,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Small",
-		Doc:           "defines smaller text.",
+		Doc:           "that displays text in a smaller font, typically for side comments or legal disclaimers.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Source",
 		Type: selfClosing,
-		Doc:  ".",
+		Doc:  "that specifies multiple media resources for elements like <picture>, <audio>, and <video>.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"src",
 			"srcset",
@@ -853,19 +853,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Span",
-		Doc:           "defines a section in a document.",
-		Attrs:         withGlobalAttrs(attrsByNames()...),
+		Doc:           "that provides a way to style a specific part of the text or to group inline-elements.",
+		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Strong",
-		Doc:           "defines important text.",
+		Doc:           "that emphasizes text as important, typically displayed as bold.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Style",
-		Doc:  "defines style information for a document.",
+		Doc:  "that contains style information or references for a document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"media",
 			"type",
@@ -876,19 +876,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Sub",
-		Doc:           "defines subscripted text.",
+		Doc:           "that represents subscripted text, typically displayed lower and smaller than the main text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Summary",
-		Doc:           "defines a visible heading for a details element.",
+		Doc:           "that provides a visible heading or label for a <details> element's content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Sup",
-		Doc:           "defines superscripted text.",
+		Doc:           "that represents superscripted text, typically displayed higher and smaller than the main text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -896,19 +896,19 @@ var tags = []tag{
 	// T:
 	{
 		Name:          "Table",
-		Doc:           "defines a table.",
+		Doc:           "that represents a table structure.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "TBody",
-		Doc:           "groups the body content in a table.",
+		Doc:           "that groups the main content rows in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Td",
-		Doc:  "defines a cell in a table.",
+		Doc:  "that represents a data cell in a table.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"colspan",
 			"headers",
@@ -918,12 +918,12 @@ var tags = []tag{
 	},
 	{
 		Name:  "Template",
-		Doc:   "defines a template.",
-		Attrs: withGlobalAttrs(attrsByNames()...),
+		Doc:   "that holds client-side content templates for dynamic rendering.",
+		Attrs: withGlobalAttrs(),
 	},
 	{
 		Name: "Textarea",
-		Doc:  "defines a multiline input control (text area).",
+		Doc:  "that provides a multiline text input control.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autofocus",
 			"cols",
@@ -942,13 +942,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "TFoot",
-		Doc:           "groups the footer content in a table.",
+		Doc:           "that groups the footer rows in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Th",
-		Doc:  "defines a header cell in a table.",
+		Doc:  "that represents a header cell in a table.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"abbr",
 			"colspan",
@@ -960,13 +960,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "THead",
-		Doc:           "groups the header content in a table",
+		Doc:           "that groups the header rows in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Time",
-		Doc:  "defines a date/time.",
+		Doc:  "that represents a specific period or a single point in time.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"datetime",
 		)...),
@@ -974,12 +974,12 @@ var tags = []tag{
 	},
 	{
 		Name:  "Title",
-		Doc:   "defines a title for the document.",
-		Attrs: withGlobalAttrs(attrsByNames()...),
+		Doc:   "that specifies the title of the document, shown in the browser's title bar or tab.",
+		Attrs: withGlobalAttrs(),
 	},
 	{
 		Name:          "Tr",
-		Doc:           "defines a row in a table.",
+		Doc:           "that represents a row of cells in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -987,13 +987,13 @@ var tags = []tag{
 	// U:
 	{
 		Name:          "U",
-		Doc:           "defines text that should be stylistically different from normal text.",
+		Doc:           "that renders text with an underline, typically indicating misspelled text or proper names in Chinese text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Ul",
-		Doc:           "defines an unordered list.",
+		Doc:           "that represents an unordered list of items.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -1001,13 +1001,13 @@ var tags = []tag{
 	// V:
 	{
 		Name:          "Var",
-		Doc:           "defines a variable.",
+		Doc:           "that displays a name of a variable, typically shown in an italic typeface.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Video",
-		Doc:  "defines a video or movie.",
+		Doc:  "that embeds video content, allowing for playback of video files or streams.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
@@ -1024,7 +1024,7 @@ var tags = []tag{
 	},
 	{
 		Name:          "Wbr",
-		Doc:           "defines a possible line-break.",
+		Doc:           "that suggests an optimal position for a line break within text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -1043,610 +1043,610 @@ var attrs = map[string]attr{
 	"abbr": {
 		Name: "Abbr",
 		Type: "fmt",
-		Doc:  "specifies an abbreviated version of the content in a header cell with the given format and values.",
+		Doc:  "Denotes abbreviated content for header cells to provide clarity on shortened terms.",
 	},
 	"accept": {
 		Name: "Accept",
 		Type: "fmt",
-		Doc:  "specifies the types of files that the server accepts (only for file type) with the given format and values.",
+		Doc:  "Restricts file types the server accepts, especially used for file input elements.",
 	},
 	"allow": {
 		Name: "Allow",
 		Type: "fmt",
-		Doc:  "specifies a feature policy with the given format and values. Can be called multiple times to set multiple policies.",
+		Doc:  "Sets a feature policy, enhancing security by controlling certain browser features. Allows multiple policies.",
 	},
 	"allowfullscreen": {
 		Name: "AllowFullscreen",
 		Type: "bool|force",
-		Doc:  "reports whether an iframe can activate fullscreen mode.",
+		Doc:  "Grants an iframe the capability to request fullscreen mode.",
 	},
 	"allowpaymentrequest": {
 		Name: "AllowPaymentRequest",
 		Type: "bool|force",
-		Doc:  "reports whether an iframe should be allowed to invoke the Payment Request API",
+		Doc:  "Grants an iframe the permission to use the Payment Request API for smoother online transactions.",
 	},
 	"aria-*": {
 		Name: "Aria",
 		Type: "aria|value",
-		Doc:  "stores accessible rich internet applications (ARIA) data.",
+		Doc:  "Allocates ARIA roles and properties to the element to enhance accessibility for users with disabilities. Can be called multiple times to assign various roles and properties.",
 	},
 	"attribute": {
 		Name: "Attr",
 		Type: "attr|value",
-		Doc:  "sets the named attribute with the given value.",
+		Doc:  "Sets an attribute with its associated value, allowing for flexible HTML customization.",
 	},
 	"accept-charset": {
 		Name:         "AcceptCharset",
 		NameOverride: "accept-charset",
-		Type:         "string",
-		Doc:          "specifies the character encodings that are to be used for the form submission.",
+		Type:         "fmt",
+		Doc:          "Restricts the character encodings accepted for form submission, ensuring compatibility.",
 	},
 	"accesskey": {
 		Name: "AccessKey",
 		Type: "fmt",
-		Doc:  "specifies a shortcut key with the given format and values to activate/focus an element.",
+		Doc:  "Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.",
 	},
 	"action": {
 		Name: "Action",
 		Type: "fmt",
-		Doc:  "specifies where to send the form-data with the given format and values when a form is submitted.",
+		Doc:  "Specifies the server endpoint to which form-data should be sent upon submission.",
 	},
 	"alt": {
 		Name: "Alt",
 		Type: "fmt",
-		Doc:  "specifies an alternate text with the given format and values when the original element fails to display.",
+		Doc:  "Provides a text alternative for elements (often images) ensuring content is accessible when visuals can't be rendered.",
 	},
 	"as": {
 		Name: "As",
 		Type: "fmt",
-		Doc:  "specifies a resource type to preload with the given format and values.",
+		Doc:  "Hints the type of content to preload, optimizing loading for certain resources.",
 	},
 	"async": {
 		Name: "Async",
 		Type: "bool",
-		Doc:  "specifies that the script is executed asynchronously (only for external scripts).",
+		Doc:  "Specifies that external scripts are executed asynchronously, preventing blocking of page rendering.",
 	},
 	"autocomplete": {
 		Name: "AutoComplete",
 		Type: "on/off",
-		Doc:  "specifies whether the element should have autocomplete enabled.",
+		Doc:  "Toggles the browser's autocomplete feature, assisting users with common input values.",
 	},
 	"autofocus": {
 		Name: "AutoFocus",
 		Type: "bool",
-		Doc:  "specifies that the element should automatically get focus when the page loads.",
+		Doc:  "Instructs the browser to focus this element automatically when the page loads.",
 	},
 	"autoplay": {
 		Name: "AutoPlay",
 		Type: "bool",
-		Doc:  "specifies that the audio/video will start playing as soon as it is ready.",
+		Doc:  "Automatically plays audio or video elements once they're ready, enhancing media responsiveness.",
 	},
 
 	// C:
 	"capture": {
 		Name: "Capture",
 		Type: "fmt",
-		Doc:  "specifies the capture input method in file upload controls with the given format and values.",
+		Doc:  "Directs how media capture for file uploads should be handled, such as using the device's camera or microphone.",
 	},
 	"charset": {
 		Name: "Charset",
 		Type: "fmt",
-		Doc:  "specifies the character encoding with the given format and values.",
+		Doc:  "Specifies the character encoding for the linked document or external resource.",
 	},
 	"checked": {
 		Name: "Checked",
 		Type: "bool",
-		Doc:  "specifies that an input element should be pre-selected when the page loads (for checkbox or radio types).",
+		Doc:  "Indicates that an input element (checkbox or radio) should start in a selected state upon page load.",
 	},
 	"cite": {
 		Name: "Cite",
 		Type: "fmt",
-		Doc:  "specifies a URL which explains the quote/deleted/inserted text with the given format and values.",
+		Doc:  "Provides a reference or link to a source explaining quoted or modified content in the element.",
 	},
 	"class": {
 		Name: "Class",
 		Type: "string|class",
-		Doc:  "specifies one or more classnames for an element (refers to a class in a style sheet).",
+		Doc:  "Assigns one or more classnames to an element, linking it to styles defined in a stylesheet. Can be called multiple times to assign multiple classnames.",
 	},
 	"cols": {
 		Name: "Cols",
 		Type: "int",
-		Doc:  "specifies the visible width of a text area.",
+		Doc:  "Defines the visible width, in character widths, of a text area element.",
 	},
 	"colspan": {
 		Name: "ColSpan",
 		Type: "int",
-		Doc:  "specifies the number of columns a table cell should span.",
+		Doc:  "Denotes how many columns a table cell should span across, allowing cells to occupy space of multiple columns.",
 	},
 	"content": {
 		Name: "Content",
 		Type: "fmt",
-		Doc:  "specifies the value associated with the http-equiv or name attribute using the given format and values.",
+		Doc:  "Specifies metadata content for the `http-equiv` or `name` attributes, often used in meta tags.",
 	},
 	"contenteditable": {
 		Name: "ContentEditable",
 		Type: "bool",
-		Doc:  "specifies whether the content of an element is editable or not.",
+		Doc:  "Determines if the content of an element is editable by the user, allowing for in-page content modification.",
 	},
 	"controls": {
 		Name: "Controls",
 		Type: "bool",
-		Doc:  "specifies that audio/video controls should be displayed (such as a play/pause button etc).",
+		Doc:  "Indicates the presence of user interface controls for audio or video elements, such as play or pause buttons.",
 	},
 	"coords": {
 		Name: "Coords",
 		Type: "fmt",
-		Doc:  "specifies the coordinates of the area with the given format and values.",
+		Doc:  "Defines the coordinates for elements in an image map, establishing active regions for hyperlinks.",
 	},
 	"crossorigin": {
 		Name: "CrossOrigin",
 		Type: "fmt",
-		Doc:  "sets the mode of the request to an HTTP CORS Request with the given format and values.",
+		Doc:  "Controls how cross-origin requests are managed for the element, supporting secure content integration from different origins.",
 	},
 
 	// D:
 	"data": {
 		Name: "Data",
 		Type: "fmt",
-		Doc:  "specifies the URL of the resource to be used by the object with the given format and values.",
+		Doc:  "Specifies the URL of a resource associated with an embedded object, such as media or data.",
 	},
 	"data-*": {
 		Name: "DataSet",
 		Type: "data|value",
-		Doc:  "stores custom data private to the page or application.",
+		Doc:  "Allows for storage of custom data specific to individual elements. Can be called multiple times to store multiple sets of data, often used for scripting purposes.",
 	},
 	"datasets": {
 		Name: "DataSets",
 		Type: "data|map",
-		Doc:  "specifies datsets for an element. Can be called multiple times to set multiple data set.",
+		Doc:  "Denotes datasets linked to an element and can store multiple sets of data.",
 	},
 	"datetime": {
 		Name: "DateTime",
 		Type: "fmt",
-		Doc:  "specifies the date and time with the given format and values.",
+		Doc:  "Represents the date and time, often used in context with machine-readable equivalents of time-related content.",
 	},
 	"default": {
 		Name: "Default",
 		Type: "bool",
-		Doc:  "specifies that the track is to be enabled if the user's preferences do not indicate that another track would be more appropriate.",
+		Doc:  "Indicates a default track for media elements and is selected unless the user or browser specifies otherwise.",
 	},
 	"defer": {
 		Name: "Defer",
 		Type: "bool",
-		Doc:  "specifies that the script is executed when the page has finished parsing (only for external scripts).",
+		Doc:  "Delays the execution of a script until after the document is parsed, typically applied to external scripts.",
 	},
 	"dir": {
 		Name: "Dir",
 		Type: "fmt",
-		Doc:  "specifies the text direction for the content in an element with the given format and values.",
+		Doc:  "Defines the text direction for the content within an element, such as 'ltr' (left-to-right) or 'rtl' (right-to-left).",
 	},
 	"dirname": {
 		Name: "DirName",
 		Type: "fmt",
-		Doc:  "specifies that the text direction will be submitted using the given format and values.",
+		Doc:  "Instructs the browser to also submit the text direction of a form field when the form is submitted.",
 	},
 	"disabled": {
 		Name: "Disabled",
 		Type: "bool",
-		Doc:  "specifies that the specified element/group of elements should be disabled.",
+		Doc:  "Deactivates an element, rendering it uninteractive and visually distinct.",
 	},
 	"download": {
 		Name: "Download",
 		Type: "fmt",
-		Doc:  "specifies that the target will be downloaded when a user clicks on the hyperlink. Uses the given format and values.",
+		Doc:  "Hints the browser to download the linked resource, optionally providing a default filename.",
 	},
 	"draggable": {
 		Name: "Draggable",
 		Type: "bool",
-		Doc:  "specifies whether an element is draggable or not.",
+		Doc:  "Specifies if an element can be dragged by the user, supporting drag-and-drop operations.",
 	},
 
 	// E:
 	"enctype": {
 		Name: "EncType",
 		Type: "fmt",
-		Doc:  "specifies how the form-data should be encoded when submitting it to the server (only for post method). Uses the given format and values.",
+		Doc:  "Describes how form data should be encoded upon submission, especially vital for forms submitting file uploads.",
 	},
 
 	// F:
 	"fetchpriority": {
 		Name: "FetchPriority",
-		Type: "string",
-		Doc:  "specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.",
+		Type: "fmt",
+		Doc:  "Provides a hint to the browser about how it should prioritize the fetch of the image in relation to other images.",
 	},
 	"for": {
 		Name: "For",
 		Type: "fmt",
-		Doc:  "specifies which form element(s) a label/calculation is bound to. Uses the given format and values.",
+		Doc:  "Associates a label or calculation with specific form element(s).",
 	},
 	"form": {
 		Name: "Form",
 		Type: "fmt",
-		Doc:  "specifies the name of the form the element belongs to. Uses the given format and values.",
+		Doc:  "Identifies the form to which the element belongs.",
 	},
 	"formaction": {
 		Name: "FormAction",
 		Type: "fmt",
-		Doc:  "specifies where to send the form-data when a form is submitted. Only for submit type. Uses the given format and values.",
+		Doc:  "Defines the URL to which form data should be sent upon submission. Applicable only to 'submit' type inputs.",
 	},
 	"formenctype": {
 		Name: "FormEncType",
 		Type: "fmt",
-		Doc:  "specifies how form-data should be encoded before sending it to a server. Only for submit type. Uses the given format and values.",
+		Doc:  "Dictates the encoding method for form data prior to its submission to a server. Applicable only to 'submit' type inputs.",
 	},
 	"formmethod": {
 		Name: "FormMethod",
 		Type: "fmt",
-		Doc:  "specifies how to send the form-data (which HTTP method to use). Only for submit type. Uses the given format and values.",
+		Doc:  "Determines the HTTP method for sending form data. Applicable only to 'submit' type inputs.",
 	},
 	"formnovalidate": {
 		Name: "FormNoValidate",
 		Type: "bool",
-		Doc:  "specifies that the form-data should not be validated on submission. Only for submit type.",
+		Doc:  "Indicates that the form data should bypass validation upon submission. Applicable only to 'submit' type inputs.",
 	},
 	"formtarget": {
 		Name: "FormTarget",
 		Type: "fmt",
-		Doc:  "specifies where to display the response after submitting the form. Only for submit type. Uses the given format and values.",
+		Doc:  "Specifies where the server's response will be displayed after form submission. Applicable only to 'submit' type inputs.",
 	},
 
 	// H:
 	"headers": {
 		Name: "Headers",
 		Type: "fmt",
-		Doc:  "specifies one or more headers cells a cell is related to. Uses the given format and values.",
+		Doc:  "Designates one or more header cells to which a table cell is related.",
 	},
 	"height": {
 		Name: "Height",
 		Type: "int",
-		Doc:  "specifies the height of the element (in pixels).",
+		Doc:  "Sets the height of the element, measured in pixels.",
 	},
 	"hidden": {
 		Name: "Hidden",
 		Type: "bool",
-		Doc:  "specifies that an element is not yet, or is no longer relevant.",
+		Doc:  "Marks an element as currently irrelevant or not yet relevant.",
 	},
 	"high": {
 		Name: "High",
 		Type: "float64",
-		Doc:  "specifies the range that is considered to be a high value.",
+		Doc:  "Defines the value threshold considered as 'high' in a range context.",
 	},
 	"href": {
 		Name: "Href",
 		Type: "fmt",
-		Doc:  "specifies the URL of the page the link goes to with the given format and values.",
+		Doc:  "Points to the URL of the destination when the link is clicked.",
 	},
 	"hreflang": {
 		Name: "HrefLang",
 		Type: "fmt",
-		Doc:  "specifies the language of the linked document with the given format and values.",
+		Doc:  "Declares the language of the linked document's content.",
 	},
 	"http-equiv": {
 		Name:         "HTTPEquiv",
 		NameOverride: "http-equiv",
-		Type:         "string",
-		Doc:          "provides an HTTP header for the information/value of the content attribute.",
+		Type:         "fmt",
+		Doc:          "Supplies an HTTP header for the content attribute, often used for refresh rates or setting a default charset.",
 	},
 
 	// I:
 	"id": {
 		Name: "ID",
 		Type: "fmt",
-		Doc:  "specifies a unique id for an element with the given format and values.",
+		Doc:  "Assigns a unique identifier to an element.",
 	},
 	"ismap": {
 		Name: "IsMap",
 		Type: "bool",
-		Doc:  "specifies an image as a server-side image-map.",
+		Doc:  "Marks an image as a server-side image-map.",
 	},
 
 	// K:
 	"kind": {
 		Name: "Kind",
 		Type: "fmt",
-		Doc:  "specifies the kind of text track with the given format and values.",
+		Doc:  "Defines the type of text track for media elements.",
 	},
 
 	// L:
 	"label": {
 		Name: "Label",
 		Type: "fmt",
-		Doc:  "specifies a shorter label for the option with the given format and values.",
+		Doc:  "Provides a concise label for an option element.",
 	},
 	"lang": {
 		Name: "Lang",
 		Type: "fmt",
-		Doc:  "specifies the language of the element's content with the given format and values.",
+		Doc:  "Declares the language of the element's content.",
 	},
 	"list": {
 		Name: "List",
 		Type: "fmt",
-		Doc:  "refers to a datalist element that contains pre-defined options for an input element. Uses the given format and values.",
+		Doc:  "Links to a datalist element offering predefined options for an input element.",
 	},
 	"loading": {
 		Name: "Loading",
 		Type: "fmt",
-		Doc:  "indicates how the browser should load the iframe (eager|lazy). Uses the given format and values.",
+		Doc:  "Determines the browser's loading behavior for the iframe ('eager' or 'lazy').",
 	},
 	"loop": {
 		Name: "Loop",
 		Type: "bool",
-		Doc:  "specifies that the audio/video will start over again, every time it is finished.",
+		Doc:  "Indicates that the audio or video should replay from the beginning upon reaching its end.",
 	},
 	"low": {
 		Name: "Low",
 		Type: "float64",
-		Doc:  "specifies the range that is considered to be a low value.",
+		Doc:  "Sets the value threshold regarded as 'low' in a range context.",
 	},
 
 	// M:
 	"max": {
 		Name: "Max",
 		Type: "any",
-		Doc:  "Specifies the maximum value.",
+		Doc:  "Establishes the maximum permissible value.",
 	},
 	"maxlength": {
 		Name: "MaxLength",
 		Type: "int",
-		Doc:  "specifies the maximum number of characters allowed in an element.",
+		Doc:  "Defines the maximum number of characters permissible in an element.",
 	},
 	"media": {
 		Name: "Media",
 		Type: "fmt",
-		Doc:  "specifies what media/device the linked document is optimized for. Uses the given format and values.",
+		Doc:  "Indicates the intended media or device for the linked document.",
 	},
 	"method": {
 		Name: "Method",
 		Type: "fmt",
-		Doc:  "specifies the HTTP method to use when sending form-data. Uses the given format and values.",
+		Doc:  "Determines the HTTP method for sending form data.",
 	},
 	"min": {
 		Name: "Min",
 		Type: "any",
-		Doc:  "specifies a minimum value.",
+		Doc:  "Establishes the minimum permissible value.",
 	},
 	"multiple": {
 		Name: "Multiple",
 		Type: "bool",
-		Doc:  "specifies that a user can enter more than one value.",
+		Doc:  "Allows users to input multiple values.",
 	},
 	"muted": {
 		Name: "Muted",
 		Type: "bool",
-		Doc:  "specifies that the audio output of the video should be muted.",
+		Doc:  "Ensures that the video's audio playback is muted.",
 	},
 
 	// N:
 	"name": {
 		Name: "Name",
 		Type: "fmt",
-		Doc:  "specifies the name of the element with the given format and values.",
+		Doc:  "Assigns a name to the element.",
 	},
 	"novalidate": {
 		Name: "NoValidate",
 		Type: "bool",
-		Doc:  "specifies that the form should not be validated when submitted.",
+		Doc:  "Indicates that the form should bypass validation upon submission.",
 	},
 
 	// O:
 	"open": {
 		Name: "Open",
 		Type: "bool",
-		Doc:  "specifies that the details should be visible (open) to the user.",
+		Doc:  "Indicates that the details element is expanded and visible to the user.",
 	},
 	"optimum": {
 		Name: "Optimum",
 		Type: "float64",
-		Doc:  "specifies what value is the optimal value for the gauge.",
+		Doc:  "Sets the optimal numeric value for a gauge element.",
 	},
 
 	// P:
 	"pattern": {
 		Name: "Pattern",
 		Type: "fmt",
-		Doc:  "specifies a regular expression that an input element's value is checked against. Uses the given format and values.",
+		Doc:  "Establishes a regular expression against which an input element's value is validated.",
 	},
 	"ping": {
 		Name: "Ping",
 		Type: "fmt",
-		Doc:  "specifies a list of URLs to be notified if the user follows the hyperlink. Uses the given format and values.",
+		Doc:  "Lists URLs to be notified when the user activates the hyperlink.",
 	},
 	"placeholder": {
 		Name: "Placeholder",
 		Type: "fmt",
-		Doc:  "specifies a short hint that describes the expected value of the element. Uses the given format and values.",
+		Doc:  "Provides a brief hint describing the expected value of the element.",
 	},
 	"poster": {
 		Name: "Poster",
 		Type: "fmt",
-		Doc:  "specifies an image to be shown while the video is downloading, or until the user hits the play button. Uses the given format and values.",
+		Doc:  "Sets an image displayed before a video starts playing or while it's loading.",
 	},
 	"preload": {
 		Name: "Preload",
 		Type: "fmt",
-		Doc:  "specifies if and how the author thinks the audio/video should be loaded when the page loads. Uses the given format and values.",
+		Doc:  "Indicates the preferred loading method for audio/video upon page load.",
 	},
 	"property": {
 		Name: "Property",
 		Type: "fmt",
-		Doc:  "specifies the property name with the given format and values.",
+		Doc:  "Defines the property name of the element.",
 	},
 
 	// R:
 	"readonly": {
 		Name: "ReadOnly",
 		Type: "bool",
-		Doc:  "specifies that the element is read-only.",
+		Doc:  "Indicates that the element's value cannot be edited by the user.",
 	},
 	"referrerpolicy": {
 		Name: "ReferrerPolicy",
 		Type: "fmt",
-		Doc:  "specifies how much/which referrer information that will be sent when processing the iframe attributes. Uses the given format and values.",
+		Doc:  "Determines the amount of referrer information sent when processing iframe attributes.",
 	},
 	"rel": {
 		Name: "Rel",
 		Type: "fmt",
-		Doc:  "specifies the relationship between the current document and the linked document. uses the given format and values.",
+		Doc:  "Describes the relationship between the current and linked documents.",
 	},
 	"required": {
 		Name: "Required",
 		Type: "bool",
-		Doc:  "specifies that the element must be filled out before submitting the form.",
+		Doc:  "Indicates that the element must contain a value before form submission.",
 	},
 	"reversed": {
 		Name: "Reversed",
 		Type: "bool",
-		Doc:  "specifies that the list order should be descending (9,8,7...).",
+		Doc:  "States that the list items should be displayed in descending order.",
 	},
 	"role": {
 		Name: "Role",
 		Type: "fmt",
-		Doc:  "specifies to parsing software the exact function of an element (and its children). Uses the given format and values.",
+		Doc:  "Communicates the intended function or meaning of an element to assistive technologies.",
 	},
 	"rows": {
 		Name: "Rows",
 		Type: "int",
-		Doc:  "specifies the visible number of lines in a text area.",
+		Doc:  "Sets the number of visible lines in a textarea element.",
 	},
 	"rowspan": {
 		Name: "Rowspan",
 		Type: "int",
-		Doc:  "specifies the number of rows a table cell should span.",
+		Doc:  "Determines how many rows a table cell will span vertically.",
 	},
 
 	// S:
 	"sandbox": {
 		Name: "Sandbox",
-		Type: "any",
-		Doc:  "enables an extra set of restrictions for the content in an iframe.",
+		Type: "fmt",
+		Doc:  "Applies extra security restrictions to content within an iframe.",
 	},
 	"scope": {
 		Name: "Scope",
 		Type: "fmt",
-		Doc:  "specifies whether a header cell is a header for a column, row, or group of columns or rows. Uses the given format and values.",
+		Doc:  "Defines the set of cells a header cell provides header information for. Uses the given format and values.",
 	},
 	"selected": {
 		Name: "Selected",
 		Type: "bool",
-		Doc:  "specifies that an option should be pre-selected when the page loads.",
+		Doc:  "Indicates that an option should be pre-selected when the page loads.",
 	},
 	"shape": {
 		Name: "Shape",
 		Type: "fmt",
-		Doc:  "specifies the shape of the area with the given format and values.",
+		Doc:  "Describes the shape of a clickable area within an image map. Uses the given format and values.",
 	},
 	"size": {
 		Name: "Size",
 		Type: "int",
-		Doc:  "specifies the width.",
+		Doc:  "Indicates the width of the element, usually in characters for input elements.",
 	},
 	"sizes": {
 		Name: "Sizes",
 		Type: "fmt",
-		Doc:  "specifies the size of the linked resource with the given format and values.",
+		Doc:  "Specifies sizes of icons and images for different page or screen scenarios. Uses the given format and values.",
 	},
 	"span": {
 		Name: "Span",
 		Type: "int",
-		Doc:  "specifies the number of columns to span.",
+		Doc:  "Defines how many columns or rows a cell should span.",
 	},
 	"spellcheck": {
 		Name: "Spellcheck",
 		Type: "bool|force",
-		Doc:  "specifies whether the element is to have its spelling and grammar checked or not.",
+		Doc:  "Indicates whether the element's content is subject to spell and grammar checks.",
 	},
 	"src": {
 		Name: "Src",
 		Type: "fmt",
-		Doc:  "specifies the URL of the media file with the given format and values.",
+		Doc:  "Provides the URL source of embedded content or media. Uses the given format and values.",
 	},
 	"srcdoc": {
 		Name: "SrcDoc",
 		Type: "fmt",
-		Doc:  "specifies the HTML content of the page to show in the iframe with the given format and values.",
+		Doc:  "Defines the HTML content to be displayed within an iframe. Uses the given format and values.",
 	},
 	"srclang": {
 		Name: "SrcLang",
 		Type: "fmt",
-		Doc:  `specifies the language of the track text data (required if kind = "subtitles"). Uses the given format and values.`,
+		Doc:  "Denotes the language of text track data (mandatory if kind = 'subtitles'). Uses the given format and values.",
 	},
 	"srcset": {
 		Name: "SrcSet",
 		Type: "fmt",
-		Doc:  "specifies the URL of the image to use in different situations with the given format and values.",
+		Doc:  "Provides URLs of images to display in varied resolutions or viewport conditions. Uses the given format and values.",
 	},
 	"start": {
 		Name: "Start",
 		Type: "int",
-		Doc:  "specifies the start value of the ordered list.",
+		Doc:  "Determines the starting number for an ordered list.",
 	},
 	"step": {
 		Name: "Step",
 		Type: "float64",
-		Doc:  "specifies the legal number intervals for an input field.",
+		Doc:  "Specifies the interval between permissible values for an input field.",
 	},
 	"style": {
 		Name: "Style",
 		Type: "style",
-		Doc:  "specifies a CSS style for an element. Can be called multiple times to set multiple css styles.",
+		Doc:  "Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.",
 	},
 	"styles": {
 		Name: "Styles",
 		Type: "style|map",
-		Doc:  "specifies CSS styles for an element. Can be called multiple times to set multiple css styles.",
+		Doc:  "Allocates multiple CSS styles to an element. Accepts multiple styling definitions.",
 	},
 
 	// T:
 	"tabindex": {
 		Name: "TabIndex",
 		Type: "int",
-		Doc:  "specifies the tabbing order of an element.",
+		Doc:  "Determines the tabbing sequence of an element within the document navigation.",
 	},
 	"target": {
 		Name: "Target",
 		Type: "fmt",
-		Doc:  "specifies the target for where to open the linked document or where to submit the form. Uses the given format and values.",
+		Doc:  "Indicates where to display the linked URL or where to submit the form. Can be called with various predefined values.",
 	},
 	"title": {
 		Name: "Title",
 		Type: "fmt",
-		Doc:  "specifies extra information about an element with the given format and values.",
+		Doc:  "Provides additional information about an element, typically displayed as a tooltip. Can be called with the desired title format and content.",
 	},
 	"type": {
 		Name: "Type",
 		Type: "fmt",
-		Doc:  "specifies the type of element with the given format and values.",
+		Doc:  "Designates the type of the element or its content. Can be called with specific format and values.",
 	},
 
 	// U:
 	"usemap": {
 		Name: "UseMap",
 		Type: "fmt",
-		Doc:  "specifies an image as a client-side image-map. Uses the given format and values.",
+		Doc:  "Associates the element with a client-side image map. Can be called with the designated format and values.",
 	},
 
 	// V:
 	"value": {
 		Name: "Value",
 		Type: "any",
-		Doc:  "specifies the value of the element.",
+		Doc:  "Assigns a value to the element.",
 	},
 
 	// W:
 	"width": {
 		Name: "Width",
 		Type: "int",
-		Doc:  "specifies the width of the element.",
+		Doc:  "Sets the width of the element.",
 	},
 	"wrap": {
 		Name: "Wrap",
 		Type: "fmt",
-		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form. Uses the given format and values.",
+		Doc:  "Determines how the text inside a text area is wrapped when submitted in a form. Can be called with specific format and values.",
 	},
 	"xmlns": {
 		Name: "XMLNS",
 		Type: "xmlns",
-		Doc:  "specifies the xml namespace of the element.",
+		Doc:  "Defines the XML namespace for the element.",
 	},
 }
 
@@ -1705,305 +1705,305 @@ var eventHandlers = map[string]eventHandler{
 	// Window events:
 	"onafterprint": {
 		Name: "OnAfterPrint",
-		Doc:  "runs the given handler after the document is printed.",
+		Doc:  "Executes the given handler after the document has been printed.",
 	},
 	"onbeforeprint": {
 		Name: "OnBeforePrint",
-		Doc:  "calls the given handler before the document is printed.",
+		Doc:  "Invokes the specified handler before the document gets printed.",
 	},
 	"onbeforeunload": {
 		Name: "OnBeforeUnload",
-		Doc:  "calls the given handler when the document is about to be unloaded.",
+		Doc:  "Triggers the specified handler when the document is about to be unloaded.",
 	},
 	"onerror": {
 		Name: "OnError",
-		Doc:  "calls the given handler when an error occurs.",
+		Doc:  "Invokes the given handler when an error is encountered.",
 	},
 	"onhashchange": {
 		Name: "OnHashChange",
-		Doc:  "calls the given handler when there has been changes to the anchor part of the a URL.",
+		Doc:  "Triggers the specified handler when changes occur to the anchor part of the URL.",
 	},
 	"onload": {
 		Name: "OnLoad",
-		Doc:  "calls the given handler after the element is finished loading.",
+		Doc:  "Executes the specified handler once the element has completely loaded.",
 	},
 	"onmessage": {
 		Name: "OnMessage",
-		Doc:  "calls then given handler when a message is triggered.",
+		Doc:  "Triggers the provided handler when a message event occurs.",
 	},
 	"onoffline": {
 		Name: "OnOffline",
-		Doc:  "calls the given handler when the browser starts to work offline.",
+		Doc:  "Invokes the given handler when the browser transitions to offline mode.",
 	},
 	"ononline": {
 		Name: "OnOnline",
-		Doc:  "calls the given handler when the browser starts to work online.",
+		Doc:  "Executes the specified handler when the browser transitions to online mode.",
 	},
 	"onpagehide": {
 		Name: "OnPageHide",
-		Doc:  "calls the given handler when a user navigates away from a page.",
+		Doc:  "Triggers the given handler when a user navigates away from the current page.",
 	},
 	"onpageshow": {
 		Name: "OnPageShow",
-		Doc:  "calls the given handler when a user navigates to a page.",
+		Doc:  "Invokes the specified handler when a user navigates to the page.",
 	},
 	"onpopstate": {
 		Name: "OnPopState",
-		Doc:  "calls the given handler when the window's history changes.",
+		Doc:  "Executes the provided handler when changes are made to the window's history.",
 	},
 	"onresize": {
 		Name: "OnResize",
-		Doc:  "calls the given handler when the browser window is resized.",
+		Doc:  "Triggers the given handler upon resizing the browser window.",
 	},
 	"onstorage": {
 		Name: "OnStorage",
-		Doc:  "calls the given handler when a Web Storage area is updated.",
+		Doc:  "Invokes the specified handler when a Web Storage area undergoes updates.",
 	},
 	"onunload": {
 		Name: "OnUnload",
-		Doc:  "calls the given handler once a page has unloaded (or the browser window has been closed).",
+		Doc:  "Executes the provided handler once the page has been unloaded or the browser window closes.",
 	},
 
 	// Form events:
 	"onblur": {
 		Name: "OnBlur",
-		Doc:  "calls the given handler when the element loses focus.",
+		Doc:  "Executes the given handler when the element loses focus.",
 	},
 	"onchange": {
 		Name: "OnChange",
-		Doc:  "calls the given handler when the value of the element is changed.",
+		Doc:  "Triggers the specified handler when the element's value changes.",
 	},
 	"oncontextmenu": {
 		Name: "OnContextMenu",
-		Doc:  "calls the given handler when a context menu is triggered.",
+		Doc:  "Invokes the provided handler upon activation of a context menu.",
 	},
 	"onfocus": {
 		Name: "OnFocus",
-		Doc:  "calls the given handler when the element gets focus.",
+		Doc:  "Executes the given handler when the element receives focus.",
 	},
 	"oninput": {
 		Name: "OnInput",
-		Doc:  "calls the given handler when an element gets user input.",
+		Doc:  "Triggers the specified handler when the element receives user input.",
 	},
 	"oninvalid": {
 		Name: "OnInvalid",
-		Doc:  "calls the given handler when an element is invalid.",
+		Doc:  "Invokes the provided handler when the element is determined to be invalid.",
 	},
 	"onreset": {
 		Name: "OnReset",
-		Doc:  "calls the given handler when the Reset button in a form is clicked.",
+		Doc:  "Executes the given handler upon clicking the Reset button within a form.",
 	},
 	"onsearch": {
 		Name: "OnSearch",
-		Doc:  `calls the given handler when the user writes something in a search field.`,
+		Doc:  "Triggers the specified handler when input is provided in a search field.",
 	},
 	"onselect": {
 		Name: "OnSelect",
-		Doc:  "calls the given handler after some text has been selected in an element.",
+		Doc:  "Invokes the provided handler after text within the element is selected.",
 	},
 	"onsubmit": {
 		Name: "OnSubmit",
-		Doc:  "calls the given handler when a form is submitted.",
+		Doc:  "Executes the given handler when the form undergoes submission.",
 	},
 
 	// Keyboard events:
 	"onkeydown": {
 		Name: "OnKeyDown",
-		Doc:  "calls the given handler when a user is pressing a key.",
+		Doc:  "Executes the specified handler when a user starts pressing a key.",
 	},
 	"onkeypress": {
 		Name: "OnKeyPress",
-		Doc:  "calls the given handler when a user presses a key.",
+		Doc:  "Triggers the provided handler as a key is pressed by the user.",
 	},
 	"onkeyup": {
 		Name: "OnKeyUp",
-		Doc:  "calls the given handler when a user releases a key.",
+		Doc:  "Invokes the given handler when a user releases a key.",
 	},
 
 	// Mouse events:
 	"onclick": {
 		Name: "OnClick",
-		Doc:  "calls the given handler when there is a mouse click on the element.",
+		Doc:  "Triggers the specified handler upon a mouse click on the element.",
 	},
 	"ondblclick": {
 		Name: "OnDblClick",
-		Doc:  "calls the given handler when there is a mouse double-click on the element.",
+		Doc:  "Executes the provided handler when the element is double-clicked by the mouse.",
 	},
 	"onmousedown": {
 		Name: "OnMouseDown",
-		Doc:  "calls the given handler when a mouse button is pressed down on an element.",
+		Doc:  "Invokes the given handler as a mouse button is pressed on the element.",
 	},
 	"onmouseenter": {
 		Name: "OnMouseEnter",
-		Doc:  "calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.",
+		Doc:  "Triggers the specified handler when the mouse pointer first enters the element's boundaries.",
 	},
 	"onmouseleave": {
 		Name: "OnMouseLeave",
-		Doc:  "calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.",
+		Doc:  "Executes the provided handler when the mouse pointer leaves the element and its descendants.",
 	},
 	"onmousemove": {
 		Name: "OnMouseMove",
-		Doc:  "calls the given handler when the mouse pointer is moving while it is over an element.",
+		Doc:  "Invokes the given handler as the mouse pointer moves across the element.",
 	},
 	"onmouseout": {
 		Name: "OnMouseOut",
-		Doc:  "calls the given handler when the mouse pointer moves out of an element.",
+		Doc:  "Triggers the specified handler when the mouse pointer exits the element.",
 	},
 	"onmouseover": {
 		Name: "OnMouseOver",
-		Doc:  "calls the given handler when the mouse pointer moves over an element.",
+		Doc:  "Executes the provided handler as the mouse pointer hovers over the element.",
 	},
 	"onmouseup": {
 		Name: "OnMouseUp",
-		Doc:  "calls the given handler when a mouse button is released over an element.",
+		Doc:  "Invokes the given handler when a mouse button is released above the element.",
 	},
 	"onwheel": {
 		Name: "OnWheel",
-		Doc:  "calls the given handler when the mouse wheel rolls up or down over an element.",
+		Doc:  "Triggers the specified handler as the mouse wheel scrolls over the element.",
 	},
 
 	// Drag events:
 	"ondrag": {
 		Name: "OnDrag",
-		Doc:  "calls the given handler when an element is dragged.",
+		Doc:  "Executes the handler as an element is being dragged.",
 	},
 	"ondragend": {
 		Name: "OnDragEnd",
-		Doc:  "calls the given handler at the end of a drag operation.",
+		Doc:  "Invokes the handler at the conclusion of a drag operation.",
 	},
 	"ondragenter": {
 		Name: "OnDragEnter",
-		Doc:  "calls the given handler when an element has been dragged to a valid drop target.",
+		Doc:  "Triggers the handler when an element is dragged onto a valid drop target.",
 	},
 	"ondragleave": {
 		Name: "OnDragLeave",
-		Doc:  "calls the given handler when an element leaves a valid drop target.",
+		Doc:  "Invokes the handler when an element exits a valid drop target.",
 	},
 	"ondragover": {
 		Name: "OnDragOver",
-		Doc:  "calls the given handler when an element is being dragged over a valid drop target.",
+		Doc:  "Executes the handler as an element is dragged over a valid drop target.",
 	},
 	"ondragstart": {
 		Name: "OnDragStart",
-		Doc:  "calls the given handler at the start of a drag operation.",
+		Doc:  "Triggers the handler at the initiation of a drag operation.",
 	},
 	"ondrop": {
 		Name: "OnDrop",
-		Doc:  "calls the given handler when dragged element is being dropped.",
+		Doc:  "Invokes the handler when a dragged element is released onto a drop target.",
 	},
 	"onscroll": {
 		Name: "OnScroll",
-		Doc:  "calls the given handler when an element's scrollbar is being scrolled.",
+		Doc:  "Executes the handler as an element's scrollbar is scrolled.",
 	},
 
-	// Clipboard event:
+	// Clipboard events:
 	"oncopy": {
 		Name: "OnCopy",
-		Doc:  "calls the given handler when the user copies the content of an element.",
+		Doc:  "Triggers the handler when content of an element is copied by the user.",
 	},
 	"oncut": {
 		Name: "OnCut",
-		Doc:  "calls the given handler when the user cuts the content of an element.",
+		Doc:  "Executes the handler when the user cuts content from an element.",
 	},
 	"onpaste": {
 		Name: "OnPaste",
-		Doc:  "calls the given handler when the user pastes some content in an element.",
+		Doc:  "Invokes the handler as content is pasted into an element by the user.",
 	},
 
 	// Media events:
 	"onabort": {
 		Name: "OnAbort",
-		Doc:  "calls the given handler on abort.",
+		Doc:  "Triggers the handler when media loading is aborted.",
 	},
 	"oncanplay": {
 		Name: "OnCanPlay",
-		Doc:  "calls the given handler when a file is ready to start playing (when it has buffered enough to begin).",
+		Doc:  "Executes the handler when media has buffered sufficiently to begin playback.",
 	},
 	"oncanplaythrough": {
 		Name: "OnCanPlayThrough",
-		Doc:  "calls the given handler when a file can be played all the way to the end without pausing for buffering.",
+		Doc:  "Invokes the handler when media can be played through without buffering interruptions.",
 	},
 	"oncuechange": {
 		Name: "OnCueChange",
-		Doc:  "calls the given handler when the cue changes in a track element.",
+		Doc:  "Triggers the handler upon cue changes within a track element.",
 	},
 	"ondurationchange": {
 		Name: "OnDurationChange",
-		Doc:  "calls the given handler when the length of the media changes.",
+		Doc:  "Executes the handler when the media's duration changes.",
 	},
 	"onemptied": {
 		Name: "OnEmptied",
-		Doc:  "calls the given handler when something bad happens and the file is suddenly unavailable (like unexpectedly disconnects).",
+		Doc:  "Invokes the handler when media unexpectedly becomes unavailable.",
 	},
 	"onended": {
 		Name: "OnEnded",
-		Doc:  "calls the given handler when the media has reach the end.",
+		Doc:  "Triggers the handler when media playback reaches the end.",
 	},
 	"onloadeddata": {
 		Name: "OnLoadedData",
-		Doc:  "calls the given handler when media data is loaded.",
+		Doc:  "Executes the handler as media data finishes loading.",
 	},
 	"onloadedmetadata": {
 		Name: "OnLoadedMetaData",
-		Doc:  "calls the given handler when meta data (like dimensions and duration) are loaded.",
+		Doc:  "Invokes the handler when metadata (like duration and dimensions) are fully loaded.",
 	},
 	"onloadstart": {
 		Name: "OnLoadStart",
-		Doc:  "calls the given handler just as the file begins to load before anything is actually loaded.",
+		Doc:  "Triggers the handler when media loading commences.",
 	},
 	"onpause": {
 		Name: "OnPause",
-		Doc:  "calls the given handler when the media is paused either by the user or programmatically.",
+		Doc:  "Executes the handler when media playback is paused.",
 	},
 	"onplay": {
 		Name: "OnPlay",
-		Doc:  "calls the given handler when the media is ready to start playing.",
+		Doc:  "Invokes the handler when media starts its playback.",
 	},
 	"onplaying": {
 		Name: "OnPlaying",
-		Doc:  "calls the given handler when the media actually has started playing.",
+		Doc:  "Triggers the handler once the media has initiated playback.",
 	},
 	"onprogress": {
 		Name: "OnProgress",
-		Doc:  "calls the given handler when the browser is in the process of getting the media data.",
+		Doc:  "Executes the handler while the browser fetches media data.",
 	},
 	"onratechange": {
 		Name: "OnRateChange",
-		Doc:  "calls the given handler each time the playback rate changes (like when a user switches to a slow motion or fast forward mode).",
+		Doc:  "Invokes the handler when playback rate changes (e.g., slow motion or fast forward).",
 	},
 	"onseeked": {
 		Name: "OnSeeked",
-		Doc:  "calls the given handler when the seeking attribute is set to false indicating that seeking has ended.",
+		Doc:  "Triggers the handler post seeking completion.",
 	},
 	"onseeking": {
 		Name: "OnSeeking",
-		Doc:  "calls the given handler when the seeking attribute is set to true indicating that seeking is active.",
+		Doc:  "Executes the handler during the seeking process.",
 	},
 	"onstalled": {
 		Name: "OnStalled",
-		Doc:  "calls the given handler when the browser is unable to fetch the media data for whatever reason.",
+		Doc:  "Invokes the handler when media data fetching stalls.",
 	},
 	"onsuspend": {
 		Name: "OnSuspend",
-		Doc:  "calls the given handler when fetching the media data is stopped before it is completely loaded for whatever reason.",
+		Doc:  "Triggers the handler when media data fetching is suspended.",
 	},
 	"ontimeupdate": {
 		Name: "OnTimeUpdate",
-		Doc:  "calls the given handler when the playing position has changed (like when the user fast forwards to a different point in the media).",
+		Doc:  "Executes the handler when the media's playback position changes.",
 	},
 	"onvolumechange": {
 		Name: "OnVolumeChange",
-		Doc:  `calls the given handler each time the volume is changed which (includes setting the volume to "mute").`,
+		Doc:  "Invokes the handler upon volume changes or muting.",
 	},
 	"onwaiting": {
 		Name: "OnWaiting",
-		Doc:  "calls the given handler when the media has paused but is expected to resume (like when the media pauses to buffer more data).",
+		Doc:  "Triggers the handler when media pauses, awaiting further buffering.",
 	},
 
-	// Miscs events:
+	// Misc events:
 	"ontoggle": {
 		Name: "OnToggle",
-		Doc:  "calls the given handler when the user opens or closes the details element.",
+		Doc:  "Executes the handler when the details element is toggled by the user.",
 	},
 }
 
@@ -2134,7 +2134,7 @@ import (
 		switch t.Name {
 		case "Elem", "ElemSelfClosing":
 			fmt.Fprintf(f, `
-			// %s returns an HTML element that %s
+			// Returns an HTML element %s
 			func %s(tag string) HTML%s {
 				e := &html%s{
 					htmlElement: htmlElement{
@@ -2146,7 +2146,6 @@ import (
 				return e
 			}
 			`,
-				t.Name,
 				t.Doc,
 				t.Name,
 				t.Name,
@@ -2156,7 +2155,7 @@ import (
 
 		default:
 			fmt.Fprintf(f, `
-			// %s returns an HTML element that %s
+			// Returns an HTML element %s
 			func %s() HTML%s {
 				e := &html%s{
 					htmlElement: htmlElement{
@@ -2168,7 +2167,6 @@ import (
 				return e
 			}
 			`,
-				t.Name,
 				t.Doc,
 				t.Name,
 				t.Name,
@@ -2189,11 +2187,10 @@ import (
 
 func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintf(w, `
-		// HTML%s is the interface that describes a "%s" HTML element.
+		// The interface that represents a "%s" HTML element.
 		type HTML%s interface {
 			UI
 		`,
-		t.Name,
 		strings.ToLower(t.Name),
 		t.Name,
 	)
@@ -2201,17 +2198,17 @@ func writeInterface(w io.Writer, t tag) {
 	switch t.Type {
 	case parent:
 		fmt.Fprintf(w, `
-			// Body set the content of the element.
+			// Sets the content of the element.
 			Body(elems ...UI) HTML%s 
 		`, t.Name)
 
 		fmt.Fprintf(w, `
-			// Text sets the content of the element with a text node containing the stringified given value.
+			// Sets the content of the element with a text node containing the stringified given value.
 			Text(v any) HTML%s
 		`, t.Name)
 
 		fmt.Fprintf(w, `
-			// Textf sets the content of the element with the given format and values.
+			// Sets the content of the element with a text node formatted according to a format specifier.
 			Textf(format string, v ...any) HTML%s
 		`, t.Name)
 
@@ -2225,14 +2222,14 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
 
-		fmt.Fprintf(w, "// %s %s\n", a.Name, a.Doc)
+		fmt.Fprintf(w, "// %s\n", a.Doc)
 		writeAttrFunction(w, a, t, true)
 	}
 
 	fmt.Fprintln(w)
 
 	fmt.Fprintf(w, `
-		// On registers the given event handler to the specified event.
+		// Invokes the specified handler when the corresponding event is triggered.
 		On(event string, h EventHandler, scope ...any) HTML%s 
 	`, t.Name)
 
@@ -2240,7 +2237,7 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
 
-		fmt.Fprintf(w, "// %s %s\n", e.Name, e.Doc)
+		fmt.Fprintf(w, "// %s\n", e.Doc)
 		writeEventFunction(w, e, t, true)
 	}
 
@@ -2395,10 +2392,10 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "style":
-		fmt.Fprintf(w, `%s(k, v string) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(k, format string, v ...any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("style", k+":"+v)
+				e.setAttr("style", k+":"+FormatString(format, v...))
 				return e
 			}`)
 		}
@@ -2536,7 +2533,7 @@ import (
 				fmt.Fprintln(f, `map[string]any{"foo": "bar"})`)
 
 			case "style":
-				fmt.Fprintln(f, `"color", "deepskyblue")`)
+				fmt.Fprintln(f, `"margin", "%vpx", 42)`)
 
 			case "style|map":
 				fmt.Fprintln(f, `map[string]string{"color": "pink"})`)
