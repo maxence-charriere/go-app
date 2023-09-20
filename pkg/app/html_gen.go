@@ -19117,7 +19117,7 @@ type HTMLForm interface {
 	Textf(format string, v ...any) HTMLForm
 
 	// AcceptCharset specifies the character encodings that are to be used for the form submission.
-	AcceptCharset(v string) HTMLForm
+	AcceptCharset(format string, v ...any) HTMLForm
 
 	// AccessKey specifies a shortcut key with the given format and values to activate/focus an element.
 	AccessKey(format string, v ...any) HTMLForm
@@ -19329,8 +19329,8 @@ func (e *htmlForm) Textf(format string, v ...any) HTMLForm {
 	return e.Body(Textf(format, v...))
 }
 
-func (e *htmlForm) AcceptCharset(v string) HTMLForm {
-	e.setAttr("accept-charset", v)
+func (e *htmlForm) AcceptCharset(format string, v ...any) HTMLForm {
+	e.setAttr("accept-charset", FormatString(format, v...))
 	return e
 }
 
@@ -24923,7 +24923,7 @@ type HTMLImg interface {
 	Draggable(v bool) HTMLImg
 
 	// FetchPriority specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.
-	FetchPriority(v string) HTMLImg
+	FetchPriority(format string, v ...any) HTMLImg
 
 	// Height specifies the height of the element (in pixels).
 	Height(v int) HTMLImg
@@ -25224,8 +25224,8 @@ func (e *htmlImg) Draggable(v bool) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) FetchPriority(v string) HTMLImg {
-	e.setAttr("fetchpriority", v)
+func (e *htmlImg) FetchPriority(format string, v ...any) HTMLImg {
+	e.setAttr("fetchpriority", FormatString(format, v...))
 	return e
 }
 
@@ -28768,7 +28768,7 @@ type HTMLLink interface {
 	Draggable(v bool) HTMLLink
 
 	// FetchPriority specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.
-	FetchPriority(v string) HTMLLink
+	FetchPriority(format string, v ...any) HTMLLink
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLLink
@@ -28997,8 +28997,8 @@ func (e *htmlLink) Draggable(v bool) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) FetchPriority(v string) HTMLLink {
-	e.setAttr("fetchpriority", v)
+func (e *htmlLink) FetchPriority(format string, v ...any) HTMLLink {
+	e.setAttr("fetchpriority", FormatString(format, v...))
 	return e
 }
 
@@ -30738,7 +30738,7 @@ type HTMLMeta interface {
 	Draggable(v bool) HTMLMeta
 
 	// HTTPEquiv provides an HTTP header for the information/value of the content attribute.
-	HTTPEquiv(v string) HTMLMeta
+	HTTPEquiv(format string, v ...any) HTMLMeta
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
 	Hidden(v bool) HTMLMeta
@@ -30850,8 +30850,8 @@ func (e *htmlMeta) Draggable(v bool) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) HTTPEquiv(v string) HTMLMeta {
-	e.setAttr("http-equiv", v)
+func (e *htmlMeta) HTTPEquiv(format string, v ...any) HTMLMeta {
+	e.setAttr("http-equiv", FormatString(format, v...))
 	return e
 }
 

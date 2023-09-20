@@ -1078,7 +1078,7 @@ var attrs = map[string]attr{
 	"accept-charset": {
 		Name:         "AcceptCharset",
 		NameOverride: "accept-charset",
-		Type:         "string",
+		Type:         "fmt",
 		Doc:          "specifies the character encodings that are to be used for the form submission.",
 	},
 	"accesskey": {
@@ -1251,7 +1251,7 @@ var attrs = map[string]attr{
 	// F:
 	"fetchpriority": {
 		Name: "FetchPriority",
-		Type: "string",
+		Type: "fmt",
 		Doc:  "specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.",
 	},
 	"for": {
@@ -1324,7 +1324,7 @@ var attrs = map[string]attr{
 	"http-equiv": {
 		Name:         "HTTPEquiv",
 		NameOverride: "http-equiv",
-		Type:         "string",
+		Type:         "fmt",
 		Doc:          "provides an HTTP header for the information/value of the content attribute.",
 	},
 
