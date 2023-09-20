@@ -2189,11 +2189,10 @@ import (
 
 func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintf(w, `
-		// HTML%s is the interface that describes a "%s" HTML element.
+		// The interface that represents a "%s" HTML element.
 		type HTML%s interface {
 			UI
 		`,
-		t.Name,
 		strings.ToLower(t.Name),
 		t.Name,
 	)
@@ -2201,17 +2200,17 @@ func writeInterface(w io.Writer, t tag) {
 	switch t.Type {
 	case parent:
 		fmt.Fprintf(w, `
-			// Body set the content of the element.
+			// Sets the content of the element.
 			Body(elems ...UI) HTML%s 
 		`, t.Name)
 
 		fmt.Fprintf(w, `
-			// Text sets the content of the element with a text node containing the stringified given value.
+			// Sets the content of the element with a text node containing the stringified given value.
 			Text(v any) HTML%s
 		`, t.Name)
 
 		fmt.Fprintf(w, `
-			// Textf sets the content of the element with the given format and values.
+			// Sets the content of the element with a text node formatted according to a format specifier.
 			Textf(format string, v ...any) HTML%s
 		`, t.Name)
 
@@ -2232,7 +2231,7 @@ func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintln(w)
 
 	fmt.Fprintf(w, `
-		// On registers the given event handler to the specified event.
+		// Invokes the specified handler when the corresponding event is triggered.
 		On(event string, h EventHandler, scope ...any) HTML%s 
 	`, t.Name)
 
@@ -2240,7 +2239,7 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
 
-		fmt.Fprintf(w, "// %s %s\n", e.Name, e.Doc)
+		fmt.Fprintf(w, "// %s\n", e.Doc)
 		writeEventFunction(w, e, t, true)
 	}
 
