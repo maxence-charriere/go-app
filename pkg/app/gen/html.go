@@ -1252,80 +1252,80 @@ var attrs = map[string]attr{
 	"fetchpriority": {
 		Name: "FetchPriority",
 		Type: "fmt",
-		Doc:  "specifies a hint given to the browser on how it should prioritize the fetch of the image relative to other images.",
+		Doc:  "Provides a hint to the browser about how it should prioritize the fetch of the image in relation to other images.",
 	},
 	"for": {
 		Name: "For",
 		Type: "fmt",
-		Doc:  "specifies which form element(s) a label/calculation is bound to. Uses the given format and values.",
+		Doc:  "Associates a label or calculation with specific form element(s).",
 	},
 	"form": {
 		Name: "Form",
 		Type: "fmt",
-		Doc:  "specifies the name of the form the element belongs to. Uses the given format and values.",
+		Doc:  "Identifies the form to which the element belongs.",
 	},
 	"formaction": {
 		Name: "FormAction",
 		Type: "fmt",
-		Doc:  "specifies where to send the form-data when a form is submitted. Only for submit type. Uses the given format and values.",
+		Doc:  "Defines the URL to which form data should be sent upon submission. Applicable only to 'submit' type inputs.",
 	},
 	"formenctype": {
 		Name: "FormEncType",
 		Type: "fmt",
-		Doc:  "specifies how form-data should be encoded before sending it to a server. Only for submit type. Uses the given format and values.",
+		Doc:  "Dictates the encoding method for form data prior to its submission to a server. Applicable only to 'submit' type inputs.",
 	},
 	"formmethod": {
 		Name: "FormMethod",
 		Type: "fmt",
-		Doc:  "specifies how to send the form-data (which HTTP method to use). Only for submit type. Uses the given format and values.",
+		Doc:  "Determines the HTTP method for sending form data. Applicable only to 'submit' type inputs.",
 	},
 	"formnovalidate": {
 		Name: "FormNoValidate",
 		Type: "bool",
-		Doc:  "specifies that the form-data should not be validated on submission. Only for submit type.",
+		Doc:  "Indicates that the form data should bypass validation upon submission. Applicable only to 'submit' type inputs.",
 	},
 	"formtarget": {
 		Name: "FormTarget",
 		Type: "fmt",
-		Doc:  "specifies where to display the response after submitting the form. Only for submit type. Uses the given format and values.",
+		Doc:  "Specifies where the server's response will be displayed after form submission. Applicable only to 'submit' type inputs.",
 	},
 
 	// H:
 	"headers": {
 		Name: "Headers",
 		Type: "fmt",
-		Doc:  "specifies one or more headers cells a cell is related to. Uses the given format and values.",
+		Doc:  "Designates one or more header cells to which a table cell is related.",
 	},
 	"height": {
 		Name: "Height",
 		Type: "int",
-		Doc:  "specifies the height of the element (in pixels).",
+		Doc:  "Sets the height of the element, measured in pixels.",
 	},
 	"hidden": {
 		Name: "Hidden",
 		Type: "bool",
-		Doc:  "specifies that an element is not yet, or is no longer relevant.",
+		Doc:  "Marks an element as currently irrelevant or not yet relevant.",
 	},
 	"high": {
 		Name: "High",
 		Type: "float64",
-		Doc:  "specifies the range that is considered to be a high value.",
+		Doc:  "Defines the value threshold considered as 'high' in a range context.",
 	},
 	"href": {
 		Name: "Href",
 		Type: "fmt",
-		Doc:  "specifies the URL of the page the link goes to with the given format and values.",
+		Doc:  "Points to the URL of the destination when the link is clicked.",
 	},
 	"hreflang": {
 		Name: "HrefLang",
 		Type: "fmt",
-		Doc:  "specifies the language of the linked document with the given format and values.",
+		Doc:  "Declares the language of the linked document's content.",
 	},
 	"http-equiv": {
 		Name:         "HTTPEquiv",
 		NameOverride: "http-equiv",
 		Type:         "fmt",
-		Doc:          "provides an HTTP header for the information/value of the content attribute.",
+		Doc:          "Supplies an HTTP header for the content attribute, often used for refresh rates or setting a default charset.",
 	},
 
 	// I:
