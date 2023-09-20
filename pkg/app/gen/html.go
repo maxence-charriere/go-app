@@ -1865,145 +1865,145 @@ var eventHandlers = map[string]eventHandler{
 	// Drag events:
 	"ondrag": {
 		Name: "OnDrag",
-		Doc:  "calls the given handler when an element is dragged.",
+		Doc:  "Executes the handler as an element is being dragged.",
 	},
 	"ondragend": {
 		Name: "OnDragEnd",
-		Doc:  "calls the given handler at the end of a drag operation.",
+		Doc:  "Invokes the handler at the conclusion of a drag operation.",
 	},
 	"ondragenter": {
 		Name: "OnDragEnter",
-		Doc:  "calls the given handler when an element has been dragged to a valid drop target.",
+		Doc:  "Triggers the handler when an element is dragged onto a valid drop target.",
 	},
 	"ondragleave": {
 		Name: "OnDragLeave",
-		Doc:  "calls the given handler when an element leaves a valid drop target.",
+		Doc:  "Invokes the handler when an element exits a valid drop target.",
 	},
 	"ondragover": {
 		Name: "OnDragOver",
-		Doc:  "calls the given handler when an element is being dragged over a valid drop target.",
+		Doc:  "Executes the handler as an element is dragged over a valid drop target.",
 	},
 	"ondragstart": {
 		Name: "OnDragStart",
-		Doc:  "calls the given handler at the start of a drag operation.",
+		Doc:  "Triggers the handler at the initiation of a drag operation.",
 	},
 	"ondrop": {
 		Name: "OnDrop",
-		Doc:  "calls the given handler when dragged element is being dropped.",
+		Doc:  "Invokes the handler when a dragged element is released onto a drop target.",
 	},
 	"onscroll": {
 		Name: "OnScroll",
-		Doc:  "calls the given handler when an element's scrollbar is being scrolled.",
+		Doc:  "Executes the handler as an element's scrollbar is scrolled.",
 	},
 
-	// Clipboard event:
+	// Clipboard events:
 	"oncopy": {
 		Name: "OnCopy",
-		Doc:  "calls the given handler when the user copies the content of an element.",
+		Doc:  "Triggers the handler when content of an element is copied by the user.",
 	},
 	"oncut": {
 		Name: "OnCut",
-		Doc:  "calls the given handler when the user cuts the content of an element.",
+		Doc:  "Executes the handler when the user cuts content from an element.",
 	},
 	"onpaste": {
 		Name: "OnPaste",
-		Doc:  "calls the given handler when the user pastes some content in an element.",
+		Doc:  "Invokes the handler as content is pasted into an element by the user.",
 	},
 
 	// Media events:
 	"onabort": {
 		Name: "OnAbort",
-		Doc:  "calls the given handler on abort.",
+		Doc:  "Triggers the handler when media loading is aborted.",
 	},
 	"oncanplay": {
 		Name: "OnCanPlay",
-		Doc:  "calls the given handler when a file is ready to start playing (when it has buffered enough to begin).",
+		Doc:  "Executes the handler when media has buffered sufficiently to begin playback.",
 	},
 	"oncanplaythrough": {
 		Name: "OnCanPlayThrough",
-		Doc:  "calls the given handler when a file can be played all the way to the end without pausing for buffering.",
+		Doc:  "Invokes the handler when media can be played through without buffering interruptions.",
 	},
 	"oncuechange": {
 		Name: "OnCueChange",
-		Doc:  "calls the given handler when the cue changes in a track element.",
+		Doc:  "Triggers the handler upon cue changes within a track element.",
 	},
 	"ondurationchange": {
 		Name: "OnDurationChange",
-		Doc:  "calls the given handler when the length of the media changes.",
+		Doc:  "Executes the handler when the media's duration changes.",
 	},
 	"onemptied": {
 		Name: "OnEmptied",
-		Doc:  "calls the given handler when something bad happens and the file is suddenly unavailable (like unexpectedly disconnects).",
+		Doc:  "Invokes the handler when media unexpectedly becomes unavailable.",
 	},
 	"onended": {
 		Name: "OnEnded",
-		Doc:  "calls the given handler when the media has reach the end.",
+		Doc:  "Triggers the handler when media playback reaches the end.",
 	},
 	"onloadeddata": {
 		Name: "OnLoadedData",
-		Doc:  "calls the given handler when media data is loaded.",
+		Doc:  "Executes the handler as media data finishes loading.",
 	},
 	"onloadedmetadata": {
 		Name: "OnLoadedMetaData",
-		Doc:  "calls the given handler when meta data (like dimensions and duration) are loaded.",
+		Doc:  "Invokes the handler when metadata (like duration and dimensions) are fully loaded.",
 	},
 	"onloadstart": {
 		Name: "OnLoadStart",
-		Doc:  "calls the given handler just as the file begins to load before anything is actually loaded.",
+		Doc:  "Triggers the handler when media loading commences.",
 	},
 	"onpause": {
 		Name: "OnPause",
-		Doc:  "calls the given handler when the media is paused either by the user or programmatically.",
+		Doc:  "Executes the handler when media playback is paused.",
 	},
 	"onplay": {
 		Name: "OnPlay",
-		Doc:  "calls the given handler when the media is ready to start playing.",
+		Doc:  "Invokes the handler when media starts its playback.",
 	},
 	"onplaying": {
 		Name: "OnPlaying",
-		Doc:  "calls the given handler when the media actually has started playing.",
+		Doc:  "Triggers the handler once the media has initiated playback.",
 	},
 	"onprogress": {
 		Name: "OnProgress",
-		Doc:  "calls the given handler when the browser is in the process of getting the media data.",
+		Doc:  "Executes the handler while the browser fetches media data.",
 	},
 	"onratechange": {
 		Name: "OnRateChange",
-		Doc:  "calls the given handler each time the playback rate changes (like when a user switches to a slow motion or fast forward mode).",
+		Doc:  "Invokes the handler when playback rate changes (e.g., slow motion or fast forward).",
 	},
 	"onseeked": {
 		Name: "OnSeeked",
-		Doc:  "calls the given handler when the seeking attribute is set to false indicating that seeking has ended.",
+		Doc:  "Triggers the handler post seeking completion.",
 	},
 	"onseeking": {
 		Name: "OnSeeking",
-		Doc:  "calls the given handler when the seeking attribute is set to true indicating that seeking is active.",
+		Doc:  "Executes the handler during the seeking process.",
 	},
 	"onstalled": {
 		Name: "OnStalled",
-		Doc:  "calls the given handler when the browser is unable to fetch the media data for whatever reason.",
+		Doc:  "Invokes the handler when media data fetching stalls.",
 	},
 	"onsuspend": {
 		Name: "OnSuspend",
-		Doc:  "calls the given handler when fetching the media data is stopped before it is completely loaded for whatever reason.",
+		Doc:  "Triggers the handler when media data fetching is suspended.",
 	},
 	"ontimeupdate": {
 		Name: "OnTimeUpdate",
-		Doc:  "calls the given handler when the playing position has changed (like when the user fast forwards to a different point in the media).",
+		Doc:  "Executes the handler when the media's playback position changes.",
 	},
 	"onvolumechange": {
 		Name: "OnVolumeChange",
-		Doc:  `calls the given handler each time the volume is changed which (includes setting the volume to "mute").`,
+		Doc:  "Invokes the handler upon volume changes or muting.",
 	},
 	"onwaiting": {
 		Name: "OnWaiting",
-		Doc:  "calls the given handler when the media has paused but is expected to resume (like when the media pauses to buffer more data).",
+		Doc:  "Triggers the handler when media pauses, awaiting further buffering.",
 	},
 
-	// Miscs events:
+	// Misc events:
 	"ontoggle": {
 		Name: "OnToggle",
-		Doc:  "calls the given handler when the user opens or closes the details element.",
+		Doc:  "Executes the handler when the details element is toggled by the user.",
 	},
 }
 
