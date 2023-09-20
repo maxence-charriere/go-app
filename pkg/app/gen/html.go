@@ -1126,62 +1126,62 @@ var attrs = map[string]attr{
 	"capture": {
 		Name: "Capture",
 		Type: "fmt",
-		Doc:  "specifies the capture input method in file upload controls with the given format and values.",
+		Doc:  "Directs how media capture for file uploads should be handled, such as using the device's camera or microphone.",
 	},
 	"charset": {
 		Name: "Charset",
 		Type: "fmt",
-		Doc:  "specifies the character encoding with the given format and values.",
+		Doc:  "Specifies the character encoding for the linked document or external resource.",
 	},
 	"checked": {
 		Name: "Checked",
 		Type: "bool",
-		Doc:  "specifies that an input element should be pre-selected when the page loads (for checkbox or radio types).",
+		Doc:  "Indicates that an input element (checkbox or radio) should start in a selected state upon page load.",
 	},
 	"cite": {
 		Name: "Cite",
 		Type: "fmt",
-		Doc:  "specifies a URL which explains the quote/deleted/inserted text with the given format and values.",
+		Doc:  "Provides a reference or link to a source explaining quoted or modified content in the element.",
 	},
 	"class": {
 		Name: "Class",
 		Type: "string|class",
-		Doc:  "specifies one or more classnames for an element (refers to a class in a style sheet).",
+		Doc:  "Assigns one or more classnames to an element, linking it to styles defined in a stylesheet.",
 	},
 	"cols": {
 		Name: "Cols",
 		Type: "int",
-		Doc:  "specifies the visible width of a text area.",
+		Doc:  "Defines the visible width, in character widths, of a text area element.",
 	},
 	"colspan": {
 		Name: "ColSpan",
 		Type: "int",
-		Doc:  "specifies the number of columns a table cell should span.",
+		Doc:  "Denotes how many columns a table cell should span across, allowing cells to occupy space of multiple columns.",
 	},
 	"content": {
 		Name: "Content",
 		Type: "fmt",
-		Doc:  "specifies the value associated with the http-equiv or name attribute using the given format and values.",
+		Doc:  "Specifies metadata content for the `http-equiv` or `name` attributes, often used in meta tags.",
 	},
 	"contenteditable": {
 		Name: "ContentEditable",
 		Type: "bool",
-		Doc:  "specifies whether the content of an element is editable or not.",
+		Doc:  "Determines if the content of an element is editable by the user, allowing for in-page content modification.",
 	},
 	"controls": {
 		Name: "Controls",
 		Type: "bool",
-		Doc:  "specifies that audio/video controls should be displayed (such as a play/pause button etc).",
+		Doc:  "Indicates the presence of user interface controls for audio or video elements, such as play or pause buttons.",
 	},
 	"coords": {
 		Name: "Coords",
 		Type: "fmt",
-		Doc:  "specifies the coordinates of the area with the given format and values.",
+		Doc:  "Defines the coordinates for elements in an image map, establishing active regions for hyperlinks.",
 	},
 	"crossorigin": {
 		Name: "CrossOrigin",
 		Type: "fmt",
-		Doc:  "sets the mode of the request to an HTTP CORS Request with the given format and values.",
+		Doc:  "Controls how cross-origin requests are managed for the element, supporting secure content integration from different origins.",
 	},
 
 	// D:
