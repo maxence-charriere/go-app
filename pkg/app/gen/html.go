@@ -1432,86 +1432,86 @@ var attrs = map[string]attr{
 	"open": {
 		Name: "Open",
 		Type: "bool",
-		Doc:  "Indicates that the details element should be expanded and visible to the user.",
+		Doc:  "Indicates that the details element is expanded and visible to the user.",
 	},
 	"optimum": {
 		Name: "Optimum",
 		Type: "float64",
-		Doc:  "Defines the optimal value for a gauge element.",
+		Doc:  "Sets the optimal numeric value for a gauge element.",
 	},
 
 	// P:
 	"pattern": {
 		Name: "Pattern",
 		Type: "fmt",
-		Doc:  "specifies a regular expression that an input element's value is checked against. Uses the given format and values.",
+		Doc:  "Establishes a regular expression against which an input element's value is validated.",
 	},
 	"ping": {
 		Name: "Ping",
 		Type: "fmt",
-		Doc:  "specifies a list of URLs to be notified if the user follows the hyperlink. Uses the given format and values.",
+		Doc:  "Lists URLs to be notified when the user activates the hyperlink.",
 	},
 	"placeholder": {
 		Name: "Placeholder",
 		Type: "fmt",
-		Doc:  "specifies a short hint that describes the expected value of the element. Uses the given format and values.",
+		Doc:  "Provides a brief hint describing the expected value of the element.",
 	},
 	"poster": {
 		Name: "Poster",
 		Type: "fmt",
-		Doc:  "specifies an image to be shown while the video is downloading, or until the user hits the play button. Uses the given format and values.",
+		Doc:  "Sets an image displayed before a video starts playing or while it's loading.",
 	},
 	"preload": {
 		Name: "Preload",
 		Type: "fmt",
-		Doc:  "specifies if and how the author thinks the audio/video should be loaded when the page loads. Uses the given format and values.",
+		Doc:  "Indicates the preferred loading method for audio/video upon page load.",
 	},
 	"property": {
 		Name: "Property",
 		Type: "fmt",
-		Doc:  "specifies the property name with the given format and values.",
+		Doc:  "Defines the property name of the element.",
 	},
 
 	// R:
 	"readonly": {
 		Name: "ReadOnly",
 		Type: "bool",
-		Doc:  "specifies that the element is read-only.",
+		Doc:  "Indicates that the element's value cannot be edited by the user.",
 	},
 	"referrerpolicy": {
 		Name: "ReferrerPolicy",
 		Type: "fmt",
-		Doc:  "specifies how much/which referrer information that will be sent when processing the iframe attributes. Uses the given format and values.",
+		Doc:  "Determines the amount of referrer information sent when processing iframe attributes.",
 	},
 	"rel": {
 		Name: "Rel",
 		Type: "fmt",
-		Doc:  "specifies the relationship between the current document and the linked document. uses the given format and values.",
+		Doc:  "Describes the relationship between the current and linked documents.",
 	},
 	"required": {
 		Name: "Required",
 		Type: "bool",
-		Doc:  "specifies that the element must be filled out before submitting the form.",
+		Doc:  "Indicates that the element must contain a value before form submission.",
 	},
 	"reversed": {
 		Name: "Reversed",
 		Type: "bool",
-		Doc:  "specifies that the list order should be descending (9,8,7...).",
+		Doc:  "States that the list items should be displayed in descending order.",
 	},
 	"role": {
 		Name: "Role",
 		Type: "fmt",
-		Doc:  "specifies to parsing software the exact function of an element (and its children). Uses the given format and values.",
+		Doc:  "Communicates the intended function or meaning of an element to assistive technologies.",
 	},
 	"rows": {
 		Name: "Rows",
 		Type: "int",
-		Doc:  "specifies the visible number of lines in a text area.",
+		Doc:  "Sets the number of visible lines in a textarea element.",
 	},
 	"rowspan": {
 		Name: "Rowspan",
 		Type: "int",
-		Doc:  "specifies the number of rows a table cell should span.",
+		Doc:  "Determines how many rows a table cell will span vertically.",
 	},
 
 	// S:
