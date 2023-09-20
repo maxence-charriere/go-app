@@ -390,75 +390,75 @@ var tags = []tag{
 	// H:
 	{
 		Name:          "H1",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 1 HTML heading, indicating the most important topic or section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H2",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 2 HTML heading, indicating a main subsection under H1.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H3",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 3 HTML heading, indicating a subsection under H2.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H4",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 4 HTML heading, indicating topics that fall under the H3 section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H5",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 5 HTML heading, typically used for finer details under an H4 section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "H6",
-		Doc:           "defines HTML heading.",
+		Doc:           "that defines a level 6 HTML heading, used for the smallest granularity of topics or details.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:  "Head",
-		Doc:   "defines information about the document.",
+		Doc:   "that defines information about the document.",
 		Attrs: withGlobalAttrs(attrsByNames()...),
 	},
 	{
 		Name:          "Header",
-		Doc:           "defines a header for a document or section.",
+		Doc:           "that defines a header for a document or section.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Hr",
 		Type:          selfClosing,
-		Doc:           "defines a thematic change in the content.",
+		Doc:           "that defines a thematic change in the content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:  "Html",
 		Type:  privateParent,
-		Doc:   "defines the root of an HTML document.",
+		Doc:   "that defines the root of an HTML document.",
 		Attrs: withGlobalAttrs(),
 	},
 
 	// I:
 	{
 		Name:          "I",
-		Doc:           "defines a part of text in an alternate voice or mood.",
+		Doc:           "that defines a part of text in an alternate voice or mood.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "IFrame",
-		Doc:  "defines an inline frame.",
+		Doc:  "that defines an inline frame.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"allow",
 			"allowfullscreen",
@@ -480,7 +480,7 @@ var tags = []tag{
 	{
 		Name: "Img",
 		Type: selfClosing,
-		Doc:  "defines an image.",
+		Doc:  "that defines an image.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"crossorigin",
@@ -502,7 +502,7 @@ var tags = []tag{
 	{
 		Name: "Input",
 		Type: selfClosing,
-		Doc:  "defines an input control.",
+		Doc:  "that defines an input control.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"accept",
 			"alt",
@@ -543,7 +543,7 @@ var tags = []tag{
 	},
 	{
 		Name:          "Ins",
-		Doc:           "defines a text that has been inserted into a document.",
+		Doc:           "that defines text that has been inserted into a document.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
