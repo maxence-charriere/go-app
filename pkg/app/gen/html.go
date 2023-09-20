@@ -1809,57 +1809,57 @@ var eventHandlers = map[string]eventHandler{
 	// Keyboard events:
 	"onkeydown": {
 		Name: "OnKeyDown",
-		Doc:  "calls the given handler when a user is pressing a key.",
+		Doc:  "Executes the specified handler when a user starts pressing a key.",
 	},
 	"onkeypress": {
 		Name: "OnKeyPress",
-		Doc:  "calls the given handler when a user presses a key.",
+		Doc:  "Triggers the provided handler as a key is pressed by the user.",
 	},
 	"onkeyup": {
 		Name: "OnKeyUp",
-		Doc:  "calls the given handler when a user releases a key.",
+		Doc:  "Invokes the given handler when a user releases a key.",
 	},
 
 	// Mouse events:
 	"onclick": {
 		Name: "OnClick",
-		Doc:  "calls the given handler when there is a mouse click on the element.",
+		Doc:  "Triggers the specified handler upon a mouse click on the element.",
 	},
 	"ondblclick": {
 		Name: "OnDblClick",
-		Doc:  "calls the given handler when there is a mouse double-click on the element.",
+		Doc:  "Executes the provided handler when the element is double-clicked by the mouse.",
 	},
 	"onmousedown": {
 		Name: "OnMouseDown",
-		Doc:  "calls the given handler when a mouse button is pressed down on an element.",
+		Doc:  "Invokes the given handler as a mouse button is pressed on the element.",
 	},
 	"onmouseenter": {
 		Name: "OnMouseEnter",
-		Doc:  "calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.",
+		Doc:  "Triggers the specified handler when the mouse pointer first enters the element's boundaries.",
 	},
 	"onmouseleave": {
 		Name: "OnMouseLeave",
-		Doc:  "calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.",
+		Doc:  "Executes the provided handler when the mouse pointer leaves the element and its descendants.",
 	},
 	"onmousemove": {
 		Name: "OnMouseMove",
-		Doc:  "calls the given handler when the mouse pointer is moving while it is over an element.",
+		Doc:  "Invokes the given handler as the mouse pointer moves across the element.",
 	},
 	"onmouseout": {
 		Name: "OnMouseOut",
-		Doc:  "calls the given handler when the mouse pointer moves out of an element.",
+		Doc:  "Triggers the specified handler when the mouse pointer exits the element.",
 	},
 	"onmouseover": {
 		Name: "OnMouseOver",
-		Doc:  "calls the given handler when the mouse pointer moves over an element.",
+		Doc:  "Executes the provided handler as the mouse pointer hovers over the element.",
 	},
 	"onmouseup": {
 		Name: "OnMouseUp",
-		Doc:  "calls the given handler when a mouse button is released over an element.",
+		Doc:  "Invokes the given handler when a mouse button is released above the element.",
 	},
 	"onwheel": {
 		Name: "OnWheel",
-		Doc:  "calls the given handler when the mouse wheel rolls up or down over an element.",
+		Doc:  "Triggers the specified handler as the mouse wheel scrolls over the element.",
 	},
 
 	// Drag events:
