@@ -28,10 +28,10 @@ const (
 )
 
 var tags = []tag{
+	// A:
 	{
-		// A:
 		Name: "A",
-		Doc:  "defines a hyperlink.",
+		Doc:  "that creates a hyperlink, allowing navigation to other web pages or resources.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"download",
 			"href",
@@ -46,20 +46,20 @@ var tags = []tag{
 	},
 	{
 		Name:          "Abbr",
-		Doc:           "defines an abbreviation or an acronym.",
+		Doc:           "that represents an abbreviation or an acronym, providing a longer description or meaning of the content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Address",
-		Doc:           "defines contact information for the author/owner of a document or page.",
+		Doc:           "that designates contact information for the author or owner of a document or web page.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Area",
 		Type: selfClosing,
-		Doc:  "defines an area within an image-map.",
+		Doc:  "that defines a clickable region within an image map, usually linking to another resource.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"coords",
@@ -76,19 +76,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Article",
-		Doc:           "defines an article content in a document.",
+		Doc:           "that marks a self-contained composition in a document, like a blog post or news story.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Aside",
-		Doc:           "defines content placed aside from the main content of the page.",
+		Doc:           "that represents content tangentially related to the main content, and can be considered separate.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Audio",
-		Doc:  "defines audio or sound content.",
+		Doc:  "that embeds an audio player for playing sound or music content.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
