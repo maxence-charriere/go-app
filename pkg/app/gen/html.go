@@ -789,19 +789,19 @@ var tags = []tag{
 	// S:
 	{
 		Name:          "S",
-		Doc:           "Defines text that is no longer correct.",
+		Doc:           "that represents text which is no longer correct or relevant.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Samp",
-		Doc:           "defines sample output from a computer program.",
+		Doc:           "that displays sample output from a computer program.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Script",
-		Doc:  "defines a client-side script.",
+		Doc:  "that embeds or references a client-side script.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"async",
 			"charset",
@@ -814,13 +814,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "Section",
-		Doc:           "defines a section in a document.",
+		Doc:           "that represents a standalone section in a document.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Select",
-		Doc:  "defines a drop-down list.",
+		Doc:  "that creates a drop-down list or list box for form input.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autofocus",
 			"disabled",
@@ -834,14 +834,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Small",
-		Doc:           "defines smaller text.",
+		Doc:           "that displays text in a smaller font, typically for side comments or legal disclaimers.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Source",
 		Type: selfClosing,
-		Doc:  ".",
+		Doc:  "that specifies multiple media resources for elements like <picture>, <audio>, and <video>.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"src",
 			"srcset",
@@ -853,19 +853,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Span",
-		Doc:           "defines a section in a document.",
-		Attrs:         withGlobalAttrs(attrsByNames()...),
+		Doc:           "that provides a way to style a specific part of the text or to group inline-elements.",
+		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Strong",
-		Doc:           "defines important text.",
+		Doc:           "that emphasizes text as important, typically displayed as bold.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Style",
-		Doc:  "defines style information for a document.",
+		Doc:  "that contains style information or references for a document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"media",
 			"type",
@@ -876,19 +876,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Sub",
-		Doc:           "defines subscripted text.",
+		Doc:           "that represents subscripted text, typically displayed lower and smaller than the main text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Summary",
-		Doc:           "defines a visible heading for a details element.",
+		Doc:           "that provides a visible heading or label for a <details> element's content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Sup",
-		Doc:           "defines superscripted text.",
+		Doc:           "that represents superscripted text, typically displayed higher and smaller than the main text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
