@@ -52,14 +52,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Address",
-		Doc:           "defines contact information for the author/owner of a document.",
+		Doc:           "defines contact information for the author/owner of a document or page.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Area",
 		Type: selfClosing,
-		Doc:  "defines an area inside an image-map.",
+		Doc:  "defines an area within an image-map.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"coords",
@@ -76,19 +76,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Article",
-		Doc:           "defines an article.",
+		Doc:           "defines an article content in a document.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Aside",
-		Doc:           "defines content aside from the page content.",
+		Doc:           "defines content placed aside from the main content of the page.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Audio",
-		Doc:  "defines sound content.",
+		Doc:  "defines audio or sound content.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
