@@ -896,19 +896,19 @@ var tags = []tag{
 	// T:
 	{
 		Name:          "Table",
-		Doc:           "defines a table.",
+		Doc:           "that represents a table structure.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "TBody",
-		Doc:           "groups the body content in a table.",
+		Doc:           "that groups the main content rows in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Td",
-		Doc:  "defines a cell in a table.",
+		Doc:  "that represents a data cell in a table.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"colspan",
 			"headers",
@@ -918,12 +918,12 @@ var tags = []tag{
 	},
 	{
 		Name:  "Template",
-		Doc:   "defines a template.",
-		Attrs: withGlobalAttrs(attrsByNames()...),
+		Doc:   "that holds client-side content templates for dynamic rendering.",
+		Attrs: withGlobalAttrs(),
 	},
 	{
 		Name: "Textarea",
-		Doc:  "defines a multiline input control (text area).",
+		Doc:  "that provides a multiline text input control.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autofocus",
 			"cols",
@@ -942,13 +942,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "TFoot",
-		Doc:           "groups the footer content in a table.",
+		Doc:           "that groups the footer rows in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Th",
-		Doc:  "defines a header cell in a table.",
+		Doc:  "that represents a header cell in a table.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"abbr",
 			"colspan",
@@ -960,13 +960,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "THead",
-		Doc:           "groups the header content in a table",
+		Doc:           "that groups the header rows in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Time",
-		Doc:  "defines a date/time.",
+		Doc:  "that represents a specific period or a single point in time.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"datetime",
 		)...),
@@ -974,12 +974,12 @@ var tags = []tag{
 	},
 	{
 		Name:  "Title",
-		Doc:   "defines a title for the document.",
-		Attrs: withGlobalAttrs(attrsByNames()...),
+		Doc:   "that specifies the title of the document, shown in the browser's title bar or tab.",
+		Attrs: withGlobalAttrs(),
 	},
 	{
 		Name:          "Tr",
-		Doc:           "defines a row in a table.",
+		Doc:           "that represents a row of cells in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -987,13 +987,13 @@ var tags = []tag{
 	// U:
 	{
 		Name:          "U",
-		Doc:           "defines text that should be stylistically different from normal text.",
+		Doc:           "that renders text with an underline, typically indicating misspelled text or proper names in Chinese text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Ul",
-		Doc:           "defines an unordered list.",
+		Doc:           "that represents an unordered list of items.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -1001,13 +1001,13 @@ var tags = []tag{
 	// V:
 	{
 		Name:          "Var",
-		Doc:           "defines a variable.",
+		Doc:           "that displays a name of a variable, typically shown in an italic typeface.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Video",
-		Doc:  "defines a video or movie.",
+		Doc:  "that embeds video content, allowing for playback of video files or streams.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
@@ -1024,7 +1024,7 @@ var tags = []tag{
 	},
 	{
 		Name:          "Wbr",
-		Doc:           "defines a possible line-break.",
+		Doc:           "that suggests an optimal position for a line break within text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
