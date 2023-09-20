@@ -2134,7 +2134,7 @@ import (
 		switch t.Name {
 		case "Elem", "ElemSelfClosing":
 			fmt.Fprintf(f, `
-			// %s returns an HTML element %s
+			// Returns an HTML element %s
 			func %s(tag string) HTML%s {
 				e := &html%s{
 					htmlElement: htmlElement{
@@ -2146,7 +2146,6 @@ import (
 				return e
 			}
 			`,
-				t.Name,
 				t.Doc,
 				t.Name,
 				t.Name,
@@ -2156,7 +2155,7 @@ import (
 
 		default:
 			fmt.Fprintf(f, `
-			// %s returns an HTML element %s
+			// Returns an HTML element %s
 			func %s() HTML%s {
 				e := &html%s{
 					htmlElement: htmlElement{
@@ -2168,7 +2167,6 @@ import (
 				return e
 			}
 			`,
-				t.Name,
 				t.Doc,
 				t.Name,
 				t.Name,

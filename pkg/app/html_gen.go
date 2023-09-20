@@ -203,7 +203,7 @@ type HTMLA interface {
 	OnWheel(h EventHandler, scope ...any) HTMLA
 }
 
-// A returns an HTML element that creates a hyperlink, allowing navigation to other web pages or resources.
+// Returns an HTML element that creates a hyperlink, allowing navigation to other web pages or resources.
 func A() HTMLA {
 	e := &htmlA{
 		htmlElement: htmlElement{
@@ -719,7 +719,7 @@ type HTMLAbbr interface {
 	OnWheel(h EventHandler, scope ...any) HTMLAbbr
 }
 
-// Abbr returns an HTML element that represents an abbreviation or an acronym, providing a longer description or meaning of the content.
+// Returns an HTML element that represents an abbreviation or an acronym, providing a longer description or meaning of the content.
 func Abbr() HTMLAbbr {
 	e := &htmlAbbr{
 		htmlElement: htmlElement{
@@ -1195,7 +1195,7 @@ type HTMLAddress interface {
 	OnWheel(h EventHandler, scope ...any) HTMLAddress
 }
 
-// Address returns an HTML element that designates contact information for the author or owner of a document or web page.
+// Returns an HTML element that designates contact information for the author or owner of a document or web page.
 func Address() HTMLAddress {
 	e := &htmlAddress{
 		htmlElement: htmlElement{
@@ -1692,7 +1692,7 @@ type HTMLArea interface {
 	OnWheel(h EventHandler, scope ...any) HTMLArea
 }
 
-// Area returns an HTML element that defines a clickable region within an image map, usually linking to another resource.
+// Returns an HTML element that defines a clickable region within an image map, usually linking to another resource.
 func Area() HTMLArea {
 	e := &htmlArea{
 		htmlElement: htmlElement{
@@ -2205,7 +2205,7 @@ type HTMLArticle interface {
 	OnWheel(h EventHandler, scope ...any) HTMLArticle
 }
 
-// Article returns an HTML element that marks a self-contained composition in a document, like a blog post or news story.
+// Returns an HTML element that marks a self-contained composition in a document, like a blog post or news story.
 func Article() HTMLArticle {
 	e := &htmlArticle{
 		htmlElement: htmlElement{
@@ -2681,7 +2681,7 @@ type HTMLAside interface {
 	OnWheel(h EventHandler, scope ...any) HTMLAside
 }
 
-// Aside returns an HTML element that represents content tangentially related to the main content, and can be considered separate.
+// Returns an HTML element that represents content tangentially related to the main content, and can be considered separate.
 func Aside() HTMLAside {
 	e := &htmlAside{
 		htmlElement: htmlElement{
@@ -3247,7 +3247,7 @@ type HTMLAudio interface {
 	OnWheel(h EventHandler, scope ...any) HTMLAudio
 }
 
-// Audio returns an HTML element that embeds an audio player for playing sound or music content.
+// Returns an HTML element that embeds an audio player for playing sound or music content.
 func Audio() HTMLAudio {
 	e := &htmlAudio{
 		htmlElement: htmlElement{
@@ -3873,7 +3873,7 @@ type HTMLB interface {
 	OnWheel(h EventHandler, scope ...any) HTMLB
 }
 
-// B returns an HTML element that applies bold styling to its content.
+// Returns an HTML element that applies bold styling to its content.
 func B() HTMLB {
 	e := &htmlB{
 		htmlElement: htmlElement{
@@ -4346,7 +4346,7 @@ type HTMLBase interface {
 	OnWheel(h EventHandler, scope ...any) HTMLBase
 }
 
-// Base returns an HTML element that specifies the base URL and target for all relative URLs in the document.
+// Returns an HTML element that specifies the base URL and target for all relative URLs in the document.
 func Base() HTMLBase {
 	e := &htmlBase{
 		htmlElement: htmlElement{
@@ -4819,7 +4819,7 @@ type HTMLBdi interface {
 	OnWheel(h EventHandler, scope ...any) HTMLBdi
 }
 
-// Bdi returns an HTML element that isolates a section of text, allowing it to be formatted in a different direction than the surrounding content.
+// Returns an HTML element that isolates a section of text, allowing it to be formatted in a different direction than the surrounding content.
 func Bdi() HTMLBdi {
 	e := &htmlBdi{
 		htmlElement: htmlElement{
@@ -5295,7 +5295,7 @@ type HTMLBdo interface {
 	OnWheel(h EventHandler, scope ...any) HTMLBdo
 }
 
-// Bdo returns an HTML element that controls the text direction of its content, overriding other directional settings.
+// Returns an HTML element that controls the text direction of its content, overriding other directional settings.
 func Bdo() HTMLBdo {
 	e := &htmlBdo{
 		htmlElement: htmlElement{
@@ -5774,7 +5774,7 @@ type HTMLBlockquote interface {
 	OnWheel(h EventHandler, scope ...any) HTMLBlockquote
 }
 
-// Blockquote returns an HTML element that represents a section of text quoted from another source.
+// Returns an HTML element that represents a section of text quoted from another source.
 func Blockquote() HTMLBlockquote {
 	e := &htmlBlockquote{
 		htmlElement: htmlElement{
@@ -6293,7 +6293,7 @@ type HTMLBody interface {
 	OnWheel(h EventHandler, scope ...any) HTMLBody
 }
 
-// Body returns an HTML element that encloses the main content of the HTML document.
+// Returns an HTML element that encloses the main content of the HTML document.
 func Body() HTMLBody {
 	e := &htmlBody{
 		htmlElement: htmlElement{
@@ -6827,7 +6827,7 @@ type HTMLBr interface {
 	OnWheel(h EventHandler, scope ...any) HTMLBr
 }
 
-// Br returns an HTML element that inserts a line break within inline content.
+// Returns an HTML element that inserts a line break within inline content.
 func Br() HTMLBr {
 	e := &htmlBr{
 		htmlElement: htmlElement{
@@ -7323,7 +7323,7 @@ type HTMLButton interface {
 	OnWheel(h EventHandler, scope ...any) HTMLButton
 }
 
-// Button returns an HTML element that creates a clickable button, typically used for form submission or triggering interactions.
+// Returns an HTML element that creates a clickable button, typically used for form submission or triggering interactions.
 func Button() HTMLButton {
 	e := &htmlButton{
 		htmlElement: htmlElement{
@@ -7860,7 +7860,7 @@ type HTMLCanvas interface {
 	OnWheel(h EventHandler, scope ...any) HTMLCanvas
 }
 
-// Canvas returns an HTML element that provides a space where graphics can be rendered dynamically, such as 2D drawings or 3D visualizations.
+// Returns an HTML element that provides a space where graphics can be rendered dynamically, such as 2D drawings or 3D visualizations.
 func Canvas() HTMLCanvas {
 	e := &htmlCanvas{
 		htmlElement: htmlElement{
@@ -8346,7 +8346,7 @@ type HTMLCaption interface {
 	OnWheel(h EventHandler, scope ...any) HTMLCaption
 }
 
-// Caption returns an HTML element that represents the title or description of a table, usually appearing above or below the table.
+// Returns an HTML element that represents the title or description of a table, usually appearing above or below the table.
 func Caption() HTMLCaption {
 	e := &htmlCaption{
 		htmlElement: htmlElement{
@@ -8822,7 +8822,7 @@ type HTMLCite interface {
 	OnWheel(h EventHandler, scope ...any) HTMLCite
 }
 
-// Cite returns an HTML element that indicates the title or reference of a creative work, such as a book, film, or research paper.
+// Returns an HTML element that indicates the title or reference of a creative work, such as a book, film, or research paper.
 func Cite() HTMLCite {
 	e := &htmlCite{
 		htmlElement: htmlElement{
@@ -9298,7 +9298,7 @@ type HTMLCode interface {
 	OnWheel(h EventHandler, scope ...any) HTMLCode
 }
 
-// Code returns an HTML element that displays a single line of code or a code snippet, preserving its formatting.
+// Returns an HTML element that displays a single line of code or a code snippet, preserving its formatting.
 func Code() HTMLCode {
 	e := &htmlCode{
 		htmlElement: htmlElement{
@@ -9768,7 +9768,7 @@ type HTMLCol interface {
 	OnWheel(h EventHandler, scope ...any) HTMLCol
 }
 
-// Col returns an HTML element that defines the properties for a single column or a group of columns within a table, when nested within a `<colgroup>` element.
+// Returns an HTML element that defines the properties for a single column or a group of columns within a table, when nested within a `<colgroup>` element.
 func Col() HTMLCol {
 	e := &htmlCol{
 		htmlElement: htmlElement{
@@ -10239,7 +10239,7 @@ type HTMLColGroup interface {
 	OnWheel(h EventHandler, scope ...any) HTMLColGroup
 }
 
-// ColGroup returns an HTML element that groups one or more `<col>` elements, providing a way to apply styles and attributes to multiple columns simultaneously.
+// Returns an HTML element that groups one or more `<col>` elements, providing a way to apply styles and attributes to multiple columns simultaneously.
 func ColGroup() HTMLColGroup {
 	e := &htmlColGroup{
 		htmlElement: htmlElement{
@@ -10621,7 +10621,7 @@ type HTMLData interface {
 	On(event string, h EventHandler, scope ...any) HTMLData
 }
 
-// Data returns an HTML element that pairs content with its machine-readable translation or value.
+// Returns an HTML element that pairs content with its machine-readable translation or value.
 func Data() HTMLData {
 	e := &htmlData{
 		htmlElement: htmlElement{
@@ -10932,7 +10932,7 @@ type HTMLDataList interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDataList
 }
 
-// DataList returns an HTML element that offers a predefined set of options for input controls.
+// Returns an HTML element that offers a predefined set of options for input controls.
 func DataList() HTMLDataList {
 	e := &htmlDataList{
 		htmlElement: htmlElement{
@@ -11408,7 +11408,7 @@ type HTMLDd interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDd
 }
 
-// Dd returns an HTML element that provides the description or value for a term in a description list.
+// Returns an HTML element that provides the description or value for a term in a description list.
 func Dd() HTMLDd {
 	e := &htmlDd{
 		htmlElement: htmlElement{
@@ -11890,7 +11890,7 @@ type HTMLDel interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDel
 }
 
-// Del returns an HTML element that denotes text segments that have been deleted or modified in the content.
+// Returns an HTML element that denotes text segments that have been deleted or modified in the content.
 func Del() HTMLDel {
 	e := &htmlDel{
 		htmlElement: htmlElement{
@@ -12382,7 +12382,7 @@ type HTMLDetails interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDetails
 }
 
-// Details returns an HTML element that encapsulates content users can toggle visibility for, such as additional information or context.
+// Returns an HTML element that encapsulates content users can toggle visibility for, such as additional information or context.
 func Details() HTMLDetails {
 	e := &htmlDetails{
 		htmlElement: htmlElement{
@@ -12868,7 +12868,7 @@ type HTMLDfn interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDfn
 }
 
-// Dfn returns an HTML element that marks the defining occurrence or clarification of a term or phrase.
+// Returns an HTML element that marks the defining occurrence or clarification of a term or phrase.
 func Dfn() HTMLDfn {
 	e := &htmlDfn{
 		htmlElement: htmlElement{
@@ -13347,7 +13347,7 @@ type HTMLDialog interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDialog
 }
 
-// Dialog returns an HTML element that represents a popup dialog box or an interactive window overlay.
+// Returns an HTML element that represents a popup dialog box or an interactive window overlay.
 func Dialog() HTMLDialog {
 	e := &htmlDialog{
 		htmlElement: htmlElement{
@@ -13828,7 +13828,7 @@ type HTMLDiv interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDiv
 }
 
-// Div returns an HTML element that creates a generic container for flow content, usually combined with styles or scripts.
+// Returns an HTML element that creates a generic container for flow content, usually combined with styles or scripts.
 func Div() HTMLDiv {
 	e := &htmlDiv{
 		htmlElement: htmlElement{
@@ -14304,7 +14304,7 @@ type HTMLDl interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDl
 }
 
-// Dl returns an HTML element that structures a list of terms alongside their associated descriptions.
+// Returns an HTML element that structures a list of terms alongside their associated descriptions.
 func Dl() HTMLDl {
 	e := &htmlDl{
 		htmlElement: htmlElement{
@@ -14780,7 +14780,7 @@ type HTMLDt interface {
 	OnWheel(h EventHandler, scope ...any) HTMLDt
 }
 
-// Dt returns an HTML element that specifies a term or name within a description list.
+// Returns an HTML element that specifies a term or name within a description list.
 func Dt() HTMLDt {
 	e := &htmlDt{
 		htmlElement: htmlElement{
@@ -15259,7 +15259,7 @@ type HTMLElem interface {
 	OnWheel(h EventHandler, scope ...any) HTMLElem
 }
 
-// Elem returns an HTML element that is customizable.
+// Returns an HTML element that is customizable.
 func Elem(tag string) HTMLElem {
 	e := &htmlElem{
 		htmlElement: htmlElement{
@@ -15734,7 +15734,7 @@ type HTMLElemSelfClosing interface {
 	OnWheel(h EventHandler, scope ...any) HTMLElemSelfClosing
 }
 
-// ElemSelfClosing returns an HTML element that is self-closing and customizable.
+// Returns an HTML element that is self-closing and customizable.
 func ElemSelfClosing(tag string) HTMLElemSelfClosing {
 	e := &htmlElemSelfClosing{
 		htmlElement: htmlElement{
@@ -16202,7 +16202,7 @@ type HTMLEm interface {
 	OnWheel(h EventHandler, scope ...any) HTMLEm
 }
 
-// Em returns an HTML element that marks text for emphasis, typically rendered as italicized text.
+// Returns an HTML element that marks text for emphasis, typically rendered as italicized text.
 func Em() HTMLEm {
 	e := &htmlEm{
 		htmlElement: htmlElement{
@@ -16750,7 +16750,7 @@ type HTMLEmbed interface {
 	OnWheel(h EventHandler, scope ...any) HTMLEmbed
 }
 
-// Embed returns an HTML element that offers a container for integrating non-HTML content or applications.
+// Returns an HTML element that offers a container for integrating non-HTML content or applications.
 func Embed() HTMLEmbed {
 	e := &htmlEmbed{
 		htmlElement: htmlElement{
@@ -17357,7 +17357,7 @@ type HTMLFieldSet interface {
 	OnWheel(h EventHandler, scope ...any) HTMLFieldSet
 }
 
-// FieldSet returns an HTML element that clusters related input controls and labels within a form.
+// Returns an HTML element that clusters related input controls and labels within a form.
 func FieldSet() HTMLFieldSet {
 	e := &htmlFieldSet{
 		htmlElement: htmlElement{
@@ -17848,7 +17848,7 @@ type HTMLFigCaption interface {
 	OnWheel(h EventHandler, scope ...any) HTMLFigCaption
 }
 
-// FigCaption returns an HTML element that supplies a caption or explanation for content within the <figure> element.
+// Returns an HTML element that supplies a caption or explanation for content within the <figure> element.
 func FigCaption() HTMLFigCaption {
 	e := &htmlFigCaption{
 		htmlElement: htmlElement{
@@ -18324,7 +18324,7 @@ type HTMLFigure interface {
 	OnWheel(h EventHandler, scope ...any) HTMLFigure
 }
 
-// Figure returns an HTML element that encapsulates media content or illustrations with an optional caption.
+// Returns an HTML element that encapsulates media content or illustrations with an optional caption.
 func Figure() HTMLFigure {
 	e := &htmlFigure{
 		htmlElement: htmlElement{
@@ -18800,7 +18800,7 @@ type HTMLFooter interface {
 	OnWheel(h EventHandler, scope ...any) HTMLFooter
 }
 
-// Footer returns an HTML element that denotes the footer of a section or the whole document, often containing metadata or author info.
+// Returns an HTML element that denotes the footer of a section or the whole document, often containing metadata or author info.
 func Footer() HTMLFooter {
 	e := &htmlFooter{
 		htmlElement: htmlElement{
@@ -19300,7 +19300,7 @@ type HTMLForm interface {
 	OnWheel(h EventHandler, scope ...any) HTMLForm
 }
 
-// Form returns an HTML element that constructs a user input form, allowing for various control elements and submission options.
+// Returns an HTML element that constructs a user input form, allowing for various control elements and submission options.
 func Form() HTMLForm {
 	e := &htmlForm{
 		htmlElement: htmlElement{
@@ -19821,7 +19821,7 @@ type HTMLH1 interface {
 	OnWheel(h EventHandler, scope ...any) HTMLH1
 }
 
-// H1 returns an HTML element that defines a level 1 HTML heading, indicating the most important topic or section.
+// Returns an HTML element that defines a level 1 HTML heading, indicating the most important topic or section.
 func H1() HTMLH1 {
 	e := &htmlH1{
 		htmlElement: htmlElement{
@@ -20297,7 +20297,7 @@ type HTMLH2 interface {
 	OnWheel(h EventHandler, scope ...any) HTMLH2
 }
 
-// H2 returns an HTML element that defines a level 2 HTML heading, indicating a main subsection under H1.
+// Returns an HTML element that defines a level 2 HTML heading, indicating a main subsection under H1.
 func H2() HTMLH2 {
 	e := &htmlH2{
 		htmlElement: htmlElement{
@@ -20773,7 +20773,7 @@ type HTMLH3 interface {
 	OnWheel(h EventHandler, scope ...any) HTMLH3
 }
 
-// H3 returns an HTML element that defines a level 3 HTML heading, indicating a subsection under H2.
+// Returns an HTML element that defines a level 3 HTML heading, indicating a subsection under H2.
 func H3() HTMLH3 {
 	e := &htmlH3{
 		htmlElement: htmlElement{
@@ -21249,7 +21249,7 @@ type HTMLH4 interface {
 	OnWheel(h EventHandler, scope ...any) HTMLH4
 }
 
-// H4 returns an HTML element that defines a level 4 HTML heading, indicating topics that fall under the H3 section.
+// Returns an HTML element that defines a level 4 HTML heading, indicating topics that fall under the H3 section.
 func H4() HTMLH4 {
 	e := &htmlH4{
 		htmlElement: htmlElement{
@@ -21725,7 +21725,7 @@ type HTMLH5 interface {
 	OnWheel(h EventHandler, scope ...any) HTMLH5
 }
 
-// H5 returns an HTML element that defines a level 5 HTML heading, typically used for finer details under an H4 section.
+// Returns an HTML element that defines a level 5 HTML heading, typically used for finer details under an H4 section.
 func H5() HTMLH5 {
 	e := &htmlH5{
 		htmlElement: htmlElement{
@@ -22201,7 +22201,7 @@ type HTMLH6 interface {
 	OnWheel(h EventHandler, scope ...any) HTMLH6
 }
 
-// H6 returns an HTML element that defines a level 6 HTML heading, used for the smallest granularity of topics or details.
+// Returns an HTML element that defines a level 6 HTML heading, used for the smallest granularity of topics or details.
 func H6() HTMLH6 {
 	e := &htmlH6{
 		htmlElement: htmlElement{
@@ -22575,7 +22575,7 @@ type HTMLHead interface {
 	On(event string, h EventHandler, scope ...any) HTMLHead
 }
 
-// Head returns an HTML element that defines information about the document.
+// Returns an HTML element that defines information about the document.
 func Head() HTMLHead {
 	e := &htmlHead{
 		htmlElement: htmlElement{
@@ -22881,7 +22881,7 @@ type HTMLHeader interface {
 	OnWheel(h EventHandler, scope ...any) HTMLHeader
 }
 
-// Header returns an HTML element that defines a header for a document or section.
+// Returns an HTML element that defines a header for a document or section.
 func Header() HTMLHeader {
 	e := &htmlHeader{
 		htmlElement: htmlElement{
@@ -23348,7 +23348,7 @@ type HTMLHr interface {
 	OnWheel(h EventHandler, scope ...any) HTMLHr
 }
 
-// Hr returns an HTML element that defines a thematic change in the content.
+// Returns an HTML element that defines a thematic change in the content.
 func Hr() HTMLHr {
 	e := &htmlHr{
 		htmlElement: htmlElement{
@@ -23702,7 +23702,7 @@ type HTMLHtml interface {
 	On(event string, h EventHandler, scope ...any) HTMLHtml
 }
 
-// Html returns an HTML element that defines the root of an HTML document.
+// Returns an HTML element that defines the root of an HTML document.
 func Html() HTMLHtml {
 	e := &htmlHtml{
 		htmlElement: htmlElement{
@@ -24000,7 +24000,7 @@ type HTMLI interface {
 	OnWheel(h EventHandler, scope ...any) HTMLI
 }
 
-// I returns an HTML element that defines a part of text in an alternate voice or mood.
+// Returns an HTML element that defines a part of text in an alternate voice or mood.
 func I() HTMLI {
 	e := &htmlI{
 		htmlElement: htmlElement{
@@ -24512,7 +24512,7 @@ type HTMLIFrame interface {
 	OnWheel(h EventHandler, scope ...any) HTMLIFrame
 }
 
-// IFrame returns an HTML element that defines an inline frame.
+// Returns an HTML element that defines an inline frame.
 func IFrame() HTMLIFrame {
 	e := &htmlIFrame{
 		htmlElement: htmlElement{
@@ -25151,7 +25151,7 @@ type HTMLImg interface {
 	OnWheel(h EventHandler, scope ...any) HTMLImg
 }
 
-// Img returns an HTML element that defines an image.
+// Returns an HTML element that defines an image.
 func Img() HTMLImg {
 	e := &htmlImg{
 		htmlElement: htmlElement{
@@ -25871,7 +25871,7 @@ type HTMLInput interface {
 	OnWheel(h EventHandler, scope ...any) HTMLInput
 }
 
-// Input returns an HTML element that defines an input control.
+// Returns an HTML element that defines an input control.
 func Input() HTMLInput {
 	e := &htmlInput{
 		htmlElement: htmlElement{
@@ -26499,7 +26499,7 @@ type HTMLIns interface {
 	OnWheel(h EventHandler, scope ...any) HTMLIns
 }
 
-// Ins returns an HTML element that defines text that has been inserted into a document.
+// Returns an HTML element that defines text that has been inserted into a document.
 func Ins() HTMLIns {
 	e := &htmlIns{
 		htmlElement: htmlElement{
@@ -26975,7 +26975,7 @@ type HTMLKbd interface {
 	OnWheel(h EventHandler, scope ...any) HTMLKbd
 }
 
-// Kbd returns an HTML element that represents keyboard input.
+// Returns an HTML element that represents keyboard input.
 func Kbd() HTMLKbd {
 	e := &htmlKbd{
 		htmlElement: htmlElement{
@@ -27457,7 +27457,7 @@ type HTMLLabel interface {
 	OnWheel(h EventHandler, scope ...any) HTMLLabel
 }
 
-// Label returns an HTML element that represents a label for an input element.
+// Returns an HTML element that represents a label for an input element.
 func Label() HTMLLabel {
 	e := &htmlLabel{
 		htmlElement: htmlElement{
@@ -27943,7 +27943,7 @@ type HTMLLegend interface {
 	OnWheel(h EventHandler, scope ...any) HTMLLegend
 }
 
-// Legend returns an HTML element that represents a caption for a fieldset element.
+// Returns an HTML element that represents a caption for a fieldset element.
 func Legend() HTMLLegend {
 	e := &htmlLegend{
 		htmlElement: htmlElement{
@@ -28422,7 +28422,7 @@ type HTMLLi interface {
 	OnWheel(h EventHandler, scope ...any) HTMLLi
 }
 
-// Li returns an HTML element that represents a list item.
+// Returns an HTML element that represents a list item.
 func Li() HTMLLi {
 	e := &htmlLi{
 		htmlElement: htmlElement{
@@ -28924,7 +28924,7 @@ type HTMLLink interface {
 	OnWheel(h EventHandler, scope ...any) HTMLLink
 }
 
-// Link returns an HTML element that describes the relationship between a document and an external resource (most commonly used to link to style sheets).
+// Returns an HTML element that describes the relationship between a document and an external resource (most commonly used to link to style sheets).
 func Link() HTMLLink {
 	e := &htmlLink{
 		htmlElement: htmlElement{
@@ -29437,7 +29437,7 @@ type HTMLMain interface {
 	OnWheel(h EventHandler, scope ...any) HTMLMain
 }
 
-// Main returns an HTML element that specifies the main content of a document.
+// Returns an HTML element that specifies the main content of a document.
 func Main() HTMLMain {
 	e := &htmlMain{
 		htmlElement: htmlElement{
@@ -29916,7 +29916,7 @@ type HTMLMap interface {
 	OnWheel(h EventHandler, scope ...any) HTMLMap
 }
 
-// Map returns an HTML element that represents a client-side image-map.
+// Returns an HTML element that represents a client-side image-map.
 func Map() HTMLMap {
 	e := &htmlMap{
 		htmlElement: htmlElement{
@@ -30397,7 +30397,7 @@ type HTMLMark interface {
 	OnWheel(h EventHandler, scope ...any) HTMLMark
 }
 
-// Mark returns an HTML element that represents marked/highlighted text.
+// Returns an HTML element that represents marked/highlighted text.
 func Mark() HTMLMark {
 	e := &htmlMark{
 		htmlElement: htmlElement{
@@ -30777,7 +30777,7 @@ type HTMLMeta interface {
 	On(event string, h EventHandler, scope ...any) HTMLMeta
 }
 
-// Meta returns an HTML element that provides metadata about the HTML document.
+// Returns an HTML element that provides metadata about the HTML document.
 func Meta() HTMLMeta {
 	e := &htmlMeta{
 		htmlElement: htmlElement{
@@ -31116,7 +31116,7 @@ type HTMLMeter interface {
 	OnWheel(h EventHandler, scope ...any) HTMLMeter
 }
 
-// Meter returns an HTML element that represents a scalar measurement within a known range (like a gauge).
+// Returns an HTML element that represents a scalar measurement within a known range (like a gauge).
 func Meter() HTMLMeter {
 	e := &htmlMeter{
 		htmlElement: htmlElement{
@@ -31627,7 +31627,7 @@ type HTMLNav interface {
 	OnWheel(h EventHandler, scope ...any) HTMLNav
 }
 
-// Nav returns an HTML element that represents navigation links.
+// Returns an HTML element that represents navigation links.
 func Nav() HTMLNav {
 	e := &htmlNav{
 		htmlElement: htmlElement{
@@ -32001,7 +32001,7 @@ type HTMLNoScript interface {
 	On(event string, h EventHandler, scope ...any) HTMLNoScript
 }
 
-// NoScript returns an HTML element that provides alternate content for users who do not support client-side scripts.
+// Returns an HTML element that provides alternate content for users who do not support client-side scripts.
 func NoScript() HTMLNoScript {
 	e := &htmlNoScript{
 		htmlElement: htmlElement{
@@ -32397,7 +32397,7 @@ type HTMLObject interface {
 	OnWheel(h EventHandler, scope ...any) HTMLObject
 }
 
-// Object returns an HTML element that embeds an object within the document.
+// Returns an HTML element that embeds an object within the document.
 func Object() HTMLObject {
 	e := &htmlObject{
 		htmlElement: htmlElement{
@@ -33032,7 +33032,7 @@ type HTMLOl interface {
 	OnWheel(h EventHandler, scope ...any) HTMLOl
 }
 
-// Ol returns an HTML element that represents an ordered list.
+// Returns an HTML element that represents an ordered list.
 func Ol() HTMLOl {
 	e := &htmlOl{
 		htmlElement: htmlElement{
@@ -33529,7 +33529,7 @@ type HTMLOptGroup interface {
 	OnWheel(h EventHandler, scope ...any) HTMLOptGroup
 }
 
-// OptGroup returns an HTML element that groups related options in a drop-down list.
+// Returns an HTML element that groups related options in a drop-down list.
 func OptGroup() HTMLOptGroup {
 	e := &htmlOptGroup{
 		htmlElement: htmlElement{
@@ -34027,7 +34027,7 @@ type HTMLOption interface {
 	OnWheel(h EventHandler, scope ...any) HTMLOption
 }
 
-// Option returns an HTML element that represents an option in a drop-down list.
+// Returns an HTML element that represents an option in a drop-down list.
 func Option() HTMLOption {
 	e := &htmlOption{
 		htmlElement: htmlElement{
@@ -34532,7 +34532,7 @@ type HTMLOutput interface {
 	OnWheel(h EventHandler, scope ...any) HTMLOutput
 }
 
-// Output returns an HTML element that displays the result of a calculation or user action.
+// Returns an HTML element that displays the result of a calculation or user action.
 func Output() HTMLOutput {
 	e := &htmlOutput{
 		htmlElement: htmlElement{
@@ -35023,7 +35023,7 @@ type HTMLP interface {
 	OnWheel(h EventHandler, scope ...any) HTMLP
 }
 
-// P returns an HTML element that represents a paragraph.
+// Returns an HTML element that represents a paragraph.
 func P() HTMLP {
 	e := &htmlP{
 		htmlElement: htmlElement{
@@ -35496,7 +35496,7 @@ type HTMLParam interface {
 	OnWheel(h EventHandler, scope ...any) HTMLParam
 }
 
-// Param returns an HTML element that defines a parameter for an embedded object.
+// Returns an HTML element that defines a parameter for an embedded object.
 func Param() HTMLParam {
 	e := &htmlParam{
 		htmlElement: htmlElement{
@@ -35969,7 +35969,7 @@ type HTMLPicture interface {
 	OnWheel(h EventHandler, scope ...any) HTMLPicture
 }
 
-// Picture returns an HTML element that provides a container for multiple image sources.
+// Returns an HTML element that provides a container for multiple image sources.
 func Picture() HTMLPicture {
 	e := &htmlPicture{
 		htmlElement: htmlElement{
@@ -36445,7 +36445,7 @@ type HTMLPre interface {
 	OnWheel(h EventHandler, scope ...any) HTMLPre
 }
 
-// Pre returns an HTML element that displays preformatted text.
+// Returns an HTML element that displays preformatted text.
 func Pre() HTMLPre {
 	e := &htmlPre{
 		htmlElement: htmlElement{
@@ -36927,7 +36927,7 @@ type HTMLProgress interface {
 	OnWheel(h EventHandler, scope ...any) HTMLProgress
 }
 
-// Progress returns an HTML element that visualizes the progress of a task.
+// Returns an HTML element that visualizes the progress of a task.
 func Progress() HTMLProgress {
 	e := &htmlProgress{
 		htmlElement: htmlElement{
@@ -37416,7 +37416,7 @@ type HTMLQ interface {
 	OnWheel(h EventHandler, scope ...any) HTMLQ
 }
 
-// Q returns an HTML element that represents a short quotation.
+// Returns an HTML element that represents a short quotation.
 func Q() HTMLQ {
 	e := &htmlQ{
 		htmlElement: htmlElement{
@@ -37897,7 +37897,7 @@ type HTMLRp interface {
 	OnWheel(h EventHandler, scope ...any) HTMLRp
 }
 
-// Rp returns an HTML element that indicates text for browsers not supporting ruby annotations.
+// Returns an HTML element that indicates text for browsers not supporting ruby annotations.
 func Rp() HTMLRp {
 	e := &htmlRp{
 		htmlElement: htmlElement{
@@ -38373,7 +38373,7 @@ type HTMLRt interface {
 	OnWheel(h EventHandler, scope ...any) HTMLRt
 }
 
-// Rt returns an HTML element that provides explanation or pronunciation of characters (used in East Asian typography).
+// Returns an HTML element that provides explanation or pronunciation of characters (used in East Asian typography).
 func Rt() HTMLRt {
 	e := &htmlRt{
 		htmlElement: htmlElement{
@@ -38849,7 +38849,7 @@ type HTMLRuby interface {
 	OnWheel(h EventHandler, scope ...any) HTMLRuby
 }
 
-// Ruby returns an HTML element that marks a ruby annotation (used for East Asian typography).
+// Returns an HTML element that marks a ruby annotation (used for East Asian typography).
 func Ruby() HTMLRuby {
 	e := &htmlRuby{
 		htmlElement: htmlElement{
@@ -39325,7 +39325,7 @@ type HTMLS interface {
 	OnWheel(h EventHandler, scope ...any) HTMLS
 }
 
-// S returns an HTML element that represents text which is no longer correct or relevant.
+// Returns an HTML element that represents text which is no longer correct or relevant.
 func S() HTMLS {
 	e := &htmlS{
 		htmlElement: htmlElement{
@@ -39801,7 +39801,7 @@ type HTMLSamp interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSamp
 }
 
-// Samp returns an HTML element that displays sample output from a computer program.
+// Returns an HTML element that displays sample output from a computer program.
 func Samp() HTMLSamp {
 	e := &htmlSamp{
 		htmlElement: htmlElement{
@@ -40196,7 +40196,7 @@ type HTMLScript interface {
 	OnLoad(h EventHandler, scope ...any) HTMLScript
 }
 
-// Script returns an HTML element that embeds or references a client-side script.
+// Returns an HTML element that embeds or references a client-side script.
 func Script() HTMLScript {
 	e := &htmlScript{
 		htmlElement: htmlElement{
@@ -40537,7 +40537,7 @@ type HTMLSection interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSection
 }
 
-// Section returns an HTML element that represents a standalone section in a document.
+// Returns an HTML element that represents a standalone section in a document.
 func Section() HTMLSection {
 	e := &htmlSection{
 		htmlElement: htmlElement{
@@ -41034,7 +41034,7 @@ type HTMLSelect interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSelect
 }
 
-// Select returns an HTML element that creates a drop-down list or list box for form input.
+// Returns an HTML element that creates a drop-down list or list box for form input.
 func Select() HTMLSelect {
 	e := &htmlSelect{
 		htmlElement: htmlElement{
@@ -41545,7 +41545,7 @@ type HTMLSmall interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSmall
 }
 
-// Small returns an HTML element that displays text in a smaller font, typically for side comments or legal disclaimers.
+// Returns an HTML element that displays text in a smaller font, typically for side comments or legal disclaimers.
 func Small() HTMLSmall {
 	e := &htmlSmall{
 		htmlElement: htmlElement{
@@ -42027,7 +42027,7 @@ type HTMLSource interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSource
 }
 
-// Source returns an HTML element that specifies multiple media resources for elements like <picture>, <audio>, and <video>.
+// Returns an HTML element that specifies multiple media resources for elements like <picture>, <audio>, and <video>.
 func Source() HTMLSource {
 	e := &htmlSource{
 		htmlElement: htmlElement{
@@ -42515,7 +42515,7 @@ type HTMLSpan interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSpan
 }
 
-// Span returns an HTML element that provides a way to style a specific part of the text or to group inline-elements.
+// Returns an HTML element that provides a way to style a specific part of the text or to group inline-elements.
 func Span() HTMLSpan {
 	e := &htmlSpan{
 		htmlElement: htmlElement{
@@ -42991,7 +42991,7 @@ type HTMLStrong interface {
 	OnWheel(h EventHandler, scope ...any) HTMLStrong
 }
 
-// Strong returns an HTML element that emphasizes text as important, typically displayed as bold.
+// Returns an HTML element that emphasizes text as important, typically displayed as bold.
 func Strong() HTMLStrong {
 	e := &htmlStrong{
 		htmlElement: htmlElement{
@@ -43476,7 +43476,7 @@ type HTMLStyle interface {
 	OnWheel(h EventHandler, scope ...any) HTMLStyle
 }
 
-// Style returns an HTML element that contains style information or references for a document.
+// Returns an HTML element that contains style information or references for a document.
 func Style() HTMLStyle {
 	e := &htmlStyle{
 		htmlElement: htmlElement{
@@ -43967,7 +43967,7 @@ type HTMLSub interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSub
 }
 
-// Sub returns an HTML element that represents subscripted text, typically displayed lower and smaller than the main text.
+// Returns an HTML element that represents subscripted text, typically displayed lower and smaller than the main text.
 func Sub() HTMLSub {
 	e := &htmlSub{
 		htmlElement: htmlElement{
@@ -44443,7 +44443,7 @@ type HTMLSummary interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSummary
 }
 
-// Summary returns an HTML element that provides a visible heading or label for a <details> element's content.
+// Returns an HTML element that provides a visible heading or label for a <details> element's content.
 func Summary() HTMLSummary {
 	e := &htmlSummary{
 		htmlElement: htmlElement{
@@ -44919,7 +44919,7 @@ type HTMLSup interface {
 	OnWheel(h EventHandler, scope ...any) HTMLSup
 }
 
-// Sup returns an HTML element that represents superscripted text, typically displayed higher and smaller than the main text.
+// Returns an HTML element that represents superscripted text, typically displayed higher and smaller than the main text.
 func Sup() HTMLSup {
 	e := &htmlSup{
 		htmlElement: htmlElement{
@@ -45395,7 +45395,7 @@ type HTMLTable interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTable
 }
 
-// Table returns an HTML element that represents a table structure.
+// Returns an HTML element that represents a table structure.
 func Table() HTMLTable {
 	e := &htmlTable{
 		htmlElement: htmlElement{
@@ -45871,7 +45871,7 @@ type HTMLTBody interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTBody
 }
 
-// TBody returns an HTML element that groups the main content rows in a table.
+// Returns an HTML element that groups the main content rows in a table.
 func TBody() HTMLTBody {
 	e := &htmlTBody{
 		htmlElement: htmlElement{
@@ -46356,7 +46356,7 @@ type HTMLTd interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTd
 }
 
-// Td returns an HTML element that represents a data cell in a table.
+// Returns an HTML element that represents a data cell in a table.
 func Td() HTMLTd {
 	e := &htmlTd{
 		htmlElement: htmlElement{
@@ -46745,7 +46745,7 @@ type HTMLTemplate interface {
 	On(event string, h EventHandler, scope ...any) HTMLTemplate
 }
 
-// Template returns an HTML element that holds client-side content templates for dynamic rendering.
+// Returns an HTML element that holds client-side content templates for dynamic rendering.
 func Template() HTMLTemplate {
 	e := &htmlTemplate{
 		htmlElement: htmlElement{
@@ -47087,7 +47087,7 @@ type HTMLTextarea interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTextarea
 }
 
-// Textarea returns an HTML element that provides a multiline text input control.
+// Returns an HTML element that provides a multiline text input control.
 func Textarea() HTMLTextarea {
 	e := &htmlTextarea{
 		htmlElement: htmlElement{
@@ -47625,7 +47625,7 @@ type HTMLTFoot interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTFoot
 }
 
-// TFoot returns an HTML element that groups the footer rows in a table.
+// Returns an HTML element that groups the footer rows in a table.
 func TFoot() HTMLTFoot {
 	e := &htmlTFoot{
 		htmlElement: htmlElement{
@@ -48116,7 +48116,7 @@ type HTMLTh interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTh
 }
 
-// Th returns an HTML element that represents a header cell in a table.
+// Returns an HTML element that represents a header cell in a table.
 func Th() HTMLTh {
 	e := &htmlTh{
 		htmlElement: htmlElement{
@@ -48617,7 +48617,7 @@ type HTMLTHead interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTHead
 }
 
-// THead returns an HTML element that groups the header rows in a table.
+// Returns an HTML element that groups the header rows in a table.
 func THead() HTMLTHead {
 	e := &htmlTHead{
 		htmlElement: htmlElement{
@@ -49096,7 +49096,7 @@ type HTMLTime interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTime
 }
 
-// Time returns an HTML element that represents a specific period or a single point in time.
+// Returns an HTML element that represents a specific period or a single point in time.
 func Time() HTMLTime {
 	e := &htmlTime{
 		htmlElement: htmlElement{
@@ -49475,7 +49475,7 @@ type HTMLTitle interface {
 	On(event string, h EventHandler, scope ...any) HTMLTitle
 }
 
-// Title returns an HTML element that specifies the title of the document, shown in the browser's title bar or tab.
+// Returns an HTML element that specifies the title of the document, shown in the browser's title bar or tab.
 func Title() HTMLTitle {
 	e := &htmlTitle{
 		htmlElement: htmlElement{
@@ -49781,7 +49781,7 @@ type HTMLTr interface {
 	OnWheel(h EventHandler, scope ...any) HTMLTr
 }
 
-// Tr returns an HTML element that represents a row of cells in a table.
+// Returns an HTML element that represents a row of cells in a table.
 func Tr() HTMLTr {
 	e := &htmlTr{
 		htmlElement: htmlElement{
@@ -50257,7 +50257,7 @@ type HTMLU interface {
 	OnWheel(h EventHandler, scope ...any) HTMLU
 }
 
-// U returns an HTML element that renders text with an underline, typically indicating misspelled text or proper names in Chinese text.
+// Returns an HTML element that renders text with an underline, typically indicating misspelled text or proper names in Chinese text.
 func U() HTMLU {
 	e := &htmlU{
 		htmlElement: htmlElement{
@@ -50733,7 +50733,7 @@ type HTMLUl interface {
 	OnWheel(h EventHandler, scope ...any) HTMLUl
 }
 
-// Ul returns an HTML element that represents an unordered list of items.
+// Returns an HTML element that represents an unordered list of items.
 func Ul() HTMLUl {
 	e := &htmlUl{
 		htmlElement: htmlElement{
@@ -51209,7 +51209,7 @@ type HTMLVar interface {
 	OnWheel(h EventHandler, scope ...any) HTMLVar
 }
 
-// Var returns an HTML element that displays a name of a variable, typically shown in an italic typeface.
+// Returns an HTML element that displays a name of a variable, typically shown in an italic typeface.
 func Var() HTMLVar {
 	e := &htmlVar{
 		htmlElement: htmlElement{
@@ -51784,7 +51784,7 @@ type HTMLVideo interface {
 	OnWheel(h EventHandler, scope ...any) HTMLVideo
 }
 
-// Video returns an HTML element that embeds video content, allowing for playback of video files or streams.
+// Returns an HTML element that embeds video content, allowing for playback of video files or streams.
 func Video() HTMLVideo {
 	e := &htmlVideo{
 		htmlElement: htmlElement{
@@ -52425,7 +52425,7 @@ type HTMLWbr interface {
 	OnWheel(h EventHandler, scope ...any) HTMLWbr
 }
 
-// Wbr returns an HTML element that suggests an optimal position for a line break within text.
+// Returns an HTML element that suggests an optimal position for a line break within text.
 func Wbr() HTMLWbr {
 	e := &htmlWbr{
 		htmlElement: htmlElement{
