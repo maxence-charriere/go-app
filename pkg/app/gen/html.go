@@ -1146,7 +1146,7 @@ var attrs = map[string]attr{
 	"class": {
 		Name: "Class",
 		Type: "string|class",
-		Doc:  "Assigns one or more classnames to an element, linking it to styles defined in a stylesheet.",
+		Doc:  "Assigns one or more classnames to an element, linking it to styles defined in a stylesheet. Can be called multiple times to assign multiple classnames.",
 	},
 	"cols": {
 		Name: "Cols",
@@ -1188,64 +1188,64 @@ var attrs = map[string]attr{
 	"data": {
 		Name: "Data",
 		Type: "fmt",
-		Doc:  "specifies the URL of the resource to be used by the object with the given format and values.",
+		Doc:  "Specifies the URL of a resource associated with an embedded object, such as media or data.",
 	},
 	"data-*": {
 		Name: "DataSet",
 		Type: "data|value",
-		Doc:  "stores custom data private to the page or application.",
+		Doc:  "Allows for storage of custom data specific to individual elements. Can be called multiple times to store multiple sets of data, often used for scripting purposes.",
 	},
 	"datasets": {
 		Name: "DataSets",
 		Type: "data|map",
-		Doc:  "specifies datsets for an element. Can be called multiple times to set multiple data set.",
+		Doc:  "Denotes datasets linked to an element and can store multiple sets of data.",
 	},
 	"datetime": {
 		Name: "DateTime",
 		Type: "fmt",
-		Doc:  "specifies the date and time with the given format and values.",
+		Doc:  "Represents the date and time, often used in context with machine-readable equivalents of time-related content.",
 	},
 	"default": {
 		Name: "Default",
 		Type: "bool",
-		Doc:  "specifies that the track is to be enabled if the user's preferences do not indicate that another track would be more appropriate.",
+		Doc:  "Indicates a default track for media elements and is selected unless the user or browser specifies otherwise.",
 	},
 	"defer": {
 		Name: "Defer",
 		Type: "bool",
-		Doc:  "specifies that the script is executed when the page has finished parsing (only for external scripts).",
+		Doc:  "Delays the execution of a script until after the document is parsed, typically applied to external scripts.",
 	},
 	"dir": {
 		Name: "Dir",
 		Type: "fmt",
-		Doc:  "specifies the text direction for the content in an element with the given format and values.",
+		Doc:  "Defines the text direction for the content within an element, such as 'ltr' (left-to-right) or 'rtl' (right-to-left).",
 	},
 	"dirname": {
 		Name: "DirName",
 		Type: "fmt",
-		Doc:  "specifies that the text direction will be submitted using the given format and values.",
+		Doc:  "Instructs the browser to also submit the text direction of a form field when the form is submitted.",
 	},
 	"disabled": {
 		Name: "Disabled",
 		Type: "bool",
-		Doc:  "specifies that the specified element/group of elements should be disabled.",
+		Doc:  "Deactivates an element, rendering it uninteractive and visually distinct.",
 	},
 	"download": {
 		Name: "Download",
 		Type: "fmt",
-		Doc:  "specifies that the target will be downloaded when a user clicks on the hyperlink. Uses the given format and values.",
+		Doc:  "Hints the browser to download the linked resource, optionally providing a default filename.",
 	},
 	"draggable": {
 		Name: "Draggable",
 		Type: "bool",
-		Doc:  "specifies whether an element is draggable or not.",
+		Doc:  "Specifies if an element can be dragged by the user, supporting drag-and-drop operations.",
 	},
 
 	// E:
 	"enctype": {
 		Name: "EncType",
 		Type: "fmt",
-		Doc:  "specifies how the form-data should be encoded when submitting it to the server (only for post method). Uses the given format and values.",
+		Doc:  "Describes how form data should be encoded upon submission, especially vital for forms submitting file uploads.",
 	},
 
 	// F:
