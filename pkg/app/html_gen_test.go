@@ -3360,7 +3360,7 @@ func TestIFrame(t *testing.T) {
 	elem.Name("hello %v", 42)
 	elem.ReferrerPolicy("hello %v", 42)
 	elem.Role("hello %v", 42)
-	elem.Sandbox(42)
+	elem.Sandbox("hello %v", 42)
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Src("hello %v", 42)
