@@ -1517,83 +1517,83 @@ var attrs = map[string]attr{
 	// S:
 	"sandbox": {
 		Name: "Sandbox",
-		Type: "any",
-		Doc:  "enables an extra set of restrictions for the content in an iframe.",
+		Type: "fmt",
+		Doc:  "Applies extra security restrictions to content within an iframe.",
 	},
 	"scope": {
 		Name: "Scope",
 		Type: "fmt",
-		Doc:  "specifies whether a header cell is a header for a column, row, or group of columns or rows. Uses the given format and values.",
+		Doc:  "Defines the set of cells a header cell provides header information for. Uses the given format and values.",
 	},
 	"selected": {
 		Name: "Selected",
 		Type: "bool",
-		Doc:  "specifies that an option should be pre-selected when the page loads.",
+		Doc:  "Indicates that an option should be pre-selected when the page loads.",
 	},
 	"shape": {
 		Name: "Shape",
 		Type: "fmt",
-		Doc:  "specifies the shape of the area with the given format and values.",
+		Doc:  "Describes the shape of a clickable area within an image map. Uses the given format and values.",
 	},
 	"size": {
 		Name: "Size",
 		Type: "int",
-		Doc:  "specifies the width.",
+		Doc:  "Indicates the width of the element, usually in characters for input elements.",
 	},
 	"sizes": {
 		Name: "Sizes",
 		Type: "fmt",
-		Doc:  "specifies the size of the linked resource with the given format and values.",
+		Doc:  "Specifies sizes of icons and images for different page or screen scenarios. Uses the given format and values.",
 	},
 	"span": {
 		Name: "Span",
 		Type: "int",
-		Doc:  "specifies the number of columns to span.",
+		Doc:  "Defines how many columns or rows a cell should span.",
 	},
 	"spellcheck": {
 		Name: "Spellcheck",
 		Type: "bool|force",
-		Doc:  "specifies whether the element is to have its spelling and grammar checked or not.",
+		Doc:  "Indicates whether the element's content is subject to spell and grammar checks.",
 	},
 	"src": {
 		Name: "Src",
 		Type: "fmt",
-		Doc:  "specifies the URL of the media file with the given format and values.",
+		Doc:  "Provides the URL source of embedded content or media. Uses the given format and values.",
 	},
 	"srcdoc": {
 		Name: "SrcDoc",
 		Type: "fmt",
-		Doc:  "specifies the HTML content of the page to show in the iframe with the given format and values.",
+		Doc:  "Defines the HTML content to be displayed within an iframe. Uses the given format and values.",
 	},
 	"srclang": {
 		Name: "SrcLang",
 		Type: "fmt",
-		Doc:  `specifies the language of the track text data (required if kind = "subtitles"). Uses the given format and values.`,
+		Doc:  "Denotes the language of text track data (mandatory if kind = 'subtitles'). Uses the given format and values.",
 	},
 	"srcset": {
 		Name: "SrcSet",
 		Type: "fmt",
-		Doc:  "specifies the URL of the image to use in different situations with the given format and values.",
+		Doc:  "Provides URLs of images to display in varied resolutions or viewport conditions. Uses the given format and values.",
 	},
 	"start": {
 		Name: "Start",
 		Type: "int",
-		Doc:  "specifies the start value of the ordered list.",
+		Doc:  "Determines the starting number for an ordered list.",
 	},
 	"step": {
 		Name: "Step",
 		Type: "float64",
-		Doc:  "specifies the legal number intervals for an input field.",
+		Doc:  "Specifies the interval between permissible values for an input field.",
 	},
 	"style": {
 		Name: "Style",
 		Type: "style",
-		Doc:  "specifies a CSS style for an element. Can be called multiple times to set multiple css styles.",
+		Doc:  "Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.",
 	},
 	"styles": {
 		Name: "Styles",
 		Type: "style|map",
-		Doc:  "specifies CSS styles for an element. Can be called multiple times to set multiple css styles.",
+		Doc:  "Allocates multiple CSS styles to an element. Accepts multiple styling definitions.",
 	},
 
 	// T:
