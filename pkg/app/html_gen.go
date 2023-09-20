@@ -80,7 +80,7 @@ type HTMLA interface {
 	Spellcheck(v bool) HTMLA
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLA
+	Style(k, format string, v ...any) HTMLA
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLA
@@ -339,8 +339,8 @@ func (e *htmlA) Spellcheck(v bool) HTMLA {
 	return e
 }
 
-func (e *htmlA) Style(k, v string) HTMLA {
-	e.setAttr("style", k+":"+v)
+func (e *htmlA) Style(k, format string, v ...any) HTMLA {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -602,7 +602,7 @@ type HTMLAbbr interface {
 	Spellcheck(v bool) HTMLAbbr
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLAbbr
+	Style(k, format string, v ...any) HTMLAbbr
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLAbbr
@@ -825,8 +825,8 @@ func (e *htmlAbbr) Spellcheck(v bool) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) Style(k, v string) HTMLAbbr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAbbr) Style(k, format string, v ...any) HTMLAbbr {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -1078,7 +1078,7 @@ type HTMLAddress interface {
 	Spellcheck(v bool) HTMLAddress
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLAddress
+	Style(k, format string, v ...any) HTMLAddress
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLAddress
@@ -1301,8 +1301,8 @@ func (e *htmlAddress) Spellcheck(v bool) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) Style(k, v string) HTMLAddress {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAddress) Style(k, format string, v ...any) HTMLAddress {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -1569,7 +1569,7 @@ type HTMLArea interface {
 	Spellcheck(v bool) HTMLArea
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLArea
+	Style(k, format string, v ...any) HTMLArea
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLArea
@@ -1825,8 +1825,8 @@ func (e *htmlArea) Spellcheck(v bool) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Style(k, v string) HTMLArea {
-	e.setAttr("style", k+":"+v)
+func (e *htmlArea) Style(k, format string, v ...any) HTMLArea {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -2088,7 +2088,7 @@ type HTMLArticle interface {
 	Spellcheck(v bool) HTMLArticle
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLArticle
+	Style(k, format string, v ...any) HTMLArticle
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLArticle
@@ -2311,8 +2311,8 @@ func (e *htmlArticle) Spellcheck(v bool) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) Style(k, v string) HTMLArticle {
-	e.setAttr("style", k+":"+v)
+func (e *htmlArticle) Style(k, format string, v ...any) HTMLArticle {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -2564,7 +2564,7 @@ type HTMLAside interface {
 	Spellcheck(v bool) HTMLAside
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLAside
+	Style(k, format string, v ...any) HTMLAside
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLAside
@@ -2787,8 +2787,8 @@ func (e *htmlAside) Spellcheck(v bool) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) Style(k, v string) HTMLAside {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAside) Style(k, format string, v ...any) HTMLAside {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -3061,7 +3061,7 @@ type HTMLAudio interface {
 	Src(format string, v ...any) HTMLAudio
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLAudio
+	Style(k, format string, v ...any) HTMLAudio
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLAudio
@@ -3388,8 +3388,8 @@ func (e *htmlAudio) Src(format string, v ...any) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Style(k, v string) HTMLAudio {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAudio) Style(k, format string, v ...any) HTMLAudio {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -3756,7 +3756,7 @@ type HTMLB interface {
 	Spellcheck(v bool) HTMLB
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLB
+	Style(k, format string, v ...any) HTMLB
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLB
@@ -3979,8 +3979,8 @@ func (e *htmlB) Spellcheck(v bool) HTMLB {
 	return e
 }
 
-func (e *htmlB) Style(k, v string) HTMLB {
-	e.setAttr("style", k+":"+v)
+func (e *htmlB) Style(k, format string, v ...any) HTMLB {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -4226,7 +4226,7 @@ type HTMLBase interface {
 	Spellcheck(v bool) HTMLBase
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLBase
+	Style(k, format string, v ...any) HTMLBase
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLBase
@@ -4444,8 +4444,8 @@ func (e *htmlBase) Spellcheck(v bool) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Style(k, v string) HTMLBase {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBase) Style(k, format string, v ...any) HTMLBase {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -4702,7 +4702,7 @@ type HTMLBdi interface {
 	Spellcheck(v bool) HTMLBdi
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLBdi
+	Style(k, format string, v ...any) HTMLBdi
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLBdi
@@ -4925,8 +4925,8 @@ func (e *htmlBdi) Spellcheck(v bool) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) Style(k, v string) HTMLBdi {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBdi) Style(k, format string, v ...any) HTMLBdi {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -5178,7 +5178,7 @@ type HTMLBdo interface {
 	Spellcheck(v bool) HTMLBdo
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLBdo
+	Style(k, format string, v ...any) HTMLBdo
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLBdo
@@ -5401,8 +5401,8 @@ func (e *htmlBdo) Spellcheck(v bool) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) Style(k, v string) HTMLBdo {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBdo) Style(k, format string, v ...any) HTMLBdo {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -5657,7 +5657,7 @@ type HTMLBlockquote interface {
 	Spellcheck(v bool) HTMLBlockquote
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLBlockquote
+	Style(k, format string, v ...any) HTMLBlockquote
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLBlockquote
@@ -5885,8 +5885,8 @@ func (e *htmlBlockquote) Spellcheck(v bool) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Style(k, v string) HTMLBlockquote {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBlockquote) Style(k, format string, v ...any) HTMLBlockquote {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -6131,7 +6131,7 @@ type HTMLBody interface {
 	Spellcheck(v bool) HTMLBody
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLBody
+	Style(k, format string, v ...any) HTMLBody
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLBody
@@ -6391,8 +6391,8 @@ func (e *htmlBody) Spellcheck(v bool) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) Style(k, v string) HTMLBody {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBody) Style(k, format string, v ...any) HTMLBody {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -6710,7 +6710,7 @@ type HTMLBr interface {
 	Spellcheck(v bool) HTMLBr
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLBr
+	Style(k, format string, v ...any) HTMLBr
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLBr
@@ -6920,8 +6920,8 @@ func (e *htmlBr) Spellcheck(v bool) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) Style(k, v string) HTMLBr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBr) Style(k, format string, v ...any) HTMLBr {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -7200,7 +7200,7 @@ type HTMLButton interface {
 	Spellcheck(v bool) HTMLButton
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLButton
+	Style(k, format string, v ...any) HTMLButton
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLButton
@@ -7474,8 +7474,8 @@ func (e *htmlButton) Spellcheck(v bool) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Style(k, v string) HTMLButton {
-	e.setAttr("style", k+":"+v)
+func (e *htmlButton) Style(k, format string, v ...any) HTMLButton {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -7740,7 +7740,7 @@ type HTMLCanvas interface {
 	Spellcheck(v bool) HTMLCanvas
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLCanvas
+	Style(k, format string, v ...any) HTMLCanvas
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLCanvas
@@ -7971,8 +7971,8 @@ func (e *htmlCanvas) Spellcheck(v bool) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) Style(k, v string) HTMLCanvas {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCanvas) Style(k, format string, v ...any) HTMLCanvas {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -8229,7 +8229,7 @@ type HTMLCaption interface {
 	Spellcheck(v bool) HTMLCaption
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLCaption
+	Style(k, format string, v ...any) HTMLCaption
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLCaption
@@ -8452,8 +8452,8 @@ func (e *htmlCaption) Spellcheck(v bool) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) Style(k, v string) HTMLCaption {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCaption) Style(k, format string, v ...any) HTMLCaption {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -8705,7 +8705,7 @@ type HTMLCite interface {
 	Spellcheck(v bool) HTMLCite
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLCite
+	Style(k, format string, v ...any) HTMLCite
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLCite
@@ -8928,8 +8928,8 @@ func (e *htmlCite) Spellcheck(v bool) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) Style(k, v string) HTMLCite {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCite) Style(k, format string, v ...any) HTMLCite {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -9181,7 +9181,7 @@ type HTMLCode interface {
 	Spellcheck(v bool) HTMLCode
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLCode
+	Style(k, format string, v ...any) HTMLCode
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLCode
@@ -9404,8 +9404,8 @@ func (e *htmlCode) Spellcheck(v bool) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) Style(k, v string) HTMLCode {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCode) Style(k, format string, v ...any) HTMLCode {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -9651,7 +9651,7 @@ type HTMLCol interface {
 	Spellcheck(v bool) HTMLCol
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLCol
+	Style(k, format string, v ...any) HTMLCol
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLCol
@@ -9866,8 +9866,8 @@ func (e *htmlCol) Spellcheck(v bool) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) Style(k, v string) HTMLCol {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCol) Style(k, format string, v ...any) HTMLCol {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -10122,7 +10122,7 @@ type HTMLColGroup interface {
 	Spellcheck(v bool) HTMLColGroup
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLColGroup
+	Style(k, format string, v ...any) HTMLColGroup
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLColGroup
@@ -10350,8 +10350,8 @@ func (e *htmlColGroup) Spellcheck(v bool) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) Style(k, v string) HTMLColGroup {
-	e.setAttr("style", k+":"+v)
+func (e *htmlColGroup) Style(k, format string, v ...any) HTMLColGroup {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -10603,7 +10603,7 @@ type HTMLData interface {
 	Spellcheck(v bool) HTMLData
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLData
+	Style(k, format string, v ...any) HTMLData
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLData
@@ -10727,8 +10727,8 @@ func (e *htmlData) Spellcheck(v bool) HTMLData {
 	return e
 }
 
-func (e *htmlData) Style(k, v string) HTMLData {
-	e.setAttr("style", k+":"+v)
+func (e *htmlData) Style(k, format string, v ...any) HTMLData {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -10815,7 +10815,7 @@ type HTMLDataList interface {
 	Spellcheck(v bool) HTMLDataList
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDataList
+	Style(k, format string, v ...any) HTMLDataList
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDataList
@@ -11038,8 +11038,8 @@ func (e *htmlDataList) Spellcheck(v bool) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) Style(k, v string) HTMLDataList {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDataList) Style(k, format string, v ...any) HTMLDataList {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -11291,7 +11291,7 @@ type HTMLDd interface {
 	Spellcheck(v bool) HTMLDd
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDd
+	Style(k, format string, v ...any) HTMLDd
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDd
@@ -11514,8 +11514,8 @@ func (e *htmlDd) Spellcheck(v bool) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) Style(k, v string) HTMLDd {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDd) Style(k, format string, v ...any) HTMLDd {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -11773,7 +11773,7 @@ type HTMLDel interface {
 	Spellcheck(v bool) HTMLDel
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDel
+	Style(k, format string, v ...any) HTMLDel
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDel
@@ -12006,8 +12006,8 @@ func (e *htmlDel) Spellcheck(v bool) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) Style(k, v string) HTMLDel {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDel) Style(k, format string, v ...any) HTMLDel {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -12262,7 +12262,7 @@ type HTMLDetails interface {
 	Spellcheck(v bool) HTMLDetails
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDetails
+	Style(k, format string, v ...any) HTMLDetails
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDetails
@@ -12493,8 +12493,8 @@ func (e *htmlDetails) Spellcheck(v bool) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) Style(k, v string) HTMLDetails {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDetails) Style(k, format string, v ...any) HTMLDetails {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -12751,7 +12751,7 @@ type HTMLDfn interface {
 	Spellcheck(v bool) HTMLDfn
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDfn
+	Style(k, format string, v ...any) HTMLDfn
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDfn
@@ -12974,8 +12974,8 @@ func (e *htmlDfn) Spellcheck(v bool) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) Style(k, v string) HTMLDfn {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDfn) Style(k, format string, v ...any) HTMLDfn {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -13230,7 +13230,7 @@ type HTMLDialog interface {
 	Spellcheck(v bool) HTMLDialog
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDialog
+	Style(k, format string, v ...any) HTMLDialog
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDialog
@@ -13458,8 +13458,8 @@ func (e *htmlDialog) Spellcheck(v bool) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) Style(k, v string) HTMLDialog {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDialog) Style(k, format string, v ...any) HTMLDialog {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -13711,7 +13711,7 @@ type HTMLDiv interface {
 	Spellcheck(v bool) HTMLDiv
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDiv
+	Style(k, format string, v ...any) HTMLDiv
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDiv
@@ -13934,8 +13934,8 @@ func (e *htmlDiv) Spellcheck(v bool) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) Style(k, v string) HTMLDiv {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDiv) Style(k, format string, v ...any) HTMLDiv {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -14187,7 +14187,7 @@ type HTMLDl interface {
 	Spellcheck(v bool) HTMLDl
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDl
+	Style(k, format string, v ...any) HTMLDl
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDl
@@ -14410,8 +14410,8 @@ func (e *htmlDl) Spellcheck(v bool) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) Style(k, v string) HTMLDl {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDl) Style(k, format string, v ...any) HTMLDl {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -14663,7 +14663,7 @@ type HTMLDt interface {
 	Spellcheck(v bool) HTMLDt
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLDt
+	Style(k, format string, v ...any) HTMLDt
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLDt
@@ -14886,8 +14886,8 @@ func (e *htmlDt) Spellcheck(v bool) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) Style(k, v string) HTMLDt {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDt) Style(k, format string, v ...any) HTMLDt {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -15139,7 +15139,7 @@ type HTMLElem interface {
 	Spellcheck(v bool) HTMLElem
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLElem
+	Style(k, format string, v ...any) HTMLElem
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLElem
@@ -15365,8 +15365,8 @@ func (e *htmlElem) Spellcheck(v bool) HTMLElem {
 	return e
 }
 
-func (e *htmlElem) Style(k, v string) HTMLElem {
-	e.setAttr("style", k+":"+v)
+func (e *htmlElem) Style(k, format string, v ...any) HTMLElem {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -15614,7 +15614,7 @@ type HTMLElemSelfClosing interface {
 	Spellcheck(v bool) HTMLElemSelfClosing
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLElemSelfClosing
+	Style(k, format string, v ...any) HTMLElemSelfClosing
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLElemSelfClosing
@@ -15827,8 +15827,8 @@ func (e *htmlElemSelfClosing) Spellcheck(v bool) HTMLElemSelfClosing {
 	return e
 }
 
-func (e *htmlElemSelfClosing) Style(k, v string) HTMLElemSelfClosing {
-	e.setAttr("style", k+":"+v)
+func (e *htmlElemSelfClosing) Style(k, format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -16085,7 +16085,7 @@ type HTMLEm interface {
 	Spellcheck(v bool) HTMLEm
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLEm
+	Style(k, format string, v ...any) HTMLEm
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLEm
@@ -16308,8 +16308,8 @@ func (e *htmlEm) Spellcheck(v bool) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) Style(k, v string) HTMLEm {
-	e.setAttr("style", k+":"+v)
+func (e *htmlEm) Style(k, format string, v ...any) HTMLEm {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -16558,7 +16558,7 @@ type HTMLEmbed interface {
 	Src(format string, v ...any) HTMLEmbed
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLEmbed
+	Style(k, format string, v ...any) HTMLEmbed
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLEmbed
@@ -16853,8 +16853,8 @@ func (e *htmlEmbed) Src(format string, v ...any) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Style(k, v string) HTMLEmbed {
-	e.setAttr("style", k+":"+v)
+func (e *htmlEmbed) Style(k, format string, v ...any) HTMLEmbed {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -17240,7 +17240,7 @@ type HTMLFieldSet interface {
 	Spellcheck(v bool) HTMLFieldSet
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLFieldSet
+	Style(k, format string, v ...any) HTMLFieldSet
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLFieldSet
@@ -17478,8 +17478,8 @@ func (e *htmlFieldSet) Spellcheck(v bool) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Style(k, v string) HTMLFieldSet {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFieldSet) Style(k, format string, v ...any) HTMLFieldSet {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -17731,7 +17731,7 @@ type HTMLFigCaption interface {
 	Spellcheck(v bool) HTMLFigCaption
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLFigCaption
+	Style(k, format string, v ...any) HTMLFigCaption
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLFigCaption
@@ -17954,8 +17954,8 @@ func (e *htmlFigCaption) Spellcheck(v bool) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) Style(k, v string) HTMLFigCaption {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFigCaption) Style(k, format string, v ...any) HTMLFigCaption {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -18207,7 +18207,7 @@ type HTMLFigure interface {
 	Spellcheck(v bool) HTMLFigure
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLFigure
+	Style(k, format string, v ...any) HTMLFigure
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLFigure
@@ -18430,8 +18430,8 @@ func (e *htmlFigure) Spellcheck(v bool) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) Style(k, v string) HTMLFigure {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFigure) Style(k, format string, v ...any) HTMLFigure {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -18683,7 +18683,7 @@ type HTMLFooter interface {
 	Spellcheck(v bool) HTMLFooter
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLFooter
+	Style(k, format string, v ...any) HTMLFooter
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLFooter
@@ -18906,8 +18906,8 @@ func (e *htmlFooter) Spellcheck(v bool) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) Style(k, v string) HTMLFooter {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFooter) Style(k, format string, v ...any) HTMLFooter {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -19180,7 +19180,7 @@ type HTMLForm interface {
 	Spellcheck(v bool) HTMLForm
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLForm
+	Style(k, format string, v ...any) HTMLForm
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLForm
@@ -19446,8 +19446,8 @@ func (e *htmlForm) Spellcheck(v bool) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Style(k, v string) HTMLForm {
-	e.setAttr("style", k+":"+v)
+func (e *htmlForm) Style(k, format string, v ...any) HTMLForm {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -19704,7 +19704,7 @@ type HTMLH1 interface {
 	Spellcheck(v bool) HTMLH1
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLH1
+	Style(k, format string, v ...any) HTMLH1
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLH1
@@ -19927,8 +19927,8 @@ func (e *htmlH1) Spellcheck(v bool) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) Style(k, v string) HTMLH1 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH1) Style(k, format string, v ...any) HTMLH1 {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -20180,7 +20180,7 @@ type HTMLH2 interface {
 	Spellcheck(v bool) HTMLH2
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLH2
+	Style(k, format string, v ...any) HTMLH2
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLH2
@@ -20403,8 +20403,8 @@ func (e *htmlH2) Spellcheck(v bool) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) Style(k, v string) HTMLH2 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH2) Style(k, format string, v ...any) HTMLH2 {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -20656,7 +20656,7 @@ type HTMLH3 interface {
 	Spellcheck(v bool) HTMLH3
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLH3
+	Style(k, format string, v ...any) HTMLH3
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLH3
@@ -20879,8 +20879,8 @@ func (e *htmlH3) Spellcheck(v bool) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) Style(k, v string) HTMLH3 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH3) Style(k, format string, v ...any) HTMLH3 {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -21132,7 +21132,7 @@ type HTMLH4 interface {
 	Spellcheck(v bool) HTMLH4
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLH4
+	Style(k, format string, v ...any) HTMLH4
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLH4
@@ -21355,8 +21355,8 @@ func (e *htmlH4) Spellcheck(v bool) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) Style(k, v string) HTMLH4 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH4) Style(k, format string, v ...any) HTMLH4 {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -21608,7 +21608,7 @@ type HTMLH5 interface {
 	Spellcheck(v bool) HTMLH5
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLH5
+	Style(k, format string, v ...any) HTMLH5
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLH5
@@ -21831,8 +21831,8 @@ func (e *htmlH5) Spellcheck(v bool) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) Style(k, v string) HTMLH5 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH5) Style(k, format string, v ...any) HTMLH5 {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -22084,7 +22084,7 @@ type HTMLH6 interface {
 	Spellcheck(v bool) HTMLH6
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLH6
+	Style(k, format string, v ...any) HTMLH6
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLH6
@@ -22307,8 +22307,8 @@ func (e *htmlH6) Spellcheck(v bool) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) Style(k, v string) HTMLH6 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH6) Style(k, format string, v ...any) HTMLH6 {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -22560,7 +22560,7 @@ type HTMLHead interface {
 	Spellcheck(v bool) HTMLHead
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLHead
+	Style(k, format string, v ...any) HTMLHead
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLHead
@@ -22681,8 +22681,8 @@ func (e *htmlHead) Spellcheck(v bool) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) Style(k, v string) HTMLHead {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHead) Style(k, format string, v ...any) HTMLHead {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -22764,7 +22764,7 @@ type HTMLHeader interface {
 	Spellcheck(v bool) HTMLHeader
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLHeader
+	Style(k, format string, v ...any) HTMLHeader
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLHeader
@@ -22987,8 +22987,8 @@ func (e *htmlHeader) Spellcheck(v bool) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) Style(k, v string) HTMLHeader {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHeader) Style(k, format string, v ...any) HTMLHeader {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -23231,7 +23231,7 @@ type HTMLHr interface {
 	Spellcheck(v bool) HTMLHr
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLHr
+	Style(k, format string, v ...any) HTMLHr
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLHr
@@ -23441,8 +23441,8 @@ func (e *htmlHr) Spellcheck(v bool) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) Style(k, v string) HTMLHr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHr) Style(k, format string, v ...any) HTMLHr {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -23687,7 +23687,7 @@ type HTMLHtml interface {
 	Spellcheck(v bool) HTMLHtml
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLHtml
+	Style(k, format string, v ...any) HTMLHtml
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLHtml
@@ -23800,8 +23800,8 @@ func (e *htmlHtml) Spellcheck(v bool) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) Style(k, v string) HTMLHtml {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHtml) Style(k, format string, v ...any) HTMLHtml {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -23883,7 +23883,7 @@ type HTMLI interface {
 	Spellcheck(v bool) HTMLI
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLI
+	Style(k, format string, v ...any) HTMLI
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLI
@@ -24106,8 +24106,8 @@ func (e *htmlI) Spellcheck(v bool) HTMLI {
 	return e
 }
 
-func (e *htmlI) Style(k, v string) HTMLI {
-	e.setAttr("style", k+":"+v)
+func (e *htmlI) Style(k, format string, v ...any) HTMLI {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -24389,7 +24389,7 @@ type HTMLIFrame interface {
 	SrcDoc(format string, v ...any) HTMLIFrame
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLIFrame
+	Style(k, format string, v ...any) HTMLIFrame
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLIFrame
@@ -24678,8 +24678,8 @@ func (e *htmlIFrame) SrcDoc(format string, v ...any) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Style(k, v string) HTMLIFrame {
-	e.setAttr("style", k+":"+v)
+func (e *htmlIFrame) Style(k, format string, v ...any) HTMLIFrame {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -24956,7 +24956,7 @@ type HTMLImg interface {
 	SrcSet(format string, v ...any) HTMLImg
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLImg
+	Style(k, format string, v ...any) HTMLImg
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLImg
@@ -25284,8 +25284,8 @@ func (e *htmlImg) SrcSet(format string, v ...any) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Style(k, v string) HTMLImg {
-	e.setAttr("style", k+":"+v)
+func (e *htmlImg) Style(k, format string, v ...any) HTMLImg {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -25742,7 +25742,7 @@ type HTMLInput interface {
 	Step(v float64) HTMLInput
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLInput
+	Style(k, format string, v ...any) HTMLInput
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLInput
@@ -26109,8 +26109,8 @@ func (e *htmlInput) Step(v float64) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Style(k, v string) HTMLInput {
-	e.setAttr("style", k+":"+v)
+func (e *htmlInput) Style(k, format string, v ...any) HTMLInput {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -26382,7 +26382,7 @@ type HTMLIns interface {
 	Spellcheck(v bool) HTMLIns
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLIns
+	Style(k, format string, v ...any) HTMLIns
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLIns
@@ -26605,8 +26605,8 @@ func (e *htmlIns) Spellcheck(v bool) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) Style(k, v string) HTMLIns {
-	e.setAttr("style", k+":"+v)
+func (e *htmlIns) Style(k, format string, v ...any) HTMLIns {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -26858,7 +26858,7 @@ type HTMLKbd interface {
 	Spellcheck(v bool) HTMLKbd
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLKbd
+	Style(k, format string, v ...any) HTMLKbd
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLKbd
@@ -27081,8 +27081,8 @@ func (e *htmlKbd) Spellcheck(v bool) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) Style(k, v string) HTMLKbd {
-	e.setAttr("style", k+":"+v)
+func (e *htmlKbd) Style(k, format string, v ...any) HTMLKbd {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -27340,7 +27340,7 @@ type HTMLLabel interface {
 	Spellcheck(v bool) HTMLLabel
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLLabel
+	Style(k, format string, v ...any) HTMLLabel
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLLabel
@@ -27573,8 +27573,8 @@ func (e *htmlLabel) Spellcheck(v bool) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) Style(k, v string) HTMLLabel {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLabel) Style(k, format string, v ...any) HTMLLabel {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -27826,7 +27826,7 @@ type HTMLLegend interface {
 	Spellcheck(v bool) HTMLLegend
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLLegend
+	Style(k, format string, v ...any) HTMLLegend
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLLegend
@@ -28049,8 +28049,8 @@ func (e *htmlLegend) Spellcheck(v bool) HTMLLegend {
 	return e
 }
 
-func (e *htmlLegend) Style(k, v string) HTMLLegend {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLegend) Style(k, format string, v ...any) HTMLLegend {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -28302,7 +28302,7 @@ type HTMLLi interface {
 	Spellcheck(v bool) HTMLLi
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLLi
+	Style(k, format string, v ...any) HTMLLi
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLLi
@@ -28528,8 +28528,8 @@ func (e *htmlLi) Spellcheck(v bool) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) Style(k, v string) HTMLLi {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLi) Style(k, format string, v ...any) HTMLLi {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -28801,7 +28801,7 @@ type HTMLLink interface {
 	Spellcheck(v bool) HTMLLink
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLLink
+	Style(k, format string, v ...any) HTMLLink
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLLink
@@ -29057,8 +29057,8 @@ func (e *htmlLink) Spellcheck(v bool) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Style(k, v string) HTMLLink {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLink) Style(k, format string, v ...any) HTMLLink {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -29320,7 +29320,7 @@ type HTMLMain interface {
 	Spellcheck(v bool) HTMLMain
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLMain
+	Style(k, format string, v ...any) HTMLMain
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLMain
@@ -29543,8 +29543,8 @@ func (e *htmlMain) Spellcheck(v bool) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) Style(k, v string) HTMLMain {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMain) Style(k, format string, v ...any) HTMLMain {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -29799,7 +29799,7 @@ type HTMLMap interface {
 	Spellcheck(v bool) HTMLMap
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLMap
+	Style(k, format string, v ...any) HTMLMap
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLMap
@@ -30027,8 +30027,8 @@ func (e *htmlMap) Spellcheck(v bool) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) Style(k, v string) HTMLMap {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMap) Style(k, format string, v ...any) HTMLMap {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -30280,7 +30280,7 @@ type HTMLMark interface {
 	Spellcheck(v bool) HTMLMark
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLMark
+	Style(k, format string, v ...any) HTMLMark
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLMark
@@ -30503,8 +30503,8 @@ func (e *htmlMark) Spellcheck(v bool) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) Style(k, v string) HTMLMark {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMark) Style(k, format string, v ...any) HTMLMark {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -30762,7 +30762,7 @@ type HTMLMeta interface {
 	Spellcheck(v bool) HTMLMeta
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLMeta
+	Style(k, format string, v ...any) HTMLMeta
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLMeta
@@ -30895,8 +30895,8 @@ func (e *htmlMeta) Spellcheck(v bool) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Style(k, v string) HTMLMeta {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMeta) Style(k, format string, v ...any) HTMLMeta {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -30996,7 +30996,7 @@ type HTMLMeter interface {
 	Spellcheck(v bool) HTMLMeter
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLMeter
+	Style(k, format string, v ...any) HTMLMeter
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLMeter
@@ -31252,8 +31252,8 @@ func (e *htmlMeter) Spellcheck(v bool) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Style(k, v string) HTMLMeter {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMeter) Style(k, format string, v ...any) HTMLMeter {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -31510,7 +31510,7 @@ type HTMLNav interface {
 	Spellcheck(v bool) HTMLNav
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLNav
+	Style(k, format string, v ...any) HTMLNav
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLNav
@@ -31733,8 +31733,8 @@ func (e *htmlNav) Spellcheck(v bool) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) Style(k, v string) HTMLNav {
-	e.setAttr("style", k+":"+v)
+func (e *htmlNav) Style(k, format string, v ...any) HTMLNav {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -31986,7 +31986,7 @@ type HTMLNoScript interface {
 	Spellcheck(v bool) HTMLNoScript
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLNoScript
+	Style(k, format string, v ...any) HTMLNoScript
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLNoScript
@@ -32107,8 +32107,8 @@ func (e *htmlNoScript) Spellcheck(v bool) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) Style(k, v string) HTMLNoScript {
-	e.setAttr("style", k+":"+v)
+func (e *htmlNoScript) Style(k, format string, v ...any) HTMLNoScript {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -32202,7 +32202,7 @@ type HTMLObject interface {
 	Spellcheck(v bool) HTMLObject
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLObject
+	Style(k, format string, v ...any) HTMLObject
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLObject
@@ -32523,8 +32523,8 @@ func (e *htmlObject) Spellcheck(v bool) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Style(k, v string) HTMLObject {
-	e.setAttr("style", k+":"+v)
+func (e *htmlObject) Style(k, format string, v ...any) HTMLObject {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -32912,7 +32912,7 @@ type HTMLOl interface {
 	Start(v int) HTMLOl
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLOl
+	Style(k, format string, v ...any) HTMLOl
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLOl
@@ -33148,8 +33148,8 @@ func (e *htmlOl) Start(v int) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Style(k, v string) HTMLOl {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOl) Style(k, format string, v ...any) HTMLOl {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -33412,7 +33412,7 @@ type HTMLOptGroup interface {
 	Spellcheck(v bool) HTMLOptGroup
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLOptGroup
+	Style(k, format string, v ...any) HTMLOptGroup
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLOptGroup
@@ -33645,8 +33645,8 @@ func (e *htmlOptGroup) Spellcheck(v bool) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) Style(k, v string) HTMLOptGroup {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOptGroup) Style(k, format string, v ...any) HTMLOptGroup {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -33907,7 +33907,7 @@ type HTMLOption interface {
 	Spellcheck(v bool) HTMLOption
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLOption
+	Style(k, format string, v ...any) HTMLOption
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLOption
@@ -34148,8 +34148,8 @@ func (e *htmlOption) Spellcheck(v bool) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) Style(k, v string) HTMLOption {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOption) Style(k, format string, v ...any) HTMLOption {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -34415,7 +34415,7 @@ type HTMLOutput interface {
 	Spellcheck(v bool) HTMLOutput
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLOutput
+	Style(k, format string, v ...any) HTMLOutput
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLOutput
@@ -34653,8 +34653,8 @@ func (e *htmlOutput) Spellcheck(v bool) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) Style(k, v string) HTMLOutput {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOutput) Style(k, format string, v ...any) HTMLOutput {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -34906,7 +34906,7 @@ type HTMLP interface {
 	Spellcheck(v bool) HTMLP
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLP
+	Style(k, format string, v ...any) HTMLP
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLP
@@ -35129,8 +35129,8 @@ func (e *htmlP) Spellcheck(v bool) HTMLP {
 	return e
 }
 
-func (e *htmlP) Style(k, v string) HTMLP {
-	e.setAttr("style", k+":"+v)
+func (e *htmlP) Style(k, format string, v ...any) HTMLP {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -35376,7 +35376,7 @@ type HTMLParam interface {
 	Spellcheck(v bool) HTMLParam
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLParam
+	Style(k, format string, v ...any) HTMLParam
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLParam
@@ -35594,8 +35594,8 @@ func (e *htmlParam) Spellcheck(v bool) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) Style(k, v string) HTMLParam {
-	e.setAttr("style", k+":"+v)
+func (e *htmlParam) Style(k, format string, v ...any) HTMLParam {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -35852,7 +35852,7 @@ type HTMLPicture interface {
 	Spellcheck(v bool) HTMLPicture
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLPicture
+	Style(k, format string, v ...any) HTMLPicture
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLPicture
@@ -36075,8 +36075,8 @@ func (e *htmlPicture) Spellcheck(v bool) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) Style(k, v string) HTMLPicture {
-	e.setAttr("style", k+":"+v)
+func (e *htmlPicture) Style(k, format string, v ...any) HTMLPicture {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -36328,7 +36328,7 @@ type HTMLPre interface {
 	Spellcheck(v bool) HTMLPre
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLPre
+	Style(k, format string, v ...any) HTMLPre
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLPre
@@ -36551,8 +36551,8 @@ func (e *htmlPre) Spellcheck(v bool) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) Style(k, v string) HTMLPre {
-	e.setAttr("style", k+":"+v)
+func (e *htmlPre) Style(k, format string, v ...any) HTMLPre {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -36807,7 +36807,7 @@ type HTMLProgress interface {
 	Spellcheck(v bool) HTMLProgress
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLProgress
+	Style(k, format string, v ...any) HTMLProgress
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLProgress
@@ -37038,8 +37038,8 @@ func (e *htmlProgress) Spellcheck(v bool) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Style(k, v string) HTMLProgress {
-	e.setAttr("style", k+":"+v)
+func (e *htmlProgress) Style(k, format string, v ...any) HTMLProgress {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -37299,7 +37299,7 @@ type HTMLQ interface {
 	Spellcheck(v bool) HTMLQ
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLQ
+	Style(k, format string, v ...any) HTMLQ
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLQ
@@ -37527,8 +37527,8 @@ func (e *htmlQ) Spellcheck(v bool) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Style(k, v string) HTMLQ {
-	e.setAttr("style", k+":"+v)
+func (e *htmlQ) Style(k, format string, v ...any) HTMLQ {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -37780,7 +37780,7 @@ type HTMLRp interface {
 	Spellcheck(v bool) HTMLRp
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLRp
+	Style(k, format string, v ...any) HTMLRp
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLRp
@@ -38003,8 +38003,8 @@ func (e *htmlRp) Spellcheck(v bool) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) Style(k, v string) HTMLRp {
-	e.setAttr("style", k+":"+v)
+func (e *htmlRp) Style(k, format string, v ...any) HTMLRp {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -38256,7 +38256,7 @@ type HTMLRt interface {
 	Spellcheck(v bool) HTMLRt
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLRt
+	Style(k, format string, v ...any) HTMLRt
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLRt
@@ -38479,8 +38479,8 @@ func (e *htmlRt) Spellcheck(v bool) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) Style(k, v string) HTMLRt {
-	e.setAttr("style", k+":"+v)
+func (e *htmlRt) Style(k, format string, v ...any) HTMLRt {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -38732,7 +38732,7 @@ type HTMLRuby interface {
 	Spellcheck(v bool) HTMLRuby
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLRuby
+	Style(k, format string, v ...any) HTMLRuby
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLRuby
@@ -38955,8 +38955,8 @@ func (e *htmlRuby) Spellcheck(v bool) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) Style(k, v string) HTMLRuby {
-	e.setAttr("style", k+":"+v)
+func (e *htmlRuby) Style(k, format string, v ...any) HTMLRuby {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -39208,7 +39208,7 @@ type HTMLS interface {
 	Spellcheck(v bool) HTMLS
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLS
+	Style(k, format string, v ...any) HTMLS
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLS
@@ -39431,8 +39431,8 @@ func (e *htmlS) Spellcheck(v bool) HTMLS {
 	return e
 }
 
-func (e *htmlS) Style(k, v string) HTMLS {
-	e.setAttr("style", k+":"+v)
+func (e *htmlS) Style(k, format string, v ...any) HTMLS {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -39684,7 +39684,7 @@ type HTMLSamp interface {
 	Spellcheck(v bool) HTMLSamp
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSamp
+	Style(k, format string, v ...any) HTMLSamp
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSamp
@@ -39907,8 +39907,8 @@ func (e *htmlSamp) Spellcheck(v bool) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) Style(k, v string) HTMLSamp {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSamp) Style(k, format string, v ...any) HTMLSamp {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -40175,7 +40175,7 @@ type HTMLScript interface {
 	Src(format string, v ...any) HTMLScript
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLScript
+	Style(k, format string, v ...any) HTMLScript
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLScript
@@ -40327,8 +40327,8 @@ func (e *htmlScript) Src(format string, v ...any) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Style(k, v string) HTMLScript {
-	e.setAttr("style", k+":"+v)
+func (e *htmlScript) Style(k, format string, v ...any) HTMLScript {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -40420,7 +40420,7 @@ type HTMLSection interface {
 	Spellcheck(v bool) HTMLSection
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSection
+	Style(k, format string, v ...any) HTMLSection
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSection
@@ -40643,8 +40643,8 @@ func (e *htmlSection) Spellcheck(v bool) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) Style(k, v string) HTMLSection {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSection) Style(k, format string, v ...any) HTMLSection {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -40917,7 +40917,7 @@ type HTMLSelect interface {
 	Spellcheck(v bool) HTMLSelect
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSelect
+	Style(k, format string, v ...any) HTMLSelect
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSelect
@@ -41175,8 +41175,8 @@ func (e *htmlSelect) Spellcheck(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Style(k, v string) HTMLSelect {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSelect) Style(k, format string, v ...any) HTMLSelect {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -41428,7 +41428,7 @@ type HTMLSmall interface {
 	Spellcheck(v bool) HTMLSmall
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSmall
+	Style(k, format string, v ...any) HTMLSmall
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSmall
@@ -41651,8 +41651,8 @@ func (e *htmlSmall) Spellcheck(v bool) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) Style(k, v string) HTMLSmall {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSmall) Style(k, format string, v ...any) HTMLSmall {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -41907,7 +41907,7 @@ type HTMLSource interface {
 	SrcSet(format string, v ...any) HTMLSource
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSource
+	Style(k, format string, v ...any) HTMLSource
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSource
@@ -42140,8 +42140,8 @@ func (e *htmlSource) SrcSet(format string, v ...any) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Style(k, v string) HTMLSource {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSource) Style(k, format string, v ...any) HTMLSource {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -42398,7 +42398,7 @@ type HTMLSpan interface {
 	Spellcheck(v bool) HTMLSpan
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSpan
+	Style(k, format string, v ...any) HTMLSpan
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSpan
@@ -42621,8 +42621,8 @@ func (e *htmlSpan) Spellcheck(v bool) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) Style(k, v string) HTMLSpan {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSpan) Style(k, format string, v ...any) HTMLSpan {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -42874,7 +42874,7 @@ type HTMLStrong interface {
 	Spellcheck(v bool) HTMLStrong
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLStrong
+	Style(k, format string, v ...any) HTMLStrong
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLStrong
@@ -43097,8 +43097,8 @@ func (e *htmlStrong) Spellcheck(v bool) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) Style(k, v string) HTMLStrong {
-	e.setAttr("style", k+":"+v)
+func (e *htmlStrong) Style(k, format string, v ...any) HTMLStrong {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -43353,7 +43353,7 @@ type HTMLStyle interface {
 	Spellcheck(v bool) HTMLStyle
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLStyle
+	Style(k, format string, v ...any) HTMLStyle
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLStyle
@@ -43587,8 +43587,8 @@ func (e *htmlStyle) Spellcheck(v bool) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) Style(k, v string) HTMLStyle {
-	e.setAttr("style", k+":"+v)
+func (e *htmlStyle) Style(k, format string, v ...any) HTMLStyle {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -43850,7 +43850,7 @@ type HTMLSub interface {
 	Spellcheck(v bool) HTMLSub
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSub
+	Style(k, format string, v ...any) HTMLSub
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSub
@@ -44073,8 +44073,8 @@ func (e *htmlSub) Spellcheck(v bool) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) Style(k, v string) HTMLSub {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSub) Style(k, format string, v ...any) HTMLSub {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -44326,7 +44326,7 @@ type HTMLSummary interface {
 	Spellcheck(v bool) HTMLSummary
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSummary
+	Style(k, format string, v ...any) HTMLSummary
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSummary
@@ -44549,8 +44549,8 @@ func (e *htmlSummary) Spellcheck(v bool) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) Style(k, v string) HTMLSummary {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSummary) Style(k, format string, v ...any) HTMLSummary {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -44802,7 +44802,7 @@ type HTMLSup interface {
 	Spellcheck(v bool) HTMLSup
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSup
+	Style(k, format string, v ...any) HTMLSup
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLSup
@@ -45025,8 +45025,8 @@ func (e *htmlSup) Spellcheck(v bool) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) Style(k, v string) HTMLSup {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSup) Style(k, format string, v ...any) HTMLSup {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -45278,7 +45278,7 @@ type HTMLTable interface {
 	Spellcheck(v bool) HTMLTable
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTable
+	Style(k, format string, v ...any) HTMLTable
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTable
@@ -45501,8 +45501,8 @@ func (e *htmlTable) Spellcheck(v bool) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) Style(k, v string) HTMLTable {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTable) Style(k, format string, v ...any) HTMLTable {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -45754,7 +45754,7 @@ type HTMLTBody interface {
 	Spellcheck(v bool) HTMLTBody
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTBody
+	Style(k, format string, v ...any) HTMLTBody
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTBody
@@ -45977,8 +45977,8 @@ func (e *htmlTBody) Spellcheck(v bool) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) Style(k, v string) HTMLTBody {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTBody) Style(k, format string, v ...any) HTMLTBody {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -46239,7 +46239,7 @@ type HTMLTd interface {
 	Spellcheck(v bool) HTMLTd
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTd
+	Style(k, format string, v ...any) HTMLTd
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTd
@@ -46477,8 +46477,8 @@ func (e *htmlTd) Spellcheck(v bool) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Style(k, v string) HTMLTd {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTd) Style(k, format string, v ...any) HTMLTd {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -46730,7 +46730,7 @@ type HTMLTemplate interface {
 	Spellcheck(v bool) HTMLTemplate
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTemplate
+	Style(k, format string, v ...any) HTMLTemplate
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTemplate
@@ -46851,8 +46851,8 @@ func (e *htmlTemplate) Spellcheck(v bool) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) Style(k, v string) HTMLTemplate {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTemplate) Style(k, format string, v ...any) HTMLTemplate {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -46967,7 +46967,7 @@ type HTMLTextarea interface {
 	Spellcheck(v bool) HTMLTextarea
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTextarea
+	Style(k, format string, v ...any) HTMLTextarea
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTextarea
@@ -47250,8 +47250,8 @@ func (e *htmlTextarea) Spellcheck(v bool) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Style(k, v string) HTMLTextarea {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTextarea) Style(k, format string, v ...any) HTMLTextarea {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -47508,7 +47508,7 @@ type HTMLTFoot interface {
 	Spellcheck(v bool) HTMLTFoot
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTFoot
+	Style(k, format string, v ...any) HTMLTFoot
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTFoot
@@ -47731,8 +47731,8 @@ func (e *htmlTFoot) Spellcheck(v bool) HTMLTFoot {
 	return e
 }
 
-func (e *htmlTFoot) Style(k, v string) HTMLTFoot {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTFoot) Style(k, format string, v ...any) HTMLTFoot {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -47999,7 +47999,7 @@ type HTMLTh interface {
 	Spellcheck(v bool) HTMLTh
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTh
+	Style(k, format string, v ...any) HTMLTh
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTh
@@ -48247,8 +48247,8 @@ func (e *htmlTh) Spellcheck(v bool) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Style(k, v string) HTMLTh {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTh) Style(k, format string, v ...any) HTMLTh {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -48500,7 +48500,7 @@ type HTMLTHead interface {
 	Spellcheck(v bool) HTMLTHead
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTHead
+	Style(k, format string, v ...any) HTMLTHead
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTHead
@@ -48723,8 +48723,8 @@ func (e *htmlTHead) Spellcheck(v bool) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) Style(k, v string) HTMLTHead {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTHead) Style(k, format string, v ...any) HTMLTHead {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -48979,7 +48979,7 @@ type HTMLTime interface {
 	Spellcheck(v bool) HTMLTime
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTime
+	Style(k, format string, v ...any) HTMLTime
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTime
@@ -49207,8 +49207,8 @@ func (e *htmlTime) Spellcheck(v bool) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) Style(k, v string) HTMLTime {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTime) Style(k, format string, v ...any) HTMLTime {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -49460,7 +49460,7 @@ type HTMLTitle interface {
 	Spellcheck(v bool) HTMLTitle
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTitle
+	Style(k, format string, v ...any) HTMLTitle
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTitle
@@ -49581,8 +49581,8 @@ func (e *htmlTitle) Spellcheck(v bool) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) Style(k, v string) HTMLTitle {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTitle) Style(k, format string, v ...any) HTMLTitle {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -49664,7 +49664,7 @@ type HTMLTr interface {
 	Spellcheck(v bool) HTMLTr
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTr
+	Style(k, format string, v ...any) HTMLTr
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLTr
@@ -49887,8 +49887,8 @@ func (e *htmlTr) Spellcheck(v bool) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) Style(k, v string) HTMLTr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTr) Style(k, format string, v ...any) HTMLTr {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -50140,7 +50140,7 @@ type HTMLU interface {
 	Spellcheck(v bool) HTMLU
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLU
+	Style(k, format string, v ...any) HTMLU
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLU
@@ -50363,8 +50363,8 @@ func (e *htmlU) Spellcheck(v bool) HTMLU {
 	return e
 }
 
-func (e *htmlU) Style(k, v string) HTMLU {
-	e.setAttr("style", k+":"+v)
+func (e *htmlU) Style(k, format string, v ...any) HTMLU {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -50616,7 +50616,7 @@ type HTMLUl interface {
 	Spellcheck(v bool) HTMLUl
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLUl
+	Style(k, format string, v ...any) HTMLUl
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLUl
@@ -50839,8 +50839,8 @@ func (e *htmlUl) Spellcheck(v bool) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) Style(k, v string) HTMLUl {
-	e.setAttr("style", k+":"+v)
+func (e *htmlUl) Style(k, format string, v ...any) HTMLUl {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -51092,7 +51092,7 @@ type HTMLVar interface {
 	Spellcheck(v bool) HTMLVar
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLVar
+	Style(k, format string, v ...any) HTMLVar
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLVar
@@ -51315,8 +51315,8 @@ func (e *htmlVar) Spellcheck(v bool) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) Style(k, v string) HTMLVar {
-	e.setAttr("style", k+":"+v)
+func (e *htmlVar) Style(k, format string, v ...any) HTMLVar {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -51595,7 +51595,7 @@ type HTMLVideo interface {
 	Src(format string, v ...any) HTMLVideo
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLVideo
+	Style(k, format string, v ...any) HTMLVideo
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLVideo
@@ -51935,8 +51935,8 @@ func (e *htmlVideo) Src(format string, v ...any) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Style(k, v string) HTMLVideo {
-	e.setAttr("style", k+":"+v)
+func (e *htmlVideo) Style(k, format string, v ...any) HTMLVideo {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 
@@ -52308,7 +52308,7 @@ type HTMLWbr interface {
 	Spellcheck(v bool) HTMLWbr
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLWbr
+	Style(k, format string, v ...any) HTMLWbr
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
 	Styles(s map[string]string) HTMLWbr
@@ -52531,8 +52531,8 @@ func (e *htmlWbr) Spellcheck(v bool) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) Style(k, v string) HTMLWbr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlWbr) Style(k, format string, v ...any) HTMLWbr {
+	e.setAttr("style", k+":"+FormatString(format, v...))
 	return e
 }
 

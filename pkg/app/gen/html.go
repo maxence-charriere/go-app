@@ -2395,10 +2395,10 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "style":
-		fmt.Fprintf(w, `%s(k, v string) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(k, format string, v ...any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("style", k+":"+v)
+				e.setAttr("style", k+":"+FormatString(format, v...))
 				return e
 			}`)
 		}
@@ -2536,7 +2536,7 @@ import (
 				fmt.Fprintln(f, `map[string]any{"foo": "bar"})`)
 
 			case "style":
-				fmt.Fprintln(f, `"color", "deepskyblue")`)
+				fmt.Fprintln(f, `"margin", "%vpx", 42)`)
 
 			case "style|map":
 				fmt.Fprintln(f, `map[string]string{"color": "pink"})`)
