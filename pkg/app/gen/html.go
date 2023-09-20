@@ -236,26 +236,26 @@ var tags = []tag{
 	// D:
 	{
 		Name: "Data",
-		Doc:  "links the given content with a machine-readable translation.",
+		Doc:  "that pairs content with its machine-readable translation or value.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"value",
 		)...),
 	},
 	{
 		Name:          "DataList",
-		Doc:           "specifies a list of pre-defined options for input controls.",
+		Doc:           "that offers a predefined set of options for input controls.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Dd",
-		Doc:           "defines a description/value of a term in a description list.",
+		Doc:           "that provides the description or value for a term in a description list.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Del",
-		Doc:  "defines text that has been deleted from a document.",
+		Doc:  "that denotes text segments that have been deleted or modified in the content.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"cite",
 			"datetime",
@@ -264,7 +264,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Details",
-		Doc:  "defines additional details that the user can view or hide.",
+		Doc:  "that encapsulates content users can toggle visibility for, such as additional information or context.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"open",
 		)...),
@@ -274,13 +274,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "Dfn",
-		Doc:           "represents the defining instance of a term.",
+		Doc:           "that marks the defining occurrence or clarification of a term or phrase.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Dialog",
-		Doc:  "defines a dialog box or window.",
+		Doc:  "that represents a popup dialog box or an interactive window overlay.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"open",
 		)...),
@@ -288,19 +288,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Div",
-		Doc:           "defines a section in a document.",
+		Doc:           "that creates a generic container for flow content, usually combined with styles or scripts.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Dl",
-		Doc:           "defines a description list.",
+		Doc:           "that structures a list of terms alongside their associated descriptions.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Dt",
-		Doc:           "defines a term/name in a description list.",
+		Doc:           "that specifies a term or name within a description list.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
