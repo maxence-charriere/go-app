@@ -664,7 +664,7 @@ var tags = []tag{
 	// O:
 	{
 		Name: "Object",
-		Doc:  "defines an embedded object.",
+		Doc:  "that embeds an object within the document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"data",
 			"form",
@@ -678,7 +678,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Ol",
-		Doc:  "defines an ordered list.",
+		Doc:  "that represents an ordered list.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"reversed",
 			"start",
@@ -688,7 +688,7 @@ var tags = []tag{
 	},
 	{
 		Name: "OptGroup",
-		Doc:  "defines a group of related options in a drop-down list.",
+		Doc:  "that groups related options in a drop-down list.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"disabled",
 			"label",
@@ -697,7 +697,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Option",
-		Doc:  "defines an option in a drop-down list.",
+		Doc:  "that represents an option in a drop-down list.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"disabled",
 			"label",
@@ -708,7 +708,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Output",
-		Doc:  ".",
+		Doc:  "that displays the result of a calculation or user action.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"for",
 			"form",
@@ -720,14 +720,14 @@ var tags = []tag{
 	// P:
 	{
 		Name:          "P",
-		Doc:           "defines a paragraph.",
+		Doc:           "that represents a paragraph.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Param",
 		Type: selfClosing,
-		Doc:  "defines a parameter for an object.",
+		Doc:  "that defines a parameter for an embedded object.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"name",
 			"value",
@@ -736,19 +736,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Picture",
-		Doc:           "defines a container for multiple image resources.",
+		Doc:           "that provides a container for multiple image sources.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Pre",
-		Doc:           "defines preformatted text.",
+		Doc:           "that displays preformatted text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Progress",
-		Doc:  "represents the progress of a task.",
+		Doc:  "that visualizes the progress of a task.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"max",
 			"value",
@@ -759,7 +759,7 @@ var tags = []tag{
 	// Q:
 	{
 		Name: "Q",
-		Doc:  "defines a short quotation.",
+		Doc:  "that represents a short quotation.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"cite",
 		)...),
@@ -769,19 +769,19 @@ var tags = []tag{
 	// R:
 	{
 		Name:          "Rp",
-		Doc:           "defines what to show in browsers that do not support ruby annotations.",
+		Doc:           "that indicates text for browsers not supporting ruby annotations.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Rt",
-		Doc:           "defines an explanation/pronunciation of characters (for East Asian typography).",
+		Doc:           "that provides explanation or pronunciation of characters (used in East Asian typography).",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Ruby",
-		Doc:           "defines a ruby annotation (for East Asian typography).",
+		Doc:           "that marks a ruby annotation (used for East Asian typography).",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
