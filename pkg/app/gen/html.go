@@ -1767,43 +1767,43 @@ var eventHandlers = map[string]eventHandler{
 	// Form events:
 	"onblur": {
 		Name: "OnBlur",
-		Doc:  "calls the given handler when the element loses focus.",
+		Doc:  "Executes the given handler when the element loses focus.",
 	},
 	"onchange": {
 		Name: "OnChange",
-		Doc:  "calls the given handler when the value of the element is changed.",
+		Doc:  "Triggers the specified handler when the element's value changes.",
 	},
 	"oncontextmenu": {
 		Name: "OnContextMenu",
-		Doc:  "calls the given handler when a context menu is triggered.",
+		Doc:  "Invokes the provided handler upon activation of a context menu.",
 	},
 	"onfocus": {
 		Name: "OnFocus",
-		Doc:  "calls the given handler when the element gets focus.",
+		Doc:  "Executes the given handler when the element receives focus.",
 	},
 	"oninput": {
 		Name: "OnInput",
-		Doc:  "calls the given handler when an element gets user input.",
+		Doc:  "Triggers the specified handler when the element receives user input.",
 	},
 	"oninvalid": {
 		Name: "OnInvalid",
-		Doc:  "calls the given handler when an element is invalid.",
+		Doc:  "Invokes the provided handler when the element is determined to be invalid.",
 	},
 	"onreset": {
 		Name: "OnReset",
-		Doc:  "calls the given handler when the Reset button in a form is clicked.",
+		Doc:  "Executes the given handler upon clicking the Reset button within a form.",
 	},
 	"onsearch": {
 		Name: "OnSearch",
-		Doc:  `calls the given handler when the user writes something in a search field.`,
+		Doc:  "Triggers the specified handler when input is provided in a search field.",
 	},
 	"onselect": {
 		Name: "OnSelect",
-		Doc:  "calls the given handler after some text has been selected in an element.",
+		Doc:  "Invokes the provided handler after text within the element is selected.",
 	},
 	"onsubmit": {
 		Name: "OnSubmit",
-		Doc:  "calls the given handler when a form is submitted.",
+		Doc:  "Executes the given handler when the form undergoes submission.",
 	},
 
 	// Keyboard events:
