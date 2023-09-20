@@ -308,7 +308,7 @@ var tags = []tag{
 	// E:
 	{
 		Name: "Elem",
-		Doc:  "represents an customizable HTML element.",
+		Doc:  "that is customizable.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"xmlns",
 		)...),
@@ -317,7 +317,7 @@ var tags = []tag{
 	{
 		Name: "ElemSelfClosing",
 		Type: selfClosing,
-		Doc:  "represents a self closing custom HTML element.",
+		Doc:  "that is self-closing and customizable.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"xmlns",
 		)...),
@@ -325,14 +325,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Em",
-		Doc:           "defines emphasized text.",
+		Doc:           "that marks text for emphasis, typically rendered as italicized text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Embed",
 		Type: selfClosing,
-		Doc:  "defines a container for an external (non-HTML) application.",
+		Doc:  "that offers a container for integrating non-HTML content or applications.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"height",
 			"src",
@@ -345,7 +345,7 @@ var tags = []tag{
 	// F:
 	{
 		Name: "FieldSet",
-		Doc:  "groups related elements in a form.",
+		Doc:  "that clusters related input controls and labels within a form.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"disabled",
 			"form",
@@ -355,25 +355,25 @@ var tags = []tag{
 	},
 	{
 		Name:          "FigCaption",
-		Doc:           "defines a caption for a figure element.",
+		Doc:           "that supplies a caption or explanation for content within the <figure> element.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Figure",
-		Doc:           "specifies self-contained content.",
+		Doc:           "that encapsulates media content or illustrations with an optional caption.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Footer",
-		Doc:           "defines a footer for a document or section.",
+		Doc:           "that denotes the footer of a section or the whole document, often containing metadata or author info.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Form",
-		Doc:  "defines an HTML form for user input.",
+		Doc:  "that constructs a user input form, allowing for various control elements and submission options.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"accept-charset",
 			"action",
