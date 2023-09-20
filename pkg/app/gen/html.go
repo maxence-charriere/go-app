@@ -1332,112 +1332,112 @@ var attrs = map[string]attr{
 	"id": {
 		Name: "ID",
 		Type: "fmt",
-		Doc:  "specifies a unique id for an element with the given format and values.",
+		Doc:  "Assigns a unique identifier to an element.",
 	},
 	"ismap": {
 		Name: "IsMap",
 		Type: "bool",
-		Doc:  "specifies an image as a server-side image-map.",
+		Doc:  "Marks an image as a server-side image-map.",
 	},
 
 	// K:
 	"kind": {
 		Name: "Kind",
 		Type: "fmt",
-		Doc:  "specifies the kind of text track with the given format and values.",
+		Doc:  "Defines the type of text track for media elements.",
 	},
 
 	// L:
 	"label": {
 		Name: "Label",
 		Type: "fmt",
-		Doc:  "specifies a shorter label for the option with the given format and values.",
+		Doc:  "Provides a concise label for an option element.",
 	},
 	"lang": {
 		Name: "Lang",
 		Type: "fmt",
-		Doc:  "specifies the language of the element's content with the given format and values.",
+		Doc:  "Declares the language of the element's content.",
 	},
 	"list": {
 		Name: "List",
 		Type: "fmt",
-		Doc:  "refers to a datalist element that contains pre-defined options for an input element. Uses the given format and values.",
+		Doc:  "Links to a datalist element offering predefined options for an input element.",
 	},
 	"loading": {
 		Name: "Loading",
 		Type: "fmt",
-		Doc:  "indicates how the browser should load the iframe (eager|lazy). Uses the given format and values.",
+		Doc:  "Determines the browser's loading behavior for the iframe ('eager' or 'lazy').",
 	},
 	"loop": {
 		Name: "Loop",
 		Type: "bool",
-		Doc:  "specifies that the audio/video will start over again, every time it is finished.",
+		Doc:  "Indicates that the audio or video should replay from the beginning upon reaching its end.",
 	},
 	"low": {
 		Name: "Low",
 		Type: "float64",
-		Doc:  "specifies the range that is considered to be a low value.",
+		Doc:  "Sets the value threshold regarded as 'low' in a range context.",
 	},
 
 	// M:
 	"max": {
 		Name: "Max",
 		Type: "any",
-		Doc:  "Specifies the maximum value.",
+		Doc:  "Establishes the maximum permissible value.",
 	},
 	"maxlength": {
 		Name: "MaxLength",
 		Type: "int",
-		Doc:  "specifies the maximum number of characters allowed in an element.",
+		Doc:  "Defines the maximum number of characters permissible in an element.",
 	},
 	"media": {
 		Name: "Media",
 		Type: "fmt",
-		Doc:  "specifies what media/device the linked document is optimized for. Uses the given format and values.",
+		Doc:  "Indicates the intended media or device for the linked document.",
 	},
 	"method": {
 		Name: "Method",
 		Type: "fmt",
-		Doc:  "specifies the HTTP method to use when sending form-data. Uses the given format and values.",
+		Doc:  "Determines the HTTP method for sending form data.",
 	},
 	"min": {
 		Name: "Min",
 		Type: "any",
-		Doc:  "specifies a minimum value.",
+		Doc:  "Establishes the minimum permissible value.",
 	},
 	"multiple": {
 		Name: "Multiple",
 		Type: "bool",
-		Doc:  "specifies that a user can enter more than one value.",
+		Doc:  "Allows users to input multiple values.",
 	},
 	"muted": {
 		Name: "Muted",
 		Type: "bool",
-		Doc:  "specifies that the audio output of the video should be muted.",
+		Doc:  "Ensures that the video's audio playback is muted.",
 	},
 
 	// N:
 	"name": {
 		Name: "Name",
 		Type: "fmt",
-		Doc:  "specifies the name of the element with the given format and values.",
+		Doc:  "Assigns a name to the element.",
 	},
 	"novalidate": {
 		Name: "NoValidate",
 		Type: "bool",
-		Doc:  "specifies that the form should not be validated when submitted.",
+		Doc:  "Indicates that the form should bypass validation upon submission.",
 	},
 
 	// O:
 	"open": {
 		Name: "Open",
 		Type: "bool",
-		Doc:  "specifies that the details should be visible (open) to the user.",
+		Doc:  "Indicates that the details element should be expanded and visible to the user.",
 	},
 	"optimum": {
 		Name: "Optimum",
 		Type: "float64",
-		Doc:  "specifies what value is the optimal value for the gauge.",
+		Doc:  "Defines the optimal value for a gauge element.",
 	},
 
 	// P:
