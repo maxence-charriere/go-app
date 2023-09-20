@@ -551,7 +551,7 @@ var tags = []tag{
 	// K:
 	{
 		Name:          "Kbd",
-		Doc:           "defines keyboard input.",
+		Doc:           "that represents keyboard input.",
 		Attrs:         withGlobalAttrs(attrsByNames()...),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -559,7 +559,7 @@ var tags = []tag{
 	// L:
 	{
 		Name: "Label",
-		Doc:  "defines a label for an input element.",
+		Doc:  "that represents a label for an input element.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"for",
 			"form",
@@ -568,13 +568,13 @@ var tags = []tag{
 	},
 	{
 		Name:          "Legend",
-		Doc:           "defines a caption for a fieldset element.",
+		Doc:           "that represents a caption for a fieldset element.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Li",
-		Doc:  "defines a list item.",
+		Doc:  "that represents a list item.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"value",
 		)...),
@@ -583,7 +583,7 @@ var tags = []tag{
 	{
 		Name: "Link",
 		Type: selfClosing,
-		Doc:  "defines the relationship between a document and an external resource (most used to link to style sheets).",
+		Doc:  "that describes the relationship between a document and an external resource (most commonly used to link to style sheets).",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"as",
 			"crossorigin",
@@ -603,13 +603,13 @@ var tags = []tag{
 	// M:
 	{
 		Name:          "Main",
-		Doc:           "specifies the main content of a document.",
+		Doc:           "that specifies the main content of a document.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Map",
-		Doc:  "defines a client-side image-map.",
+		Doc:  "that represents a client-side image-map.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"name",
 		)...),
@@ -617,14 +617,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Mark",
-		Doc:           "defines marked/highlighted text.",
+		Doc:           "that represents marked/highlighted text.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Meta",
 		Type: selfClosing,
-		Doc:  ".",
+		Doc:  "that provides metadata about the HTML document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"charset",
 			"content",
@@ -635,7 +635,7 @@ var tags = []tag{
 	},
 	{
 		Name: "Meter",
-		Doc:  "defines a scalar measurement within a known range (a gauge).",
+		Doc:  "that represents a scalar measurement within a known range (like a gauge).",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"form",
 			"high",
@@ -651,13 +651,13 @@ var tags = []tag{
 	// N:
 	{
 		Name:          "Nav",
-		Doc:           "defines navigation links.",
+		Doc:           "that represents navigation links.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:  "NoScript",
-		Doc:   "defines an alternate content for users that do not support client-side scripts.",
+		Doc:   "that provides alternate content for users who do not support client-side scripts.",
 		Attrs: withGlobalAttrs(attrsByNames()...),
 	},
 
