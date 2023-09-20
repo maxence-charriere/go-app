@@ -1043,83 +1043,83 @@ var attrs = map[string]attr{
 	"abbr": {
 		Name: "Abbr",
 		Type: "fmt",
-		Doc:  "specifies an abbreviated version of the content in a header cell with the given format and values.",
+		Doc:  "Denotes abbreviated content for header cells to provide clarity on shortened terms.",
 	},
 	"accept": {
 		Name: "Accept",
 		Type: "fmt",
-		Doc:  "specifies the types of files that the server accepts (only for file type) with the given format and values.",
+		Doc:  "Restricts file types the server accepts, especially used for file input elements.",
 	},
 	"allow": {
 		Name: "Allow",
 		Type: "fmt",
-		Doc:  "specifies a feature policy with the given format and values. Can be called multiple times to set multiple policies.",
+		Doc:  "Sets a feature policy, enhancing security by controlling certain browser features. Allows multiple policies.",
 	},
 	"allowfullscreen": {
 		Name: "AllowFullscreen",
 		Type: "bool|force",
-		Doc:  "reports whether an iframe can activate fullscreen mode.",
+		Doc:  "Grants an iframe the capability to request fullscreen mode.",
 	},
 	"allowpaymentrequest": {
 		Name: "AllowPaymentRequest",
 		Type: "bool|force",
-		Doc:  "reports whether an iframe should be allowed to invoke the Payment Request API",
+		Doc:  "Grants an iframe the permission to use the Payment Request API for smoother online transactions.",
 	},
 	"aria-*": {
 		Name: "Aria",
 		Type: "aria|value",
-		Doc:  "stores accessible rich internet applications (ARIA) data.",
+		Doc:  "Stores ARIA roles and properties to improve accessibility for users with disabilities.",
 	},
 	"attribute": {
 		Name: "Attr",
 		Type: "attr|value",
-		Doc:  "sets the named attribute with the given value.",
+		Doc:  "Sets an attribute with its associated value, allowing for flexible HTML customization.",
 	},
 	"accept-charset": {
 		Name:         "AcceptCharset",
 		NameOverride: "accept-charset",
 		Type:         "fmt",
-		Doc:          "specifies the character encodings that are to be used for the form submission.",
+		Doc:          "Restricts the character encodings accepted for form submission, ensuring compatibility.",
 	},
 	"accesskey": {
 		Name: "AccessKey",
 		Type: "fmt",
-		Doc:  "specifies a shortcut key with the given format and values to activate/focus an element.",
+		Doc:  "Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.",
 	},
 	"action": {
 		Name: "Action",
 		Type: "fmt",
-		Doc:  "specifies where to send the form-data with the given format and values when a form is submitted.",
+		Doc:  "Specifies the server endpoint to which form-data should be sent upon submission.",
 	},
 	"alt": {
 		Name: "Alt",
 		Type: "fmt",
-		Doc:  "specifies an alternate text with the given format and values when the original element fails to display.",
+		Doc:  "Provides a text alternative for elements (often images) ensuring content is accessible when visuals can't be rendered.",
 	},
 	"as": {
 		Name: "As",
 		Type: "fmt",
-		Doc:  "specifies a resource type to preload with the given format and values.",
+		Doc:  "Hints the type of content to preload, optimizing loading for certain resources.",
 	},
 	"async": {
 		Name: "Async",
 		Type: "bool",
-		Doc:  "specifies that the script is executed asynchronously (only for external scripts).",
+		Doc:  "Specifies that external scripts are executed asynchronously, preventing blocking of page rendering.",
 	},
 	"autocomplete": {
 		Name: "AutoComplete",
 		Type: "on/off",
-		Doc:  "specifies whether the element should have autocomplete enabled.",
+		Doc:  "Toggles the browser's autocomplete feature, assisting users with common input values.",
 	},
 	"autofocus": {
 		Name: "AutoFocus",
 		Type: "bool",
-		Doc:  "specifies that the element should automatically get focus when the page loads.",
+		Doc:  "Instructs the browser to focus this element automatically when the page loads.",
 	},
 	"autoplay": {
 		Name: "AutoPlay",
 		Type: "bool",
-		Doc:  "specifies that the audio/video will start playing as soon as it is ready.",
+		Doc:  "Automatically plays audio or video elements once they're ready, enhancing media responsiveness.",
 	},
 
 	// C:
@@ -2225,7 +2225,7 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
 
-		fmt.Fprintf(w, "// %s %s\n", a.Name, a.Doc)
+		fmt.Fprintf(w, "// %s\n", a.Doc)
 		writeAttrFunction(w, a, t, true)
 	}
 
