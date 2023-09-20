@@ -1600,53 +1600,53 @@ var attrs = map[string]attr{
 	"tabindex": {
 		Name: "TabIndex",
 		Type: "int",
-		Doc:  "specifies the tabbing order of an element.",
+		Doc:  "Determines the tabbing sequence of an element within the document navigation.",
 	},
 	"target": {
 		Name: "Target",
 		Type: "fmt",
-		Doc:  "specifies the target for where to open the linked document or where to submit the form. Uses the given format and values.",
+		Doc:  "Indicates where to display the linked URL or where to submit the form. Can be called with various predefined values.",
 	},
 	"title": {
 		Name: "Title",
 		Type: "fmt",
-		Doc:  "specifies extra information about an element with the given format and values.",
+		Doc:  "Provides additional information about an element, typically displayed as a tooltip. Can be called with the desired title format and content.",
 	},
 	"type": {
 		Name: "Type",
 		Type: "fmt",
-		Doc:  "specifies the type of element with the given format and values.",
+		Doc:  "Designates the type of the element or its content. Can be called with specific format and values.",
 	},
 
 	// U:
 	"usemap": {
 		Name: "UseMap",
 		Type: "fmt",
-		Doc:  "specifies an image as a client-side image-map. Uses the given format and values.",
+		Doc:  "Associates the element with a client-side image map. Can be called with the designated format and values.",
 	},
 
 	// V:
 	"value": {
 		Name: "Value",
 		Type: "any",
-		Doc:  "specifies the value of the element.",
+		Doc:  "Assigns a value to the element.",
 	},
 
 	// W:
 	"width": {
 		Name: "Width",
 		Type: "int",
-		Doc:  "specifies the width of the element.",
+		Doc:  "Sets the width of the element.",
 	},
 	"wrap": {
 		Name: "Wrap",
 		Type: "fmt",
-		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form. Uses the given format and values.",
+		Doc:  "Determines how the text inside a text area is wrapped when submitted in a form. Can be called with specific format and values.",
 	},
 	"xmlns": {
 		Name: "XMLNS",
 		Type: "xmlns",
-		Doc:  "specifies the xml namespace of the element.",
+		Doc:  "Defines the XML namespace for the element.",
 	},
 }
 
