@@ -104,14 +104,14 @@ var tags = []tag{
 	// B:
 	{
 		Name:          "B",
-		Doc:           "defines bold text.",
+		Doc:           "that applies bold styling to its content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Base",
 		Type: selfClosing,
-		Doc:  "specifies the base URL/target for all relative URLs in a document.",
+		Doc:  "that specifies the base URL and target for all relative URLs in the document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"href",
 			"target",
@@ -120,19 +120,19 @@ var tags = []tag{
 	},
 	{
 		Name:          "Bdi",
-		Doc:           "isolates a part of text that might be formatted in a different direction from other text outside it.",
+		Doc:           "that isolates a section of text, allowing it to be formatted in a different direction than the surrounding content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Bdo",
-		Doc:           "overrides the current text direction.",
+		Doc:           "that controls the text direction of its content, overriding other directional settings.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Blockquote",
-		Doc:  "defines a section that is quoted from another source.",
+		Doc:  "that represents a section of text quoted from another source.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"cite",
 		)...),
@@ -141,7 +141,7 @@ var tags = []tag{
 	{
 		Name:  "Body",
 		Type:  privateParent,
-		Doc:   "defines the document's body.",
+		Doc:   "that encloses the main content of the HTML document.",
 		Attrs: withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
 			"onafterprint",
@@ -164,13 +164,13 @@ var tags = []tag{
 	{
 		Name:          "Br",
 		Type:          selfClosing,
-		Doc:           "defines a single line break.",
+		Doc:           "that inserts a line break within inline content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Button",
-		Doc:  "defines a clickable button.",
+		Doc:  "that creates a clickable button, typically used for form submission or triggering interactions.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autofocus",
 			"disabled",
