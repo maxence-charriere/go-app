@@ -190,7 +190,7 @@ var tags = []tag{
 	// C:
 	{
 		Name: "Canvas",
-		Doc:  "is used to draw graphics on the fly.",
+		Doc:  "that provides a space where graphics can be rendered dynamically, such as 2D drawings or 3D visualizations.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"height",
 			"width",
@@ -199,26 +199,26 @@ var tags = []tag{
 	},
 	{
 		Name:          "Caption",
-		Doc:           "defines a table caption.",
+		Doc:           "that represents the title or description of a table, usually appearing above or below the table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Cite",
-		Doc:           "defines the title of a work.",
+		Doc:           "that indicates the title or reference of a creative work, such as a book, film, or research paper.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:          "Code",
-		Doc:           "defines a piece of computer code.",
+		Doc:           "that displays a single line of code or a code snippet, preserving its formatting.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name: "Col",
 		Type: selfClosing,
-		Doc:  "specifies column properties for each column within a colgroup element.",
+		Doc:  "that defines the properties for a single column or a group of columns within a table, when nested within a `<colgroup>` element.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"span",
 		)...),
@@ -226,7 +226,7 @@ var tags = []tag{
 	},
 	{
 		Name: "ColGroup",
-		Doc:  "specifies a group of one or more columns in a table for formatting.",
+		Doc:  "that groups one or more `<col>` elements, providing a way to apply styles and attributes to multiple columns simultaneously.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"span",
 		)...),
