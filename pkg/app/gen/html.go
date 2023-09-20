@@ -1068,7 +1068,7 @@ var attrs = map[string]attr{
 	"aria-*": {
 		Name: "Aria",
 		Type: "aria|value",
-		Doc:  "Stores ARIA roles and properties to improve accessibility for users with disabilities.",
+		Doc:  "Allocates ARIA roles and properties to the element to enhance accessibility for users with disabilities. Can be called multiple times to assign various roles and properties.",
 	},
 	"attribute": {
 		Name: "Attr",
