@@ -1705,63 +1705,63 @@ var eventHandlers = map[string]eventHandler{
 	// Window events:
 	"onafterprint": {
 		Name: "OnAfterPrint",
-		Doc:  "runs the given handler after the document is printed.",
+		Doc:  "Executes the given handler after the document has been printed.",
 	},
 	"onbeforeprint": {
 		Name: "OnBeforePrint",
-		Doc:  "calls the given handler before the document is printed.",
+		Doc:  "Invokes the specified handler before the document gets printed.",
 	},
 	"onbeforeunload": {
 		Name: "OnBeforeUnload",
-		Doc:  "calls the given handler when the document is about to be unloaded.",
+		Doc:  "Triggers the specified handler when the document is about to be unloaded.",
 	},
 	"onerror": {
 		Name: "OnError",
-		Doc:  "calls the given handler when an error occurs.",
+		Doc:  "Invokes the given handler when an error is encountered.",
 	},
 	"onhashchange": {
 		Name: "OnHashChange",
-		Doc:  "calls the given handler when there has been changes to the anchor part of the a URL.",
+		Doc:  "Triggers the specified handler when changes occur to the anchor part of the URL.",
 	},
 	"onload": {
 		Name: "OnLoad",
-		Doc:  "calls the given handler after the element is finished loading.",
+		Doc:  "Executes the specified handler once the element has completely loaded.",
 	},
 	"onmessage": {
 		Name: "OnMessage",
-		Doc:  "calls then given handler when a message is triggered.",
+		Doc:  "Triggers the provided handler when a message event occurs.",
 	},
 	"onoffline": {
 		Name: "OnOffline",
-		Doc:  "calls the given handler when the browser starts to work offline.",
+		Doc:  "Invokes the given handler when the browser transitions to offline mode.",
 	},
 	"ononline": {
 		Name: "OnOnline",
-		Doc:  "calls the given handler when the browser starts to work online.",
+		Doc:  "Executes the specified handler when the browser transitions to online mode.",
 	},
 	"onpagehide": {
 		Name: "OnPageHide",
-		Doc:  "calls the given handler when a user navigates away from a page.",
+		Doc:  "Triggers the given handler when a user navigates away from the current page.",
 	},
 	"onpageshow": {
 		Name: "OnPageShow",
-		Doc:  "calls the given handler when a user navigates to a page.",
+		Doc:  "Invokes the specified handler when a user navigates to the page.",
 	},
 	"onpopstate": {
 		Name: "OnPopState",
-		Doc:  "calls the given handler when the window's history changes.",
+		Doc:  "Executes the provided handler when changes are made to the window's history.",
 	},
 	"onresize": {
 		Name: "OnResize",
-		Doc:  "calls the given handler when the browser window is resized.",
+		Doc:  "Triggers the given handler upon resizing the browser window.",
 	},
 	"onstorage": {
 		Name: "OnStorage",
-		Doc:  "calls the given handler when a Web Storage area is updated.",
+		Doc:  "Invokes the specified handler when a Web Storage area undergoes updates.",
 	},
 	"onunload": {
 		Name: "OnUnload",
-		Doc:  "calls the given handler once a page has unloaded (or the browser window has been closed).",
+		Doc:  "Executes the provided handler once the page has been unloaded or the browser window closes.",
 	},
 
 	// Form events:
