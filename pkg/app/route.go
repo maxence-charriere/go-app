@@ -1,7 +1,6 @@
 package app
 
 import (
-	"reflect"
 	"regexp"
 	"sync"
 )
@@ -10,37 +9,31 @@ var (
 	routes = makeRouter()
 )
 
-// Route set the type of component to be mounted when a page is navigated to the
-// given path.
-func Route(path string, c Composer) {
-	RouteFunc(path, newZeroComponentFunc(c))
-}
-
-// RouteWithRegexp set the type of component to be mounted when a page is
-// navigated to a path that matches the given pattern.
-func RouteWithRegexp(pattern string, c Composer) {
-	RouteWithRegexpFunc(pattern, newZeroComponentFunc(c))
-
-}
-
-// RouteFunc set a function that creates the component to be mounted when a page
-// is navigated to the given path.
-func RouteFunc(path string, newComponent func() Composer) {
+// Route associates a given path with a function that generates a new Composer
+// component. When a user navigates to the specified path, the function
+// newComponent is invoked to create and mount the associated component.
+//
+// Example:
+//
+//	Route("/home", func() Composer {
+//	    return NewHomeComponent()
+//	})
+func Route(path string, newComponent func() Composer) {
 	routes.route(path, newComponent)
 }
 
-// RouteWithRegexpFunc set a function that creates the component to be mounted
-// when a page is navigated to a path that matches the given pattern.
-func RouteWithRegexpFunc(pattern string, newComponent func() Composer) {
+// RouteWithRegexp associates a URL path pattern with a function that generates
+// a new Composer component. When a user navigates to a URL path that matches
+// the given regular expression pattern, the function newComponent is invoked to
+// create and mount the associated component.
+//
+// Example:
+//
+//	RouteWithRegexp("^/users/[0-9]+$", func() Composer {
+//	    return NewUserComponent()
+//	})
+func RouteWithRegexp(pattern string, newComponent func() Composer) {
 	routes.routeWithRegexp(pattern, newComponent)
-}
-
-func newZeroComponentFunc(c Composer) func() Composer {
-	componentType := reflect.TypeOf(c)
-
-	return func() Composer {
-		return reflect.New(componentType.Elem()).Interface().(Composer)
-	}
 }
 
 type router struct {

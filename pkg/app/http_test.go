@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	Route("/", &preRenderTestCompo{})
+	Route("/", func() Composer { return &preRenderTestCompo{} })
 }
 
 type preRenderTestCompo struct {
