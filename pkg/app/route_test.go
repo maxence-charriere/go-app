@@ -36,7 +36,7 @@ func TestRoutes(t *testing.T) {
 		{
 			scenario: "path is routed",
 			createRoutes: func(r *router) {
-				r.route("/a", func() Composer { return &routeCompo{} })
+				r.route("/a", NewComponentFunc(&routeCompo{}))
 			},
 			expected: &routeCompo{},
 			path:     "/a",
@@ -45,8 +45,8 @@ func TestRoutes(t *testing.T) {
 			scenario: "path take priority over pattern",
 			path:     "/abc",
 			createRoutes: func(r *router) {
-				r.route("/abc", func() Composer { return &routeCompo{} })
-				r.routeWithRegexp("^/a.*$", func() Composer { return &routeWithRegexpCompo{} })
+				r.route("/abc", NewComponentFunc(&routeCompo{}))
+				r.routeWithRegexp("^/a.*$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			expected: &routeCompo{},
 		},
@@ -54,8 +54,8 @@ func TestRoutes(t *testing.T) {
 			scenario: "pattern is routed",
 			path:     "/ab",
 			createRoutes: func(r *router) {
-				r.route("/abc", func() Composer { return &routeCompo{} })
-				r.routeWithRegexp("^/a.*$", func() Composer { return &routeWithRegexpCompo{} })
+				r.route("/abc", NewComponentFunc(&routeCompo{}))
+				r.routeWithRegexp("^/a.*$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			expected: &routeWithRegexpCompo{},
 		},
@@ -63,7 +63,7 @@ func TestRoutes(t *testing.T) {
 			scenario: "pattern with inner wildcard is routed",
 			path:     "/user/42/settings",
 			createRoutes: func(r *router) {
-				r.routeWithRegexp("^/user/.*/settings$", func() Composer { return &routeWithRegexpCompo{} })
+				r.routeWithRegexp("^/user/.*/settings$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			expected: &routeWithRegexpCompo{},
 		},
@@ -71,7 +71,7 @@ func TestRoutes(t *testing.T) {
 			scenario: "not matching pattern with inner wildcard is not routed",
 			path:     "/user/42/settings/",
 			createRoutes: func(r *router) {
-				r.routeWithRegexp("^/user/.*/settings$", func() Composer { return &routeWithRegexpCompo{} })
+				r.routeWithRegexp("^/user/.*/settings$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			notFound: true,
 		},
@@ -79,7 +79,7 @@ func TestRoutes(t *testing.T) {
 			scenario: "pattern with end wildcard is routed",
 			path:     "/user/1001/files/foo/bar/baz.png",
 			createRoutes: func(r *router) {
-				r.routeWithRegexp("^/user/.*/files/.*$", func() Composer { return &routeWithRegexpCompo{} })
+				r.routeWithRegexp("^/user/.*/files/.*$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			expected: &routeWithRegexpCompo{},
 		},
@@ -87,7 +87,7 @@ func TestRoutes(t *testing.T) {
 			scenario: "not matching pattern with end wildcard is not routed",
 			path:     "/user/1001/files",
 			createRoutes: func(r *router) {
-				r.routeWithRegexp("^/user/.*/files/.*$", func() Composer { return &routeWithRegexpCompo{} })
+				r.routeWithRegexp("^/user/.*/files/.*$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			notFound: true,
 		},
@@ -95,7 +95,7 @@ func TestRoutes(t *testing.T) {
 			scenario: "pattern with OR condition is routed",
 			path:     "/color/red",
 			createRoutes: func(r *router) {
-				r.routeWithRegexp("^/color/(red|green|blue)$", func() Composer { return &routeWithRegexpCompo{} })
+				r.routeWithRegexp("^/color/(red|green|blue)$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			expected: &routeWithRegexpCompo{},
 		},
@@ -103,7 +103,7 @@ func TestRoutes(t *testing.T) {
 			scenario: "not matching pattern with OR condition is not routed",
 			path:     "/color/fuschia",
 			createRoutes: func(r *router) {
-				r.routeWithRegexp("^/color/(red|green|blue)$", func() Composer { return &routeWithRegexpCompo{} })
+				r.routeWithRegexp("^/color/(red|green|blue)$", NewComponentFunc(&routeWithRegexpCompo{}))
 			},
 			notFound: true,
 		},
