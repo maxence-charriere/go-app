@@ -37,18 +37,18 @@ func RouteWithRegexp(pattern string, newComponent func() Composer) {
 	routes.routeWithRegexp(pattern, newComponent)
 }
 
-// NewComponentFunc returns a function that, when invoked, creates and returns
-// a new instance of the same type as the provided component. The new instance
-// is initialized with zero values for all its fields.
+// NewZeroComponentFunc returns a function that, when invoked, creates and
+// returns a new instance of the same type as the provided component. The new
+// instance is initialized with zero values for all its fields.
 //
 // The function uses reflection to determine the type of the provided Composer
 // and to create new instances of that type.
 //
 // Example:
 //
-//	componentFunc := NewComponentFunc(MyComponent{})
+//	componentFunc := NewZeroComponentFunc(MyComponent{})
 //	newComponent := componentFunc()
-func NewComponentFunc(c Composer) func() Composer {
+func NewZeroComponentFunc(c Composer) func() Composer {
 	componentType := reflect.TypeOf(c)
 
 	return func() Composer {
