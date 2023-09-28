@@ -298,12 +298,12 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.self().(Mounter); !c.getDispatcher().isServerSide() && ok {
+	if mounter, ok := c.self().(Mounter); IsClient && ok {
 		c.dispatch(mounter.OnMount)
 		return nil
 	}
 
-	if preRenderer, ok := c.self().(PreRenderer); c.getDispatcher().isServerSide() && ok {
+	if preRenderer, ok := c.self().(PreRenderer); IsServer && ok {
 		c.dispatch(preRenderer.OnPreRender)
 		return nil
 	}

@@ -61,7 +61,6 @@ type Dispatcher interface {
 	getCurrentPage() Page
 	getLocalStorage() BrowserStorage
 	getSessionStorage() BrowserStorage
-	isServerSide() bool
 	resolveStaticResource(string) string
 	removeComponentUpdate(Composer)
 	preventComponentUpdate(Composer)
@@ -138,7 +137,6 @@ type ServerDispatcher interface {
 // client environment.
 func NewServerTester(n UI) ServerDispatcher {
 	e := &engine{
-		IsServerSide:   true,
 		ActionHandlers: actionHandlers,
 	}
 	e.init()
