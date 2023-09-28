@@ -84,109 +84,51 @@ const (
 	RawHTML
 )
 
-// FilterUIElems returns a filtered version of the given UI elements where
-// selector elements such as If and Range are interpreted and removed. It also
-// remove nil elements.
+// FilterUIElems processes and returns a filtered list of the provided UI
+// elements.
 //
-// It should be used only when implementing components that can accept content
-// with variadic arguments like HTML elements Body method.
+// Specifically, it:
+// - Interprets and removes selector elements such as Condition and RangeLoop.
+// - Eliminates nil elements and nil pointers.
+// - Flattens and includes the children of recognized selector elements.
+//
+// This function is primarily intended for components that accept ui elements as
+// variadic arguments or slice, such as the Body method of HTML elements.
 func FilterUIElems(v ...UI) []UI {
 	if len(v) == 0 {
 		return nil
 	}
 
-	return filterUIElems(v, 0)
-
-	remove := func(i int) {
+	removeELemAt := func(i int) {
 		copy(v[i:], v[i+1:])
 		v[len(v)-1] = nil
 		v = v[:len(v)-1]
 	}
 
-	var b []UI
-	replaceAt := func(i int, s ...UI) {
-		b = append(b, v[i+1:]...)
-		v = append(v[:i], s...)
-		v = append(v, b...)
-		b = b[:0]
+	var trailing []UI
+	replaceElemAt := func(i int, elems ...UI) {
+		trailing = append(trailing, v[i+1:]...)
+		v = append(v[:i], elems...)
+		v = append(v, trailing...)
+		trailing = trailing[:0]
 	}
 
 	for i := len(v) - 1; i >= 0; i-- {
-		e := v[i]
-		if ev := reflect.ValueOf(e); e == nil || ev.Kind() == reflect.Pointer && ev.IsNil() {
-			remove(i)
-			continue
-		}
-
-		switch e.Kind() {
-		case SimpleText, HTML, Component, RawHTML:
-
-		case Selector:
-			replaceAt(i, e.getChildren()...)
-
-		default:
-			remove(i)
-		}
-	}
-
-	return v
-}
-
-func filterUIElems(v []UI, start int) []UI {
-	for i := start; i < len(v); i++ {
 		elem := v[i]
 		if elem == nil {
-			v = removeUIElementAt(v, i)
-			return filterUIElems(v, i)
+			removeELemAt(i)
 		}
 		if elemValue := reflect.ValueOf(elem); elemValue.Kind() == reflect.Pointer && elemValue.IsNil() {
-			v = removeUIElementAt(v, i)
-			return filterUIElems(v, i)
+			removeELemAt(i)
 		}
 
-		var count int
-		switch t := elem.(type) {
-		case Condition:
-			v, count = replaceUIElementsAt(v, i, t.getChildren()...)
-			return filterUIElems(v, i+count)
-
-		case RangeLoop:
-			v, count = replaceUIElementsAt(v, i, t.getChildren()...)
-			return filterUIElems(v, i+count)
+		switch elem.(type) {
+		case Condition, RangeLoop:
+			replaceElemAt(i, elem.getChildren()...)
 		}
 	}
+
 	return v
-}
-
-func removeUIElementAt(v []UI, i int) []UI {
-	copy(v[i:], v[i+1:])
-	v[len(v)-1] = nil
-	return v[:len(v)-1]
-}
-
-func replaceUIElementsAt(v []UI, i int, n ...UI) ([]UI, int) {
-	if len(n) == 1 {
-		v[i] = n[0]
-		return v, 1
-	}
-
-	remainingCount := len(v) - i - 1
-	if remainingCount == 0 {
-		return append(v[:i], n...), len(n)
-	}
-
-	var staticBuffer [32]UI
-	var buffer []UI
-	if remainingCount <= 32 {
-		copy(staticBuffer[:remainingCount], v[i+1:])
-		buffer = staticBuffer[:remainingCount]
-	} else {
-		buffer = make([]UI, remainingCount)
-		copy(buffer, v[i+1:])
-	}
-
-	v = append(v[:i], n...)
-	return append(v, buffer...), len(n)
 }
 
 func mount(d Dispatcher, n UI) error {
