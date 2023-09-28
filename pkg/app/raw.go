@@ -35,10 +35,6 @@ type raw struct {
 	value      string
 }
 
-func (r *raw) Kind() Kind {
-	return RawHTML
-}
-
 func (r *raw) JSValue() Value {
 	return r.jsvalue
 }
@@ -90,8 +86,7 @@ func (r *raw) mount(d Dispatcher) error {
 	if r.Mounted() {
 		return errors.New("mounting raw html element failed").
 			WithTag("reason", "already mounted").
-			WithTag("name", r.name()).
-			WithTag("kind", r.Kind())
+			WithTag("name", r.name())
 	}
 
 	r.disp = d
@@ -112,7 +107,6 @@ func (r *raw) mount(d Dispatcher) error {
 		return errors.New("mounting raw html element failed").
 			WithTag("reason", "converting raw html to html elements returned nil").
 			WithTag("name", r.name()).
-			WithTag("kind", r.Kind()).
 			WithTag("raw-html", r.value)
 	}
 	wrapper.removeChild(value)

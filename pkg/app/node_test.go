@@ -7,40 +7,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestKindString(t *testing.T) {
-	utests := []struct {
-		kind           Kind
-		expectedString string
-	}{
-		{
-			kind:           UndefinedElem,
-			expectedString: "undefined",
-		},
-		{
-			kind:           SimpleText,
-			expectedString: "text",
-		},
-		{
-			kind:           HTML,
-			expectedString: "html",
-		},
-		{
-			kind:           Component,
-			expectedString: "component",
-		},
-		{
-			kind:           Selector,
-			expectedString: "selector",
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(u.expectedString, func(t *testing.T) {
-			require.Equal(t, u.expectedString, u.kind.String())
-		})
-	}
-}
-
 func TestFilterUIElems(t *testing.T) {
 	t.Run("filter empty elements returns nil", func(t *testing.T) {
 		require.Nil(t, FilterUIElems())
@@ -174,8 +140,10 @@ func testMounted(t *testing.T, n UI) {
 	require.NotNil(t, n.getDispatcher())
 	require.True(t, n.Mounted())
 
-	switch n.Kind() {
-	case HTML, Component:
+	switch n.(type) {
+	case *text, *raw:
+
+	default:
 		require.NoError(t, n.getContext().Err())
 		require.NotNil(t, n.self())
 	}
@@ -190,8 +158,10 @@ func testDismounted(t *testing.T, n UI) {
 	require.NotNil(t, n.getDispatcher())
 	require.False(t, n.Mounted())
 
-	switch n.Kind() {
-	case HTML, Component:
+	switch n.(type) {
+	case *text, *raw:
+
+	default:
 		require.Error(t, n.getContext().Err())
 		require.Nil(t, n.self())
 	}

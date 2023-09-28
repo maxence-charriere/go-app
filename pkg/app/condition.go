@@ -87,10 +87,6 @@ func (c condition) ElseSlice(elems func() []UI) Condition {
 	return c.ElseIfSlice(true, elems)
 }
 
-func (c condition) Kind() Kind {
-	return Selector
-}
-
 func (c condition) JSValue() Value {
 	return nil
 }
@@ -138,9 +134,7 @@ func (c condition) getChildren() []UI {
 }
 
 func (c condition) mount(Dispatcher) error {
-	return errors.New("condition is not mountable").
-		WithTag("name", c.name()).
-		WithTag("kind", c.Kind())
+	return errors.New("condition is not mountable").WithTag("name", c.name())
 }
 
 func (c condition) dismount() {
@@ -151,9 +145,7 @@ func (c condition) canUpdateWith(UI) bool {
 }
 
 func (c condition) updateWith(UI) error {
-	return errors.New("condition cannot be updated").
-		WithTag("name", c.name()).
-		WithTag("kind", c.Kind())
+	return errors.New("condition cannot be updated").WithTag("name", c.name())
 }
 
 func (c condition) onComponentEvent(any) {

@@ -87,9 +87,7 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 
 			return errors.New("ui element to match is out of range").
 				WithTag("name", d.Expected.name()).
-				WithTag("kind", d.Expected.Kind()).
 				WithTag("parent-name", tree.name()).
-				WithTag("parent-kind", tree.Kind()).
 				WithTag("parent-children-count", len(tree.getChildren())).
 				WithTag("index", idx)
 		}
@@ -100,12 +98,9 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 		if p != tree {
 			return errors.New("unexpected ui element parent").
 				WithTag("name", d.Expected.name()).
-				WithTag("kind", d.Expected.Kind()).
 				WithTag("parent-name", p.name()).
-				WithTag("parent-kind", p.Kind()).
 				WithTag("parent-addr", fmt.Sprintf("%p", p)).
 				WithTag("expected-parent-name", tree.name()).
-				WithTag("expected-parent-kind", tree.Kind()).
 				WithTag("expected-parent-addr", fmt.Sprintf("%p", tree))
 		}
 
@@ -113,34 +108,27 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 		return TestMatch(c, d)
 	}
 
-	if d.Expected.name() != tree.name() || d.Expected.Kind() != tree.Kind() {
-		return errors.New("the UI element is not matching the descriptor").
-			WithTag("expected-name", d.Expected.name()).
-			WithTag("expected-kind", d.Expected.Kind()).
-			WithTag("current-name", tree.name()).
-			WithTag("current-kind", tree.Kind())
+	if a, b := reflect.TypeOf(d.Expected), reflect.TypeOf(tree); a != b {
+		return errors.New("the UI element is not matching the descriptor type").
+			WithTag("expected-type", a).
+			WithTag("current-type", b)
 	}
 
-	switch d.Expected.Kind() {
-	case SimpleText:
+	switch d.Expected.(type) {
+	case *text:
 		return matchText(tree, d)
 
-	case HTML:
+	case Composer:
+		return matchComponent(tree, d)
+
+	case *raw:
+		return matchRaw(tree, d)
+
+	default:
 		if err := matchHTMLElemAttrs(tree, d); err != nil {
 			return err
 		}
 		return matchHTMLElemEventHandlers(tree, d)
-
-	case Component:
-		return matchComponent(tree, d)
-
-	case RawHTML:
-		return matchRaw(tree, d)
-
-	default:
-		return errors.New("the UI element is not matching the descriptor").
-			WithTag("reason", "unavailable matching for the kind").
-			WithTag("kind", d.Expected.Kind())
 	}
 }
 

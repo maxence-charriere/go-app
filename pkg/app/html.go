@@ -25,10 +25,6 @@ type htmlElement struct {
 	this          UI
 }
 
-func (e *htmlElement) Kind() Kind {
-	return HTML
-}
-
 func (e *htmlElement) JSValue() Value {
 	return e.jsElement
 }
@@ -79,9 +75,7 @@ func (e *htmlElement) getChildren() []UI {
 
 func (e *htmlElement) mount(d Dispatcher) error {
 	if e.Mounted() {
-		return errors.New("html element is already mounted").
-			WithTag("tag", e.tag).
-			WithTag("kind", e.Kind())
+		return errors.New("html element is already mounted").WithTag("tag", e.tag)
 	}
 
 	e.context, e.contextCancel = context.WithCancel(context.Background())
@@ -90,7 +84,6 @@ func (e *htmlElement) mount(d Dispatcher) error {
 	jsElement, err := Window().createElement(e.tag, e.xmlns)
 	if err != nil {
 		return errors.New("mounting js element failed").
-			WithTag("kind", e.Kind()).
 			WithTag("tag", e.tag).
 			WithTag("xmlns", e.xmlns).
 			Wrap(err)
@@ -105,7 +98,6 @@ func (e *htmlElement) mount(d Dispatcher) error {
 			return errors.New("mounting child failed").
 				WithTag("index", i).
 				WithTag("child", c.name()).
-				WithTag("child-kind", c.Kind()).
 				Wrap(err)
 		}
 
@@ -129,9 +121,7 @@ func (e *htmlElement) dismount() {
 }
 
 func (e *htmlElement) canUpdateWith(v UI) bool {
-	return e.Mounted() &&
-		e.Kind() == v.Kind() &&
-		e.name() == v.name()
+	return e.Mounted() && e.name() == v.name()
 }
 
 func (e *htmlElement) updateWith(v UI) error {
@@ -223,12 +213,9 @@ func (e *htmlElement) replaceChildAt(idx int, new UI) error {
 	if err := mount(e.getDispatcher(), new); err != nil {
 		return errors.New("replacing child failed").
 			WithTag("name", e.name()).
-			WithTag("kind", e.Kind()).
 			WithTag("index", idx).
 			WithTag("old-name", old.name()).
-			WithTag("old-kind", old.Kind()).
 			WithTag("new-name", new.name()).
-			WithTag("new-kind", new.Kind()).
 			Wrap(err)
 	}
 
@@ -352,8 +339,11 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 		return
 	}
 
-	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() != SimpleText) ||
-		len(e.children) > 1
+	var hasNewLineChildren bool
+	if len(e.children) > 0 {
+		_, isText := e.children[0].(*text)
+		hasNewLineChildren = len(e.children) > 1 || !isText
+	}
 
 	for _, c := range e.children {
 		if hasNewLineChildren {
