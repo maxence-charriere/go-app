@@ -26,10 +26,6 @@ type text struct {
 	value      string
 }
 
-func (t *text) Kind() Kind {
-	return SimpleText
-}
-
 func (t *text) JSValue() Value {
 	return t.jsvalue
 }
@@ -81,7 +77,6 @@ func (t *text) mount(d Dispatcher) error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").
 			WithTag("reason", "already mounted").
-			WithTag("kind", t.Kind()).
 			WithTag("name", t.name()).
 			WithTag("value", t.value)
 	}
