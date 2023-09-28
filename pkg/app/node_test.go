@@ -127,18 +127,6 @@ func TestFilterUIElems(t *testing.T) {
 		require.Equal(t, text, elems[2])
 		require.Equal(t, raw, elems[3])
 	})
-
-	// var nilText *text
-	// var foo *foo
-
-	// simpleText := Text("hello")
-
-	// expectedResult := []UI{
-	// 	simpleText,
-	// }
-
-	// res := FilterUIElems(nil, nilText, simpleText, foo)
-	// require.Equal(t, expectedResult, res)
 }
 
 func BenchmarkFilterUIElems(b *testing.B) {
