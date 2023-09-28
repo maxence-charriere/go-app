@@ -17,9 +17,6 @@ type engine struct {
 	// The page.
 	Page Page
 
-	// Reports whether the engine runs on server-side.
-	IsServerSide bool
-
 	// The storage use as local storage.
 	LocalStorage BrowserStorage
 
@@ -284,10 +281,6 @@ func (e *engine) getLocalStorage() BrowserStorage {
 
 func (e *engine) getSessionStorage() BrowserStorage {
 	return e.SessionStorage
-}
-
-func (e *engine) isServerSide() bool {
-	return e.IsServerSide
 }
 
 func (e *engine) resolveStaticResource(path string) string {

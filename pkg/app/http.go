@@ -718,7 +718,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	disp := engine{
 		Page:                   &page,
-		IsServerSide:           true,
 		StaticResourceResolver: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
@@ -740,7 +739,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	)
 	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
-			WithTag("server-side", disp.isServerSide()).
 			WithTag("body-type", reflect.TypeOf(disp.Body)).
 			Wrap(err))
 	}

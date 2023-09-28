@@ -379,6 +379,12 @@ func TestPreRenderer(t *testing.T) {
 	defer d.Close()
 
 	d.Consume()
+	if IsClient {
+		require.False(t, h.preRenderer)
+		require.Empty(t, d.getCurrentPage().Title())
+		return
+	}
+
 	require.True(t, h.preRenderer)
 	require.Equal(t, "world", d.getCurrentPage().Title())
 }
@@ -390,6 +396,12 @@ func TestNestedPreRenderer(t *testing.T) {
 	defer d.Close()
 
 	d.Consume()
+
+	if IsClient {
+		require.False(t, h.preRenderer)
+		require.Empty(t, d.getCurrentPage().Title())
+		return
+	}
 	require.True(t, h.preRenderer)
 	require.Equal(t, "world", d.getCurrentPage().Title())
 }
@@ -400,6 +412,11 @@ func TestNestedInComponentPreRenderer(t *testing.T) {
 	defer d.Close()
 
 	d.Consume()
+
+	if IsClient {
+		require.Empty(t, d.getCurrentPage().Title())
+		return
+	}
 	require.Equal(t, "bar", d.getCurrentPage().Title())
 }
 
