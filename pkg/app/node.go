@@ -95,6 +95,8 @@ func FilterUIElems(v ...UI) []UI {
 		return nil
 	}
 
+	return filterUIElems(v, 0)
+
 	remove := func(i int) {
 		copy(v[i:], v[i+1:])
 		v[len(v)-1] = nil
@@ -128,6 +130,63 @@ func FilterUIElems(v ...UI) []UI {
 	}
 
 	return v
+}
+
+func filterUIElems(v []UI, start int) []UI {
+	for i := start; i < len(v); i++ {
+		elem := v[i]
+		if elem == nil {
+			v = removeUIElementAt(v, i)
+			return filterUIElems(v, i)
+		}
+		if elemValue := reflect.ValueOf(elem); elemValue.Kind() == reflect.Pointer && elemValue.IsNil() {
+			v = removeUIElementAt(v, i)
+			return filterUIElems(v, i)
+		}
+
+		var count int
+		switch t := elem.(type) {
+		case Condition:
+			v, count = replaceUIElementsAt(v, i, t.getChildren()...)
+			return filterUIElems(v, i+count)
+
+		case RangeLoop:
+			v, count = replaceUIElementsAt(v, i, t.getChildren()...)
+			return filterUIElems(v, i+count)
+		}
+	}
+	return v
+}
+
+func removeUIElementAt(v []UI, i int) []UI {
+	copy(v[i:], v[i+1:])
+	v[len(v)-1] = nil
+	return v[:len(v)-1]
+}
+
+func replaceUIElementsAt(v []UI, i int, n ...UI) ([]UI, int) {
+	if len(n) == 1 {
+		v[i] = n[0]
+		return v, 1
+	}
+
+	remainingCount := len(v) - i - 1
+	if remainingCount == 0 {
+		return append(v[:i], n...), len(n)
+	}
+
+	var staticBuffer [32]UI
+	var buffer []UI
+	if remainingCount <= 32 {
+		copy(staticBuffer[:remainingCount], v[i+1:])
+		buffer = staticBuffer[:remainingCount]
+	} else {
+		buffer = make([]UI, remainingCount)
+		copy(buffer, v[i+1:])
+	}
+
+	v = append(v[:i], n...)
+	return append(v, buffer...), len(n)
 }
 
 func mount(d Dispatcher, n UI) error {
