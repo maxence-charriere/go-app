@@ -42,17 +42,103 @@ func TestKindString(t *testing.T) {
 }
 
 func TestFilterUIElems(t *testing.T) {
-	var nilText *text
-	var foo *foo
+	t.Run("filter empty elements returns nil", func(t *testing.T) {
+		require.Nil(t, FilterUIElems())
+	})
 
-	simpleText := Text("hello")
+	t.Run("nil pointer is removed", func(t *testing.T) {
+		require.Empty(t, FilterUIElems(nil))
+	})
 
-	expectedResult := []UI{
-		simpleText,
-	}
+	t.Run("nil element is removed", func(t *testing.T) {
+		var foo *foo
+		require.Empty(t, FilterUIElems(foo))
+	})
 
-	res := FilterUIElems(nil, nilText, simpleText, foo)
-	require.Equal(t, expectedResult, res)
+	t.Run("condition is inserted", func(t *testing.T) {
+		elems := FilterUIElems(
+			Div(),
+			If(true, func() UI {
+				return Span()
+			}),
+		)
+		require.Len(t, elems, 2)
+		require.IsType(t, Div(), elems[0])
+		require.IsType(t, Span(), elems[1])
+	})
+
+	t.Run("condition is removed", func(t *testing.T) {
+		elems := FilterUIElems(
+			Div(),
+			If(false, func() UI {
+				return Span()
+			}),
+		)
+		require.Len(t, elems, 1)
+		require.IsType(t, Div(), elems[0])
+	})
+
+	t.Run("range is inserted", func(t *testing.T) {
+		slice := []UI{Span()}
+
+		elems := FilterUIElems(
+			Div(),
+			Range(slice).Slice(func(i int) UI {
+				return slice[i]
+			}),
+			Div(),
+		)
+		require.Len(t, elems, 3)
+		require.IsType(t, Div(), elems[0])
+		require.IsType(t, Span(), elems[1])
+		require.IsType(t, Div(), elems[2])
+	})
+
+	t.Run("range is removed", func(t *testing.T) {
+		var slice []UI
+
+		elems := FilterUIElems(
+			Div(),
+			Range(slice).Slice(func(i int) UI {
+				return slice[i]
+			}),
+			Div(),
+		)
+		require.Len(t, elems, 2)
+		require.IsType(t, Div(), elems[0])
+		require.IsType(t, Div(), elems[1])
+	})
+
+	t.Run("no elements are removed", func(t *testing.T) {
+		foo := &foo{}
+		div := Div()
+		text := Text("hello")
+		raw := Raw("<br>")
+
+		elems := FilterUIElems(
+			foo,
+			div,
+			text,
+			raw,
+		)
+		require.Len(t, elems, 4)
+		require.Equal(t, foo, elems[0])
+		require.Equal(t, div, elems[1])
+		require.Equal(t, text, elems[2])
+		require.Equal(t, raw, elems[3])
+	})
+
+	// var nilText *text
+	// var foo *foo
+
+	// simpleText := Text("hello")
+
+	// expectedResult := []UI{
+	// 	simpleText,
+	// }
+
+	// res := FilterUIElems(nil, nilText, simpleText, foo)
+	// require.Equal(t, expectedResult, res)
 }
 
 func BenchmarkFilterUIElems(b *testing.B) {
