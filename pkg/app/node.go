@@ -84,46 +84,47 @@ const (
 	RawHTML
 )
 
-// FilterUIElems returns a filtered version of the given UI elements where
-// selector elements such as If and Range are interpreted and removed. It also
-// remove nil elements.
+// FilterUIElems processes and returns a filtered list of the provided UI
+// elements.
 //
-// It should be used only when implementing components that can accept content
-// with variadic arguments like HTML elements Body method.
+// Specifically, it:
+// - Interprets and removes selector elements such as Condition and RangeLoop.
+// - Eliminates nil elements and nil pointers.
+// - Flattens and includes the children of recognized selector elements.
+//
+// This function is primarily intended for components that accept ui elements as
+// variadic arguments or slice, such as the Body method of HTML elements.
 func FilterUIElems(v ...UI) []UI {
 	if len(v) == 0 {
 		return nil
 	}
 
-	remove := func(i int) {
+	removeELemAt := func(i int) {
 		copy(v[i:], v[i+1:])
 		v[len(v)-1] = nil
 		v = v[:len(v)-1]
 	}
 
-	var b []UI
-	replaceAt := func(i int, s ...UI) {
-		b = append(b, v[i+1:]...)
-		v = append(v[:i], s...)
-		v = append(v, b...)
-		b = b[:0]
+	var trailing []UI
+	replaceElemAt := func(i int, elems ...UI) {
+		trailing = append(trailing, v[i+1:]...)
+		v = append(v[:i], elems...)
+		v = append(v, trailing...)
+		trailing = trailing[:0]
 	}
 
 	for i := len(v) - 1; i >= 0; i-- {
-		e := v[i]
-		if ev := reflect.ValueOf(e); e == nil || ev.Kind() == reflect.Pointer && ev.IsNil() {
-			remove(i)
-			continue
+		elem := v[i]
+		if elem == nil {
+			removeELemAt(i)
+		}
+		if elemValue := reflect.ValueOf(elem); elemValue.Kind() == reflect.Pointer && elemValue.IsNil() {
+			removeELemAt(i)
 		}
 
-		switch e.Kind() {
-		case SimpleText, HTML, Component, RawHTML:
-
-		case Selector:
-			replaceAt(i, e.getChildren()...)
-
-		default:
-			remove(i)
+		switch elem.(type) {
+		case Condition, RangeLoop:
+			replaceElemAt(i, elem.getChildren()...)
 		}
 	}
 
