@@ -196,26 +196,20 @@ func internalURLChecker() func(string) bool {
 }
 
 func newClientBody(d Dispatcher) *htmlBody {
-	ctx, cancel := context.WithCancel(context.Background())
 	body := &htmlBody{
 		htmlElement: htmlElement{
-			tag:           "body",
-			context:       ctx,
-			contextCancel: cancel,
-			dispatcher:    d,
-			jsElement:     Window().Get("document").Get("body"),
+			tag:        "body",
+			dispatcher: d,
+			jsElement:  Window().Get("document").Get("body"),
 		},
 	}
 	body.setSelf(body)
 
-	ctx, cancel = context.WithCancel(context.Background())
 	content := &htmlDiv{
 		htmlElement: htmlElement{
-			tag:           "div",
-			context:       ctx,
-			contextCancel: cancel,
-			dispatcher:    d,
-			jsElement:     body.JSValue().firstElementChild(),
+			tag:        "div",
+			dispatcher: d,
+			jsElement:  body.JSValue().firstElementChild(),
 		},
 	}
 	content.setSelf(content)
