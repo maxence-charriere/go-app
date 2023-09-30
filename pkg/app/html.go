@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"io"
 	"reflect"
 	"strconv"
@@ -31,11 +30,9 @@ type htmlElement struct {
 	parent        UI
 	children      []UI
 
-	context       context.Context
-	contextCancel func()
-	dispatcher    Dispatcher
-	jsElement     Value
-	this          UI
+	dispatcher Dispatcher
+	jsElement  Value
+	this       UI
 }
 
 func (e *htmlElement) Tag() string {
@@ -51,7 +48,7 @@ func (e *htmlElement) JSValue() Value {
 }
 
 func (e *htmlElement) Mounted() bool {
-	return e.context != nil && e.context.Err() == nil
+	return e.jsElement != nil
 }
 
 func (e *htmlElement) name() string {
@@ -64,10 +61,6 @@ func (e *htmlElement) self() UI {
 
 func (e *htmlElement) setSelf(v UI) {
 	e.this = v
-}
-
-func (e *htmlElement) getContext() context.Context {
-	return e.context
 }
 
 func (e *htmlElement) getDispatcher() Dispatcher {
@@ -99,7 +92,6 @@ func (e *htmlElement) mount(d Dispatcher) error {
 		return errors.New("html element is already mounted").WithTag("tag", e.tag)
 	}
 
-	e.context, e.contextCancel = context.WithCancel(context.Background())
 	e.dispatcher = d
 
 	jsElement, err := Window().createElement(e.tag, e.xmlns)
@@ -138,7 +130,7 @@ func (e *htmlElement) dismount() {
 		eh.Dismount()
 	}
 
-	e.contextCancel()
+	e.jsElement = nil
 }
 
 func (e *htmlElement) canUpdateWith(v UI) bool {

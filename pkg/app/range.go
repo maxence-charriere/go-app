@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"io"
 	"reflect"
 	"sort"
@@ -103,10 +102,6 @@ func (r rangeLoop) self() UI {
 }
 
 func (r rangeLoop) setSelf(UI) {
-}
-
-func (r rangeLoop) getContext() context.Context {
-	return nil
 }
 
 func (r rangeLoop) getDispatcher() Dispatcher {

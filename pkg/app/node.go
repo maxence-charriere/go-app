@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"io"
 	"reflect"
 	"strings"
@@ -21,7 +20,6 @@ type UI interface {
 	name() string
 	self() UI
 	setSelf(UI)
-	getContext() context.Context
 	getDispatcher() Dispatcher
 	getAttributes() attributes
 	getEventHandlers() eventHandlers

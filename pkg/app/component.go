@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"io"
 	"reflect"
 	"strings"
@@ -148,8 +147,6 @@ type resize struct{}
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
 	disp       Dispatcher
-	ctx        context.Context
-	ctxCancel  func()
 	parentElem UI
 	root       UI
 	this       Composer
@@ -163,8 +160,6 @@ func (c *Compo) JSValue() Value {
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
 	return c.getDispatcher() != nil &&
-		c.ctx != nil &&
-		c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
 		c.self() != nil
 }
@@ -240,10 +235,6 @@ func (c *Compo) setSelf(v UI) {
 	c.this = nil
 }
 
-func (c *Compo) getContext() context.Context {
-	return c.ctx
-}
-
 func (c *Compo) getDispatcher() Dispatcher {
 	return c.disp
 }
@@ -280,7 +271,6 @@ func (c *Compo) mount(d Dispatcher) error {
 	}
 
 	c.disp = d
-	c.ctx, c.ctxCancel = context.WithCancel(context.Background())
 
 	root := c.render()
 	if err := mount(d, root); err != nil {
@@ -306,7 +296,6 @@ func (c *Compo) mount(d Dispatcher) error {
 }
 
 func (c *Compo) dismount() {
-	c.ctxCancel()
 	dismount(c.root)
 
 	if dismounter, ok := c.this.(Dismounter); ok {
