@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"io"
 	"strings"
 
@@ -52,10 +51,6 @@ func (r *raw) self() UI {
 }
 
 func (r *raw) setSelf(UI) {
-}
-
-func (r *raw) getContext() context.Context {
-	return nil
 }
 
 func (r *raw) getDispatcher() Dispatcher {

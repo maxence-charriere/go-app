@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"io"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -104,10 +103,6 @@ func (c condition) self() UI {
 }
 
 func (c condition) setSelf(UI) {
-}
-
-func (c condition) getContext() context.Context {
-	return nil
 }
 
 func (c condition) getDispatcher() Dispatcher {
