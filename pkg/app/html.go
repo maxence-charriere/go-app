@@ -9,6 +9,19 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
+// HTML represents an interface for HTML elements.
+type HTML interface {
+	UI
+
+	// Tag returns the name of the HTML tag represented by the element.
+	Tag() string
+
+	// SelfClosing indicates whether the HTML element is self-closing (like
+	// <img> or <br>).
+	// It returns true if the element is self-closing, otherwise false.
+	SelfClosing() bool
+}
+
 type htmlElement struct {
 	tag           string
 	xmlns         string
@@ -23,6 +36,14 @@ type htmlElement struct {
 	dispatcher    Dispatcher
 	jsElement     Value
 	this          UI
+}
+
+func (e *htmlElement) Tag() string {
+	return e.tag
+}
+
+func (e *htmlElement) SelfClosing() bool {
+	return e.isSelfClosing
 }
 
 func (e *htmlElement) JSValue() Value {

@@ -5,6 +5,8 @@ import (
 	"io"
 	"reflect"
 	"strings"
+
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // UI is the interface that describes a user interface element such as
@@ -135,4 +137,81 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 		ui.setSelf(ui)
 	}
 	ui.htmlWithIndent(w, 0)
+}
+
+// nodeManager manages the lifecycle of UI elements. It handles the logic for
+// mounting, dismounting, and updating nodes based on their type.
+type nodeManager struct {
+}
+
+// Mount mounts a UI element based on its type and the specified depth.
+// It returns the mounted UI element and any potential error during the process.
+func (m nodeManager) Mount(depth uint, v UI) (UI, error) {
+	switch v := v.(type) {
+	case *text:
+		return m.mountText(depth, v)
+
+	case HTML:
+		return m.mountHTMLElement(depth, v)
+
+	case Composer:
+		return m.mountComponent(depth, v)
+
+	case *raw:
+		return m.mountRawHTMLElement(depth, v)
+
+	default:
+		return nil, errors.New("unsupported element").
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("depth", depth)
+	}
+}
+
+func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
+	panic("not implemented")
+}
+
+func (m nodeManager) mountHTMLElement(depth uint, v HTML) (UI, error) {
+	panic("not implemented")
+}
+
+func (m nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
+	panic("not implemented")
+}
+
+func (m nodeManager) mountRawHTMLElement(depth uint, v *raw) (UI, error) {
+	panic("not implemented")
+}
+
+// Dismount removes a UI element based on its type.
+func (m nodeManager) Dismount(v UI) {
+	switch v := v.(type) {
+	case *text:
+		m.dismountText(v)
+
+	case HTML:
+		m.dismountHTMLElement(v)
+
+	case Composer:
+		m.dismountComponent(v)
+
+	case *raw:
+		m.dismountRawHTMLElement(v)
+	}
+}
+
+func (m nodeManager) dismountText(v *text) {
+	panic("not implemented")
+}
+
+func (m nodeManager) dismountHTMLElement(v HTML) {
+	panic("not implemented")
+}
+
+func (m nodeManager) dismountComponent(v Composer) error {
+	panic("not implemented")
+}
+
+func (m nodeManager) dismountRawHTMLElement(v *raw) error {
+	panic("not implemented")
 }
