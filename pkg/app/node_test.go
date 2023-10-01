@@ -234,11 +234,11 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting a text succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		text, err := m.Mount(1, Text("hello"))
+		hello, err := m.Mount(1, Text("hello"))
 		require.NoError(t, err)
-		require.NotZero(t, text)
-		require.NotNil(t, text.JSValue())
-
+		require.NotZero(t, hello)
+		require.Equal(t, "hello", hello.(*text).value)
+		require.NotNil(t, hello.JSValue())
 	})
 
 	t.Run("mounting an already mounted text returns an error", func(t *testing.T) {
@@ -290,4 +290,28 @@ func BenchmarkNodeManagerCanUpdate(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		m.CanUpdate(Div(), Div())
 	}
+}
+
+func TestNodeManagerUpdate(t *testing.T) {
+	t.Run("updating text succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		greeting, err := m.Mount(1, Text("hello"))
+		require.NoError(t, err)
+
+		greeting, err = m.Update(greeting, Text("bye"))
+		require.NoError(t, err)
+		require.Equal(t, "bye", greeting.(*text).value)
+	})
+
+	t.Run("updating same text succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		greeting, err := m.Mount(1, Text("hello"))
+		require.NoError(t, err)
+
+		greeting, err = m.Update(greeting, Text("hello"))
+		require.NoError(t, err)
+		require.Equal(t, "hello", greeting.(*text).value)
+	})
 }

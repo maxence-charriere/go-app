@@ -249,7 +249,13 @@ func (m nodeManager) Update(v, new UI) (UI, error) {
 }
 
 func (m nodeManager) updateText(v, new *text) (UI, error) {
-	panic("not implemented")
+	if v.value == new.value {
+		return v, nil
+	}
+
+	v.value = new.value
+	v.JSValue().setNodeValue(v.value)
+	return v, nil
 }
 
 func (m nodeManager) updateHTML(v, new HTML) (UI, error) {
