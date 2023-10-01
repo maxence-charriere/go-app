@@ -166,7 +166,14 @@ func (m nodeManager) Mount(depth uint, v UI) (UI, error) {
 }
 
 func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
-	panic("not implemented")
+	if v.Mounted() {
+		return nil, errors.New("text is already mounted").
+			WithTag("parent-type", reflect.TypeOf(v.getParent())).
+			WithTag("preview-value", previewText(v.value))
+	}
+
+	v.jsvalue = Window().createTextNode(v.value)
+	return v, nil
 }
 
 func (m nodeManager) mountHTMLElement(depth uint, v HTML) (UI, error) {

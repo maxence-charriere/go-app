@@ -229,3 +229,26 @@ func TestHTMLString(t *testing.T) {
 		})
 	}
 }
+
+func TestNodeManagerMount(t *testing.T) {
+	t.Run("mounting a text succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		text, err := m.Mount(1, Text("hello"))
+		require.NoError(t, err)
+		require.NotZero(t, text)
+		require.NotNil(t, text.JSValue())
+
+	})
+
+	t.Run("mounting an already mounted text returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		text, err := m.Mount(1, Text("hello"))
+		require.NoError(t, err)
+
+		text, err = m.Mount(1, text)
+		require.Error(t, err)
+		require.Zero(t, text)
+	})
+}
