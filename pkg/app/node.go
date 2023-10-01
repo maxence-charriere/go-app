@@ -139,8 +139,7 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 
 // nodeManager manages the lifecycle of UI elements. It handles the logic for
 // mounting, dismounting, and updating nodes based on their type.
-type nodeManager struct {
-}
+type nodeManager struct{}
 
 // Mount mounts a UI element based on its type and the specified depth.
 // It returns the mounted UI element and any potential error during the process.
@@ -213,5 +212,54 @@ func (m nodeManager) dismountComponent(v Composer) error {
 }
 
 func (m nodeManager) dismountRawHTMLElement(v *raw) error {
+	panic("not implemented")
+}
+
+func (m nodeManager) CanUpdate(v, new UI) bool {
+	if vType, newType := reflect.TypeOf(v), reflect.TypeOf(new); vType != newType {
+		return false
+	}
+
+	switch v.(type) {
+	case *htmlElem, *htmlElemSelfClosing:
+		return v.(HTML).Tag() == new.(HTML).Tag()
+
+	default:
+		return true
+	}
+}
+
+func (m nodeManager) Update(v, new UI) (UI, error) {
+	switch v := v.(type) {
+	case *text:
+		return m.updateText(v, new.(*text))
+
+	case HTML:
+		return m.updateHTML(v, new.(HTML))
+
+	case Composer:
+		return m.updateComponent(v, new.(Composer))
+
+	case *raw:
+		return m.updateRawHTML(v, new.(*raw))
+
+	default:
+		return nil, errors.New("unsupported element").WithTag("type", reflect.TypeOf(v))
+	}
+}
+
+func (m nodeManager) updateText(v, new *text) (UI, error) {
+	panic("not implemented")
+}
+
+func (m nodeManager) updateHTML(v, new HTML) (UI, error) {
+	panic("not implemented")
+}
+
+func (m nodeManager) updateComponent(v, new Composer) (UI, error) {
+	panic("not implemented")
+}
+
+func (m nodeManager) updateRawHTML(v, new *raw) (UI, error) {
 	panic("not implemented")
 }

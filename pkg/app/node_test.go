@@ -252,3 +252,42 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Zero(t, text)
 	})
 }
+
+func TestNodeManagerCanUpdate(t *testing.T) {
+	t.Run("elements with same type can be updated", func(t *testing.T) {
+		var m nodeManager
+		require.True(t, m.CanUpdate(Div(), Div()))
+	})
+
+	t.Run("elements with different types cannot be updated", func(t *testing.T) {
+		var m nodeManager
+		require.False(t, m.CanUpdate(Div(), Span()))
+	})
+
+	t.Run("generic html elements with same tag can be updated", func(t *testing.T) {
+		var m nodeManager
+		require.True(t, m.CanUpdate(Elem("div"), Elem("div")))
+	})
+
+	t.Run("generic html elements with different tag cannot be updated", func(t *testing.T) {
+		var m nodeManager
+		require.False(t, m.CanUpdate(Elem("div"), Elem("span")))
+	})
+
+	t.Run("generic self closing html elements with same tag can be updated", func(t *testing.T) {
+		var m nodeManager
+		require.True(t, m.CanUpdate(ElemSelfClosing("input"), ElemSelfClosing("input")))
+	})
+
+	t.Run("generic self closing html elements with different tag cannot be updated", func(t *testing.T) {
+		var m nodeManager
+		require.False(t, m.CanUpdate(ElemSelfClosing("input"), ElemSelfClosing("br")))
+	})
+}
+
+func BenchmarkNodeManagerCanUpdate(b *testing.B) {
+	var m nodeManager
+	for n := 0; n < b.N; n++ {
+		m.CanUpdate(Div(), Div())
+	}
+}
