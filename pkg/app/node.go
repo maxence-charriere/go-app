@@ -192,7 +192,6 @@ func (m nodeManager) mountRawHTMLElement(depth uint, v *raw) (UI, error) {
 func (m nodeManager) Dismount(v UI) {
 	switch v := v.(type) {
 	case *text:
-		m.dismountText(v)
 
 	case HTML:
 		m.dismountHTMLElement(v)
@@ -203,10 +202,6 @@ func (m nodeManager) Dismount(v UI) {
 	case *raw:
 		m.dismountRawHTMLElement(v)
 	}
-}
-
-func (m nodeManager) dismountText(v *text) {
-	panic("not implemented")
 }
 
 func (m nodeManager) dismountHTMLElement(v HTML) {
