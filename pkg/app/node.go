@@ -141,21 +141,21 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 // mounting, dismounting, and updating nodes based on their type.
 type nodeManager struct{}
 
-// Mount mounts a UI element based on its type and the specified depth.
-// It returns the mounted UI element and any potential error during the process.
+// Mount mounts a UI element based on its type and the specified depth. It
+// returns the mounted UI element and any potential error during the process.
 func (m nodeManager) Mount(depth uint, v UI) (UI, error) {
 	switch v := v.(type) {
 	case *text:
 		return m.mountText(depth, v)
 
 	case HTML:
-		return m.mountHTMLElement(depth, v)
+		return m.mountHTML(depth, v)
 
 	case Composer:
 		return m.mountComponent(depth, v)
 
 	case *raw:
-		return m.mountRawHTMLElement(depth, v)
+		return m.mountRawHTML(depth, v)
 
 	default:
 		return nil, errors.New("unsupported element").
@@ -175,7 +175,7 @@ func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
 	return v, nil
 }
 
-func (m nodeManager) mountHTMLElement(depth uint, v HTML) (UI, error) {
+func (m nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	panic("not implemented")
 }
 
@@ -183,7 +183,7 @@ func (m nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
 	panic("not implemented")
 }
 
-func (m nodeManager) mountRawHTMLElement(depth uint, v *raw) (UI, error) {
+func (m nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
 	panic("not implemented")
 }
 
@@ -193,17 +193,17 @@ func (m nodeManager) Dismount(v UI) {
 	case *text:
 
 	case HTML:
-		m.dismountHTMLElement(v)
+		m.dismountHTML(v)
 
 	case Composer:
 		m.dismountComponent(v)
 
 	case *raw:
-		m.dismountRawHTMLElement(v)
+		m.dismountRawHTML(v)
 	}
 }
 
-func (m nodeManager) dismountHTMLElement(v HTML) {
+func (m nodeManager) dismountHTML(v HTML) {
 	panic("not implemented")
 }
 
@@ -211,10 +211,16 @@ func (m nodeManager) dismountComponent(v Composer) error {
 	panic("not implemented")
 }
 
-func (m nodeManager) dismountRawHTMLElement(v *raw) error {
+func (m nodeManager) dismountRawHTML(v *raw) error {
 	panic("not implemented")
 }
 
+// CanUpdate determines whether a given UI element 'v' can be updated with a new
+// UI element 'new'. It returns false if the types of the two elements are
+// different.
+//
+// For HTML elements, it ensures that the tag names match. Otherwise, it returns
+// true indicating that an update is feasible.
 func (m nodeManager) CanUpdate(v, new UI) bool {
 	if vType, newType := reflect.TypeOf(v), reflect.TypeOf(new); vType != newType {
 		return false
@@ -229,6 +235,9 @@ func (m nodeManager) CanUpdate(v, new UI) bool {
 	}
 }
 
+// Update updates the existing UI element 'v' with a new UI element 'new'. It
+// returns the updated UI element and any error encountered during the update
+// process.
 func (m nodeManager) Update(v, new UI) (UI, error) {
 	switch v := v.(type) {
 	case *text:
