@@ -27,11 +27,11 @@ func Raw(v string) UI {
 }
 
 type raw struct {
-	disp       Dispatcher
-	jsvalue    Value
-	parentElem UI
-	tag        string
-	value      string
+	disp          Dispatcher
+	jsvalue       Value
+	parentElement UI
+	tag           string
+	value         string
 }
 
 func (r *raw) JSValue() Value {
@@ -66,11 +66,12 @@ func (r *raw) getEventHandlers() eventHandlers {
 }
 
 func (r *raw) getParent() UI {
-	return r.parentElem
+	return r.parentElement
 }
 
-func (r *raw) setParent(p UI) {
-	r.parentElem = p
+func (r *raw) setParent(p UI) UI {
+	r.parentElement = p
+	return r
 }
 
 func (r *raw) getChildren() []UI {

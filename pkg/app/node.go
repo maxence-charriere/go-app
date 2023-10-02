@@ -24,7 +24,6 @@ type UI interface {
 	getAttributes() attributes
 	getEventHandlers() eventHandlers
 	getParent() UI
-	setParent(UI)
 	getChildren() []UI
 	mount(Dispatcher) error
 	dismount()
@@ -33,6 +32,8 @@ type UI interface {
 	onComponentEvent(any)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
+
+	setParent(UI) UI
 }
 
 // FilterUIElems processes and returns a filtered list of the provided UI
@@ -139,7 +140,9 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 
 // nodeManager manages the lifecycle of UI elements. It handles the logic for
 // mounting, dismounting, and updating nodes based on their type.
-type nodeManager struct{}
+type nodeManager struct {
+	engine *engine
+}
 
 // Mount mounts a UI element based on its type and the specified depth. It
 // returns the mounted UI element and any potential error during the process.
@@ -176,7 +179,44 @@ func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
 }
 
 func (m nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
-	panic("not implemented")
+	if v.Mounted() {
+		return nil, errors.New("html element is already mounted").
+			WithTag("parent-type", reflect.TypeOf(v.getParent())).
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("tag", v.Tag()).
+			WithTag("depth", v.Depth())
+	}
+
+	jsElement, err := Window().createElement(v.Tag(), v.XMLNamespace())
+	if err != nil {
+		return nil, errors.New("creating js element failed").
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("tag", v.Tag()).
+			WithTag("xmlns", v.XMLNamespace()).
+			WithTag("depth", depth).
+			Wrap(err)
+	}
+	v.setJSElement(jsElement)
+	v.attrs().Mount(jsElement, m.engine.resolveStaticResource) // To be reworked
+	v.events().Mount(v)                                        // To be reworked
+
+	v.setDepth(depth)
+	children := v.body()
+	for i, child := range children {
+		if child, err = m.Mount(depth+1, child); err != nil {
+			return nil, errors.New("mounting child failed").
+				WithTag("type", reflect.TypeOf(v)).
+				WithTag("tag", v.Tag()).
+				WithTag("depth", depth).
+				WithTag("children-index", i).
+				Wrap(err)
+		}
+		child = child.setParent(v)
+		children[i] = child
+		v.JSValue().appendChild(child)
+	}
+
+	return v, nil
 }
 
 func (m nodeManager) mountComponent(depth uint, v Composer) (UI, error) {

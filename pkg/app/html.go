@@ -12,35 +12,42 @@ import (
 type HTML interface {
 	UI
 
-	// Tag returns the name of the HTML tag represented by the element.
+	// Returns the name of the HTML tag represented by the element.
 	Tag() string
 
-	// SelfClosing indicates whether the HTML element is self-closing (like
-	// <img> or <br>).
-	// It returns true if the element is self-closing, otherwise false.
+	// Returns the XML namespace of the HTML element.
+	XMLNamespace() string
+
+	// Indicates whether the HTML element is self-closing (like <img> or <br>).
+	// Returns true for self-closing elements, otherwise false.
 	SelfClosing() bool
+
+	// Returns the nesting level of the HTML element. A higher value
+	// indicates deeper nesting within the document.
+	Depth() uint
+
+	attrs() attributes
+	events() eventHandlers
+	setDepth(uint)
+	setJSElement(Value)
+	parent() UI
+	body() []UI
 }
 
 type htmlElement struct {
-	tag           string
-	xmlns         string
-	isSelfClosing bool
 	attributes    attributes
 	eventHandlers eventHandlers
-	parent        UI
 	children      []UI
 
 	dispatcher Dispatcher
-	jsElement  Value
 	this       UI
-}
 
-func (e *htmlElement) Tag() string {
-	return e.tag
-}
-
-func (e *htmlElement) SelfClosing() bool {
-	return e.isSelfClosing
+	tag           string
+	xmlns         string
+	depth         uint
+	isSelfClosing bool
+	jsElement     Value
+	parentElement UI
 }
 
 func (e *htmlElement) JSValue() Value {
@@ -68,23 +75,19 @@ func (e *htmlElement) getDispatcher() Dispatcher {
 }
 
 func (e *htmlElement) getAttributes() attributes {
-	return e.attributes
+	return e.attrs()
 }
 
 func (e *htmlElement) getEventHandlers() eventHandlers {
-	return e.eventHandlers
+	return e.events()
 }
 
 func (e *htmlElement) getParent() UI {
-	return e.parent
-}
-
-func (e *htmlElement) setParent(p UI) {
-	e.parent = p
+	return e.parentElement
 }
 
 func (e *htmlElement) getChildren() []UI {
-	return e.children
+	return e.body()
 }
 
 func (e *htmlElement) mount(d Dispatcher) error {
@@ -285,6 +288,12 @@ func (e *htmlElement) setEventHandler(event string, h EventHandler, scope ...any
 	e.eventHandlers.Set(event, h, scope...)
 }
 
+// TODO: Remove
+func (e *htmlElement) setParent(v UI) UI {
+	e.parentElement = v
+	return nil
+}
+
 func (e *htmlElement) setChildren(v ...UI) {
 	if e.isSelfClosing {
 		panic(errors.New("cannot set children of a self closing element").
@@ -396,4 +405,46 @@ func (e *htmlElement) writeHTMLAttribute(w io.Writer, k, v string) {
 			return s
 		})))
 	}
+}
+
+// -----------------------------------------------------------------------------
+
+func (e *htmlElement) Tag() string {
+	return e.tag
+}
+
+func (e *htmlElement) XMLNamespace() string {
+	return e.xmlns
+}
+
+func (e *htmlElement) SelfClosing() bool {
+	return e.isSelfClosing
+}
+
+func (e *htmlElement) Depth() uint {
+	return e.depth
+}
+
+func (e *htmlElement) attrs() attributes {
+	return e.attributes
+}
+
+func (e *htmlElement) events() eventHandlers {
+	return e.eventHandlers
+}
+
+func (e *htmlElement) setDepth(v uint) {
+	e.depth = v
+}
+
+func (e *htmlElement) setJSElement(v Value) {
+	e.jsElement = v
+}
+
+func (e *htmlElement) parent() UI {
+	return e.parentElement
+}
+
+func (e *htmlElement) body() []UI {
+	return e.children
 }

@@ -121,7 +121,8 @@ func (c condition) getParent() UI {
 	return nil
 }
 
-func (c condition) setParent(UI) {
+func (c condition) setParent(UI) UI {
+	return nil
 }
 
 func (c condition) getChildren() []UI {

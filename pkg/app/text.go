@@ -19,10 +19,10 @@ func Textf(format string, v ...any) UI {
 }
 
 type text struct {
-	disp       Dispatcher
-	jsvalue    Value
-	parentElem UI
-	value      string
+	disp          Dispatcher
+	jsvalue       Value
+	parentElement UI
+	value         string
 }
 
 func (t *text) JSValue() Value {
@@ -57,11 +57,12 @@ func (t *text) getEventHandlers() eventHandlers {
 }
 
 func (t *text) getParent() UI {
-	return t.parentElem
+	return t.parentElement
 }
 
-func (t *text) setParent(p UI) {
-	t.parentElem = p
+func (t *text) setParent(p UI) UI {
+	t.parentElement = p
+	return t
 }
 
 func (t *text) getChildren() []UI {

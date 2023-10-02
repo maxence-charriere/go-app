@@ -237,6 +237,7 @@ func TestNodeManagerMount(t *testing.T) {
 		hello, err := m.Mount(1, Text("hello"))
 		require.NoError(t, err)
 		require.NotZero(t, hello)
+		require.True(t, hello.Mounted())
 		require.Equal(t, "hello", hello.(*text).value)
 		require.NotNil(t, hello.JSValue())
 	})
@@ -250,6 +251,45 @@ func TestNodeManagerMount(t *testing.T) {
 		text, err = m.Mount(1, text)
 		require.Error(t, err)
 		require.Zero(t, text)
+	})
+
+	t.Run("mounting an html element succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div())
+		require.NoError(t, err)
+		require.NotZero(t, div)
+		require.True(t, div.Mounted())
+		require.NotNil(t, div.JSValue())
+		require.Equal(t, uint(1), div.(HTML).Depth())
+	})
+
+	t.Run("mounting an html element with children succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			Span(),
+		))
+		require.NoError(t, err)
+		require.NotZero(t, div)
+
+		body := div.(HTML).body()
+		require.NotEmpty(t, body)
+
+		span := body[0]
+		require.True(t, span.Mounted())
+		require.Equal(t, uint(2), span.(HTML).Depth())
+	})
+
+	t.Run("mounting an already mounted html element returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div())
+		require.NoError(t, err)
+
+		div, err = m.Mount(1, div)
+		require.Error(t, err)
+		require.Zero(t, div)
 	})
 }
 

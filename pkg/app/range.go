@@ -120,7 +120,8 @@ func (r rangeLoop) getParent() UI {
 	return nil
 }
 
-func (r rangeLoop) setParent(UI) {
+func (r rangeLoop) setParent(UI) UI {
+	return nil
 }
 
 func (r rangeLoop) getChildren() []UI {

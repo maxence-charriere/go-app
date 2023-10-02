@@ -2338,6 +2338,17 @@ func writeStruct(w io.Writer, t tag) {
 
 		writeEventFunction(w, e, t, false)
 	}
+
+	fmt.Fprintln(w)
+
+	fmt.Fprintf(w, `
+	func (e *html%s) setParent(v UI) UI {
+		e.parentElement = v
+		return e
+	}
+	`,
+		t.Name,
+	)
 }
 
 func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
