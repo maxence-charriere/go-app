@@ -303,6 +303,14 @@ func TestNodeManagerMount(t *testing.T) {
 	})
 }
 
+func BenchmarkNodeManagerMount(b *testing.B) {
+	var m nodeManager
+
+	for n := 0; n < b.N; n++ {
+		m.Mount(1, Div())
+	}
+}
+
 func TestNodeManagerCanUpdate(t *testing.T) {
 	t.Run("elements with same type can be updated", func(t *testing.T) {
 		var m nodeManager
