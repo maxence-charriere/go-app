@@ -4,6 +4,7 @@ import (
 	"io"
 	"reflect"
 	"strings"
+	"sync"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -138,15 +139,30 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 	ui.htmlWithIndent(w, 0)
 }
 
-// nodeManager manages the lifecycle of UI elements. It handles the logic for
-// mounting, dismounting, and updating nodes based on their type.
+// nodeManager oversees the lifecycle and operations of UI elements.
+// It offers capabilities to handle mounting, dismounting, and updating nodes,
+// tailored to their individual types.
 type nodeManager struct {
-	engine *engine
+	// An optional function responsible for resolving attributes with URL
+	// values.
+	ResolveURL attributeURLResolver
+
+	initOnce sync.Once
+}
+
+func (m *nodeManager) init() {
+	if m.ResolveURL == nil {
+		m.ResolveURL = func(s string) string {
+			return s
+		}
+	}
 }
 
 // Mount mounts a UI element based on its type and the specified depth. It
 // returns the mounted UI element and any potential error during the process.
-func (m nodeManager) Mount(depth uint, v UI) (UI, error) {
+func (m *nodeManager) Mount(depth uint, v UI) (UI, error) {
+	m.initOnce.Do(m.init)
+
 	switch v := v.(type) {
 	case *text:
 		return m.mountText(depth, v)
@@ -167,7 +183,7 @@ func (m nodeManager) Mount(depth uint, v UI) (UI, error) {
 	}
 }
 
-func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
+func (m *nodeManager) mountText(depth uint, v *text) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("text is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.getParent())).
@@ -178,7 +194,7 @@ func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
 	return v, nil
 }
 
-func (m nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
+func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("html element is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.getParent())).
@@ -197,8 +213,8 @@ func (m nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 			Wrap(err)
 	}
 	v.setJSElement(jsElement)
-	v.attrs().Mount(jsElement, m.engine.resolveStaticResource) // To be reworked
-	v.events().Mount(v)                                        // To be reworked
+	v.attrs().Mount(jsElement, m.ResolveURL) // To be reworked
+	v.events().Mount(v)                      // To be reworked
 
 	v.setDepth(depth)
 	children := v.body()
@@ -219,16 +235,20 @@ func (m nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	return v, nil
 }
 
-func (m nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
+func (m *nodeManager) mountHTMLAttributes(jsElement Value, attrs attributes) {
+	panic("to implement")
+}
+
+func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
 	panic("not implemented")
 }
 
-func (m nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
+func (m *nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
 	panic("not implemented")
 }
 
 // Dismount removes a UI element based on its type.
-func (m nodeManager) Dismount(v UI) {
+func (m *nodeManager) Dismount(v UI) {
 	switch v := v.(type) {
 	case *text:
 
@@ -243,15 +263,15 @@ func (m nodeManager) Dismount(v UI) {
 	}
 }
 
-func (m nodeManager) dismountHTML(v HTML) {
+func (m *nodeManager) dismountHTML(v HTML) {
 	panic("not implemented")
 }
 
-func (m nodeManager) dismountComponent(v Composer) error {
+func (m *nodeManager) dismountComponent(v Composer) error {
 	panic("not implemented")
 }
 
-func (m nodeManager) dismountRawHTML(v *raw) error {
+func (m *nodeManager) dismountRawHTML(v *raw) error {
 	panic("not implemented")
 }
 
@@ -261,7 +281,7 @@ func (m nodeManager) dismountRawHTML(v *raw) error {
 //
 // For HTML elements, it ensures that the tag names match. Otherwise, it returns
 // true indicating that an update is feasible.
-func (m nodeManager) CanUpdate(v, new UI) bool {
+func (m *nodeManager) CanUpdate(v, new UI) bool {
 	if vType, newType := reflect.TypeOf(v), reflect.TypeOf(new); vType != newType {
 		return false
 	}
@@ -278,7 +298,7 @@ func (m nodeManager) CanUpdate(v, new UI) bool {
 // Update updates the existing UI element 'v' with a new UI element 'new'. It
 // returns the updated UI element and any error encountered during the update
 // process.
-func (m nodeManager) Update(v, new UI) (UI, error) {
+func (m *nodeManager) Update(v, new UI) (UI, error) {
 	switch v := v.(type) {
 	case *text:
 		return m.updateText(v, new.(*text))
@@ -297,7 +317,7 @@ func (m nodeManager) Update(v, new UI) (UI, error) {
 	}
 }
 
-func (m nodeManager) updateText(v, new *text) (UI, error) {
+func (m *nodeManager) updateText(v, new *text) (UI, error) {
 	if v.value == new.value {
 		return v, nil
 	}
@@ -307,14 +327,14 @@ func (m nodeManager) updateText(v, new *text) (UI, error) {
 	return v, nil
 }
 
-func (m nodeManager) updateHTML(v, new HTML) (UI, error) {
+func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 	panic("not implemented")
 }
 
-func (m nodeManager) updateComponent(v, new Composer) (UI, error) {
+func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
 	panic("not implemented")
 }
 
-func (m nodeManager) updateRawHTML(v, new *raw) (UI, error) {
+func (m *nodeManager) updateRawHTML(v, new *raw) (UI, error) {
 	panic("not implemented")
 }

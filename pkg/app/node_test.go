@@ -264,6 +264,16 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Equal(t, uint(1), div.(HTML).Depth())
 	})
 
+	t.Run("mounting an html element with attributes succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Img().
+			Class("test").
+			Src("/web/test.webp"))
+		require.NoError(t, err)
+		require.True(t, div.Mounted())
+	})
+
 	t.Run("mounting an html element with children succeeds", func(t *testing.T) {
 		var m nodeManager
 
