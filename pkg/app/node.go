@@ -213,8 +213,8 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 			Wrap(err)
 	}
 	v.setJSElement(jsElement)
-	v.attrs().Mount(jsElement, m.ResolveURL) // To be reworked
-	v.events().Mount(v)                      // To be reworked
+	m.mountHTMLAttributes(jsElement, v.attrs())
+	v.events().Mount(v) // To be reworked
 
 	v.setDepth(depth)
 	children := v.body()
@@ -236,7 +236,13 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 }
 
 func (m *nodeManager) mountHTMLAttributes(jsElement Value, attrs attributes) {
-	panic("to implement")
+	for name, value := range attrs {
+		setJSAttribute(jsElement, name, resolveAttributeURLValue(
+			name,
+			value,
+			m.ResolveURL,
+		))
+	}
 }
 
 func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
