@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -283,6 +284,29 @@ func TestNodeManagerMount(t *testing.T) {
 			Src("/web/test.webp"))
 		require.NoError(t, err)
 		require.True(t, div.Mounted())
+	})
+
+	t.Run("mounting an html element with event handlers succeeds", func(t *testing.T) {
+		var m nodeManager
+		var wg sync.WaitGroup
+
+		div, err := m.Mount(1, A().
+			On("testJSEvent", func(ctx Context, e Event) {
+				wg.Done()
+			}))
+		require.NoError(t, err)
+		require.True(t, div.Mounted())
+
+		if IsServer {
+			return
+		}
+
+		wg.Add(1)
+		customEvent := Window().Get("CustomEvent").New("testJSEvent", map[string]any{
+			"detail": "a js custom event",
+		})
+		div.JSValue().Call("dispatchEvent", customEvent)
+		wg.Wait()
 	})
 
 	t.Run("mounting an html element with children succeeds", func(t *testing.T) {
