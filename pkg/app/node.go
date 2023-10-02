@@ -139,13 +139,16 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 	ui.htmlWithIndent(w, 0)
 }
 
-// nodeManager oversees the lifecycle and operations of UI elements.
-// It offers capabilities to handle mounting, dismounting, and updating nodes,
-// tailored to their individual types.
+// nodeManager orchestrates the lifecycle of UI elements, providing specialized
+// mechanisms for mounting, dismounting, and updating nodes.
 type nodeManager struct {
-	// An optional function responsible for resolving attributes with URL
-	// values.
+	// ResolveURL is used to transform attributes that hold URL values.
 	ResolveURL attributeURLResolver
+
+	// EmitHTMLEvent is called when a specific HTML event occurs on a UI
+	// element. 'src' represents the source UI element triggering the event, and
+	// 'f' is the callback to be executed in response.
+	EmitHTMLEvent func(src UI, f func())
 
 	initOnce sync.Once
 }
@@ -154,6 +157,12 @@ func (m *nodeManager) init() {
 	if m.ResolveURL == nil {
 		m.ResolveURL = func(s string) string {
 			return s
+		}
+	}
+
+	if m.EmitHTMLEvent == nil {
+		m.EmitHTMLEvent = func(u UI, f func()) {
+			f()
 		}
 	}
 }
@@ -203,22 +212,29 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 			WithTag("depth", v.Depth())
 	}
 
-	jsElement, err := Window().createElement(v.Tag(), v.XMLNamespace())
-	if err != nil {
+	var jsElement Value
+	switch v.(type) {
+	case *htmlBody:
+		jsElement = Window().Get("document").Get("body")
+
+	default:
+		jsElement, _ = Window().createElement(v.Tag(), v.XMLNamespace())
+	}
+	if IsClient && !jsElement.Truthy() {
 		return nil, errors.New("creating js element failed").
 			WithTag("type", reflect.TypeOf(v)).
 			WithTag("tag", v.Tag()).
 			WithTag("xmlns", v.XMLNamespace()).
-			WithTag("depth", depth).
-			Wrap(err)
+			WithTag("depth", depth)
 	}
 	v.setJSElement(jsElement)
-	m.mountHTMLAttributes(jsElement, v.attrs())
-	v.events().Mount(v) // To be reworked
+	m.mountHTMLAttributes(v)
+	m.mountHTMLEventHandlers(v)
 
 	v.setDepth(depth)
 	children := v.body()
 	for i, child := range children {
+		var err error
 		if child, err = m.Mount(depth+1, child); err != nil {
 			return nil, errors.New("mounting child failed").
 				WithTag("type", reflect.TypeOf(v)).
@@ -235,13 +251,47 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) mountHTMLAttributes(jsElement Value, attrs attributes) {
-	for name, value := range attrs {
-		setJSAttribute(jsElement, name, resolveAttributeURLValue(
+func (m *nodeManager) mountHTMLAttributes(v HTML) {
+	for name, value := range v.attrs() {
+		setJSAttribute(v.JSValue(), name, resolveAttributeURLValue(
 			name,
 			value,
 			m.ResolveURL,
 		))
+	}
+}
+
+func (m *nodeManager) mountHTMLEventHandlers(v HTML) {
+	events := v.events()
+	for event, handler := range events {
+		events[event] = m.mountHTMLEventHandler(v, handler)
+
+	}
+}
+
+func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventHandler {
+	event := handler.event
+
+	jsHandler := FuncOf(func(this Value, args []Value) any {
+		if len(args) != 0 {
+			event := Event{Value: args[0]}
+			trackMousePosition(event)
+			handler.goHandler(nil, event)
+			panic("TODO: nodeManager make context")
+		}
+		return nil
+	})
+	v.JSValue().addEventListener(event, jsHandler)
+
+	return eventHandler{
+		event:     event,
+		scope:     handler.scope,
+		goHandler: handler.goHandler,
+		jsHandler: jsHandler,
+		close: func() {
+			v.JSValue().removeEventListener(event, jsHandler)
+			jsHandler.Release()
+		},
 	}
 }
 

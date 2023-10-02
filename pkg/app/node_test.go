@@ -264,6 +264,17 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Equal(t, uint(1), div.(HTML).Depth())
 	})
 
+	t.Run("mounting a html body succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		body, err := m.Mount(1, Body())
+		require.NoError(t, err)
+		require.NotZero(t, body)
+		require.True(t, body.Mounted())
+		require.NotNil(t, body.JSValue())
+		require.Equal(t, uint(1), body.(HTML).Depth())
+	})
+
 	t.Run("mounting an html element with attributes succeeds", func(t *testing.T) {
 		var m nodeManager
 
