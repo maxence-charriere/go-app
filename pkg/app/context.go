@@ -170,6 +170,8 @@ type uiContext struct {
 	appUpdateAvailable bool
 	page               Page
 	disp               Dispatcher
+
+	emit func(src UI, f func())
 }
 
 func (ctx uiContext) Src() UI {
@@ -263,6 +265,9 @@ func (ctx uiContext) After(d time.Duration, fn func(Context)) {
 }
 
 func (ctx uiContext) Emit(fn func()) {
+	if ctx.emit != nil {
+		ctx.emit(ctx.Src(), fn)
+	}
 	ctx.Dispatcher().Emit(ctx.Src(), fn)
 }
 

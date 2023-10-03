@@ -1,7 +1,9 @@
 package app
 
 import (
+	"context"
 	"io"
+	"net/url"
 	"reflect"
 	"strings"
 	"sync"
@@ -142,8 +144,16 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 // nodeManager orchestrates the lifecycle of UI elements, providing specialized
 // mechanisms for mounting, dismounting, and updating nodes.
 type nodeManager struct {
+	// Ctx serves as a base context, utilized to derive child contexts providing
+	// mechanisms to interact with the browser, manage pages, handle
+	// concurrency, and facilitate component communication.
+	Ctx context.Context
+
 	// ResolveURL is used to transform attributes that hold URL values.
 	ResolveURL attributeURLResolver
+
+	// Page represents a reference to the current web page.
+	Page Page
 
 	// EmitHTMLEvent is called when a specific HTML event occurs on a UI
 	// element. 'src' represents the source UI element triggering the event, and
@@ -154,9 +164,28 @@ type nodeManager struct {
 }
 
 func (m *nodeManager) init() {
+	if m.Ctx == nil {
+		m.Ctx = context.Background()
+	}
+
 	if m.ResolveURL == nil {
 		m.ResolveURL = func(s string) string {
 			return s
+		}
+	}
+
+	if m.Page == nil {
+		url, _ := url.Parse("https://goapp.dev")
+		if IsServer {
+			m.Page = &requestPage{
+				url:                   url,
+				resolveStaticResource: m.ResolveURL,
+			}
+		} else {
+			m.Page = browserPage{
+				url:                   url,
+				resolveStaticResource: m.ResolveURL,
+			}
 		}
 	}
 
@@ -276,8 +305,7 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 		if len(args) != 0 {
 			event := Event{Value: args[0]}
 			trackMousePosition(event)
-			handler.goHandler(nil, event)
-			panic("TODO: nodeManager make context")
+			handler.goHandler(m.MakeContext(v), event)
 		}
 		return nil
 	})
@@ -393,4 +421,20 @@ func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
 
 func (m *nodeManager) updateRawHTML(v, new *raw) (UI, error) {
 	panic("not implemented")
+}
+
+// MakeContext creates and returns a new context derived from the nodeManager's
+// base context (Ctx). The derived context is configured and tailored for the
+// provided UI element 'v'.
+func (m *nodeManager) MakeContext(v UI) Context {
+	m.initOnce.Do(m.init)
+
+	return uiContext{
+		Context:            m.Ctx,
+		src:                v,
+		jsSrc:              v.JSValue(),
+		appUpdateAvailable: appUpdateAvailable,
+		page:               m.Page,
+		emit:               m.EmitHTMLEvent,
+	}
 }

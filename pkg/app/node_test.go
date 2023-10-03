@@ -408,3 +408,17 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.Equal(t, "hello", greeting.(*text).value)
 	})
 }
+
+func TestNodeManagerMakeContext(t *testing.T) {
+	var m nodeManager
+
+	div, err := m.Mount(1, Div())
+	require.NoError(t, err)
+
+	ctx := m.MakeContext(div).(uiContext)
+	require.NotZero(t, ctx)
+	require.NotNil(t, ctx.src)
+	require.NotNil(t, ctx.jsSrc)
+	require.NotNil(t, ctx.page)
+	require.NotNil(t, ctx.emit)
+}
