@@ -429,15 +429,42 @@ func (m *nodeManager) updateText(v, new *text) (UI, error) {
 }
 
 func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
-	// vAttrs := v.attrs()
-	// newAttrs := new.attrs()
-	// if vAttrs == nil && len(newAttrs) != 0 {
+	vAttrs := v.attrs()
+	newAttrs := new.attrs()
+	if vAttrs == nil && len(newAttrs) != 0 {
+		v = v.setAttrs(newAttrs)
+		m.mountHTMLAttributes(v)
+	} else if vAttrs != nil {
+		m.updateHTMLAttributes(v, newAttrs)
+	}
 
-	// } else if vAttrs != nil {
+	// update event handler
 
-	// }
+	// update childrens
 
 	panic("not implemented")
+}
+
+func (m *nodeManager) updateHTMLAttributes(v HTML, newAttrs attributes) {
+	vAttrs := v.attrs()
+	for _, name := range vAttrs {
+		if _, remains := newAttrs[name]; !remains {
+			deleteJSAttribute(v.JSValue(), name)
+			delete(vAttrs, name)
+		}
+	}
+
+	for name, value := range newAttrs {
+		if vAttrs[name] == value {
+			continue
+		}
+		vAttrs[name] = value
+		setJSAttribute(v.JSValue(), name, resolveAttributeURLValue(
+			name,
+			value,
+			m.ResolveURL,
+		))
+	}
 }
 
 func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
