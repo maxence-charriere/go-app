@@ -35,10 +35,6 @@ type HTML interface {
 }
 
 type htmlElement struct {
-	attributes    attributes
-	eventHandlers eventHandlers
-	children      []UI
-
 	dispatcher Dispatcher
 	this       UI
 
@@ -47,7 +43,10 @@ type htmlElement struct {
 	depth         uint
 	isSelfClosing bool
 	jsElement     Value
+	attributes    attributes
+	eventHandlers eventHandlers
 	parentElement UI
+	children      []UI
 }
 
 func (e *htmlElement) JSValue() Value {
