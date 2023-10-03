@@ -346,6 +346,42 @@ func BenchmarkNodeManagerMount(b *testing.B) {
 	}
 }
 
+func TestNodeManagerDismount(t *testing.T) {
+	t.Run("html element is dismounted", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div())
+		require.NoError(t, err)
+
+		m.Dismount(div)
+		require.False(t, div.Mounted())
+		require.Nil(t, div.JSValue())
+	})
+
+	t.Run("html element child is dismounted", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			Span(),
+		))
+		require.NoError(t, err)
+		span := div.(HTML).body()[0]
+
+		m.Dismount(div)
+		require.False(t, span.Mounted())
+	})
+
+	t.Run("html element event handler is dismounted", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().
+			On("", func(ctx Context, e Event) {}))
+		require.NoError(t, err)
+
+		m.Dismount(div)
+	})
+}
+
 func TestNodeManagerCanUpdate(t *testing.T) {
 	t.Run("elements with same type can be updated", func(t *testing.T) {
 		var m nodeManager

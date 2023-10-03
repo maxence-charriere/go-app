@@ -348,7 +348,21 @@ func (m *nodeManager) Dismount(v UI) {
 }
 
 func (m *nodeManager) dismountHTML(v HTML) {
-	panic("not implemented")
+	for _, child := range v.body() {
+		m.Dismount(child)
+	}
+
+	for _, handler := range v.events() {
+		m.dismountHTMLEventHandler(handler)
+	}
+
+	v.setJSElement(nil)
+}
+
+func (m *nodeManager) dismountHTMLEventHandler(handler eventHandler) {
+	if handler.close != nil {
+		handler.close()
+	}
 }
 
 func (m *nodeManager) dismountComponent(v Composer) error {
