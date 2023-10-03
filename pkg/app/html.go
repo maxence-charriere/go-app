@@ -27,9 +27,10 @@ type HTML interface {
 	Depth() uint
 
 	attrs() attributes
+	setAttrs(attributes) HTML
 	events() eventHandlers
-	setDepth(uint)
-	setJSElement(Value)
+	setDepth(uint) UI
+	setJSElement(Value) HTML
 	parent() UI
 	body() []UI
 }
@@ -430,14 +431,6 @@ func (e *htmlElement) attrs() attributes {
 
 func (e *htmlElement) events() eventHandlers {
 	return e.eventHandlers
-}
-
-func (e *htmlElement) setDepth(v uint) {
-	e.depth = v
-}
-
-func (e *htmlElement) setJSElement(v Value) {
-	e.jsElement = v
 }
 
 func (e *htmlElement) parent() UI {

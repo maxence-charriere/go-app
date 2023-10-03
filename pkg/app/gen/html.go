@@ -2342,11 +2342,29 @@ func writeStruct(w io.Writer, t tag) {
 	fmt.Fprintln(w)
 
 	fmt.Fprintf(w, `
+	func (e *html%s) setDepth(v uint) UI {
+		e.depth = v
+		return e
+	}
+
+	func (e *html%s) setJSElement(v Value) HTML {
+		e.jsElement = v
+		return e
+	}
+
+	func (e *html%s) setAttrs(v attributes) HTML {
+		e.attributes = v
+		return e
+	}
+
 	func (e *html%s) setParent(v UI) UI {
 		e.parentElement = v
 		return e
 	}
 	`,
+		t.Name,
+		t.Name,
+		t.Name,
 		t.Name,
 	)
 }

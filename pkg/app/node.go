@@ -256,11 +256,11 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 			WithTag("xmlns", v.XMLNamespace()).
 			WithTag("depth", depth)
 	}
-	v.setJSElement(jsElement)
+	v = v.setJSElement(jsElement)
 	m.mountHTMLAttributes(v)
 	m.mountHTMLEventHandlers(v)
 
-	v.setDepth(depth)
+	v = v.setDepth(depth).(HTML)
 	children := v.body()
 	for i, child := range children {
 		var err error
@@ -294,7 +294,6 @@ func (m *nodeManager) mountHTMLEventHandlers(v HTML) {
 	events := v.events()
 	for event, handler := range events {
 		events[event] = m.mountHTMLEventHandler(v, handler)
-
 	}
 }
 
@@ -397,6 +396,10 @@ func (m *nodeManager) CanUpdate(v, new UI) bool {
 // returns the updated UI element and any error encountered during the update
 // process.
 func (m *nodeManager) Update(v, new UI) (UI, error) {
+	if !v.Mounted() {
+		return nil, errors.New("element not mounted").WithTag("type", reflect.TypeOf(v))
+	}
+
 	switch v := v.(type) {
 	case *text:
 		return m.updateText(v, new.(*text))
@@ -426,6 +429,14 @@ func (m *nodeManager) updateText(v, new *text) (UI, error) {
 }
 
 func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
+	// vAttrs := v.attrs()
+	// newAttrs := new.attrs()
+	// if vAttrs == nil && len(newAttrs) != 0 {
+
+	// } else if vAttrs != nil {
+
+	// }
+
 	panic("not implemented")
 }
 

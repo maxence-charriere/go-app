@@ -546,6 +546,21 @@ func (e *htmlA) OnWheel(h EventHandler, scope ...any) HTMLA {
 	return e
 }
 
+func (e *htmlA) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlA) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlA) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlA) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -1027,6 +1042,21 @@ func (e *htmlAbbr) OnWheel(h EventHandler, scope ...any) HTMLAbbr {
 	return e
 }
 
+func (e *htmlAbbr) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlAbbr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAbbr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlAbbr) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -1505,6 +1535,21 @@ func (e *htmlAddress) OnSubmit(h EventHandler, scope ...any) HTMLAddress {
 
 func (e *htmlAddress) OnWheel(h EventHandler, scope ...any) HTMLAddress {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlAddress) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlAddress) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAddress) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -2047,6 +2092,21 @@ func (e *htmlArea) OnWheel(h EventHandler, scope ...any) HTMLArea {
 	return e
 }
 
+func (e *htmlArea) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlArea) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlArea) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlArea) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -2528,6 +2588,21 @@ func (e *htmlArticle) OnWheel(h EventHandler, scope ...any) HTMLArticle {
 	return e
 }
 
+func (e *htmlArticle) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlArticle) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlArticle) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlArticle) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -3006,6 +3081,21 @@ func (e *htmlAside) OnSubmit(h EventHandler, scope ...any) HTMLAside {
 
 func (e *htmlAside) OnWheel(h EventHandler, scope ...any) HTMLAside {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlAside) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlAside) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAside) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -3730,6 +3820,21 @@ func (e *htmlAudio) OnWheel(h EventHandler, scope ...any) HTMLAudio {
 	return e
 }
 
+func (e *htmlAudio) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlAudio) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAudio) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlAudio) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -4211,6 +4316,21 @@ func (e *htmlB) OnWheel(h EventHandler, scope ...any) HTMLB {
 	return e
 }
 
+func (e *htmlB) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlB) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlB) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlB) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -4683,6 +4803,21 @@ func (e *htmlBase) OnSubmit(h EventHandler, scope ...any) HTMLBase {
 
 func (e *htmlBase) OnWheel(h EventHandler, scope ...any) HTMLBase {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlBase) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlBase) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBase) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -5167,6 +5302,21 @@ func (e *htmlBdi) OnWheel(h EventHandler, scope ...any) HTMLBdi {
 	return e
 }
 
+func (e *htmlBdi) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlBdi) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBdi) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlBdi) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -5645,6 +5795,21 @@ func (e *htmlBdo) OnSubmit(h EventHandler, scope ...any) HTMLBdo {
 
 func (e *htmlBdo) OnWheel(h EventHandler, scope ...any) HTMLBdo {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlBdo) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlBdo) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBdo) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -6134,6 +6299,21 @@ func (e *htmlBlockquote) OnSubmit(h EventHandler, scope ...any) HTMLBlockquote {
 
 func (e *htmlBlockquote) OnWheel(h EventHandler, scope ...any) HTMLBlockquote {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlBlockquote) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlBlockquote) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBlockquote) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -6723,6 +6903,21 @@ func (e *htmlBody) OnWheel(h EventHandler, scope ...any) HTMLBody {
 	return e
 }
 
+func (e *htmlBody) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlBody) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBody) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlBody) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -7179,6 +7374,21 @@ func (e *htmlBr) OnSubmit(h EventHandler, scope ...any) HTMLBr {
 
 func (e *htmlBr) OnWheel(h EventHandler, scope ...any) HTMLBr {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlBr) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlBr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBr) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -7751,6 +7961,21 @@ func (e *htmlButton) OnWheel(h EventHandler, scope ...any) HTMLButton {
 	return e
 }
 
+func (e *htmlButton) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlButton) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlButton) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlButton) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -8248,6 +8473,21 @@ func (e *htmlCanvas) OnWheel(h EventHandler, scope ...any) HTMLCanvas {
 	return e
 }
 
+func (e *htmlCanvas) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlCanvas) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCanvas) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlCanvas) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -8726,6 +8966,21 @@ func (e *htmlCaption) OnSubmit(h EventHandler, scope ...any) HTMLCaption {
 
 func (e *htmlCaption) OnWheel(h EventHandler, scope ...any) HTMLCaption {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlCaption) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlCaption) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCaption) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -9210,6 +9465,21 @@ func (e *htmlCite) OnWheel(h EventHandler, scope ...any) HTMLCite {
 	return e
 }
 
+func (e *htmlCite) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlCite) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCite) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlCite) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -9691,6 +9961,21 @@ func (e *htmlCode) OnWheel(h EventHandler, scope ...any) HTMLCode {
 	return e
 }
 
+func (e *htmlCode) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlCode) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCode) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlCode) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -10155,6 +10440,21 @@ func (e *htmlCol) OnSubmit(h EventHandler, scope ...any) HTMLCol {
 
 func (e *htmlCol) OnWheel(h EventHandler, scope ...any) HTMLCol {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlCol) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlCol) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCol) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -10647,6 +10947,21 @@ func (e *htmlColGroup) OnWheel(h EventHandler, scope ...any) HTMLColGroup {
 	return e
 }
 
+func (e *htmlColGroup) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlColGroup) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlColGroup) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlColGroup) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -10861,6 +11176,21 @@ func (e *htmlData) Value(v any) HTMLData {
 
 func (e *htmlData) On(event string, h EventHandler, scope ...any) HTMLData {
 	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlData) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlData) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlData) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -11345,6 +11675,21 @@ func (e *htmlDataList) OnWheel(h EventHandler, scope ...any) HTMLDataList {
 	return e
 }
 
+func (e *htmlDataList) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDataList) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDataList) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlDataList) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -11823,6 +12168,21 @@ func (e *htmlDd) OnSubmit(h EventHandler, scope ...any) HTMLDd {
 
 func (e *htmlDd) OnWheel(h EventHandler, scope ...any) HTMLDd {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlDd) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDd) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDd) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -12323,6 +12683,21 @@ func (e *htmlDel) OnWheel(h EventHandler, scope ...any) HTMLDel {
 	return e
 }
 
+func (e *htmlDel) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDel) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDel) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlDel) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -12820,6 +13195,21 @@ func (e *htmlDetails) OnWheel(h EventHandler, scope ...any) HTMLDetails {
 	return e
 }
 
+func (e *htmlDetails) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDetails) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDetails) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlDetails) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -13298,6 +13688,21 @@ func (e *htmlDfn) OnSubmit(h EventHandler, scope ...any) HTMLDfn {
 
 func (e *htmlDfn) OnWheel(h EventHandler, scope ...any) HTMLDfn {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlDfn) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDfn) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDfn) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -13790,6 +14195,21 @@ func (e *htmlDialog) OnWheel(h EventHandler, scope ...any) HTMLDialog {
 	return e
 }
 
+func (e *htmlDialog) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDialog) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDialog) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlDialog) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -14268,6 +14688,21 @@ func (e *htmlDiv) OnSubmit(h EventHandler, scope ...any) HTMLDiv {
 
 func (e *htmlDiv) OnWheel(h EventHandler, scope ...any) HTMLDiv {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlDiv) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDiv) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDiv) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -14752,6 +15187,21 @@ func (e *htmlDl) OnWheel(h EventHandler, scope ...any) HTMLDl {
 	return e
 }
 
+func (e *htmlDl) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDl) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDl) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlDl) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -15230,6 +15680,21 @@ func (e *htmlDt) OnSubmit(h EventHandler, scope ...any) HTMLDt {
 
 func (e *htmlDt) OnWheel(h EventHandler, scope ...any) HTMLDt {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlDt) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlDt) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDt) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -15722,6 +16187,21 @@ func (e *htmlElem) OnWheel(h EventHandler, scope ...any) HTMLElem {
 	return e
 }
 
+func (e *htmlElem) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlElem) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlElem) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlElem) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -16186,6 +16666,21 @@ func (e *htmlElemSelfClosing) OnSubmit(h EventHandler, scope ...any) HTMLElemSel
 
 func (e *htmlElemSelfClosing) OnWheel(h EventHandler, scope ...any) HTMLElemSelfClosing {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlElemSelfClosing) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -16667,6 +17162,21 @@ func (e *htmlEm) OnSubmit(h EventHandler, scope ...any) HTMLEm {
 
 func (e *htmlEm) OnWheel(h EventHandler, scope ...any) HTMLEm {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlEm) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlEm) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlEm) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -17345,6 +17855,21 @@ func (e *htmlEmbed) OnWheel(h EventHandler, scope ...any) HTMLEmbed {
 	return e
 }
 
+func (e *htmlEmbed) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlEmbed) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlEmbed) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlEmbed) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -17850,6 +18375,21 @@ func (e *htmlFieldSet) OnWheel(h EventHandler, scope ...any) HTMLFieldSet {
 	return e
 }
 
+func (e *htmlFieldSet) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlFieldSet) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFieldSet) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlFieldSet) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -18328,6 +18868,21 @@ func (e *htmlFigCaption) OnSubmit(h EventHandler, scope ...any) HTMLFigCaption {
 
 func (e *htmlFigCaption) OnWheel(h EventHandler, scope ...any) HTMLFigCaption {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlFigCaption) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlFigCaption) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFigCaption) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -18812,6 +19367,21 @@ func (e *htmlFigure) OnWheel(h EventHandler, scope ...any) HTMLFigure {
 	return e
 }
 
+func (e *htmlFigure) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlFigure) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFigure) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlFigure) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -19290,6 +19860,21 @@ func (e *htmlFooter) OnSubmit(h EventHandler, scope ...any) HTMLFooter {
 
 func (e *htmlFooter) OnWheel(h EventHandler, scope ...any) HTMLFooter {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlFooter) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlFooter) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFooter) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -19843,6 +20428,21 @@ func (e *htmlForm) OnWheel(h EventHandler, scope ...any) HTMLForm {
 	return e
 }
 
+func (e *htmlForm) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlForm) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlForm) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlForm) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -20321,6 +20921,21 @@ func (e *htmlH1) OnSubmit(h EventHandler, scope ...any) HTMLH1 {
 
 func (e *htmlH1) OnWheel(h EventHandler, scope ...any) HTMLH1 {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlH1) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlH1) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH1) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -20805,6 +21420,21 @@ func (e *htmlH2) OnWheel(h EventHandler, scope ...any) HTMLH2 {
 	return e
 }
 
+func (e *htmlH2) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlH2) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH2) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlH2) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -21283,6 +21913,21 @@ func (e *htmlH3) OnSubmit(h EventHandler, scope ...any) HTMLH3 {
 
 func (e *htmlH3) OnWheel(h EventHandler, scope ...any) HTMLH3 {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlH3) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlH3) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH3) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -21767,6 +22412,21 @@ func (e *htmlH4) OnWheel(h EventHandler, scope ...any) HTMLH4 {
 	return e
 }
 
+func (e *htmlH4) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlH4) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH4) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlH4) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -22245,6 +22905,21 @@ func (e *htmlH5) OnSubmit(h EventHandler, scope ...any) HTMLH5 {
 
 func (e *htmlH5) OnWheel(h EventHandler, scope ...any) HTMLH5 {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlH5) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlH5) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH5) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -22729,6 +23404,21 @@ func (e *htmlH6) OnWheel(h EventHandler, scope ...any) HTMLH6 {
 	return e
 }
 
+func (e *htmlH6) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlH6) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH6) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlH6) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -22935,6 +23625,21 @@ func (e *htmlHead) Title(format string, v ...any) HTMLHead {
 
 func (e *htmlHead) On(event string, h EventHandler, scope ...any) HTMLHead {
 	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlHead) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlHead) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHead) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -23419,6 +24124,21 @@ func (e *htmlHeader) OnWheel(h EventHandler, scope ...any) HTMLHeader {
 	return e
 }
 
+func (e *htmlHeader) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlHeader) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHeader) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlHeader) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -23878,6 +24598,21 @@ func (e *htmlHr) OnWheel(h EventHandler, scope ...any) HTMLHr {
 	return e
 }
 
+func (e *htmlHr) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlHr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlHr) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -24069,6 +24804,21 @@ func (e *htmlHtml) Title(format string, v ...any) HTMLHtml {
 
 func (e *htmlHtml) On(event string, h EventHandler, scope ...any) HTMLHtml {
 	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlHtml) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlHtml) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHtml) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -24550,6 +25300,21 @@ func (e *htmlI) OnSubmit(h EventHandler, scope ...any) HTMLI {
 
 func (e *htmlI) OnWheel(h EventHandler, scope ...any) HTMLI {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlI) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlI) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlI) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -25137,6 +25902,21 @@ func (e *htmlIFrame) OnSubmit(h EventHandler, scope ...any) HTMLIFrame {
 
 func (e *htmlIFrame) OnWheel(h EventHandler, scope ...any) HTMLIFrame {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlIFrame) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlIFrame) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlIFrame) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -25871,6 +26651,21 @@ func (e *htmlImg) OnWheel(h EventHandler, scope ...any) HTMLImg {
 	return e
 }
 
+func (e *htmlImg) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlImg) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlImg) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlImg) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -26591,6 +27386,21 @@ func (e *htmlInput) OnWheel(h EventHandler, scope ...any) HTMLInput {
 	return e
 }
 
+func (e *htmlInput) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlInput) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlInput) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlInput) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -27072,6 +27882,21 @@ func (e *htmlIns) OnWheel(h EventHandler, scope ...any) HTMLIns {
 	return e
 }
 
+func (e *htmlIns) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlIns) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlIns) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlIns) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -27550,6 +28375,21 @@ func (e *htmlKbd) OnSubmit(h EventHandler, scope ...any) HTMLKbd {
 
 func (e *htmlKbd) OnWheel(h EventHandler, scope ...any) HTMLKbd {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlKbd) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlKbd) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlKbd) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -28050,6 +28890,21 @@ func (e *htmlLabel) OnWheel(h EventHandler, scope ...any) HTMLLabel {
 	return e
 }
 
+func (e *htmlLabel) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlLabel) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLabel) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlLabel) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -28528,6 +29383,21 @@ func (e *htmlLegend) OnSubmit(h EventHandler, scope ...any) HTMLLegend {
 
 func (e *htmlLegend) OnWheel(h EventHandler, scope ...any) HTMLLegend {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlLegend) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlLegend) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLegend) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -29017,6 +29887,21 @@ func (e *htmlLi) OnSubmit(h EventHandler, scope ...any) HTMLLi {
 
 func (e *htmlLi) OnWheel(h EventHandler, scope ...any) HTMLLi {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlLi) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlLi) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLi) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -29559,6 +30444,21 @@ func (e *htmlLink) OnWheel(h EventHandler, scope ...any) HTMLLink {
 	return e
 }
 
+func (e *htmlLink) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlLink) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLink) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlLink) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -30037,6 +30937,21 @@ func (e *htmlMain) OnSubmit(h EventHandler, scope ...any) HTMLMain {
 
 func (e *htmlMain) OnWheel(h EventHandler, scope ...any) HTMLMain {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlMain) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlMain) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMain) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -30529,6 +31444,21 @@ func (e *htmlMap) OnWheel(h EventHandler, scope ...any) HTMLMap {
 	return e
 }
 
+func (e *htmlMap) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlMap) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMap) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlMap) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -31010,6 +31940,21 @@ func (e *htmlMark) OnWheel(h EventHandler, scope ...any) HTMLMark {
 	return e
 }
 
+func (e *htmlMark) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlMark) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMark) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlMark) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -31234,6 +32179,21 @@ func (e *htmlMeta) Title(format string, v ...any) HTMLMeta {
 
 func (e *htmlMeta) On(event string, h EventHandler, scope ...any) HTMLMeta {
 	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlMeta) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlMeta) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMeta) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -31774,6 +32734,21 @@ func (e *htmlMeter) OnWheel(h EventHandler, scope ...any) HTMLMeter {
 	return e
 }
 
+func (e *htmlMeter) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlMeter) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMeter) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlMeter) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -32255,6 +33230,21 @@ func (e *htmlNav) OnWheel(h EventHandler, scope ...any) HTMLNav {
 	return e
 }
 
+func (e *htmlNav) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlNav) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlNav) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlNav) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -32461,6 +33451,21 @@ func (e *htmlNoScript) Title(format string, v ...any) HTMLNoScript {
 
 func (e *htmlNoScript) On(event string, h EventHandler, scope ...any) HTMLNoScript {
 	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlNoScript) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlNoScript) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlNoScript) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -33185,6 +34190,21 @@ func (e *htmlObject) OnWheel(h EventHandler, scope ...any) HTMLObject {
 	return e
 }
 
+func (e *htmlObject) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlObject) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlObject) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlObject) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -33690,6 +34710,21 @@ func (e *htmlOl) OnWheel(h EventHandler, scope ...any) HTMLOl {
 	return e
 }
 
+func (e *htmlOl) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlOl) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOl) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlOl) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -34184,6 +35219,21 @@ func (e *htmlOptGroup) OnSubmit(h EventHandler, scope ...any) HTMLOptGroup {
 
 func (e *htmlOptGroup) OnWheel(h EventHandler, scope ...any) HTMLOptGroup {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlOptGroup) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlOptGroup) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOptGroup) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -34700,6 +35750,21 @@ func (e *htmlOption) OnWheel(h EventHandler, scope ...any) HTMLOption {
 	return e
 }
 
+func (e *htmlOption) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlOption) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOption) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlOption) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -35205,6 +36270,21 @@ func (e *htmlOutput) OnWheel(h EventHandler, scope ...any) HTMLOutput {
 	return e
 }
 
+func (e *htmlOutput) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlOutput) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOutput) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlOutput) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -35686,6 +36766,21 @@ func (e *htmlP) OnWheel(h EventHandler, scope ...any) HTMLP {
 	return e
 }
 
+func (e *htmlP) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlP) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlP) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlP) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -36158,6 +37253,21 @@ func (e *htmlParam) OnSubmit(h EventHandler, scope ...any) HTMLParam {
 
 func (e *htmlParam) OnWheel(h EventHandler, scope ...any) HTMLParam {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlParam) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlParam) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlParam) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -36642,6 +37752,21 @@ func (e *htmlPicture) OnWheel(h EventHandler, scope ...any) HTMLPicture {
 	return e
 }
 
+func (e *htmlPicture) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlPicture) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlPicture) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlPicture) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -37120,6 +38245,21 @@ func (e *htmlPre) OnSubmit(h EventHandler, scope ...any) HTMLPre {
 
 func (e *htmlPre) OnWheel(h EventHandler, scope ...any) HTMLPre {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlPre) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlPre) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlPre) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -37620,6 +38760,21 @@ func (e *htmlProgress) OnWheel(h EventHandler, scope ...any) HTMLProgress {
 	return e
 }
 
+func (e *htmlProgress) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlProgress) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlProgress) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlProgress) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -38109,6 +39264,21 @@ func (e *htmlQ) OnWheel(h EventHandler, scope ...any) HTMLQ {
 	return e
 }
 
+func (e *htmlQ) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlQ) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlQ) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlQ) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -38587,6 +39757,21 @@ func (e *htmlRp) OnSubmit(h EventHandler, scope ...any) HTMLRp {
 
 func (e *htmlRp) OnWheel(h EventHandler, scope ...any) HTMLRp {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlRp) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlRp) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlRp) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -39071,6 +40256,21 @@ func (e *htmlRt) OnWheel(h EventHandler, scope ...any) HTMLRt {
 	return e
 }
 
+func (e *htmlRt) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlRt) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlRt) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlRt) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -39549,6 +40749,21 @@ func (e *htmlRuby) OnSubmit(h EventHandler, scope ...any) HTMLRuby {
 
 func (e *htmlRuby) OnWheel(h EventHandler, scope ...any) HTMLRuby {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlRuby) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlRuby) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlRuby) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -40033,6 +41248,21 @@ func (e *htmlS) OnWheel(h EventHandler, scope ...any) HTMLS {
 	return e
 }
 
+func (e *htmlS) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlS) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlS) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlS) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -40514,6 +41744,21 @@ func (e *htmlSamp) OnWheel(h EventHandler, scope ...any) HTMLSamp {
 	return e
 }
 
+func (e *htmlSamp) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSamp) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSamp) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlSamp) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -40776,6 +42021,21 @@ func (e *htmlScript) On(event string, h EventHandler, scope ...any) HTMLScript {
 
 func (e *htmlScript) OnLoad(h EventHandler, scope ...any) HTMLScript {
 	e.setEventHandler("load", h, scope...)
+	return e
+}
+
+func (e *htmlScript) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlScript) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlScript) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -41257,6 +42517,21 @@ func (e *htmlSection) OnSubmit(h EventHandler, scope ...any) HTMLSection {
 
 func (e *htmlSection) OnWheel(h EventHandler, scope ...any) HTMLSection {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlSection) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSection) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSection) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -41797,6 +43072,21 @@ func (e *htmlSelect) OnWheel(h EventHandler, scope ...any) HTMLSelect {
 	return e
 }
 
+func (e *htmlSelect) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSelect) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSelect) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlSelect) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -42275,6 +43565,21 @@ func (e *htmlSmall) OnSubmit(h EventHandler, scope ...any) HTMLSmall {
 
 func (e *htmlSmall) OnWheel(h EventHandler, scope ...any) HTMLSmall {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlSmall) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSmall) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSmall) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -42777,6 +44082,21 @@ func (e *htmlSource) OnWheel(h EventHandler, scope ...any) HTMLSource {
 	return e
 }
 
+func (e *htmlSource) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSource) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSource) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlSource) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -43258,6 +44578,21 @@ func (e *htmlSpan) OnWheel(h EventHandler, scope ...any) HTMLSpan {
 	return e
 }
 
+func (e *htmlSpan) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSpan) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSpan) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlSpan) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -43736,6 +45071,21 @@ func (e *htmlStrong) OnSubmit(h EventHandler, scope ...any) HTMLStrong {
 
 func (e *htmlStrong) OnWheel(h EventHandler, scope ...any) HTMLStrong {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlStrong) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlStrong) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlStrong) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -44244,6 +45594,21 @@ func (e *htmlStyle) OnWheel(h EventHandler, scope ...any) HTMLStyle {
 	return e
 }
 
+func (e *htmlStyle) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlStyle) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlStyle) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlStyle) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -44722,6 +46087,21 @@ func (e *htmlSub) OnSubmit(h EventHandler, scope ...any) HTMLSub {
 
 func (e *htmlSub) OnWheel(h EventHandler, scope ...any) HTMLSub {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlSub) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSub) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSub) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -45206,6 +46586,21 @@ func (e *htmlSummary) OnWheel(h EventHandler, scope ...any) HTMLSummary {
 	return e
 }
 
+func (e *htmlSummary) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSummary) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSummary) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlSummary) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -45684,6 +47079,21 @@ func (e *htmlSup) OnSubmit(h EventHandler, scope ...any) HTMLSup {
 
 func (e *htmlSup) OnWheel(h EventHandler, scope ...any) HTMLSup {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlSup) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlSup) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSup) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -46168,6 +47578,21 @@ func (e *htmlTable) OnWheel(h EventHandler, scope ...any) HTMLTable {
 	return e
 }
 
+func (e *htmlTable) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTable) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTable) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlTable) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -46646,6 +48071,21 @@ func (e *htmlTBody) OnSubmit(h EventHandler, scope ...any) HTMLTBody {
 
 func (e *htmlTBody) OnWheel(h EventHandler, scope ...any) HTMLTBody {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlTBody) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTBody) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTBody) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -47154,6 +48594,21 @@ func (e *htmlTd) OnWheel(h EventHandler, scope ...any) HTMLTd {
 	return e
 }
 
+func (e *htmlTd) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTd) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTd) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlTd) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -47360,6 +48815,21 @@ func (e *htmlTemplate) Title(format string, v ...any) HTMLTemplate {
 
 func (e *htmlTemplate) On(event string, h EventHandler, scope ...any) HTMLTemplate {
 	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlTemplate) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTemplate) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTemplate) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -47942,6 +49412,21 @@ func (e *htmlTextarea) OnWheel(h EventHandler, scope ...any) HTMLTextarea {
 	return e
 }
 
+func (e *htmlTextarea) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTextarea) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTextarea) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlTextarea) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -48420,6 +49905,21 @@ func (e *htmlTFoot) OnSubmit(h EventHandler, scope ...any) HTMLTFoot {
 
 func (e *htmlTFoot) OnWheel(h EventHandler, scope ...any) HTMLTFoot {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlTFoot) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTFoot) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTFoot) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -48944,6 +50444,21 @@ func (e *htmlTh) OnWheel(h EventHandler, scope ...any) HTMLTh {
 	return e
 }
 
+func (e *htmlTh) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTh) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTh) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlTh) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -49422,6 +50937,21 @@ func (e *htmlTHead) OnSubmit(h EventHandler, scope ...any) HTMLTHead {
 
 func (e *htmlTHead) OnWheel(h EventHandler, scope ...any) HTMLTHead {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlTHead) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTHead) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTHead) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -49914,6 +51444,21 @@ func (e *htmlTime) OnWheel(h EventHandler, scope ...any) HTMLTime {
 	return e
 }
 
+func (e *htmlTime) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTime) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTime) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlTime) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -50120,6 +51665,21 @@ func (e *htmlTitle) Title(format string, v ...any) HTMLTitle {
 
 func (e *htmlTitle) On(event string, h EventHandler, scope ...any) HTMLTitle {
 	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlTitle) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTitle) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTitle) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -50604,6 +52164,21 @@ func (e *htmlTr) OnWheel(h EventHandler, scope ...any) HTMLTr {
 	return e
 }
 
+func (e *htmlTr) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlTr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlTr) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -51082,6 +52657,21 @@ func (e *htmlU) OnSubmit(h EventHandler, scope ...any) HTMLU {
 
 func (e *htmlU) OnWheel(h EventHandler, scope ...any) HTMLU {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlU) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlU) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlU) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -51566,6 +53156,21 @@ func (e *htmlUl) OnWheel(h EventHandler, scope ...any) HTMLUl {
 	return e
 }
 
+func (e *htmlUl) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlUl) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlUl) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlUl) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -52044,6 +53649,21 @@ func (e *htmlVar) OnSubmit(h EventHandler, scope ...any) HTMLVar {
 
 func (e *htmlVar) OnWheel(h EventHandler, scope ...any) HTMLVar {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlVar) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlVar) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlVar) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
@@ -52792,6 +54412,21 @@ func (e *htmlVideo) OnWheel(h EventHandler, scope ...any) HTMLVideo {
 	return e
 }
 
+func (e *htmlVideo) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlVideo) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlVideo) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
 func (e *htmlVideo) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -53270,6 +54905,21 @@ func (e *htmlWbr) OnSubmit(h EventHandler, scope ...any) HTMLWbr {
 
 func (e *htmlWbr) OnWheel(h EventHandler, scope ...any) HTMLWbr {
 	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+func (e *htmlWbr) setDepth(v uint) UI {
+	e.depth = v
+	return e
+}
+
+func (e *htmlWbr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlWbr) setAttrs(v attributes) HTML {
+	e.attributes = v
 	return e
 }
 
