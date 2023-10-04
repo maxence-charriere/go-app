@@ -2366,7 +2366,13 @@ func writeStruct(w io.Writer, t tag) {
 		e.parentElement = v
 		return e
 	}
+
+	func (e *html%s) setBody(v []UI) HTML {
+		e.children = v
+		return e
+	}
 	`,
+		t.Name,
 		t.Name,
 		t.Name,
 		t.Name,

@@ -1,6 +1,6 @@
 module github.com/maxence-charriere/go-app/v9
 
-go 1.18
+go 1.21
 
 require (
 	github.com/SherClockHolmes/webpush-go v1.2.0

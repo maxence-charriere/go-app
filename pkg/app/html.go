@@ -34,6 +34,7 @@ type HTML interface {
 	setJSElement(Value) HTML
 	parent() UI
 	body() []UI
+	setBody([]UI) HTML
 }
 
 type htmlElement struct {

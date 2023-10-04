@@ -269,7 +269,7 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 				WithTag("type", reflect.TypeOf(v)).
 				WithTag("tag", v.Tag()).
 				WithTag("depth", depth).
-				WithTag("children-index", i).
+				WithTag("index", i).
 				Wrap(err)
 		}
 		child = child.setParent(v)
@@ -429,44 +429,101 @@ func (m *nodeManager) updateText(v, new *text) (UI, error) {
 }
 
 func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
-	vAttrs := v.attrs()
+	attrs := v.attrs()
 	newAttrs := new.attrs()
-	if vAttrs == nil && len(newAttrs) != 0 {
+	if attrs == nil && len(newAttrs) != 0 {
 		v = v.setAttrs(newAttrs)
 		m.mountHTMLAttributes(v)
-	} else if vAttrs != nil {
+	} else if attrs != nil {
 		m.updateHTMLAttributes(v, newAttrs)
 	}
 
-	vEvents := v.events()
+	events := v.events()
 	newEvents := new.events()
-	if vEvents == nil && len(newEvents) != 0 {
+	if events == nil && len(newEvents) != 0 {
 		v = v.setEvents(newEvents)
 		m.mountHTMLEventHandlers(v)
-	} else if vEvents != nil {
+	} else if events != nil {
 		m.updateHTMLEventHandlers(v, newEvents)
 	}
 
-	// update childrens
+	children := v.body()
+	newChildren := new.body()
+	sharedLen := min(len(children), len(newChildren))
+	for i := 0; i < min(len(children), len(newChildren)); i++ {
+		child := children[i]
+		newChild := newChildren[i]
+		if m.CanUpdate(child, newChild) {
+			child, err := m.Update(child, newChild)
+			if err != nil {
+				return nil, errors.New("updating child failed").
+					WithTag("type", reflect.TypeOf(v)).
+					WithTag("tag", v.Tag()).
+					WithTag("depth", v.Depth()).
+					WithTag("index", i).
+					Wrap(err)
+			}
+			children[i] = child
+			continue
+		}
 
-	panic("not implemented")
+		newChild, err := m.Mount(v.Depth()+1, newChildren[i])
+		if err != nil {
+			return nil, errors.New("mounting child failed").
+				WithTag("type", reflect.TypeOf(v)).
+				WithTag("tag", v.Tag()).
+				WithTag("depth", v.Depth()).
+				WithTag("index", i).
+				Wrap(err)
+		}
+		v.JSValue().replaceChild(newChild, child)
+		newChild = newChild.setParent(v)
+		children[i] = newChild
+		m.Dismount(child)
+	}
+
+	for i := sharedLen; i < len(children); i++ {
+		child := children[i]
+		v.JSValue().removeChild(child)
+		m.Dismount(child)
+		children[i] = nil
+	}
+	children = children[:sharedLen]
+
+	for i := sharedLen; i < len(newChildren); i++ {
+		newChild, err := m.Mount(v.Depth()+1, newChildren[i])
+		if err != nil {
+			return nil, errors.New("mounting child failed").
+				WithTag("type", reflect.TypeOf(v)).
+				WithTag("tag", v.Tag()).
+				WithTag("depth", v.Depth()).
+				WithTag("index", i).
+				Wrap(err)
+		}
+		v.JSValue().appendChild(newChild)
+		newChild = newChild.setParent(v)
+		children = append(children, newChild)
+	}
+
+	v = v.setBody(children)
+	return v, nil
 }
 
 func (m *nodeManager) updateHTMLAttributes(v HTML, newAttrs attributes) {
-	vAttrs := v.attrs()
-	for name := range vAttrs {
+	attrs := v.attrs()
+	for name := range attrs {
 		if _, remains := newAttrs[name]; !remains {
 			deleteJSAttribute(v.JSValue(), name)
-			delete(vAttrs, name)
+			delete(attrs, name)
 		}
 	}
 
 	for name, value := range newAttrs {
-		if vAttrs[name] == value {
+		if attrs[name] == value {
 			continue
 		}
 
-		vAttrs[name] = value
+		attrs[name] = value
 		setJSAttribute(v.JSValue(), name, resolveAttributeURLValue(
 			name,
 			value,
@@ -476,18 +533,18 @@ func (m *nodeManager) updateHTMLAttributes(v HTML, newAttrs attributes) {
 }
 
 func (m *nodeManager) updateHTMLEventHandlers(v HTML, newEvents eventHandlers) {
-	vEvents := v.events()
-	for event, handler := range vEvents {
+	events := v.events()
+	for event, handler := range events {
 		if _, remains := newEvents[event]; !remains {
 			m.dismountHTMLEventHandler(handler)
-			delete(vEvents, event)
+			delete(events, event)
 		}
 	}
 
 	for event, newHandler := range newEvents {
-		handler, exists := vEvents[event]
+		handler, exists := events[event]
 		if !exists {
-			vEvents[event] = m.mountHTMLEventHandler(v, newHandler)
+			events[event] = m.mountHTMLEventHandler(v, newHandler)
 			continue
 		}
 
@@ -496,7 +553,7 @@ func (m *nodeManager) updateHTMLEventHandlers(v HTML, newEvents eventHandlers) {
 		}
 
 		m.dismountHTMLEventHandler(handler)
-		vEvents[event] = m.mountHTMLEventHandler(v, newHandler)
+		events[event] = m.mountHTMLEventHandler(v, newHandler)
 	}
 }
 

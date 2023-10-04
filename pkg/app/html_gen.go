@@ -571,6 +571,11 @@ func (e *htmlA) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlA) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "abbr" HTML element.
 type HTMLAbbr interface {
 	UI
@@ -1072,6 +1077,11 @@ func (e *htmlAbbr) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlAbbr) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "address" HTML element.
 type HTMLAddress interface {
 	UI
@@ -1570,6 +1580,11 @@ func (e *htmlAddress) setEvents(v eventHandlers) HTML {
 
 func (e *htmlAddress) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlAddress) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -2132,6 +2147,11 @@ func (e *htmlArea) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlArea) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "article" HTML element.
 type HTMLArticle interface {
 	UI
@@ -2633,6 +2653,11 @@ func (e *htmlArticle) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlArticle) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "aside" HTML element.
 type HTMLAside interface {
 	UI
@@ -3131,6 +3156,11 @@ func (e *htmlAside) setEvents(v eventHandlers) HTML {
 
 func (e *htmlAside) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlAside) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -3875,6 +3905,11 @@ func (e *htmlAudio) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlAudio) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "b" HTML element.
 type HTMLB interface {
 	UI
@@ -4376,6 +4411,11 @@ func (e *htmlB) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlB) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "base" HTML element.
 type HTMLBase interface {
 	UI
@@ -4868,6 +4908,11 @@ func (e *htmlBase) setEvents(v eventHandlers) HTML {
 
 func (e *htmlBase) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlBase) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -5372,6 +5417,11 @@ func (e *htmlBdi) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlBdi) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "bdo" HTML element.
 type HTMLBdo interface {
 	UI
@@ -5870,6 +5920,11 @@ func (e *htmlBdo) setEvents(v eventHandlers) HTML {
 
 func (e *htmlBdo) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlBdo) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -6379,6 +6434,11 @@ func (e *htmlBlockquote) setEvents(v eventHandlers) HTML {
 
 func (e *htmlBlockquote) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlBlockquote) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -6988,6 +7048,11 @@ func (e *htmlBody) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlBody) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "br" HTML element.
 type HTMLBr interface {
 	UI
@@ -7464,6 +7529,11 @@ func (e *htmlBr) setEvents(v eventHandlers) HTML {
 
 func (e *htmlBr) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlBr) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -8056,6 +8126,11 @@ func (e *htmlButton) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlButton) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "canvas" HTML element.
 type HTMLCanvas interface {
 	UI
@@ -8573,6 +8648,11 @@ func (e *htmlCanvas) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlCanvas) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "caption" HTML element.
 type HTMLCaption interface {
 	UI
@@ -9071,6 +9151,11 @@ func (e *htmlCaption) setEvents(v eventHandlers) HTML {
 
 func (e *htmlCaption) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlCaption) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -9575,6 +9660,11 @@ func (e *htmlCite) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlCite) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "code" HTML element.
 type HTMLCode interface {
 	UI
@@ -10076,6 +10166,11 @@ func (e *htmlCode) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlCode) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "col" HTML element.
 type HTMLCol interface {
 	UI
@@ -10560,6 +10655,11 @@ func (e *htmlCol) setEvents(v eventHandlers) HTML {
 
 func (e *htmlCol) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlCol) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -11072,6 +11172,11 @@ func (e *htmlColGroup) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlColGroup) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "data" HTML element.
 type HTMLData interface {
 	UI
@@ -11306,6 +11411,11 @@ func (e *htmlData) setEvents(v eventHandlers) HTML {
 
 func (e *htmlData) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlData) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -11810,6 +11920,11 @@ func (e *htmlDataList) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlDataList) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "dd" HTML element.
 type HTMLDd interface {
 	UI
@@ -12308,6 +12423,11 @@ func (e *htmlDd) setEvents(v eventHandlers) HTML {
 
 func (e *htmlDd) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlDd) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -12828,6 +12948,11 @@ func (e *htmlDel) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlDel) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "details" HTML element.
 type HTMLDetails interface {
 	UI
@@ -13345,6 +13470,11 @@ func (e *htmlDetails) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlDetails) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "dfn" HTML element.
 type HTMLDfn interface {
 	UI
@@ -13843,6 +13973,11 @@ func (e *htmlDfn) setEvents(v eventHandlers) HTML {
 
 func (e *htmlDfn) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlDfn) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -14355,6 +14490,11 @@ func (e *htmlDialog) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlDialog) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "div" HTML element.
 type HTMLDiv interface {
 	UI
@@ -14853,6 +14993,11 @@ func (e *htmlDiv) setEvents(v eventHandlers) HTML {
 
 func (e *htmlDiv) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlDiv) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -15357,6 +15502,11 @@ func (e *htmlDl) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlDl) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "dt" HTML element.
 type HTMLDt interface {
 	UI
@@ -15855,6 +16005,11 @@ func (e *htmlDt) setEvents(v eventHandlers) HTML {
 
 func (e *htmlDt) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlDt) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -16367,6 +16522,11 @@ func (e *htmlElem) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlElem) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "elemselfclosing" HTML element.
 type HTMLElemSelfClosing interface {
 	UI
@@ -16851,6 +17011,11 @@ func (e *htmlElemSelfClosing) setEvents(v eventHandlers) HTML {
 
 func (e *htmlElemSelfClosing) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -17352,6 +17517,11 @@ func (e *htmlEm) setEvents(v eventHandlers) HTML {
 
 func (e *htmlEm) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlEm) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -18050,6 +18220,11 @@ func (e *htmlEmbed) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlEmbed) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "fieldset" HTML element.
 type HTMLFieldSet interface {
 	UI
@@ -18575,6 +18750,11 @@ func (e *htmlFieldSet) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlFieldSet) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "figcaption" HTML element.
 type HTMLFigCaption interface {
 	UI
@@ -19073,6 +19253,11 @@ func (e *htmlFigCaption) setEvents(v eventHandlers) HTML {
 
 func (e *htmlFigCaption) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlFigCaption) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -19577,6 +19762,11 @@ func (e *htmlFigure) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlFigure) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "footer" HTML element.
 type HTMLFooter interface {
 	UI
@@ -20075,6 +20265,11 @@ func (e *htmlFooter) setEvents(v eventHandlers) HTML {
 
 func (e *htmlFooter) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlFooter) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -20648,6 +20843,11 @@ func (e *htmlForm) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlForm) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "h1" HTML element.
 type HTMLH1 interface {
 	UI
@@ -21146,6 +21346,11 @@ func (e *htmlH1) setEvents(v eventHandlers) HTML {
 
 func (e *htmlH1) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlH1) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -21650,6 +21855,11 @@ func (e *htmlH2) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlH2) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "h3" HTML element.
 type HTMLH3 interface {
 	UI
@@ -22148,6 +22358,11 @@ func (e *htmlH3) setEvents(v eventHandlers) HTML {
 
 func (e *htmlH3) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlH3) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -22652,6 +22867,11 @@ func (e *htmlH4) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlH4) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "h5" HTML element.
 type HTMLH5 interface {
 	UI
@@ -23150,6 +23370,11 @@ func (e *htmlH5) setEvents(v eventHandlers) HTML {
 
 func (e *htmlH5) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlH5) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -23654,6 +23879,11 @@ func (e *htmlH6) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlH6) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "head" HTML element.
 type HTMLHead interface {
 	UI
@@ -23880,6 +24110,11 @@ func (e *htmlHead) setEvents(v eventHandlers) HTML {
 
 func (e *htmlHead) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlHead) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -24384,6 +24619,11 @@ func (e *htmlHeader) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlHeader) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "hr" HTML element.
 type HTMLHr interface {
 	UI
@@ -24863,6 +25103,11 @@ func (e *htmlHr) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlHr) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "html" HTML element.
 type HTMLHtml interface {
 	UI
@@ -25074,6 +25319,11 @@ func (e *htmlHtml) setEvents(v eventHandlers) HTML {
 
 func (e *htmlHtml) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlHtml) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -25575,6 +25825,11 @@ func (e *htmlI) setEvents(v eventHandlers) HTML {
 
 func (e *htmlI) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlI) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -26182,6 +26437,11 @@ func (e *htmlIFrame) setEvents(v eventHandlers) HTML {
 
 func (e *htmlIFrame) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlIFrame) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -26936,6 +27196,11 @@ func (e *htmlImg) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlImg) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "input" HTML element.
 type HTMLInput interface {
 	UI
@@ -27676,6 +27941,11 @@ func (e *htmlInput) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlInput) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "ins" HTML element.
 type HTMLIns interface {
 	UI
@@ -28177,6 +28447,11 @@ func (e *htmlIns) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlIns) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "kbd" HTML element.
 type HTMLKbd interface {
 	UI
@@ -28675,6 +28950,11 @@ func (e *htmlKbd) setEvents(v eventHandlers) HTML {
 
 func (e *htmlKbd) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlKbd) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -29195,6 +29475,11 @@ func (e *htmlLabel) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlLabel) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "legend" HTML element.
 type HTMLLegend interface {
 	UI
@@ -29693,6 +29978,11 @@ func (e *htmlLegend) setEvents(v eventHandlers) HTML {
 
 func (e *htmlLegend) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlLegend) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -30202,6 +30492,11 @@ func (e *htmlLi) setEvents(v eventHandlers) HTML {
 
 func (e *htmlLi) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlLi) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -30764,6 +31059,11 @@ func (e *htmlLink) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlLink) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "main" HTML element.
 type HTMLMain interface {
 	UI
@@ -31262,6 +31562,11 @@ func (e *htmlMain) setEvents(v eventHandlers) HTML {
 
 func (e *htmlMain) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlMain) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -31774,6 +32079,11 @@ func (e *htmlMap) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlMap) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "mark" HTML element.
 type HTMLMark interface {
 	UI
@@ -32275,6 +32585,11 @@ func (e *htmlMark) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlMark) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "meta" HTML element.
 type HTMLMeta interface {
 	UI
@@ -32519,6 +32834,11 @@ func (e *htmlMeta) setEvents(v eventHandlers) HTML {
 
 func (e *htmlMeta) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlMeta) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -33079,6 +33399,11 @@ func (e *htmlMeter) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlMeter) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "nav" HTML element.
 type HTMLNav interface {
 	UI
@@ -33580,6 +33905,11 @@ func (e *htmlNav) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlNav) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "noscript" HTML element.
 type HTMLNoScript interface {
 	UI
@@ -33806,6 +34136,11 @@ func (e *htmlNoScript) setEvents(v eventHandlers) HTML {
 
 func (e *htmlNoScript) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlNoScript) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -34550,6 +34885,11 @@ func (e *htmlObject) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlObject) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "ol" HTML element.
 type HTMLOl interface {
 	UI
@@ -35075,6 +35415,11 @@ func (e *htmlOl) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlOl) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "optgroup" HTML element.
 type HTMLOptGroup interface {
 	UI
@@ -35589,6 +35934,11 @@ func (e *htmlOptGroup) setEvents(v eventHandlers) HTML {
 
 func (e *htmlOptGroup) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlOptGroup) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -36125,6 +36475,11 @@ func (e *htmlOption) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlOption) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "output" HTML element.
 type HTMLOutput interface {
 	UI
@@ -36650,6 +37005,11 @@ func (e *htmlOutput) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlOutput) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "p" HTML element.
 type HTMLP interface {
 	UI
@@ -37151,6 +37511,11 @@ func (e *htmlP) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlP) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "param" HTML element.
 type HTMLParam interface {
 	UI
@@ -37643,6 +38008,11 @@ func (e *htmlParam) setEvents(v eventHandlers) HTML {
 
 func (e *htmlParam) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlParam) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -38147,6 +38517,11 @@ func (e *htmlPicture) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlPicture) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "pre" HTML element.
 type HTMLPre interface {
 	UI
@@ -38645,6 +39020,11 @@ func (e *htmlPre) setEvents(v eventHandlers) HTML {
 
 func (e *htmlPre) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlPre) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -39165,6 +39545,11 @@ func (e *htmlProgress) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlProgress) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "q" HTML element.
 type HTMLQ interface {
 	UI
@@ -39674,6 +40059,11 @@ func (e *htmlQ) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlQ) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "rp" HTML element.
 type HTMLRp interface {
 	UI
@@ -40172,6 +40562,11 @@ func (e *htmlRp) setEvents(v eventHandlers) HTML {
 
 func (e *htmlRp) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlRp) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -40676,6 +41071,11 @@ func (e *htmlRt) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlRt) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "ruby" HTML element.
 type HTMLRuby interface {
 	UI
@@ -41174,6 +41574,11 @@ func (e *htmlRuby) setEvents(v eventHandlers) HTML {
 
 func (e *htmlRuby) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlRuby) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -41678,6 +42083,11 @@ func (e *htmlS) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlS) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "samp" HTML element.
 type HTMLSamp interface {
 	UI
@@ -42179,6 +42589,11 @@ func (e *htmlSamp) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlSamp) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "script" HTML element.
 type HTMLScript interface {
 	UI
@@ -42461,6 +42876,11 @@ func (e *htmlScript) setEvents(v eventHandlers) HTML {
 
 func (e *htmlScript) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlScript) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -42962,6 +43382,11 @@ func (e *htmlSection) setEvents(v eventHandlers) HTML {
 
 func (e *htmlSection) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlSection) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -43522,6 +43947,11 @@ func (e *htmlSelect) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlSelect) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "small" HTML element.
 type HTMLSmall interface {
 	UI
@@ -44020,6 +44450,11 @@ func (e *htmlSmall) setEvents(v eventHandlers) HTML {
 
 func (e *htmlSmall) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlSmall) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -44542,6 +44977,11 @@ func (e *htmlSource) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlSource) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "span" HTML element.
 type HTMLSpan interface {
 	UI
@@ -45043,6 +45483,11 @@ func (e *htmlSpan) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlSpan) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "strong" HTML element.
 type HTMLStrong interface {
 	UI
@@ -45541,6 +45986,11 @@ func (e *htmlStrong) setEvents(v eventHandlers) HTML {
 
 func (e *htmlStrong) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlStrong) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -46069,6 +46519,11 @@ func (e *htmlStyle) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlStyle) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "sub" HTML element.
 type HTMLSub interface {
 	UI
@@ -46567,6 +47022,11 @@ func (e *htmlSub) setEvents(v eventHandlers) HTML {
 
 func (e *htmlSub) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlSub) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -47071,6 +47531,11 @@ func (e *htmlSummary) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlSummary) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "sup" HTML element.
 type HTMLSup interface {
 	UI
@@ -47569,6 +48034,11 @@ func (e *htmlSup) setEvents(v eventHandlers) HTML {
 
 func (e *htmlSup) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlSup) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -48073,6 +48543,11 @@ func (e *htmlTable) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlTable) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "tbody" HTML element.
 type HTMLTBody interface {
 	UI
@@ -48571,6 +49046,11 @@ func (e *htmlTBody) setEvents(v eventHandlers) HTML {
 
 func (e *htmlTBody) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlTBody) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -49099,6 +49579,11 @@ func (e *htmlTd) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlTd) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "template" HTML element.
 type HTMLTemplate interface {
 	UI
@@ -49325,6 +49810,11 @@ func (e *htmlTemplate) setEvents(v eventHandlers) HTML {
 
 func (e *htmlTemplate) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlTemplate) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -49927,6 +50417,11 @@ func (e *htmlTextarea) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlTextarea) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "tfoot" HTML element.
 type HTMLTFoot interface {
 	UI
@@ -50425,6 +50920,11 @@ func (e *htmlTFoot) setEvents(v eventHandlers) HTML {
 
 func (e *htmlTFoot) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlTFoot) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -50969,6 +51469,11 @@ func (e *htmlTh) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlTh) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "thead" HTML element.
 type HTMLTHead interface {
 	UI
@@ -51467,6 +51972,11 @@ func (e *htmlTHead) setEvents(v eventHandlers) HTML {
 
 func (e *htmlTHead) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlTHead) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -51979,6 +52489,11 @@ func (e *htmlTime) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlTime) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "title" HTML element.
 type HTMLTitle interface {
 	UI
@@ -52205,6 +52720,11 @@ func (e *htmlTitle) setEvents(v eventHandlers) HTML {
 
 func (e *htmlTitle) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlTitle) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -52709,6 +53229,11 @@ func (e *htmlTr) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlTr) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "u" HTML element.
 type HTMLU interface {
 	UI
@@ -53207,6 +53732,11 @@ func (e *htmlU) setEvents(v eventHandlers) HTML {
 
 func (e *htmlU) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlU) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -53711,6 +54241,11 @@ func (e *htmlUl) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlUl) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "var" HTML element.
 type HTMLVar interface {
 	UI
@@ -54209,6 +54744,11 @@ func (e *htmlVar) setEvents(v eventHandlers) HTML {
 
 func (e *htmlVar) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlVar) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
@@ -54977,6 +55517,11 @@ func (e *htmlVideo) setParent(v UI) UI {
 	return e
 }
 
+func (e *htmlVideo) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "wbr" HTML element.
 type HTMLWbr interface {
 	UI
@@ -55475,5 +56020,10 @@ func (e *htmlWbr) setEvents(v eventHandlers) HTML {
 
 func (e *htmlWbr) setParent(v UI) UI {
 	e.parentElement = v
+	return e
+}
+
+func (e *htmlWbr) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }

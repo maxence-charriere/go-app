@@ -443,6 +443,184 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, "hello", greeting.(*text).value)
 	})
+
+	t.Run("update html adds an attribute", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div())
+		require.NoError(t, err)
+		require.Empty(t, div.(HTML).attrs())
+
+		div, err = m.Update(div, Div().Class("test"))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).attrs(), 1)
+		require.Equal(t, "test", div.(HTML).attrs()["class"])
+
+		div, err = m.Update(div, Div().
+			Class("test").
+			ID("test"))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).attrs(), 2)
+		require.Equal(t, "test", div.(HTML).attrs()["id"])
+	})
+
+	t.Run("update html updates an attribute", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Class("hello"))
+		require.NoError(t, err)
+		require.Equal(t, "hello", div.(HTML).attrs()["class"])
+
+		div, err = m.Update(div, Div().Class("bye"))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).attrs(), 1)
+		require.Equal(t, "bye", div.(HTML).attrs()["class"])
+	})
+
+	t.Run("update html removes an attribute", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Class("hello"))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).attrs(), 1)
+		require.Equal(t, "hello", div.(HTML).attrs()["class"])
+
+		div, err = m.Update(div, Div())
+		require.NoError(t, err)
+		require.Empty(t, div.(HTML).attrs()["class"])
+	})
+
+	t.Run("update html adds an event handler", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div())
+		require.NoError(t, err)
+		require.Empty(t, div.(HTML).events())
+
+		handler1 := func(ctx Context, e Event) {}
+		div, err = m.Update(div, Div().OnClick(handler1))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).events(), 1)
+		require.True(t, div.(HTML).events()["click"].Equal(eventHandler{
+			event:     "click",
+			goHandler: handler1,
+		}))
+
+		handler2 := func(ctx Context, e Event) {}
+		div, err = m.Update(div, Div().
+			OnClick(handler1).
+			OnChange(handler2))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).events(), 2)
+		require.True(t, div.(HTML).events()["change"].Equal(eventHandler{
+			event:     "change",
+			goHandler: handler2,
+		}))
+	})
+
+	t.Run("update html updates an event handler", func(t *testing.T) {
+		var m nodeManager
+
+		handler1 := func(ctx Context, e Event) {}
+		div, err := m.Mount(1, Div().OnClick(handler1))
+		require.NoError(t, err)
+
+		handler2 := func(ctx Context, e Event) {}
+		div, err = m.Update(div, Div().OnClick(handler2))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).events(), 1)
+		require.False(t, div.(HTML).events()["click"].Equal(eventHandler{
+			event:     "click",
+			goHandler: handler1,
+		}))
+		require.True(t, div.(HTML).events()["click"].Equal(eventHandler{
+			event:     "click",
+			goHandler: handler2,
+		}))
+	})
+
+	t.Run("udpate html removes an event handler", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().OnClick(func(ctx Context, e Event) {}))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).events(), 1)
+
+		div, err = m.Update(div, Div())
+		require.NoError(t, err)
+		require.Empty(t, div.(HTML).events())
+	})
+
+	t.Run("update html adds a child", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div())
+		require.NoError(t, err)
+		require.Empty(t, div.(HTML).body())
+
+		div, err = m.Update(div, Div().Body(
+			Span(),
+		))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).body(), 1)
+		require.IsType(t, Span(), div.(HTML).body()[0])
+	})
+
+	t.Run("update html updates a child", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			Span(),
+		))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).body(), 1)
+		child := div.(HTML).body()[0]
+		require.IsType(t, Span(), child)
+		require.Empty(t, child.(HTML).attrs())
+
+		div, err = m.Update(div, Div().Body(
+			Span().Class("test"),
+		))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).body(), 1)
+		child = div.(HTML).body()[0]
+		require.IsType(t, Span(), child)
+		require.Equal(t, "test", child.(HTML).attrs()["class"])
+	})
+
+	t.Run("update html replaces a child", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			Span(),
+		))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).body(), 1)
+		child := div.(HTML).body()[0]
+		require.IsType(t, Span(), child)
+
+		div, err = m.Update(div, Div().Body(
+			Div(),
+		))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).body(), 1)
+		child = div.(HTML).body()[0]
+		require.IsType(t, Div(), child)
+	})
+
+	t.Run("update html removes a child", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			Span(),
+		))
+		require.NoError(t, err)
+		require.Len(t, div.(HTML).body(), 1)
+
+		div, err = m.Update(div, Div())
+		require.NoError(t, err)
+		require.Empty(t, div.(HTML).body())
+	})
 }
 
 func TestNodeManagerMakeContext(t *testing.T) {
