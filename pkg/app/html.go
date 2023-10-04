@@ -29,6 +29,7 @@ type HTML interface {
 	attrs() attributes
 	setAttrs(attributes) HTML
 	events() eventHandlers
+	setEvents(eventHandlers) HTML
 	setDepth(uint) UI
 	setJSElement(Value) HTML
 	parent() UI

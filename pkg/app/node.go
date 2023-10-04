@@ -438,7 +438,14 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 		m.updateHTMLAttributes(v, newAttrs)
 	}
 
-	// update event handler
+	vEvents := v.events()
+	newEvents := new.events()
+	if vEvents == nil && len(newEvents) != 0 {
+		v = v.setEvents(newEvents)
+		m.mountHTMLEventHandlers(v)
+	} else if vEvents != nil {
+		m.updateHTMLEventHandlers(v, newEvents)
+	}
 
 	// update childrens
 
@@ -447,7 +454,7 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 
 func (m *nodeManager) updateHTMLAttributes(v HTML, newAttrs attributes) {
 	vAttrs := v.attrs()
-	for _, name := range vAttrs {
+	for name := range vAttrs {
 		if _, remains := newAttrs[name]; !remains {
 			deleteJSAttribute(v.JSValue(), name)
 			delete(vAttrs, name)
@@ -458,12 +465,38 @@ func (m *nodeManager) updateHTMLAttributes(v HTML, newAttrs attributes) {
 		if vAttrs[name] == value {
 			continue
 		}
+
 		vAttrs[name] = value
 		setJSAttribute(v.JSValue(), name, resolveAttributeURLValue(
 			name,
 			value,
 			m.ResolveURL,
 		))
+	}
+}
+
+func (m *nodeManager) updateHTMLEventHandlers(v HTML, newEvents eventHandlers) {
+	vEvents := v.events()
+	for event, handler := range vEvents {
+		if _, remains := newEvents[event]; !remains {
+			m.dismountHTMLEventHandler(handler)
+			delete(vEvents, event)
+		}
+	}
+
+	for event, newHandler := range newEvents {
+		handler, exists := vEvents[event]
+		if !exists {
+			vEvents[event] = m.mountHTMLEventHandler(v, newHandler)
+			continue
+		}
+
+		if handler.Equal(newHandler) {
+			continue
+		}
+
+		m.dismountHTMLEventHandler(handler)
+		vEvents[event] = m.mountHTMLEventHandler(v, newHandler)
 	}
 }
 

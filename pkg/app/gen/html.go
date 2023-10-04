@@ -2357,11 +2357,17 @@ func writeStruct(w io.Writer, t tag) {
 		return e
 	}
 
+	func (e *html%s) setEvents(v eventHandlers) HTML {
+		e.eventHandlers = v
+		return e
+	}
+
 	func (e *html%s) setParent(v UI) UI {
 		e.parentElement = v
 		return e
 	}
 	`,
+		t.Name,
 		t.Name,
 		t.Name,
 		t.Name,

@@ -561,6 +561,11 @@ func (e *htmlA) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlA) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlA) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -1057,6 +1062,11 @@ func (e *htmlAbbr) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlAbbr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlAbbr) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -1550,6 +1560,11 @@ func (e *htmlAddress) setJSElement(v Value) HTML {
 
 func (e *htmlAddress) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlAddress) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -2107,6 +2122,11 @@ func (e *htmlArea) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlArea) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlArea) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -2603,6 +2623,11 @@ func (e *htmlArticle) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlArticle) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlArticle) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -3096,6 +3121,11 @@ func (e *htmlAside) setJSElement(v Value) HTML {
 
 func (e *htmlAside) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlAside) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -3835,6 +3865,11 @@ func (e *htmlAudio) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlAudio) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlAudio) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -4331,6 +4366,11 @@ func (e *htmlB) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlB) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlB) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -4818,6 +4858,11 @@ func (e *htmlBase) setJSElement(v Value) HTML {
 
 func (e *htmlBase) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlBase) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -5317,6 +5362,11 @@ func (e *htmlBdi) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlBdi) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlBdi) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -5810,6 +5860,11 @@ func (e *htmlBdo) setJSElement(v Value) HTML {
 
 func (e *htmlBdo) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlBdo) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -6314,6 +6369,11 @@ func (e *htmlBlockquote) setJSElement(v Value) HTML {
 
 func (e *htmlBlockquote) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlBlockquote) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -6918,6 +6978,11 @@ func (e *htmlBody) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlBody) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlBody) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -7389,6 +7454,11 @@ func (e *htmlBr) setJSElement(v Value) HTML {
 
 func (e *htmlBr) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlBr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -7976,6 +8046,11 @@ func (e *htmlButton) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlButton) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlButton) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -8488,6 +8563,11 @@ func (e *htmlCanvas) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlCanvas) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlCanvas) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -8981,6 +9061,11 @@ func (e *htmlCaption) setJSElement(v Value) HTML {
 
 func (e *htmlCaption) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlCaption) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -9480,6 +9565,11 @@ func (e *htmlCite) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlCite) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlCite) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -9976,6 +10066,11 @@ func (e *htmlCode) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlCode) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlCode) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -10455,6 +10550,11 @@ func (e *htmlCol) setJSElement(v Value) HTML {
 
 func (e *htmlCol) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlCol) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -10962,6 +11062,11 @@ func (e *htmlColGroup) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlColGroup) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlColGroup) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -11191,6 +11296,11 @@ func (e *htmlData) setJSElement(v Value) HTML {
 
 func (e *htmlData) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlData) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -11690,6 +11800,11 @@ func (e *htmlDataList) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlDataList) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlDataList) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -12183,6 +12298,11 @@ func (e *htmlDd) setJSElement(v Value) HTML {
 
 func (e *htmlDd) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlDd) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -12698,6 +12818,11 @@ func (e *htmlDel) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlDel) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlDel) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -13210,6 +13335,11 @@ func (e *htmlDetails) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlDetails) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlDetails) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -13703,6 +13833,11 @@ func (e *htmlDfn) setJSElement(v Value) HTML {
 
 func (e *htmlDfn) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlDfn) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -14210,6 +14345,11 @@ func (e *htmlDialog) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlDialog) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlDialog) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -14703,6 +14843,11 @@ func (e *htmlDiv) setJSElement(v Value) HTML {
 
 func (e *htmlDiv) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlDiv) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -15202,6 +15347,11 @@ func (e *htmlDl) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlDl) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlDl) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -15695,6 +15845,11 @@ func (e *htmlDt) setJSElement(v Value) HTML {
 
 func (e *htmlDt) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlDt) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -16202,6 +16357,11 @@ func (e *htmlElem) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlElem) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlElem) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -16681,6 +16841,11 @@ func (e *htmlElemSelfClosing) setJSElement(v Value) HTML {
 
 func (e *htmlElemSelfClosing) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -17177,6 +17342,11 @@ func (e *htmlEm) setJSElement(v Value) HTML {
 
 func (e *htmlEm) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlEm) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -17870,6 +18040,11 @@ func (e *htmlEmbed) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlEmbed) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlEmbed) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -18390,6 +18565,11 @@ func (e *htmlFieldSet) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlFieldSet) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlFieldSet) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -18883,6 +19063,11 @@ func (e *htmlFigCaption) setJSElement(v Value) HTML {
 
 func (e *htmlFigCaption) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlFigCaption) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -19382,6 +19567,11 @@ func (e *htmlFigure) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlFigure) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlFigure) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -19875,6 +20065,11 @@ func (e *htmlFooter) setJSElement(v Value) HTML {
 
 func (e *htmlFooter) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlFooter) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -20443,6 +20638,11 @@ func (e *htmlForm) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlForm) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlForm) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -20936,6 +21136,11 @@ func (e *htmlH1) setJSElement(v Value) HTML {
 
 func (e *htmlH1) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlH1) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -21435,6 +21640,11 @@ func (e *htmlH2) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlH2) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlH2) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -21928,6 +22138,11 @@ func (e *htmlH3) setJSElement(v Value) HTML {
 
 func (e *htmlH3) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlH3) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -22427,6 +22642,11 @@ func (e *htmlH4) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlH4) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlH4) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -22920,6 +23140,11 @@ func (e *htmlH5) setJSElement(v Value) HTML {
 
 func (e *htmlH5) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlH5) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -23419,6 +23644,11 @@ func (e *htmlH6) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlH6) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlH6) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -23640,6 +23870,11 @@ func (e *htmlHead) setJSElement(v Value) HTML {
 
 func (e *htmlHead) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlHead) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -24139,6 +24374,11 @@ func (e *htmlHeader) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlHeader) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlHeader) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -24613,6 +24853,11 @@ func (e *htmlHr) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlHr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlHr) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -24819,6 +25064,11 @@ func (e *htmlHtml) setJSElement(v Value) HTML {
 
 func (e *htmlHtml) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlHtml) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -25315,6 +25565,11 @@ func (e *htmlI) setJSElement(v Value) HTML {
 
 func (e *htmlI) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlI) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -25917,6 +26172,11 @@ func (e *htmlIFrame) setJSElement(v Value) HTML {
 
 func (e *htmlIFrame) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlIFrame) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -26666,6 +26926,11 @@ func (e *htmlImg) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlImg) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlImg) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -27401,6 +27666,11 @@ func (e *htmlInput) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlInput) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlInput) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -27897,6 +28167,11 @@ func (e *htmlIns) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlIns) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlIns) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -28390,6 +28665,11 @@ func (e *htmlKbd) setJSElement(v Value) HTML {
 
 func (e *htmlKbd) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlKbd) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -28905,6 +29185,11 @@ func (e *htmlLabel) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlLabel) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlLabel) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -29398,6 +29683,11 @@ func (e *htmlLegend) setJSElement(v Value) HTML {
 
 func (e *htmlLegend) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlLegend) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -29902,6 +30192,11 @@ func (e *htmlLi) setJSElement(v Value) HTML {
 
 func (e *htmlLi) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlLi) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -30459,6 +30754,11 @@ func (e *htmlLink) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlLink) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlLink) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -30952,6 +31252,11 @@ func (e *htmlMain) setJSElement(v Value) HTML {
 
 func (e *htmlMain) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlMain) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -31459,6 +31764,11 @@ func (e *htmlMap) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlMap) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlMap) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -31955,6 +32265,11 @@ func (e *htmlMark) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlMark) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlMark) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -32194,6 +32509,11 @@ func (e *htmlMeta) setJSElement(v Value) HTML {
 
 func (e *htmlMeta) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlMeta) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -32749,6 +33069,11 @@ func (e *htmlMeter) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlMeter) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlMeter) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -33245,6 +33570,11 @@ func (e *htmlNav) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlNav) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlNav) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -33466,6 +33796,11 @@ func (e *htmlNoScript) setJSElement(v Value) HTML {
 
 func (e *htmlNoScript) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlNoScript) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -34205,6 +34540,11 @@ func (e *htmlObject) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlObject) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlObject) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -34725,6 +35065,11 @@ func (e *htmlOl) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlOl) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlOl) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -35234,6 +35579,11 @@ func (e *htmlOptGroup) setJSElement(v Value) HTML {
 
 func (e *htmlOptGroup) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlOptGroup) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -35765,6 +36115,11 @@ func (e *htmlOption) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlOption) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlOption) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -36285,6 +36640,11 @@ func (e *htmlOutput) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlOutput) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlOutput) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -36781,6 +37141,11 @@ func (e *htmlP) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlP) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlP) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -37268,6 +37633,11 @@ func (e *htmlParam) setJSElement(v Value) HTML {
 
 func (e *htmlParam) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlParam) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -37767,6 +38137,11 @@ func (e *htmlPicture) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlPicture) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlPicture) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -38260,6 +38635,11 @@ func (e *htmlPre) setJSElement(v Value) HTML {
 
 func (e *htmlPre) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlPre) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -38775,6 +39155,11 @@ func (e *htmlProgress) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlProgress) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlProgress) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -39279,6 +39664,11 @@ func (e *htmlQ) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlQ) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlQ) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -39772,6 +40162,11 @@ func (e *htmlRp) setJSElement(v Value) HTML {
 
 func (e *htmlRp) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlRp) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -40271,6 +40666,11 @@ func (e *htmlRt) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlRt) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlRt) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -40764,6 +41164,11 @@ func (e *htmlRuby) setJSElement(v Value) HTML {
 
 func (e *htmlRuby) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlRuby) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -41263,6 +41668,11 @@ func (e *htmlS) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlS) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlS) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -41759,6 +42169,11 @@ func (e *htmlSamp) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlSamp) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlSamp) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -42036,6 +42451,11 @@ func (e *htmlScript) setJSElement(v Value) HTML {
 
 func (e *htmlScript) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlScript) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -42532,6 +42952,11 @@ func (e *htmlSection) setJSElement(v Value) HTML {
 
 func (e *htmlSection) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlSection) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -43087,6 +43512,11 @@ func (e *htmlSelect) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlSelect) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlSelect) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -43580,6 +44010,11 @@ func (e *htmlSmall) setJSElement(v Value) HTML {
 
 func (e *htmlSmall) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlSmall) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -44097,6 +44532,11 @@ func (e *htmlSource) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlSource) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlSource) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -44593,6 +45033,11 @@ func (e *htmlSpan) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlSpan) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlSpan) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -45086,6 +45531,11 @@ func (e *htmlStrong) setJSElement(v Value) HTML {
 
 func (e *htmlStrong) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlStrong) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -45609,6 +46059,11 @@ func (e *htmlStyle) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlStyle) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlStyle) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -46102,6 +46557,11 @@ func (e *htmlSub) setJSElement(v Value) HTML {
 
 func (e *htmlSub) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlSub) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -46601,6 +47061,11 @@ func (e *htmlSummary) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlSummary) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlSummary) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -47094,6 +47559,11 @@ func (e *htmlSup) setJSElement(v Value) HTML {
 
 func (e *htmlSup) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlSup) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -47593,6 +48063,11 @@ func (e *htmlTable) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlTable) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlTable) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -48086,6 +48561,11 @@ func (e *htmlTBody) setJSElement(v Value) HTML {
 
 func (e *htmlTBody) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlTBody) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -48609,6 +49089,11 @@ func (e *htmlTd) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlTd) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlTd) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -48830,6 +49315,11 @@ func (e *htmlTemplate) setJSElement(v Value) HTML {
 
 func (e *htmlTemplate) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlTemplate) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -49427,6 +49917,11 @@ func (e *htmlTextarea) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlTextarea) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlTextarea) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -49920,6 +50415,11 @@ func (e *htmlTFoot) setJSElement(v Value) HTML {
 
 func (e *htmlTFoot) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlTFoot) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -50459,6 +50959,11 @@ func (e *htmlTh) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlTh) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlTh) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -50952,6 +51457,11 @@ func (e *htmlTHead) setJSElement(v Value) HTML {
 
 func (e *htmlTHead) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlTHead) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -51459,6 +51969,11 @@ func (e *htmlTime) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlTime) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlTime) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -51680,6 +52195,11 @@ func (e *htmlTitle) setJSElement(v Value) HTML {
 
 func (e *htmlTitle) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlTitle) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -52179,6 +52699,11 @@ func (e *htmlTr) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlTr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlTr) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -52672,6 +53197,11 @@ func (e *htmlU) setJSElement(v Value) HTML {
 
 func (e *htmlU) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlU) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -53171,6 +53701,11 @@ func (e *htmlUl) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlUl) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlUl) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -53664,6 +54199,11 @@ func (e *htmlVar) setJSElement(v Value) HTML {
 
 func (e *htmlVar) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlVar) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
@@ -54427,6 +54967,11 @@ func (e *htmlVideo) setAttrs(v attributes) HTML {
 	return e
 }
 
+func (e *htmlVideo) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
 func (e *htmlVideo) setParent(v UI) UI {
 	e.parentElement = v
 	return e
@@ -54920,6 +55465,11 @@ func (e *htmlWbr) setJSElement(v Value) HTML {
 
 func (e *htmlWbr) setAttrs(v attributes) HTML {
 	e.attributes = v
+	return e
+}
+
+func (e *htmlWbr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
 	return e
 }
 
