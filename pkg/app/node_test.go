@@ -422,6 +422,13 @@ func BenchmarkNodeManagerCanUpdate(b *testing.B) {
 }
 
 func TestNodeManagerUpdate(t *testing.T) {
+	t.Run("updating a non mounted element returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		_, err := m.Update(Div(), Div())
+		require.Error(t, err)
+	})
+
 	t.Run("updating text succeeds", func(t *testing.T) {
 		var m nodeManager
 
