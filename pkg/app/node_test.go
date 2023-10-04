@@ -262,7 +262,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.NotZero(t, div)
 		require.True(t, div.Mounted())
 		require.NotNil(t, div.JSValue())
-		require.Equal(t, uint(1), div.(HTML).Depth())
+		require.Equal(t, uint(1), div.(HTML).depth())
 	})
 
 	t.Run("mounting a html body succeeds", func(t *testing.T) {
@@ -273,7 +273,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.NotZero(t, body)
 		require.True(t, body.Mounted())
 		require.NotNil(t, body.JSValue())
-		require.Equal(t, uint(1), body.(HTML).Depth())
+		require.Equal(t, uint(1), body.(HTML).depth())
 	})
 
 	t.Run("mounting an html element with attributes succeeds", func(t *testing.T) {
@@ -323,7 +323,7 @@ func TestNodeManagerMount(t *testing.T) {
 
 		span := body[0]
 		require.True(t, span.Mounted())
-		require.Equal(t, uint(2), span.(HTML).Depth())
+		require.Equal(t, uint(2), span.(HTML).depth())
 	})
 
 	t.Run("mounting an already mounted html element returns an error", func(t *testing.T) {

@@ -238,7 +238,7 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 			WithTag("parent-type", reflect.TypeOf(v.getParent())).
 			WithTag("type", reflect.TypeOf(v)).
 			WithTag("tag", v.Tag()).
-			WithTag("depth", v.Depth())
+			WithTag("depth", v.depth())
 	}
 
 	var jsElement Value
@@ -323,7 +323,15 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 }
 
 func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
+	// if !v.Mounted() {
+	// 	return nil, errors.New("component is already mounted").
+	// 		WithTag("parent-type", reflect.TypeOf(v.getParent())).
+	// 		WithTag("type", reflect.TypeOf(v)).
+	// 		WithTag("depth", v.depth())
+	// }
+
 	panic("not implemented")
+
 }
 
 func (m *nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
@@ -459,7 +467,7 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 				return nil, errors.New("updating child failed").
 					WithTag("type", reflect.TypeOf(v)).
 					WithTag("tag", v.Tag()).
-					WithTag("depth", v.Depth()).
+					WithTag("depth", v.depth()).
 					WithTag("index", i).
 					Wrap(err)
 			}
@@ -467,12 +475,12 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 			continue
 		}
 
-		newChild, err := m.Mount(v.Depth()+1, newChildren[i])
+		newChild, err := m.Mount(v.depth()+1, newChildren[i])
 		if err != nil {
 			return nil, errors.New("mounting child failed").
 				WithTag("type", reflect.TypeOf(v)).
 				WithTag("tag", v.Tag()).
-				WithTag("depth", v.Depth()).
+				WithTag("depth", v.depth()).
 				WithTag("index", i).
 				Wrap(err)
 		}
@@ -491,12 +499,12 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 	children = children[:sharedLen]
 
 	for i := sharedLen; i < len(newChildren); i++ {
-		newChild, err := m.Mount(v.Depth()+1, newChildren[i])
+		newChild, err := m.Mount(v.depth()+1, newChildren[i])
 		if err != nil {
 			return nil, errors.New("mounting child failed").
 				WithTag("type", reflect.TypeOf(v)).
 				WithTag("tag", v.Tag()).
-				WithTag("depth", v.Depth()).
+				WithTag("depth", v.depth()).
 				WithTag("index", i).
 				Wrap(err)
 		}

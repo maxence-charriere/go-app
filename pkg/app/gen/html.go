@@ -2343,7 +2343,7 @@ func writeStruct(w io.Writer, t tag) {
 
 	fmt.Fprintf(w, `
 	func (e *html%s) setDepth(v uint) UI {
-		e.depth = v
+		e.treeDepth = v
 		return e
 	}
 

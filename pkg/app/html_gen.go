@@ -547,7 +547,7 @@ func (e *htmlA) OnWheel(h EventHandler, scope ...any) HTMLA {
 }
 
 func (e *htmlA) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -1053,7 +1053,7 @@ func (e *htmlAbbr) OnWheel(h EventHandler, scope ...any) HTMLAbbr {
 }
 
 func (e *htmlAbbr) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -1559,7 +1559,7 @@ func (e *htmlAddress) OnWheel(h EventHandler, scope ...any) HTMLAddress {
 }
 
 func (e *htmlAddress) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -2123,7 +2123,7 @@ func (e *htmlArea) OnWheel(h EventHandler, scope ...any) HTMLArea {
 }
 
 func (e *htmlArea) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -2629,7 +2629,7 @@ func (e *htmlArticle) OnWheel(h EventHandler, scope ...any) HTMLArticle {
 }
 
 func (e *htmlArticle) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -3135,7 +3135,7 @@ func (e *htmlAside) OnWheel(h EventHandler, scope ...any) HTMLAside {
 }
 
 func (e *htmlAside) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -3881,7 +3881,7 @@ func (e *htmlAudio) OnWheel(h EventHandler, scope ...any) HTMLAudio {
 }
 
 func (e *htmlAudio) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -4387,7 +4387,7 @@ func (e *htmlB) OnWheel(h EventHandler, scope ...any) HTMLB {
 }
 
 func (e *htmlB) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -4887,7 +4887,7 @@ func (e *htmlBase) OnWheel(h EventHandler, scope ...any) HTMLBase {
 }
 
 func (e *htmlBase) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -5393,7 +5393,7 @@ func (e *htmlBdi) OnWheel(h EventHandler, scope ...any) HTMLBdi {
 }
 
 func (e *htmlBdi) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -5899,7 +5899,7 @@ func (e *htmlBdo) OnWheel(h EventHandler, scope ...any) HTMLBdo {
 }
 
 func (e *htmlBdo) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -6413,7 +6413,7 @@ func (e *htmlBlockquote) OnWheel(h EventHandler, scope ...any) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -7024,7 +7024,7 @@ func (e *htmlBody) OnWheel(h EventHandler, scope ...any) HTMLBody {
 }
 
 func (e *htmlBody) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -7508,7 +7508,7 @@ func (e *htmlBr) OnWheel(h EventHandler, scope ...any) HTMLBr {
 }
 
 func (e *htmlBr) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -8102,7 +8102,7 @@ func (e *htmlButton) OnWheel(h EventHandler, scope ...any) HTMLButton {
 }
 
 func (e *htmlButton) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -8624,7 +8624,7 @@ func (e *htmlCanvas) OnWheel(h EventHandler, scope ...any) HTMLCanvas {
 }
 
 func (e *htmlCanvas) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -9130,7 +9130,7 @@ func (e *htmlCaption) OnWheel(h EventHandler, scope ...any) HTMLCaption {
 }
 
 func (e *htmlCaption) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -9636,7 +9636,7 @@ func (e *htmlCite) OnWheel(h EventHandler, scope ...any) HTMLCite {
 }
 
 func (e *htmlCite) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -10142,7 +10142,7 @@ func (e *htmlCode) OnWheel(h EventHandler, scope ...any) HTMLCode {
 }
 
 func (e *htmlCode) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -10634,7 +10634,7 @@ func (e *htmlCol) OnWheel(h EventHandler, scope ...any) HTMLCol {
 }
 
 func (e *htmlCol) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -11148,7 +11148,7 @@ func (e *htmlColGroup) OnWheel(h EventHandler, scope ...any) HTMLColGroup {
 }
 
 func (e *htmlColGroup) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -11390,7 +11390,7 @@ func (e *htmlData) On(event string, h EventHandler, scope ...any) HTMLData {
 }
 
 func (e *htmlData) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -11896,7 +11896,7 @@ func (e *htmlDataList) OnWheel(h EventHandler, scope ...any) HTMLDataList {
 }
 
 func (e *htmlDataList) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -12402,7 +12402,7 @@ func (e *htmlDd) OnWheel(h EventHandler, scope ...any) HTMLDd {
 }
 
 func (e *htmlDd) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -12924,7 +12924,7 @@ func (e *htmlDel) OnWheel(h EventHandler, scope ...any) HTMLDel {
 }
 
 func (e *htmlDel) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -13446,7 +13446,7 @@ func (e *htmlDetails) OnWheel(h EventHandler, scope ...any) HTMLDetails {
 }
 
 func (e *htmlDetails) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -13952,7 +13952,7 @@ func (e *htmlDfn) OnWheel(h EventHandler, scope ...any) HTMLDfn {
 }
 
 func (e *htmlDfn) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -14466,7 +14466,7 @@ func (e *htmlDialog) OnWheel(h EventHandler, scope ...any) HTMLDialog {
 }
 
 func (e *htmlDialog) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -14972,7 +14972,7 @@ func (e *htmlDiv) OnWheel(h EventHandler, scope ...any) HTMLDiv {
 }
 
 func (e *htmlDiv) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -15478,7 +15478,7 @@ func (e *htmlDl) OnWheel(h EventHandler, scope ...any) HTMLDl {
 }
 
 func (e *htmlDl) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -15984,7 +15984,7 @@ func (e *htmlDt) OnWheel(h EventHandler, scope ...any) HTMLDt {
 }
 
 func (e *htmlDt) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -16498,7 +16498,7 @@ func (e *htmlElem) OnWheel(h EventHandler, scope ...any) HTMLElem {
 }
 
 func (e *htmlElem) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -16990,7 +16990,7 @@ func (e *htmlElemSelfClosing) OnWheel(h EventHandler, scope ...any) HTMLElemSelf
 }
 
 func (e *htmlElemSelfClosing) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -17496,7 +17496,7 @@ func (e *htmlEm) OnWheel(h EventHandler, scope ...any) HTMLEm {
 }
 
 func (e *htmlEm) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -18196,7 +18196,7 @@ func (e *htmlEmbed) OnWheel(h EventHandler, scope ...any) HTMLEmbed {
 }
 
 func (e *htmlEmbed) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -18726,7 +18726,7 @@ func (e *htmlFieldSet) OnWheel(h EventHandler, scope ...any) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -19232,7 +19232,7 @@ func (e *htmlFigCaption) OnWheel(h EventHandler, scope ...any) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -19738,7 +19738,7 @@ func (e *htmlFigure) OnWheel(h EventHandler, scope ...any) HTMLFigure {
 }
 
 func (e *htmlFigure) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -20244,7 +20244,7 @@ func (e *htmlFooter) OnWheel(h EventHandler, scope ...any) HTMLFooter {
 }
 
 func (e *htmlFooter) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -20819,7 +20819,7 @@ func (e *htmlForm) OnWheel(h EventHandler, scope ...any) HTMLForm {
 }
 
 func (e *htmlForm) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -21325,7 +21325,7 @@ func (e *htmlH1) OnWheel(h EventHandler, scope ...any) HTMLH1 {
 }
 
 func (e *htmlH1) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -21831,7 +21831,7 @@ func (e *htmlH2) OnWheel(h EventHandler, scope ...any) HTMLH2 {
 }
 
 func (e *htmlH2) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -22337,7 +22337,7 @@ func (e *htmlH3) OnWheel(h EventHandler, scope ...any) HTMLH3 {
 }
 
 func (e *htmlH3) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -22843,7 +22843,7 @@ func (e *htmlH4) OnWheel(h EventHandler, scope ...any) HTMLH4 {
 }
 
 func (e *htmlH4) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -23349,7 +23349,7 @@ func (e *htmlH5) OnWheel(h EventHandler, scope ...any) HTMLH5 {
 }
 
 func (e *htmlH5) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -23855,7 +23855,7 @@ func (e *htmlH6) OnWheel(h EventHandler, scope ...any) HTMLH6 {
 }
 
 func (e *htmlH6) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -24089,7 +24089,7 @@ func (e *htmlHead) On(event string, h EventHandler, scope ...any) HTMLHead {
 }
 
 func (e *htmlHead) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -24595,7 +24595,7 @@ func (e *htmlHeader) OnWheel(h EventHandler, scope ...any) HTMLHeader {
 }
 
 func (e *htmlHeader) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -25079,7 +25079,7 @@ func (e *htmlHr) OnWheel(h EventHandler, scope ...any) HTMLHr {
 }
 
 func (e *htmlHr) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -25298,7 +25298,7 @@ func (e *htmlHtml) On(event string, h EventHandler, scope ...any) HTMLHtml {
 }
 
 func (e *htmlHtml) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -25804,7 +25804,7 @@ func (e *htmlI) OnWheel(h EventHandler, scope ...any) HTMLI {
 }
 
 func (e *htmlI) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -26416,7 +26416,7 @@ func (e *htmlIFrame) OnWheel(h EventHandler, scope ...any) HTMLIFrame {
 }
 
 func (e *htmlIFrame) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -27172,7 +27172,7 @@ func (e *htmlImg) OnWheel(h EventHandler, scope ...any) HTMLImg {
 }
 
 func (e *htmlImg) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -27917,7 +27917,7 @@ func (e *htmlInput) OnWheel(h EventHandler, scope ...any) HTMLInput {
 }
 
 func (e *htmlInput) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -28423,7 +28423,7 @@ func (e *htmlIns) OnWheel(h EventHandler, scope ...any) HTMLIns {
 }
 
 func (e *htmlIns) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -28929,7 +28929,7 @@ func (e *htmlKbd) OnWheel(h EventHandler, scope ...any) HTMLKbd {
 }
 
 func (e *htmlKbd) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -29451,7 +29451,7 @@ func (e *htmlLabel) OnWheel(h EventHandler, scope ...any) HTMLLabel {
 }
 
 func (e *htmlLabel) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -29957,7 +29957,7 @@ func (e *htmlLegend) OnWheel(h EventHandler, scope ...any) HTMLLegend {
 }
 
 func (e *htmlLegend) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -30471,7 +30471,7 @@ func (e *htmlLi) OnWheel(h EventHandler, scope ...any) HTMLLi {
 }
 
 func (e *htmlLi) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -31035,7 +31035,7 @@ func (e *htmlLink) OnWheel(h EventHandler, scope ...any) HTMLLink {
 }
 
 func (e *htmlLink) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -31541,7 +31541,7 @@ func (e *htmlMain) OnWheel(h EventHandler, scope ...any) HTMLMain {
 }
 
 func (e *htmlMain) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -32055,7 +32055,7 @@ func (e *htmlMap) OnWheel(h EventHandler, scope ...any) HTMLMap {
 }
 
 func (e *htmlMap) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -32561,7 +32561,7 @@ func (e *htmlMark) OnWheel(h EventHandler, scope ...any) HTMLMark {
 }
 
 func (e *htmlMark) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -32813,7 +32813,7 @@ func (e *htmlMeta) On(event string, h EventHandler, scope ...any) HTMLMeta {
 }
 
 func (e *htmlMeta) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -33375,7 +33375,7 @@ func (e *htmlMeter) OnWheel(h EventHandler, scope ...any) HTMLMeter {
 }
 
 func (e *htmlMeter) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -33881,7 +33881,7 @@ func (e *htmlNav) OnWheel(h EventHandler, scope ...any) HTMLNav {
 }
 
 func (e *htmlNav) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -34115,7 +34115,7 @@ func (e *htmlNoScript) On(event string, h EventHandler, scope ...any) HTMLNoScri
 }
 
 func (e *htmlNoScript) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -34861,7 +34861,7 @@ func (e *htmlObject) OnWheel(h EventHandler, scope ...any) HTMLObject {
 }
 
 func (e *htmlObject) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -35391,7 +35391,7 @@ func (e *htmlOl) OnWheel(h EventHandler, scope ...any) HTMLOl {
 }
 
 func (e *htmlOl) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -35913,7 +35913,7 @@ func (e *htmlOptGroup) OnWheel(h EventHandler, scope ...any) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -36451,7 +36451,7 @@ func (e *htmlOption) OnWheel(h EventHandler, scope ...any) HTMLOption {
 }
 
 func (e *htmlOption) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -36981,7 +36981,7 @@ func (e *htmlOutput) OnWheel(h EventHandler, scope ...any) HTMLOutput {
 }
 
 func (e *htmlOutput) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -37487,7 +37487,7 @@ func (e *htmlP) OnWheel(h EventHandler, scope ...any) HTMLP {
 }
 
 func (e *htmlP) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -37987,7 +37987,7 @@ func (e *htmlParam) OnWheel(h EventHandler, scope ...any) HTMLParam {
 }
 
 func (e *htmlParam) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -38493,7 +38493,7 @@ func (e *htmlPicture) OnWheel(h EventHandler, scope ...any) HTMLPicture {
 }
 
 func (e *htmlPicture) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -38999,7 +38999,7 @@ func (e *htmlPre) OnWheel(h EventHandler, scope ...any) HTMLPre {
 }
 
 func (e *htmlPre) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -39521,7 +39521,7 @@ func (e *htmlProgress) OnWheel(h EventHandler, scope ...any) HTMLProgress {
 }
 
 func (e *htmlProgress) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -40035,7 +40035,7 @@ func (e *htmlQ) OnWheel(h EventHandler, scope ...any) HTMLQ {
 }
 
 func (e *htmlQ) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -40541,7 +40541,7 @@ func (e *htmlRp) OnWheel(h EventHandler, scope ...any) HTMLRp {
 }
 
 func (e *htmlRp) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -41047,7 +41047,7 @@ func (e *htmlRt) OnWheel(h EventHandler, scope ...any) HTMLRt {
 }
 
 func (e *htmlRt) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -41553,7 +41553,7 @@ func (e *htmlRuby) OnWheel(h EventHandler, scope ...any) HTMLRuby {
 }
 
 func (e *htmlRuby) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -42059,7 +42059,7 @@ func (e *htmlS) OnWheel(h EventHandler, scope ...any) HTMLS {
 }
 
 func (e *htmlS) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -42565,7 +42565,7 @@ func (e *htmlSamp) OnWheel(h EventHandler, scope ...any) HTMLSamp {
 }
 
 func (e *htmlSamp) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -42855,7 +42855,7 @@ func (e *htmlScript) OnLoad(h EventHandler, scope ...any) HTMLScript {
 }
 
 func (e *htmlScript) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -43361,7 +43361,7 @@ func (e *htmlSection) OnWheel(h EventHandler, scope ...any) HTMLSection {
 }
 
 func (e *htmlSection) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -43923,7 +43923,7 @@ func (e *htmlSelect) OnWheel(h EventHandler, scope ...any) HTMLSelect {
 }
 
 func (e *htmlSelect) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -44429,7 +44429,7 @@ func (e *htmlSmall) OnWheel(h EventHandler, scope ...any) HTMLSmall {
 }
 
 func (e *htmlSmall) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -44953,7 +44953,7 @@ func (e *htmlSource) OnWheel(h EventHandler, scope ...any) HTMLSource {
 }
 
 func (e *htmlSource) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -45459,7 +45459,7 @@ func (e *htmlSpan) OnWheel(h EventHandler, scope ...any) HTMLSpan {
 }
 
 func (e *htmlSpan) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -45965,7 +45965,7 @@ func (e *htmlStrong) OnWheel(h EventHandler, scope ...any) HTMLStrong {
 }
 
 func (e *htmlStrong) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -46495,7 +46495,7 @@ func (e *htmlStyle) OnWheel(h EventHandler, scope ...any) HTMLStyle {
 }
 
 func (e *htmlStyle) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -47001,7 +47001,7 @@ func (e *htmlSub) OnWheel(h EventHandler, scope ...any) HTMLSub {
 }
 
 func (e *htmlSub) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -47507,7 +47507,7 @@ func (e *htmlSummary) OnWheel(h EventHandler, scope ...any) HTMLSummary {
 }
 
 func (e *htmlSummary) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -48013,7 +48013,7 @@ func (e *htmlSup) OnWheel(h EventHandler, scope ...any) HTMLSup {
 }
 
 func (e *htmlSup) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -48519,7 +48519,7 @@ func (e *htmlTable) OnWheel(h EventHandler, scope ...any) HTMLTable {
 }
 
 func (e *htmlTable) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -49025,7 +49025,7 @@ func (e *htmlTBody) OnWheel(h EventHandler, scope ...any) HTMLTBody {
 }
 
 func (e *htmlTBody) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -49555,7 +49555,7 @@ func (e *htmlTd) OnWheel(h EventHandler, scope ...any) HTMLTd {
 }
 
 func (e *htmlTd) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -49789,7 +49789,7 @@ func (e *htmlTemplate) On(event string, h EventHandler, scope ...any) HTMLTempla
 }
 
 func (e *htmlTemplate) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -50393,7 +50393,7 @@ func (e *htmlTextarea) OnWheel(h EventHandler, scope ...any) HTMLTextarea {
 }
 
 func (e *htmlTextarea) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -50899,7 +50899,7 @@ func (e *htmlTFoot) OnWheel(h EventHandler, scope ...any) HTMLTFoot {
 }
 
 func (e *htmlTFoot) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -51445,7 +51445,7 @@ func (e *htmlTh) OnWheel(h EventHandler, scope ...any) HTMLTh {
 }
 
 func (e *htmlTh) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -51951,7 +51951,7 @@ func (e *htmlTHead) OnWheel(h EventHandler, scope ...any) HTMLTHead {
 }
 
 func (e *htmlTHead) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -52465,7 +52465,7 @@ func (e *htmlTime) OnWheel(h EventHandler, scope ...any) HTMLTime {
 }
 
 func (e *htmlTime) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -52699,7 +52699,7 @@ func (e *htmlTitle) On(event string, h EventHandler, scope ...any) HTMLTitle {
 }
 
 func (e *htmlTitle) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -53205,7 +53205,7 @@ func (e *htmlTr) OnWheel(h EventHandler, scope ...any) HTMLTr {
 }
 
 func (e *htmlTr) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -53711,7 +53711,7 @@ func (e *htmlU) OnWheel(h EventHandler, scope ...any) HTMLU {
 }
 
 func (e *htmlU) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -54217,7 +54217,7 @@ func (e *htmlUl) OnWheel(h EventHandler, scope ...any) HTMLUl {
 }
 
 func (e *htmlUl) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -54723,7 +54723,7 @@ func (e *htmlVar) OnWheel(h EventHandler, scope ...any) HTMLVar {
 }
 
 func (e *htmlVar) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -55493,7 +55493,7 @@ func (e *htmlVideo) OnWheel(h EventHandler, scope ...any) HTMLVideo {
 }
 
 func (e *htmlVideo) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 
@@ -55999,7 +55999,7 @@ func (e *htmlWbr) OnWheel(h EventHandler, scope ...any) HTMLWbr {
 }
 
 func (e *htmlWbr) setDepth(v uint) UI {
-	e.depth = v
+	e.treeDepth = v
 	return e
 }
 

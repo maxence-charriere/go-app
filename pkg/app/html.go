@@ -22,10 +22,7 @@ type HTML interface {
 	// Returns true for self-closing elements, otherwise false.
 	SelfClosing() bool
 
-	// Returns the nesting level of the HTML element. A higher value
-	// indicates deeper nesting within the document.
-	Depth() uint
-
+	depth() uint
 	attrs() attributes
 	setAttrs(attributes) HTML
 	events() eventHandlers
@@ -43,7 +40,7 @@ type htmlElement struct {
 
 	tag           string
 	xmlns         string
-	depth         uint
+	treeDepth     uint
 	isSelfClosing bool
 	jsElement     Value
 	attributes    attributes
@@ -423,8 +420,8 @@ func (e *htmlElement) SelfClosing() bool {
 	return e.isSelfClosing
 }
 
-func (e *htmlElement) Depth() uint {
-	return e.depth
+func (e *htmlElement) depth() uint {
+	return e.treeDepth
 }
 
 func (e *htmlElement) attrs() attributes {
