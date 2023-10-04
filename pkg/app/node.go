@@ -323,15 +323,40 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 }
 
 func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
-	// if !v.Mounted() {
-	// 	return nil, errors.New("component is already mounted").
-	// 		WithTag("parent-type", reflect.TypeOf(v.getParent())).
-	// 		WithTag("type", reflect.TypeOf(v)).
-	// 		WithTag("depth", v.depth())
-	// }
+	if !v.Mounted() {
+		return nil, errors.New("component is already mounted").
+			WithTag("parent-type", reflect.TypeOf(v.getParent())).
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("depth", v.depth())
+	}
 
-	panic("not implemented")
+	// set self or alternative
+	// change Compo.Mounted to not check for a mounted root mounted
+	// change JSValue to return an empty js value
+	// make a list of deprecated things.
 
+	if mounter, ok := v.(Mounter); ok {
+		mounter.OnMount(m.MakeContext(v))
+	}
+
+	root, err := m.renderComponent(v)
+	if err != nil {
+		return nil, errors.New("rendering component failed").
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("depth", v.depth()).
+			Wrap(err)
+	}
+
+	panic("not completely implemented")
+	return v, nil
+}
+
+func (m *nodeManager) renderComponent(v Composer) (UI, error) {
+	rendering := FilterUIElems(v.Render())
+	if len(rendering) == 0 {
+		return nil, errors.New("render method does not returns a text, html element, or component")
+	}
+	return rendering[0], nil
 }
 
 func (m *nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {

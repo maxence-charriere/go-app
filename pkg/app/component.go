@@ -48,6 +48,8 @@ type Composer interface {
 
 	updateRoot() error
 	dispatch(func(Context))
+
+	depth() uint
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -150,6 +152,8 @@ type Compo struct {
 	parentElem UI
 	root       UI
 	this       Composer
+
+	treeDepth uint
 }
 
 // JSValue returns the javascript value of the component root.
@@ -476,4 +480,9 @@ func (c *Compo) htmlWithIndent(w io.Writer, indent int) {
 	}
 
 	c.root.htmlWithIndent(w, indent)
+}
+
+// -----------------------------------------------------------------------------
+func (c *Compo) depth() uint {
+	return c.treeDepth
 }
