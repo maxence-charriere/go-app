@@ -396,8 +396,6 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Nil(t, compo)
 		t.Log(err)
 	})
-
-	t.Run("mounting an already mounted component returns an error", func(t *testing.T) {})
 }
 
 func BenchmarkNodeManagerMount(b *testing.B) {
