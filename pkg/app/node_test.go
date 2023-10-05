@@ -252,9 +252,10 @@ func TestNodeManagerMount(t *testing.T) {
 		text, err = m.Mount(1, text)
 		require.Error(t, err)
 		require.Zero(t, text)
+		t.Log(err)
 	})
 
-	t.Run("mounting an html element succeeds", func(t *testing.T) {
+	t.Run("mounting html succeeds", func(t *testing.T) {
 		var m nodeManager
 
 		div, err := m.Mount(1, Div())
@@ -265,7 +266,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Equal(t, uint(1), div.(HTML).depth())
 	})
 
-	t.Run("mounting a html body succeeds", func(t *testing.T) {
+	t.Run("mounting html body succeeds", func(t *testing.T) {
 		var m nodeManager
 
 		body, err := m.Mount(1, Body())
@@ -276,7 +277,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Equal(t, uint(1), body.(HTML).depth())
 	})
 
-	t.Run("mounting an html element with attributes succeeds", func(t *testing.T) {
+	t.Run("mounting html with attributes succeeds", func(t *testing.T) {
 		var m nodeManager
 
 		div, err := m.Mount(1, Img().
@@ -286,7 +287,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.True(t, div.Mounted())
 	})
 
-	t.Run("mounting an html element with event handlers succeeds", func(t *testing.T) {
+	t.Run("mounting html with event handlers succeeds", func(t *testing.T) {
 		var m nodeManager
 		var wg sync.WaitGroup
 
@@ -309,7 +310,7 @@ func TestNodeManagerMount(t *testing.T) {
 		wg.Wait()
 	})
 
-	t.Run("mounting an html element with children succeeds", func(t *testing.T) {
+	t.Run("mounting html with children succeeds", func(t *testing.T) {
 		var m nodeManager
 
 		div, err := m.Mount(1, Div().Body(
@@ -326,7 +327,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Equal(t, uint(2), span.(HTML).depth())
 	})
 
-	t.Run("mounting an already mounted html element returns an error", func(t *testing.T) {
+	t.Run("mounting an already mounted html returns an error", func(t *testing.T) {
 		var m nodeManager
 
 		div, err := m.Mount(1, Div())
@@ -335,6 +336,18 @@ func TestNodeManagerMount(t *testing.T) {
 		div, err = m.Mount(1, div)
 		require.Error(t, err)
 		require.Zero(t, div)
+		t.Log(err)
+	})
+
+	t.Run("mounting html with non mountable child returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			&compoWithNilRendering{},
+		))
+		require.Error(t, err)
+		require.Nil(t, div)
+		t.Log(err)
 	})
 
 	t.Run("mounting a component succeeds", func(t *testing.T) {
@@ -360,6 +373,7 @@ func TestNodeManagerMount(t *testing.T) {
 		compo, err := m.Mount(1, &compoWithNilRendering{})
 		require.Error(t, err)
 		require.Nil(t, compo)
+		t.Log(err)
 	})
 
 	t.Run("mounting an already mounted component returns an error", func(t *testing.T) {
@@ -371,6 +385,7 @@ func TestNodeManagerMount(t *testing.T) {
 		compo, err = m.Mount(1, compo)
 		require.Error(t, err)
 		require.Nil(t, compo)
+		t.Log(err)
 	})
 
 	t.Run("mounting a component with a non mountable root returns an error", func(t *testing.T) {
@@ -379,6 +394,7 @@ func TestNodeManagerMount(t *testing.T) {
 		compo, err := m.Mount(1, &compoWithNonMountableRoot{})
 		require.Error(t, err)
 		require.Nil(t, compo)
+		t.Log(err)
 	})
 
 	t.Run("mounting an already mounted component returns an error", func(t *testing.T) {})
@@ -393,7 +409,7 @@ func BenchmarkNodeManagerMount(b *testing.B) {
 }
 
 func TestNodeManagerDismount(t *testing.T) {
-	t.Run("html element is dismounted", func(t *testing.T) {
+	t.Run("html is dismounted", func(t *testing.T) {
 		var m nodeManager
 
 		div, err := m.Mount(1, Div())
@@ -404,7 +420,7 @@ func TestNodeManagerDismount(t *testing.T) {
 		require.Nil(t, div.JSValue())
 	})
 
-	t.Run("html element child is dismounted", func(t *testing.T) {
+	t.Run("html child is dismounted", func(t *testing.T) {
 		var m nodeManager
 
 		div, err := m.Mount(1, Div().Body(
@@ -417,7 +433,7 @@ func TestNodeManagerDismount(t *testing.T) {
 		require.False(t, span.Mounted())
 	})
 
-	t.Run("html element event handler is dismounted", func(t *testing.T) {
+	t.Run("html event handler is dismounted", func(t *testing.T) {
 		var m nodeManager
 
 		div, err := m.Mount(1, Div().
@@ -473,6 +489,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 
 		_, err := m.Update(Div(), Div())
 		require.Error(t, err)
+		t.Log(err)
 	})
 
 	t.Run("updating text succeeds", func(t *testing.T) {
@@ -619,6 +636,20 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.IsType(t, Span(), div.(HTML).body()[0])
 	})
 
+	t.Run("update html by adding non mountable child returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div())
+		require.NoError(t, err)
+
+		div, err = m.Update(div, Div().Body(
+			&compoWithNilRendering{},
+		))
+		require.Error(t, err)
+		require.Zero(t, div)
+		t.Log(err)
+	})
+
 	t.Run("update html updates a child", func(t *testing.T) {
 		var m nodeManager
 
@@ -641,6 +672,24 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.Equal(t, "test", child.(HTML).attrs()["class"])
 	})
 
+	t.Run("update html by updating child with a non mountable element returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			Span().Text("test"),
+		))
+		require.NoError(t, err)
+
+		div, err = m.Update(div, Div().Body(
+			Span().Body(
+				&compoWithNilRendering{},
+			),
+		))
+		require.Error(t, err)
+		require.Zero(t, div)
+		t.Log(err)
+	})
+
 	t.Run("update html replaces a child", func(t *testing.T) {
 		var m nodeManager
 
@@ -659,6 +708,22 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.Len(t, div.(HTML).body(), 1)
 		child = div.(HTML).body()[0]
 		require.IsType(t, Div(), child)
+	})
+
+	t.Run("update html by replacing child with a non mountable element returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		div, err := m.Mount(1, Div().Body(
+			Span(),
+		))
+		require.NoError(t, err)
+
+		div, err = m.Update(div, Div().Body(
+			&compoWithNilRendering{},
+		))
+		require.Error(t, err)
+		require.Zero(t, div)
+		t.Log(err)
 	})
 
 	t.Run("update html removes a child", func(t *testing.T) {
