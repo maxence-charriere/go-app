@@ -336,6 +336,52 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Error(t, err)
 		require.Zero(t, div)
 	})
+
+	t.Run("mounting a component succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &hello{})
+		require.NoError(t, err)
+		require.NotNil(t, compo)
+		require.True(t, compo.Mounted())
+		require.Equal(t, uint(1), compo.(Composer).depth())
+		require.True(t, compo.(*hello).onMountCalled)
+
+		root := compo.(Composer).root()
+		require.NotNil(t, root)
+		require.IsType(t, Div(), root)
+		require.True(t, root.Mounted())
+		require.NotNil(t, root.(HTML).parent())
+	})
+
+	t.Run("mounting a component which renders nil returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &compoWithNilRendering{})
+		require.Error(t, err)
+		require.Nil(t, compo)
+	})
+
+	t.Run("mounting an already mounted component returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &hello{})
+		require.NoError(t, err)
+
+		compo, err = m.Mount(1, compo)
+		require.Error(t, err)
+		require.Nil(t, compo)
+	})
+
+	t.Run("mounting a component with a non mountable root returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &compoWithNonMountableRoot{})
+		require.Error(t, err)
+		require.Nil(t, compo)
+	})
+
+	t.Run("mounting an already mounted component returns an error", func(t *testing.T) {})
 }
 
 func BenchmarkNodeManagerMount(b *testing.B) {

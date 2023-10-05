@@ -170,7 +170,7 @@ func TestEngineHandleComponentUpdates(t *testing.T) {
 	e.Consume()
 	require.Empty(t, e.dispatches)
 	require.Empty(t, e.componentUpdates)
-	bar := foo.root.(*bar)
+	bar := foo.rootElement.(*bar)
 
 	e.addComponentUpdate(foo)
 	e.addComponentUpdate(bar)

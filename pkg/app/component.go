@@ -49,7 +49,11 @@ type Composer interface {
 	updateRoot() error
 	dispatch(func(Context))
 
+	setRef(Composer) Composer
 	depth() uint
+	setDepth(uint) Composer
+	root() UI
+	setRoot(UI) Composer
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -148,24 +152,29 @@ type resize struct{}
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
-	disp       Dispatcher
-	parentElem UI
-	root       UI
-	this       Composer
+	disp        Dispatcher
+	parentElem  UI
+	rootElement UI
+	this        Composer
 
 	treeDepth uint
+	ref       Composer
 }
 
 // JSValue returns the javascript value of the component root.
 func (c *Compo) JSValue() Value {
-	return c.root.JSValue()
+	if c.rootElement == nil {
+		return ValueOf(nil)
+	}
+	return c.rootElement.JSValue()
 }
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.getDispatcher() != nil &&
-		c.root != nil && c.root.Mounted() &&
-		c.self() != nil
+	return c.ref != nil ||
+		(c.getDispatcher() != nil && // TODO: remove from here
+			c.rootElement != nil && c.rootElement.Mounted() &&
+			c.self() != nil)
 }
 
 // Render describes the component content. This is a default implementation to
@@ -199,7 +208,7 @@ func (c *Compo) Update() {
 // implement the Resizer interface.
 func (c *Compo) ResizeContent() {
 	c.dispatch(func(Context) {
-		c.root.onComponentEvent(resize{})
+		c.rootElement.onComponentEvent(resize{})
 	})
 }
 
@@ -261,7 +270,7 @@ func (c *Compo) setParent(p UI) UI {
 }
 
 func (c *Compo) getChildren() []UI {
-	return []UI{c.root}
+	return []UI{c.rootElement}
 }
 
 func (c *Compo) mount(d Dispatcher) error {
@@ -284,7 +293,7 @@ func (c *Compo) mount(d Dispatcher) error {
 			Wrap(err)
 	}
 	root.setParent(c.this)
-	c.root = root
+	c.rootElement = root
 
 	if mounter, ok := c.self().(Mounter); IsClient && ok {
 		c.dispatch(mounter.OnMount)
@@ -301,7 +310,7 @@ func (c *Compo) mount(d Dispatcher) error {
 }
 
 func (c *Compo) dismount() {
-	dismount(c.root)
+	dismount(c.rootElement)
 
 	if dismounter, ok := c.this.(Dismounter); ok {
 		dismounter.OnDismount()
@@ -371,7 +380,7 @@ func (c *Compo) dispatch(fn func(Context)) {
 }
 
 func (c *Compo) updateRoot() error {
-	a := c.root
+	a := c.rootElement
 	b := c.render()
 
 	if canUpdate(a, b) {
@@ -381,7 +390,7 @@ func (c *Compo) updateRoot() error {
 }
 
 func (c *Compo) replaceRoot(v UI) error {
-	old := c.root
+	old := c.rootElement
 	new := v
 
 	if err := mount(c.getDispatcher(), new); err != nil {
@@ -406,7 +415,7 @@ func (c *Compo) replaceRoot(v UI) error {
 	}
 
 	new.setParent(c.self())
-	c.root = new
+	c.rootElement = new
 
 	oldjs := old.JSValue()
 	newjs := v.JSValue()
@@ -436,7 +445,7 @@ func (c *Compo) onComponentEvent(le any) {
 		c.onResize(le)
 	}
 
-	c.root.onComponentEvent(le)
+	c.rootElement.onComponentEvent(le)
 }
 
 func (c *Compo) onNav(n nav) {
@@ -466,23 +475,42 @@ func (c *Compo) onResize(r resize) {
 }
 
 func (c *Compo) html(w io.Writer) {
-	if c.root == nil {
-		c.root = c.render()
-		c.root.setSelf(c.root)
+	if c.rootElement == nil {
+		c.rootElement = c.render()
+		c.rootElement.setSelf(c.rootElement)
 	}
-	c.root.html(w)
+	c.rootElement.html(w)
 }
 
 func (c *Compo) htmlWithIndent(w io.Writer, indent int) {
-	if c.root == nil {
-		c.root = c.render()
-		c.root.setSelf(c.root)
+	if c.rootElement == nil {
+		c.rootElement = c.render()
+		c.rootElement.setSelf(c.rootElement)
 	}
 
-	c.root.htmlWithIndent(w, indent)
+	c.rootElement.htmlWithIndent(w, indent)
 }
 
 // -----------------------------------------------------------------------------
+func (c *Compo) setRef(v Composer) Composer {
+	c.ref = v
+	return v
+}
+
 func (c *Compo) depth() uint {
 	return c.treeDepth
+}
+
+func (c *Compo) setDepth(v uint) Composer {
+	c.treeDepth = v
+	return c.ref
+}
+
+func (c *Compo) root() UI {
+	return c.rootElement
+}
+
+func (c *Compo) setRoot(v UI) Composer {
+	c.rootElement = v
+	return c.ref
 }

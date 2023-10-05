@@ -323,17 +323,15 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 }
 
 func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
-	if !v.Mounted() {
+	if v.Mounted() {
 		return nil, errors.New("component is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.getParent())).
 			WithTag("type", reflect.TypeOf(v)).
 			WithTag("depth", v.depth())
 	}
 
-	// set self or alternative
-	// change Compo.Mounted to not check for a mounted root mounted
-	// change JSValue to return an empty js value
-	// make a list of deprecated things.
+	v = v.setRef(v)
+	v = v.setDepth(depth)
 
 	if mounter, ok := v.(Mounter); ok {
 		mounter.OnMount(m.MakeContext(v))
@@ -346,8 +344,15 @@ func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
 			WithTag("depth", v.depth()).
 			Wrap(err)
 	}
+	if root, err = m.Mount(depth+1, root); err != nil {
+		return nil, errors.New("mounting component root failed").
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("depth", v.depth()).
+			Wrap(err)
+	}
+	root = root.setParent(v)
+	v = v.setRoot(root)
 
-	panic("not completely implemented")
 	return v, nil
 }
 

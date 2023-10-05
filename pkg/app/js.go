@@ -161,8 +161,8 @@ func Undefined() Value {
 //	| bool                   | boolean                |
 //	| integers and floats    | number                 |
 //	| string                 | string                 |
-//	| []any          | new array              |
-//	| map[string]any | new object             |
+//	| []any                  | new array              |
+//	| map[string]any         | new object             |
 //
 // Panics if x is not one of the expected types.
 func ValueOf(x any) Value {

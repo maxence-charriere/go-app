@@ -460,9 +460,12 @@ type hello struct {
 	appInstalled bool
 	appResized   bool
 	preRenderer  bool
+
+	onMountCalled bool
 }
 
 func (h *hello) OnMount(Context) {
+	h.onMountCalled = true
 }
 
 func (h *hello) OnNav(ctx Context) {
@@ -553,4 +556,20 @@ func (b *bar) OnUpdate(ctx Context) {
 
 func (b *bar) Render() UI {
 	return Text(b.Value)
+}
+
+type compoWithNilRendering struct {
+	Compo
+}
+
+func (c *compoWithNilRendering) Render() UI {
+	return nil
+}
+
+type compoWithNonMountableRoot struct {
+	Compo
+}
+
+func (c *compoWithNonMountableRoot) Render() UI {
+	return &compoWithNilRendering{}
 }
