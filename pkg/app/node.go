@@ -396,11 +396,16 @@ func (m *nodeManager) dismountHTMLEventHandler(handler eventHandler) {
 	}
 }
 
-func (m *nodeManager) dismountComponent(v Composer) error {
-	panic("not implemented")
+func (m *nodeManager) dismountComponent(v Composer) {
+	m.Dismount(v.root())
+	v.setRef(nil)
+
+	if dismounter, ok := v.(Dismounter); ok {
+		dismounter.OnDismount()
+	}
 }
 
-func (m *nodeManager) dismountRawHTML(v *raw) error {
+func (m *nodeManager) dismountRawHTML(v *raw) {
 	panic("not implemented")
 }
 

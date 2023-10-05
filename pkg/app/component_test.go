@@ -461,11 +461,11 @@ type hello struct {
 	appResized   bool
 	preRenderer  bool
 
-	onMountCalled bool
+	mounted bool
 }
 
 func (h *hello) OnMount(Context) {
-	h.onMountCalled = true
+	h.mounted = true
 }
 
 func (h *hello) OnNav(ctx Context) {
@@ -489,7 +489,8 @@ func (h *hello) OnPreRender(ctx Context) {
 	ctx.Page().SetTitle("world")
 }
 
-func (h *hello) OnDismount(Context) {
+func (h *hello) OnDismount() {
+	h.mounted = false
 }
 
 func (h *hello) Render() UI {

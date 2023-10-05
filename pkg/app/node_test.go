@@ -358,7 +358,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.NotNil(t, compo)
 		require.True(t, compo.Mounted())
 		require.Equal(t, uint(1), compo.(Composer).depth())
-		require.True(t, compo.(*hello).onMountCalled)
+		require.True(t, compo.(*hello).mounted)
 
 		root := compo.(Composer).root()
 		require.NotNil(t, root)
@@ -439,6 +439,18 @@ func TestNodeManagerDismount(t *testing.T) {
 		require.NoError(t, err)
 
 		m.Dismount(div)
+	})
+
+	t.Run("component is dismounted", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &hello{})
+		require.NoError(t, err)
+
+		m.Dismount(compo)
+		require.False(t, compo.Mounted())
+		require.False(t, compo.(*hello).mounted)
+		require.False(t, compo.(Composer).root().Mounted())
 	})
 }
 
