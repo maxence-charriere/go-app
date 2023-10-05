@@ -249,14 +249,8 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	default:
 		jsElement, _ = Window().createElement(v.Tag(), v.XMLNamespace())
 	}
-	if IsClient && !jsElement.Truthy() {
-		return nil, errors.New("creating js element failed").
-			WithTag("type", reflect.TypeOf(v)).
-			WithTag("tag", v.Tag()).
-			WithTag("xmlns", v.XMLNamespace()).
-			WithTag("depth", depth)
-	}
 	v = v.setJSElement(jsElement)
+
 	m.mountHTMLAttributes(v)
 	m.mountHTMLEventHandlers(v)
 
