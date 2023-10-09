@@ -2,8 +2,10 @@ package app
 
 import (
 	"fmt"
+	"reflect"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -855,4 +857,90 @@ func TestNodeManagerMakeContext(t *testing.T) {
 	require.NotNil(t, ctx.jsSrc)
 	require.NotNil(t, ctx.page)
 	require.NotNil(t, ctx.emit)
+}
+
+func TestCanUpdate(t *testing.T) {
+	utests := []struct {
+		a         any
+		b         any
+		canUpdate bool
+	}{
+		{
+			a:         "hello",
+			b:         "hello",
+			canUpdate: false,
+		},
+		{
+			a:         "hello",
+			b:         "bye",
+			canUpdate: true,
+		},
+		{
+			a:         true,
+			b:         true,
+			canUpdate: false,
+		},
+		{
+			a:         true,
+			b:         false,
+			canUpdate: true,
+		},
+		{
+			a:         true,
+			b:         true,
+			canUpdate: false,
+		},
+		{
+			a:         true,
+			b:         false,
+			canUpdate: true,
+		},
+		{
+			a:         42,
+			b:         42,
+			canUpdate: false,
+		},
+		{
+			a:         42,
+			b:         21,
+			canUpdate: true,
+		},
+		{
+			a:         42.1,
+			b:         42.1,
+			canUpdate: false,
+		},
+		{
+			a:         42.42,
+			b:         42.0,
+			canUpdate: true,
+		},
+		{
+			a:         func() time.Time { return time.Date(2023, 2, 14, 0, 0, 0, 0, time.UTC) }(),
+			b:         func() time.Time { return time.Date(2023, 2, 14, 0, 0, 0, 0, time.UTC) }(),
+			canUpdate: false,
+		},
+		{
+			a:         func() time.Time { return time.Date(2023, 2, 14, 0, 0, 0, 0, time.UTC) }(),
+			b:         func() time.Time { return time.Date(1986, 2, 14, 0, 0, 0, 0, time.UTC) }(),
+			canUpdate: true,
+		},
+		{
+			a:         []int{1, 2, 3},
+			b:         []int{1, 2, 3},
+			canUpdate: false,
+		},
+		{
+			a:         []int{1, 2, 3},
+			b:         []int{3, 2, 1},
+			canUpdate: true,
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(fmt.Sprintf("%s can update %v", reflect.TypeOf(u.a), u.canUpdate), func(t *testing.T) {
+			res := canUpdateValue(reflect.ValueOf(u.a), reflect.ValueOf(u.b))
+			require.Equal(t, u.canUpdate, res)
+		})
+	}
 }
