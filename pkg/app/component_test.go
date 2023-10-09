@@ -561,6 +561,7 @@ func (b *bar) Render() UI {
 
 type compoWithNilRendering struct {
 	Compo
+	NilOverride UI
 }
 
 func (c *compoWithNilRendering) Render() UI {
@@ -573,4 +574,14 @@ type compoWithNonMountableRoot struct {
 
 func (c *compoWithNonMountableRoot) Render() UI {
 	return &compoWithNilRendering{}
+}
+
+type compoWithCustomRoot struct {
+	Compo
+
+	Root UI
+}
+
+func (c *compoWithCustomRoot) Render() UI {
+	return c.Root
 }

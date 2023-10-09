@@ -153,3 +153,7 @@ func (r rangeLoop) html(w io.Writer) {
 func (r rangeLoop) htmlWithIndent(w io.Writer, indent int) {
 	panic("should not be called")
 }
+
+func (r rangeLoop) parent() UI {
+	return nil
+}

@@ -116,3 +116,7 @@ func (t *text) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
 	w.Write([]byte(html.EscapeString(t.value)))
 }
+
+func (t *text) parent() UI {
+	return t.parentElement
+}

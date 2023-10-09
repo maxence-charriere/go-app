@@ -52,6 +52,7 @@ type Composer interface {
 	setRef(Composer) Composer
 	depth() uint
 	setDepth(uint) Composer
+	parent() UI
 	root() UI
 	setRoot(UI) Composer
 }
@@ -152,13 +153,13 @@ type resize struct{}
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
-	disp        Dispatcher
-	parentElem  UI
-	rootElement UI
-	this        Composer
+	disp Dispatcher
+	this Composer
 
-	treeDepth uint
-	ref       Composer
+	treeDepth     uint
+	ref           Composer
+	parentElement UI
+	rootElement   UI
 }
 
 // JSValue returns the javascript value of the component root.
@@ -261,11 +262,14 @@ func (c *Compo) getEventHandlers() eventHandlers {
 }
 
 func (c *Compo) getParent() UI {
-	return c.parentElem
+	return c.parent()
 }
 
 func (c *Compo) setParent(p UI) UI {
-	c.parentElem = p
+	c.parentElement = p
+	if c.ref != nil {
+		return c.ref
+	}
 	return c.self()
 }
 
@@ -504,6 +508,10 @@ func (c *Compo) depth() uint {
 func (c *Compo) setDepth(v uint) Composer {
 	c.treeDepth = v
 	return c.ref
+}
+
+func (c *Compo) parent() UI {
+	return c.parentElement
 }
 
 func (c *Compo) root() UI {

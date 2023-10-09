@@ -749,6 +749,98 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, div.(HTML).body())
 	})
+
+	t.Run("update component updates a field", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &bar{})
+		require.NoError(t, err)
+		require.NotNil(t, compo)
+		require.Equal(t, "", compo.(Composer).root().(*text).value)
+
+		updatedCompo, err := m.Update(compo, &bar{
+			Value: "bar",
+		})
+		require.NoError(t, err)
+		require.Equal(t, compo, updatedCompo)
+		require.Equal(t, "bar", compo.(Composer).root().(*text).value)
+	})
+
+	t.Run("update component skips update", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &bar{
+			Value: "bar",
+		})
+		require.NoError(t, err)
+		require.Equal(t, "bar", compo.(Composer).root().(*text).value)
+
+		updatedCompo, err := m.Update(compo, &bar{
+			Value: "bar",
+		})
+		require.NoError(t, err)
+		require.Equal(t, compo, updatedCompo)
+		require.Equal(t, "bar", compo.(Composer).root().(*text).value)
+	})
+
+	t.Run("update component with non renderable component returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &compoWithCustomRoot{Root: Text("hi")})
+		require.NoError(t, err)
+
+		newCompo, err := m.Update(compo, &compoWithCustomRoot{Root: nil})
+		require.Error(t, err)
+		require.Nil(t, newCompo)
+	})
+
+	t.Run("update component with non mountable root returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &compoWithCustomRoot{Root: Div()})
+		require.NoError(t, err)
+
+		newCompo, err := m.Update(compo, &compoWithCustomRoot{Root: Div().Body(&compoWithNilRendering{})})
+		require.Error(t, err)
+		require.Nil(t, newCompo)
+	})
+
+	t.Run("update component replaces its root", func(t *testing.T) {
+		var m nodeManager
+
+		body, err := m.Mount(1, Body().privateBody(
+			&compoWithCustomRoot{Root: Div()}),
+		)
+		require.NoError(t, err)
+		require.NotZero(t, body)
+		require.NotEmpty(t, body.(HTML).body())
+
+		compo := body.(HTML).body()[0]
+		require.NotNil(t, compo)
+		require.IsType(t, &compoWithCustomRoot{}, compo)
+		require.IsType(t, Div(), compo.(*compoWithCustomRoot).Root)
+
+		newCompo, err := m.Update(compo, &compoWithCustomRoot{Root: Span()})
+		require.NoError(t, err)
+		require.Equal(t, compo, newCompo)
+		require.IsType(t, Span(), compo.(*compoWithCustomRoot).Root)
+	})
+
+	t.Run("update component with non mountable replaced component returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		compo, err := m.Mount(1, &compoWithCustomRoot{
+			Root: &compoWithCustomRoot{Root: Div()},
+		})
+		require.NoError(t, err)
+		require.NotNil(t, compo)
+
+		newCompo, err := m.Update(compo, &compoWithCustomRoot{
+			Root: &compoWithCustomRoot{Root: &compoWithNilRendering{}},
+		})
+		require.Error(t, err)
+		require.Nil(t, newCompo)
+	})
 }
 
 func TestNodeManagerMakeContext(t *testing.T) {

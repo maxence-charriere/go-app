@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -36,6 +37,7 @@ type UI interface {
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
 
+	parent() UI
 	setParent(UI) UI
 }
 
@@ -595,7 +597,70 @@ func (m *nodeManager) updateHTMLEventHandlers(v HTML, newEvents eventHandlers) {
 }
 
 func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
-	panic("not implemented")
+	value := reflect.Indirect(reflect.ValueOf(v))
+	newValue := reflect.Indirect(reflect.ValueOf(new))
+
+	var modifiedFields bool
+	for i := 0; i < value.NumField(); i++ {
+		field := value.Field(i)
+		newField := newValue.Field(i)
+		if !field.CanSet() {
+			continue
+		}
+		if _, compoStruct := field.Interface().(Compo); compoStruct {
+			continue
+		}
+		if !canUpdateValue(field, newField) {
+			continue
+		}
+		field.Set(newField)
+		modifiedFields = true
+	}
+	if !modifiedFields {
+		return v, nil
+	}
+
+	root := v.root()
+	newRoot, err := m.renderComponent(v)
+	if err != nil {
+		return nil, errors.New("rendering component failed").
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("depth", v.depth()).
+			Wrap(err)
+	}
+
+	if m.CanUpdate(root, newRoot) {
+		if root, err = m.Update(root, newRoot); err != nil {
+			return nil, errors.New("updating component root failed").
+				WithTag("type", reflect.TypeOf(v)).
+				WithTag("depth", v.depth()).
+				Wrap(err)
+		}
+		v.setRoot(root)
+	} else {
+		if newRoot, err = m.Mount(v.depth()+1, newRoot); err != nil {
+			return nil, errors.New("mounting component root failed").
+				WithTag("type", reflect.TypeOf(v)).
+				WithTag("depth", v.depth()).
+				Wrap(err)
+		}
+
+		for parent := v.parent(); parent != nil; parent = parent.parent() {
+			if parent, isHTML := parent.(HTML); isHTML {
+				parent.JSValue().replaceChild(newRoot, root)
+				break
+			}
+		}
+		newRoot.setParent(v)
+		v.setRoot(newRoot)
+		m.Dismount(root)
+	}
+
+	if updater, ok := v.(Updater); ok {
+		updater.OnUpdate(m.MakeContext(v))
+	}
+
+	return v, nil
 }
 
 func (m *nodeManager) updateRawHTML(v, new *raw) (UI, error) {
@@ -615,5 +680,34 @@ func (m *nodeManager) MakeContext(v UI) Context {
 		appUpdateAvailable: appUpdateAvailable,
 		page:               m.Page,
 		emit:               m.EmitHTMLEvent,
+	}
+}
+
+func canUpdateValue(v, new reflect.Value) bool {
+	switch v.Kind() {
+	case reflect.String,
+		reflect.Bool,
+		reflect.Int,
+		reflect.Int64,
+		reflect.Int32,
+		reflect.Int16,
+		reflect.Int8,
+		reflect.Uint,
+		reflect.Uint64,
+		reflect.Uint32,
+		reflect.Uint16,
+		reflect.Uint8,
+		reflect.Float64,
+		reflect.Float32:
+		return !v.Equal(new)
+
+	default:
+		switch v.Interface().(type) {
+		case time.Time:
+			return !v.Equal(new)
+
+		default:
+			return !reflect.DeepEqual(v.Interface(), new.Interface())
+		}
 	}
 }
