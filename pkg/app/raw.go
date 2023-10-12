@@ -38,6 +38,9 @@ type raw struct {
 }
 
 func (r *raw) JSValue() Value {
+	if r.jsElement != nil {
+		return r.jsElement
+	}
 	return r.jsvalue
 }
 

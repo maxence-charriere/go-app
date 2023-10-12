@@ -365,7 +365,8 @@ func (m *nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
 		return nil, errors.New("raw html is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
 			WithTag("type", reflect.TypeOf(v)).
-			WithTag("depth", v.depth())
+			WithTag("depth", v.depth()).
+			WithTag("raw-preview", previewText(v.value))
 	}
 
 	wrapper, _ := Window().createElement("div", "")
@@ -675,7 +676,27 @@ func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
 }
 
 func (m *nodeManager) updateRawHTML(v, new *raw) (UI, error) {
-	panic("not implemented")
+	if v.value == new.value {
+		return v, nil
+	}
+
+	newMount, err := m.Mount(v.depth(), new)
+	if err != nil {
+		return nil, errors.New("mounting updated raw html failed").
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("depth", v.depth()).
+			WithTag("raw-preview", previewText(v.value)).
+			Wrap(err)
+	}
+
+	for parent := v.parent(); parent != nil; parent = parent.parent() {
+		if parent, isHTML := parent.(HTML); isHTML {
+			parent.JSValue().replaceChild(newMount, v)
+			break
+		}
+	}
+	m.Dismount(v)
+	return newMount, nil
 }
 
 // MakeContext creates and returns a new context derived from the nodeManager's

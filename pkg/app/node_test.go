@@ -407,6 +407,7 @@ func TestNodeManagerMount(t *testing.T) {
 		require.NotZero(t, span)
 		require.NotNil(t, span.(*raw).jsElement)
 		require.True(t, span.Mounted())
+		require.Equal(t, "<span>hello</span>", span.(*raw).value)
 	})
 
 	t.Run("mounting an already mounted raw html returns an error", func(t *testing.T) {
@@ -882,6 +883,51 @@ func TestNodeManagerUpdate(t *testing.T) {
 		})
 		require.Error(t, err)
 		require.Nil(t, newCompo)
+	})
+
+	t.Run("update raw html replaces its value", func(t *testing.T) {
+		var m nodeManager
+
+		body, err := m.Mount(1, Body().privateBody(
+			Raw("<span>hi</span>"),
+		))
+		require.NoError(t, err)
+		require.NotZero(t, body)
+		require.NotEmpty(t, body.(HTML).body())
+
+		span := body.(HTML).body()[0]
+		require.NotZero(t, span)
+		require.IsType(t, Raw(""), span)
+
+		newSpan, err := m.Update(span, Raw("<span>bye</span>"))
+		require.NoError(t, err)
+		require.NotEqual(t, span, newSpan)
+		require.IsType(t, Raw(""), newSpan)
+		require.Equal(t, "<span>bye</span>", newSpan.(*raw).value)
+		require.True(t, newSpan.Mounted())
+		require.False(t, span.Mounted())
+	})
+
+	t.Run("update raw html skips update", func(t *testing.T) {
+		var m nodeManager
+
+		body, err := m.Mount(1, Body().privateBody(
+			Raw("<span>hi</span>"),
+		))
+		require.NoError(t, err)
+		require.NotZero(t, body)
+		require.NotEmpty(t, body.(HTML).body())
+
+		span := body.(HTML).body()[0]
+		require.NotZero(t, span)
+		require.IsType(t, Raw(""), span)
+
+		newSpan, err := m.Update(span, Raw("<span>hi</span>"))
+		require.NoError(t, err)
+		require.Equal(t, span, newSpan)
+		require.IsType(t, Raw(""), newSpan)
+		require.Equal(t, "<span>hi</span>", newSpan.(*raw).value)
+		require.True(t, newSpan.Mounted())
 	})
 }
 
