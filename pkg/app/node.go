@@ -226,7 +226,7 @@ func (m *nodeManager) Mount(depth uint, v UI) (UI, error) {
 func (m *nodeManager) mountText(depth uint, v *text) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("text is already mounted").
-			WithTag("parent-type", reflect.TypeOf(v.getParent())).
+			WithTag("parent-type", reflect.TypeOf(v.parent())).
 			WithTag("preview-value", previewText(v.value))
 	}
 
@@ -237,7 +237,7 @@ func (m *nodeManager) mountText(depth uint, v *text) (UI, error) {
 func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("html element is already mounted").
-			WithTag("parent-type", reflect.TypeOf(v.getParent())).
+			WithTag("parent-type", reflect.TypeOf(v.parent())).
 			WithTag("type", reflect.TypeOf(v)).
 			WithTag("tag", v.Tag()).
 			WithTag("depth", v.depth())
@@ -321,7 +321,7 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("component is already mounted").
-			WithTag("parent-type", reflect.TypeOf(v.getParent())).
+			WithTag("parent-type", reflect.TypeOf(v.parent())).
 			WithTag("type", reflect.TypeOf(v)).
 			WithTag("depth", v.depth())
 	}
@@ -361,7 +361,18 @@ func (m *nodeManager) renderComponent(v Composer) (UI, error) {
 }
 
 func (m *nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
-	panic("not implemented")
+	if v.Mounted() {
+		return nil, errors.New("raw html is already mounted").
+			WithTag("parent-type", reflect.TypeOf(v.parent())).
+			WithTag("type", reflect.TypeOf(v)).
+			WithTag("depth", v.depth())
+	}
+
+	wrapper, _ := Window().createElement("div", "")
+	wrapper.setInnerHTML(v.value)
+	v.jsElement = wrapper.firstChild()
+	wrapper.removeChild(v.jsElement)
+	return v, nil
 }
 
 // Dismount removes a UI element based on its type.

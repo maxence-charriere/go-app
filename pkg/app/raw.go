@@ -32,6 +32,9 @@ type raw struct {
 	parentElement UI
 	tag           string
 	value         string
+
+	treeDepth uint
+	jsElement Value
 }
 
 func (r *raw) JSValue() Value {
@@ -39,6 +42,10 @@ func (r *raw) JSValue() Value {
 }
 
 func (r *raw) Mounted() bool {
+	if r.jsElement != nil {
+		return r.jsElement != nil
+	}
+
 	return r.jsvalue != nil && r.getDispatcher() != nil
 }
 
@@ -135,6 +142,10 @@ func (r *raw) html(w io.Writer) {
 func (r *raw) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
 	w.Write([]byte(r.value))
+}
+
+func (r *raw) depth() uint {
+	return r.treeDepth
 }
 
 func (r *raw) parent() UI {

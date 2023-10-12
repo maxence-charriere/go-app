@@ -398,6 +398,35 @@ func TestNodeManagerMount(t *testing.T) {
 		require.Nil(t, compo)
 		t.Log(err)
 	})
+
+	t.Run("mounting raw html succeeds", func(t *testing.T) {
+		var m nodeManager
+
+		span, err := m.Mount(1, Raw(`<span>hello</span>`))
+		require.NoError(t, err)
+		require.NotZero(t, span)
+		require.NotNil(t, span.(*raw).jsElement)
+		require.True(t, span.Mounted())
+	})
+
+	t.Run("mounting an already mounted raw html returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		span, err := m.Mount(1, Raw(`<span>hello</span>`))
+		require.NoError(t, err)
+
+		span, err = m.Mount(1, span)
+		require.Error(t, err)
+		require.Zero(t, span)
+	})
+
+	t.Run("mounting not supported element returns an error", func(t *testing.T) {
+		var m nodeManager
+
+		condition, err := m.Mount(1, condition{})
+		require.Error(t, err)
+		require.Zero(t, condition)
+	})
 }
 
 func BenchmarkNodeManagerMount(b *testing.B) {
