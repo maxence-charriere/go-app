@@ -119,6 +119,7 @@ func (r *raw) mount(d Dispatcher) error {
 
 func (r *raw) dismount() {
 	r.jsvalue = nil
+	r.jsElement = nil
 }
 
 func (r *raw) canUpdateWith(n UI) bool {

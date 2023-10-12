@@ -419,7 +419,7 @@ func (m *nodeManager) dismountComponent(v Composer) {
 }
 
 func (m *nodeManager) dismountRawHTML(v *raw) {
-	panic("not implemented")
+	v.jsElement = nil
 }
 
 // CanUpdate determines whether a given UI element 'v' can be updated with a new

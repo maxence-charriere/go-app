@@ -483,6 +483,17 @@ func TestNodeManagerDismount(t *testing.T) {
 		require.False(t, compo.(*hello).mounted)
 		require.False(t, compo.(Composer).root().Mounted())
 	})
+
+	t.Run("raw html is dismounted", func(t *testing.T) {
+		var m nodeManager
+
+		span, err := m.Mount(1, Raw("<span>hi</span>"))
+		require.NoError(t, err)
+
+		m.Dismount(span)
+		require.Nil(t, span.(*raw).jsElement)
+		require.False(t, span.Mounted())
+	})
 }
 
 func TestNodeManagerCanUpdate(t *testing.T) {
