@@ -342,6 +342,26 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 	}
 }
 
+func (m *nodeManager) triggerComponentUpdates(u UI) {
+	if !u.Mounted() {
+		return
+	}
+
+	for v := u; v != nil; v = v.parent() {
+		switch v := v.(type) {
+		case UpdateNotifier:
+			m.UpdateComponent(v)
+			if !v.NotifyUpdate() {
+				return
+			}
+
+		case Composer:
+			m.UpdateComponent(v)
+			return
+		}
+	}
+}
+
 func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("component is already mounted").
@@ -739,23 +759,47 @@ func (m *nodeManager) MakeContext(v UI) Context {
 	}
 }
 
-func (m *nodeManager) triggerComponentUpdates(u UI) {
-	if !u.Mounted() {
-		return
-	}
+// NotifyComponentEvent traverses a UI element tree to propagate a component
+// event, activating pertinent component handlers and potentially enqueuing
+// component updates as needed.
+//
+// Parameters:
+//   - 'v': the initial UI element from which the event begins to propagate.
+//   - 'e': the event being disseminated through the UI elements.
+func (m *nodeManager) NotifyComponentEvent(v UI, e any) {
+	switch v := v.(type) {
+	case HTML:
+		for _, child := range v.body() {
+			m.NotifyComponentEvent(child, e)
+		}
 
-	for v := u; v != nil; v = v.parent() {
-		switch v := v.(type) {
-		case UpdateNotifier:
-			m.UpdateComponent(v)
-			if !v.NotifyUpdate() {
-				return
+	case Composer:
+		switch e.(type) {
+		case nav:
+			if navigator, ok := v.(Navigator); ok {
+				navigator.OnNav(m.MakeContext(v))
+				m.UpdateComponent(v)
 			}
 
-		case Composer:
-			m.UpdateComponent(v)
-			return
+		case appUpdate:
+			if updater, ok := v.(AppUpdater); ok {
+				updater.OnAppUpdate(m.MakeContext(v))
+				m.UpdateComponent(v)
+			}
+
+		case appInstallChange:
+			if appInstaller, ok := v.(AppInstaller); ok {
+				appInstaller.OnAppInstallChange(m.MakeContext(v))
+				m.UpdateComponent(v)
+			}
+
+		case resize:
+			if resizer, ok := v.(Resizer); ok {
+				resizer.OnResize(m.MakeContext(v))
+				m.UpdateComponent(v)
+			}
 		}
+		m.NotifyComponentEvent(v.root(), e)
 	}
 }
 

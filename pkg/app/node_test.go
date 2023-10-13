@@ -1024,6 +1024,68 @@ func TestTriggerComponentUpdates(t *testing.T) {
 	})
 }
 
+func TestNodeManagerNotifyComponentEvent(t *testing.T) {
+	t.Run("nav event is notified", func(t *testing.T) {
+		updates := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updates[c] = struct{}{}
+		}}
+
+		compo := &hello{}
+		div, err := m.Mount(1, Div().Body(compo))
+		require.NoError(t, err)
+
+		m.NotifyComponentEvent(div, nav{})
+		require.NotEmpty(t, compo.onNavURL)
+		require.Contains(t, updates, compo)
+	})
+
+	t.Run("app update event is notified", func(t *testing.T) {
+		updates := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updates[c] = struct{}{}
+		}}
+
+		compo := &hello{}
+		div, err := m.Mount(1, Div().Body(compo))
+		require.NoError(t, err)
+
+		m.NotifyComponentEvent(div, appUpdate{})
+		require.True(t, compo.appUpdated)
+		require.Contains(t, updates, compo)
+	})
+
+	t.Run("app install change event is notified", func(t *testing.T) {
+		updates := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updates[c] = struct{}{}
+		}}
+
+		compo := &hello{}
+		div, err := m.Mount(1, Div().Body(compo))
+		require.NoError(t, err)
+
+		m.NotifyComponentEvent(div, appInstallChange{})
+		require.True(t, compo.appInstalled)
+		require.Contains(t, updates, compo)
+	})
+
+	t.Run("resize change event is notified", func(t *testing.T) {
+		updates := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updates[c] = struct{}{}
+		}}
+
+		compo := &hello{}
+		div, err := m.Mount(1, Div().Body(compo))
+		require.NoError(t, err)
+
+		m.NotifyComponentEvent(div, resize{})
+		require.True(t, compo.appResized)
+		require.Contains(t, updates, compo)
+	})
+}
+
 func TestCanUpdateValue(t *testing.T) {
 	utests := []struct {
 		a         any
