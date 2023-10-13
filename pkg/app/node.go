@@ -162,6 +162,17 @@ type nodeManager struct {
 	// 'f' is the callback to be executed in response.
 	EmitHTMLEvent func(src UI, f func())
 
+	// TODO:
+	// - StateManager
+	// - NotificationService
+	// - UI Goroutine manager
+	//   - Add component update func
+	//   - remove component update func
+	//   - Prevent update component func
+
+	ExecuteOnUI     func(func())
+	UpdateComponent func(Composer)
+
 	initOnce sync.Once
 }
 
@@ -195,6 +206,16 @@ func (m *nodeManager) init() {
 		m.EmitHTMLEvent = func(u UI, f func()) {
 			f()
 		}
+	}
+
+	if m.ExecuteOnUI == nil {
+		m.ExecuteOnUI = func(f func()) {
+			f()
+		}
+	}
+
+	if m.UpdateComponent == nil {
+		m.UpdateComponent = func(Composer) {}
 	}
 }
 
@@ -298,9 +319,12 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 
 	jsHandler := FuncOf(func(this Value, args []Value) any {
 		if len(args) != 0 {
-			event := Event{Value: args[0]}
-			trackMousePosition(event)
-			handler.goHandler(m.MakeContext(v), event)
+			m.ExecuteOnUI(func() {
+				event := Event{Value: args[0]}
+				trackMousePosition(event)
+				handler.goHandler(m.MakeContext(v), event)
+				m.triggerComponentUpdates(v)
+			})
 		}
 		return nil
 	})
@@ -712,6 +736,26 @@ func (m *nodeManager) MakeContext(v UI) Context {
 		appUpdateAvailable: appUpdateAvailable,
 		page:               m.Page,
 		emit:               m.EmitHTMLEvent,
+	}
+}
+
+func (m *nodeManager) triggerComponentUpdates(u UI) {
+	if !u.Mounted() {
+		return
+	}
+
+	for v := u; v != nil; v = v.parent() {
+		switch v := v.(type) {
+		case UpdateNotifier:
+			m.UpdateComponent(v)
+			if !v.NotifyUpdate() {
+				return
+			}
+
+		case Composer:
+			m.UpdateComponent(v)
+			return
+		}
 	}
 }
 

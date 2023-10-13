@@ -945,7 +945,86 @@ func TestNodeManagerMakeContext(t *testing.T) {
 	require.NotNil(t, ctx.emit)
 }
 
-func TestCanUpdate(t *testing.T) {
+func TestTriggerComponentUpdates(t *testing.T) {
+	t.Run("ignores dismounted element", func(t *testing.T) {
+		var m nodeManager
+		m.triggerComponentUpdates(Div())
+	})
+
+	t.Run("component is updated", func(t *testing.T) {
+		updated := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updated[c] = struct{}{}
+		}}
+
+		compo, err := m.Mount(1, &compoWithCustomRoot{Root: Div()})
+		require.NoError(t, err)
+
+		m.triggerComponentUpdates(compo)
+		require.Contains(t, updated, compo)
+	})
+
+	t.Run("parent component is updated", func(t *testing.T) {
+		updated := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updated[c] = struct{}{}
+		}}
+
+		div := Div()
+		compo, err := m.Mount(1, &compoWithCustomRoot{Root: div})
+		require.NoError(t, err)
+
+		m.triggerComponentUpdates(div)
+		require.Contains(t, updated, compo)
+	})
+
+	t.Run("parent component is not updated", func(t *testing.T) {
+		updated := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updated[c] = struct{}{}
+		}}
+
+		hello := &hello{}
+		compo, err := m.Mount(1, &compoWithCustomRoot{Root: hello})
+		require.NoError(t, err)
+
+		m.triggerComponentUpdates(hello)
+		require.Contains(t, updated, hello)
+		require.NotContains(t, updated, compo)
+	})
+
+	t.Run("update notifier prevents parent component update", func(t *testing.T) {
+		updated := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updated[c] = struct{}{}
+		}}
+
+		notifier := &updateNotifierCompo{notify: false}
+		compo, err := m.Mount(1, &compoWithCustomRoot{Root: notifier})
+		require.NoError(t, err)
+
+		m.triggerComponentUpdates(notifier)
+		require.Contains(t, updated, notifier)
+		require.NotContains(t, updated, compo)
+	})
+
+	t.Run("update notifier allows parent component update", func(t *testing.T) {
+		updated := make(map[UI]struct{})
+		m := nodeManager{UpdateComponent: func(c Composer) {
+			updated[c] = struct{}{}
+		}}
+
+		notifier := &updateNotifierCompo{notify: true}
+		compo, err := m.Mount(1, &compoWithCustomRoot{Root: notifier})
+		require.NoError(t, err)
+
+		m.triggerComponentUpdates(notifier)
+		require.Contains(t, updated, notifier)
+		require.Contains(t, updated, compo)
+	})
+}
+
+func TestCanUpdateValue(t *testing.T) {
 	utests := []struct {
 		a         any
 		b         any

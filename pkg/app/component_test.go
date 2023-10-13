@@ -585,3 +585,16 @@ type compoWithCustomRoot struct {
 func (c *compoWithCustomRoot) Render() UI {
 	return c.Root
 }
+
+type updateNotifierCompo struct {
+	Compo
+	notify bool
+}
+
+func (c *updateNotifierCompo) NotifyUpdate() bool {
+	return c.notify
+}
+
+func (c *updateNotifierCompo) Render() UI {
+	return Span()
+}
