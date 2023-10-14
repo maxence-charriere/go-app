@@ -1,12 +1,9 @@
 package app
 
 import (
-	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -146,21 +143,6 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 // nodeManager orchestrates the lifecycle of UI elements, providing specialized
 // mechanisms for mounting, dismounting, and updating nodes.
 type nodeManager struct {
-	// Ctx serves as a base context, utilized to derive child contexts providing
-	// mechanisms to interact with the browser, manage pages, handle
-	// concurrency, and facilitate component communication.
-	Ctx context.Context
-
-	// ResolveURL is used to transform attributes that hold URL values.
-	ResolveURL attributeURLResolver
-
-	// Page represents a reference to the current web page.
-	Page Page
-
-	// EmitHTMLEvent is called when a specific HTML event occurs on a UI
-	// element. 'src' represents the source UI element triggering the event, and
-	// 'f' is the callback to be executed in response.
-	EmitHTMLEvent func(src UI, f func())
 
 	// TODO:
 	// - StateManager
@@ -170,72 +152,23 @@ type nodeManager struct {
 	//   - remove component update func
 	//   - Prevent update component func
 
-	ExecuteOnUI     func(func())
-	UpdateComponent func(Composer)
-
-	initOnce sync.Once
-}
-
-func (m *nodeManager) init() {
-	if m.Ctx == nil {
-		m.Ctx = context.Background()
-	}
-
-	if m.ResolveURL == nil {
-		m.ResolveURL = func(s string) string {
-			return s
-		}
-	}
-
-	if m.Page == nil {
-		url, _ := url.Parse("https://goapp.dev")
-		if IsServer {
-			m.Page = &requestPage{
-				url:                   url,
-				resolveStaticResource: m.ResolveURL,
-			}
-		} else {
-			m.Page = browserPage{
-				url:                   url,
-				resolveStaticResource: m.ResolveURL,
-			}
-		}
-	}
-
-	if m.EmitHTMLEvent == nil {
-		m.EmitHTMLEvent = func(u UI, f func()) {
-			f()
-		}
-	}
-
-	if m.ExecuteOnUI == nil {
-		m.ExecuteOnUI = func(f func()) {
-			f()
-		}
-	}
-
-	if m.UpdateComponent == nil {
-		m.UpdateComponent = func(Composer) {}
-	}
 }
 
 // Mount mounts a UI element based on its type and the specified depth. It
 // returns the mounted UI element and any potential error during the process.
-func (m *nodeManager) Mount(depth uint, v UI) (UI, error) {
-	m.initOnce.Do(m.init)
-
+func (m *nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 	switch v := v.(type) {
 	case *text:
-		return m.mountText(depth, v)
+		return m.mountText(ctx, depth, v)
 
 	case HTML:
-		return m.mountHTML(depth, v)
+		return m.mountHTML(ctx, depth, v)
 
 	case Composer:
-		return m.mountComponent(depth, v)
+		return m.mountComponent(ctx, depth, v)
 
 	case *raw:
-		return m.mountRawHTML(depth, v)
+		return m.mountRawHTML(ctx, depth, v)
 
 	default:
 		return nil, errors.New("unsupported element").
@@ -244,7 +177,7 @@ func (m *nodeManager) Mount(depth uint, v UI) (UI, error) {
 	}
 }
 
-func (m *nodeManager) mountText(depth uint, v *text) (UI, error) {
+func (m *nodeManager) mountText(ctx Context, depth uint, v *text) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("text is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -255,7 +188,7 @@ func (m *nodeManager) mountText(depth uint, v *text) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
+func (m *nodeManager) mountHTML(ctx Context, depth uint, v HTML) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("html element is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -274,14 +207,14 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	}
 	v = v.setJSElement(jsElement)
 
-	m.mountHTMLAttributes(v)
-	m.mountHTMLEventHandlers(v)
+	m.mountHTMLAttributes(ctx, v)
+	m.mountHTMLEventHandlers(ctx, v)
 
 	v = v.setDepth(depth).(HTML)
 	children := v.body()
 	for i, child := range children {
 		var err error
-		if child, err = m.Mount(depth+1, child); err != nil {
+		if child, err = m.Mount(ctx, depth+1, child); err != nil {
 			return nil, errors.New("mounting child failed").
 				WithTag("type", reflect.TypeOf(v)).
 				WithTag("tag", v.Tag()).
@@ -297,33 +230,33 @@ func (m *nodeManager) mountHTML(depth uint, v HTML) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) mountHTMLAttributes(v HTML) {
+func (m *nodeManager) mountHTMLAttributes(ctx Context, v HTML) {
 	for name, value := range v.attrs() {
 		setJSAttribute(v.JSValue(), name, resolveAttributeURLValue(
 			name,
 			value,
-			m.ResolveURL,
+			ctx.ResolveStaticResource,
 		))
 	}
 }
 
-func (m *nodeManager) mountHTMLEventHandlers(v HTML) {
+func (m *nodeManager) mountHTMLEventHandlers(ctx Context, v HTML) {
 	events := v.events()
 	for event, handler := range events {
-		events[event] = m.mountHTMLEventHandler(v, handler)
+		events[event] = m.mountHTMLEventHandler(ctx, v, handler)
 	}
 }
 
-func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventHandler {
+func (m *nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHandler) eventHandler {
 	event := handler.event
 
 	jsHandler := FuncOf(func(this Value, args []Value) any {
 		if len(args) != 0 {
-			m.ExecuteOnUI(func() {
+			ctx.Dispatch(func(ctx Context) {
 				event := Event{Value: args[0]}
 				trackMousePosition(event)
-				handler.goHandler(m.MakeContext(v), event)
-				m.triggerComponentUpdates(v)
+				handler.goHandler(m.MakeContext(ctx, v), event)
+				m.triggerComponentUpdates(ctx, v)
 			})
 		}
 		return nil
@@ -342,7 +275,7 @@ func (m *nodeManager) mountHTMLEventHandler(v HTML, handler eventHandler) eventH
 	}
 }
 
-func (m *nodeManager) triggerComponentUpdates(u UI) {
+func (m *nodeManager) triggerComponentUpdates(ctx Context, u UI) {
 	if !u.Mounted() {
 		return
 	}
@@ -350,19 +283,19 @@ func (m *nodeManager) triggerComponentUpdates(u UI) {
 	for v := u; v != nil; v = v.parent() {
 		switch v := v.(type) {
 		case UpdateNotifier:
-			m.UpdateComponent(v)
+			ctx.update(v)
 			if !v.NotifyUpdate() {
 				return
 			}
 
 		case Composer:
-			m.UpdateComponent(v)
+			ctx.update(v)
 			return
 		}
 	}
 }
 
-func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
+func (m *nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("component is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -374,7 +307,7 @@ func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
 	v = v.setDepth(depth)
 
 	if mounter, ok := v.(Mounter); ok {
-		mounter.OnMount(m.MakeContext(v))
+		mounter.OnMount(m.MakeContext(ctx, v))
 	}
 
 	root, err := m.renderComponent(v)
@@ -384,7 +317,7 @@ func (m *nodeManager) mountComponent(depth uint, v Composer) (UI, error) {
 			WithTag("depth", v.depth()).
 			Wrap(err)
 	}
-	if root, err = m.Mount(depth+1, root); err != nil {
+	if root, err = m.Mount(ctx, depth+1, root); err != nil {
 		return nil, errors.New("mounting component root failed").
 			WithTag("type", reflect.TypeOf(v)).
 			WithTag("depth", v.depth()).
@@ -404,7 +337,7 @@ func (m *nodeManager) renderComponent(v Composer) (UI, error) {
 	return rendering[0], nil
 }
 
-func (m *nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
+func (m *nodeManager) mountRawHTML(ctx Context, depth uint, v *raw) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("raw html is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -490,30 +423,30 @@ func (m *nodeManager) CanUpdate(v, new UI) bool {
 // Update updates the existing UI element 'v' with a new UI element 'new'. It
 // returns the updated UI element and any error encountered during the update
 // process.
-func (m *nodeManager) Update(v, new UI) (UI, error) {
+func (m *nodeManager) Update(ctx Context, v, new UI) (UI, error) {
 	if !v.Mounted() {
 		return nil, errors.New("element not mounted").WithTag("type", reflect.TypeOf(v))
 	}
 
 	switch v := v.(type) {
 	case *text:
-		return m.updateText(v, new.(*text))
+		return m.updateText(ctx, v, new.(*text))
 
 	case HTML:
-		return m.updateHTML(v, new.(HTML))
+		return m.updateHTML(ctx, v, new.(HTML))
 
 	case Composer:
-		return m.updateComponent(v, new.(Composer))
+		return m.updateComponent(ctx, v, new.(Composer))
 
 	case *raw:
-		return m.updateRawHTML(v, new.(*raw))
+		return m.updateRawHTML(ctx, v, new.(*raw))
 
 	default:
 		return nil, errors.New("unsupported element").WithTag("type", reflect.TypeOf(v))
 	}
 }
 
-func (m *nodeManager) updateText(v, new *text) (UI, error) {
+func (m *nodeManager) updateText(ctx Context, v, new *text) (UI, error) {
 	if v.value == new.value {
 		return v, nil
 	}
@@ -523,23 +456,23 @@ func (m *nodeManager) updateText(v, new *text) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
+func (m *nodeManager) updateHTML(ctx Context, v, new HTML) (UI, error) {
 	attrs := v.attrs()
 	newAttrs := new.attrs()
 	if attrs == nil && len(newAttrs) != 0 {
 		v = v.setAttrs(newAttrs)
-		m.mountHTMLAttributes(v)
+		m.mountHTMLAttributes(ctx, v)
 	} else if attrs != nil {
-		m.updateHTMLAttributes(v, newAttrs)
+		m.updateHTMLAttributes(ctx, v, newAttrs)
 	}
 
 	events := v.events()
 	newEvents := new.events()
 	if events == nil && len(newEvents) != 0 {
 		v = v.setEvents(newEvents)
-		m.mountHTMLEventHandlers(v)
+		m.mountHTMLEventHandlers(ctx, v)
 	} else if events != nil {
-		m.updateHTMLEventHandlers(v, newEvents)
+		m.updateHTMLEventHandlers(ctx, v, newEvents)
 	}
 
 	children := v.body()
@@ -549,7 +482,7 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 		child := children[i]
 		newChild := newChildren[i]
 		if m.CanUpdate(child, newChild) {
-			child, err := m.Update(child, newChild)
+			child, err := m.Update(ctx, child, newChild)
 			if err != nil {
 				return nil, errors.New("updating child failed").
 					WithTag("type", reflect.TypeOf(v)).
@@ -562,7 +495,7 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 			continue
 		}
 
-		newChild, err := m.Mount(v.depth()+1, newChildren[i])
+		newChild, err := m.Mount(ctx, v.depth()+1, newChildren[i])
 		if err != nil {
 			return nil, errors.New("mounting child failed").
 				WithTag("type", reflect.TypeOf(v)).
@@ -586,7 +519,7 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 	children = children[:sharedLen]
 
 	for i := sharedLen; i < len(newChildren); i++ {
-		newChild, err := m.Mount(v.depth()+1, newChildren[i])
+		newChild, err := m.Mount(ctx, v.depth()+1, newChildren[i])
 		if err != nil {
 			return nil, errors.New("mounting child failed").
 				WithTag("type", reflect.TypeOf(v)).
@@ -604,7 +537,7 @@ func (m *nodeManager) updateHTML(v, new HTML) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) updateHTMLAttributes(v HTML, newAttrs attributes) {
+func (m *nodeManager) updateHTMLAttributes(ctx Context, v HTML, newAttrs attributes) {
 	attrs := v.attrs()
 	for name := range attrs {
 		if _, remains := newAttrs[name]; !remains {
@@ -622,12 +555,12 @@ func (m *nodeManager) updateHTMLAttributes(v HTML, newAttrs attributes) {
 		setJSAttribute(v.JSValue(), name, resolveAttributeURLValue(
 			name,
 			value,
-			m.ResolveURL,
+			ctx.ResolveStaticResource,
 		))
 	}
 }
 
-func (m *nodeManager) updateHTMLEventHandlers(v HTML, newEvents eventHandlers) {
+func (m *nodeManager) updateHTMLEventHandlers(ctx Context, v HTML, newEvents eventHandlers) {
 	events := v.events()
 	for event, handler := range events {
 		if _, remains := newEvents[event]; !remains {
@@ -639,7 +572,7 @@ func (m *nodeManager) updateHTMLEventHandlers(v HTML, newEvents eventHandlers) {
 	for event, newHandler := range newEvents {
 		handler, exists := events[event]
 		if !exists {
-			events[event] = m.mountHTMLEventHandler(v, newHandler)
+			events[event] = m.mountHTMLEventHandler(ctx, v, newHandler)
 			continue
 		}
 
@@ -648,11 +581,11 @@ func (m *nodeManager) updateHTMLEventHandlers(v HTML, newEvents eventHandlers) {
 		}
 
 		m.dismountHTMLEventHandler(handler)
-		events[event] = m.mountHTMLEventHandler(v, newHandler)
+		events[event] = m.mountHTMLEventHandler(ctx, v, newHandler)
 	}
 }
 
-func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
+func (m *nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 	value := reflect.Indirect(reflect.ValueOf(v))
 	newValue := reflect.Indirect(reflect.ValueOf(new))
 
@@ -686,7 +619,7 @@ func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
 	}
 
 	if m.CanUpdate(root, newRoot) {
-		if root, err = m.Update(root, newRoot); err != nil {
+		if root, err = m.Update(ctx, root, newRoot); err != nil {
 			return nil, errors.New("updating component root failed").
 				WithTag("type", reflect.TypeOf(v)).
 				WithTag("depth", v.depth()).
@@ -694,7 +627,7 @@ func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
 		}
 		v.setRoot(root)
 	} else {
-		if newRoot, err = m.Mount(v.depth()+1, newRoot); err != nil {
+		if newRoot, err = m.Mount(ctx, v.depth()+1, newRoot); err != nil {
 			return nil, errors.New("mounting component root failed").
 				WithTag("type", reflect.TypeOf(v)).
 				WithTag("depth", v.depth()).
@@ -713,18 +646,18 @@ func (m *nodeManager) updateComponent(v, new Composer) (UI, error) {
 	}
 
 	if updater, ok := v.(Updater); ok {
-		updater.OnUpdate(m.MakeContext(v))
+		updater.OnUpdate(m.MakeContext(ctx, v))
 	}
 
 	return v, nil
 }
 
-func (m *nodeManager) updateRawHTML(v, new *raw) (UI, error) {
+func (m *nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
 	if v.value == new.value {
 		return v, nil
 	}
 
-	newMount, err := m.Mount(v.depth(), new)
+	newMount, err := m.Mount(ctx, v.depth(), new)
 	if err != nil {
 		return nil, errors.New("mounting updated raw html failed").
 			WithTag("type", reflect.TypeOf(v)).
@@ -746,17 +679,10 @@ func (m *nodeManager) updateRawHTML(v, new *raw) (UI, error) {
 // MakeContext creates and returns a new context derived from the nodeManager's
 // base context (Ctx). The derived context is configured and tailored for the
 // provided UI element 'v'.
-func (m *nodeManager) MakeContext(v UI) Context {
-	m.initOnce.Do(m.init)
-
-	return uiContext{
-		Context:            m.Ctx,
-		src:                v,
-		jsSrc:              v.JSValue(),
-		appUpdateAvailable: appUpdateAvailable,
-		page:               m.Page,
-		emit:               m.EmitHTMLEvent,
-	}
+func (m *nodeManager) MakeContext(ctx Context, v UI) Context {
+	newContext := ctx.(nodeContext)
+	newContext.sourceElement = v
+	return newContext
 }
 
 // NotifyComponentEvent traverses a UI element tree to propagate a component
@@ -766,40 +692,40 @@ func (m *nodeManager) MakeContext(v UI) Context {
 // Parameters:
 //   - 'v': the initial UI element from which the event begins to propagate.
 //   - 'e': the event being disseminated through the UI elements.
-func (m *nodeManager) NotifyComponentEvent(v UI, e any) {
+func (m *nodeManager) NotifyComponentEvent(ctx Context, v UI, e any) {
 	switch v := v.(type) {
 	case HTML:
 		for _, child := range v.body() {
-			m.NotifyComponentEvent(child, e)
+			m.NotifyComponentEvent(ctx, child, e)
 		}
 
 	case Composer:
 		switch e.(type) {
 		case nav:
 			if navigator, ok := v.(Navigator); ok {
-				navigator.OnNav(m.MakeContext(v))
-				m.UpdateComponent(v)
+				navigator.OnNav(m.MakeContext(ctx, v))
+				ctx.update(v)
 			}
 
 		case appUpdate:
 			if updater, ok := v.(AppUpdater); ok {
-				updater.OnAppUpdate(m.MakeContext(v))
-				m.UpdateComponent(v)
+				updater.OnAppUpdate(m.MakeContext(ctx, v))
+				ctx.update(v)
 			}
 
 		case appInstallChange:
 			if appInstaller, ok := v.(AppInstaller); ok {
-				appInstaller.OnAppInstallChange(m.MakeContext(v))
-				m.UpdateComponent(v)
+				appInstaller.OnAppInstallChange(m.MakeContext(ctx, v))
+				ctx.update(v)
 			}
 
 		case resize:
 			if resizer, ok := v.(Resizer); ok {
-				resizer.OnResize(m.MakeContext(v))
-				m.UpdateComponent(v)
+				resizer.OnResize(m.MakeContext(ctx, v))
+				ctx.update(v)
 			}
 		}
-		m.NotifyComponentEvent(v.root(), e)
+		m.NotifyComponentEvent(ctx, v.root(), e)
 	}
 }
 

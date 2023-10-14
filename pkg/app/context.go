@@ -37,8 +37,46 @@ type Context interface {
 	// Shows the app install prompt if the app is installable.
 	ShowAppInstallPrompt()
 
+	// Returns a UUID that identifies the app on the current device.
+	DeviceID() string
+
 	// Returns the current page.
 	Page() Page
+
+	// Reloads the WebAssembly app to the current page. It is like refreshing
+	// the browser page.
+	Reload()
+
+	// Navigates to the given URL. This is a helper method that converts url to
+	// an *url.URL and then calls ctx.NavigateTo under the hood.
+	Navigate(url string)
+
+	// Navigates to the given URL.
+	NavigateTo(u *url.URL)
+
+	// Resolves the given path to make it point to the right location whether
+	// static resources are located on a local directory or a remote bucket.
+	ResolveStaticResource(string) string
+
+	// Scrolls to the HTML element with the given id.
+	ScrollTo(id string)
+
+	// Returns a storage that uses the browser local storage associated to the
+	// document origin. Data stored has no expiration time.
+	LocalStorage() BrowserStorage
+
+	// Returns a storage that uses the browser session storage associated to the
+	// document origin. Data stored expire when the page session ends.
+	SessionStorage() BrowserStorage
+
+	// Encrypts the given value using AES encryption.
+	Encrypt(v any) ([]byte, error)
+
+	// Decrypts the given encrypted bytes and stores them in the given value.
+	Decrypt(crypted []byte, v any) error
+
+	// Returns the service to setup and display notifications.
+	Notifications() NotificationService
 
 	// Executes the given function on the UI goroutine and notifies the
 	// context's nearest component to update its state.
@@ -47,6 +85,20 @@ type Context interface {
 	// Executes the given function on the UI goroutine after notifying the
 	// context's nearest component to update its state.
 	Defer(fn func(Context))
+
+	// Executes the given function on a new goroutine.
+	//
+	// The difference versus just launching a goroutine is that it ensures that
+	// the asynchronous function is called before a page is fully pre-rendered
+	// and served over HTTP.
+	Async(fn func())
+
+	// Asynchronously waits for the given duration and dispatches the given
+	// function.
+	After(d time.Duration, fn func(Context))
+
+	// Prevents the component that contains the context source to be updated.
+	PreventUpdate()
 
 	// Registers the handler for the given action name. When an action occurs,
 	// the handler is executed on the UI goroutine.
@@ -71,56 +123,6 @@ type Context interface {
 	//      "hello": "world",
 	//  })
 	NewActionWithValue(name string, v any, tags ...Tagger)
-
-	// Executes the given function on a new goroutine.
-	//
-	// The difference versus just launching a goroutine is that it ensures that
-	// the asynchronous function is called before a page is fully pre-rendered
-	// and served over HTTP.
-	Async(fn func())
-
-	// Asynchronously waits for the given duration and dispatches the given
-	// function.
-	After(d time.Duration, fn func(Context))
-
-	// Executes the given function and notifies the parent components to update
-	// their state. It should be used to launch component custom event handlers.
-	Emit(fn func())
-
-	// Reloads the WebAssembly app to the current page. It is like refreshing
-	// the browser page.
-	Reload()
-
-	// Navigates to the given URL. This is a helper method that converts url to
-	// an *url.URL and then calls ctx.NavigateTo under the hood.
-	Navigate(url string)
-
-	// Navigates to the given URL.
-	NavigateTo(u *url.URL)
-
-	// Resolves the given path to make it point to the right location whether
-	// static resources are located on a local directory or a remote bucket.
-	ResolveStaticResource(string) string
-
-	// Returns a storage that uses the browser local storage associated to the
-	// document origin. Data stored has no expiration time.
-	LocalStorage() BrowserStorage
-
-	// Returns a storage that uses the browser session storage associated to the
-	// document origin. Data stored expire when the page session ends.
-	SessionStorage() BrowserStorage
-
-	// Scrolls to the HTML element with the given id.
-	ScrollTo(id string)
-
-	// Returns a UUID that identifies the app on the current device.
-	DeviceID() string
-
-	// Encrypts the given value using AES encryption.
-	Encrypt(v any) ([]byte, error)
-
-	// Decrypts the given encrypted bytes and stores them in the given value.
-	Decrypt(crypted []byte, v any) error
 
 	// Sets the state with the given value.
 	// Example:
@@ -155,11 +157,8 @@ type Context interface {
 	// Returns the app dispatcher.
 	Dispatcher() Dispatcher
 
-	// Returns the service to setup and display notifications.
-	Notifications() NotificationService
-
-	// Prevents the component that contains the context source to be updated.
-	PreventUpdate()
+	update(Composer)
+	preventUpdate(Composer)
 }
 
 type uiContext struct {
@@ -170,8 +169,6 @@ type uiContext struct {
 	appUpdateAvailable bool
 	page               Page
 	disp               Dispatcher
-
-	emit func(src UI, f func())
 }
 
 func (ctx uiContext) Src() UI {
@@ -265,9 +262,6 @@ func (ctx uiContext) After(d time.Duration, fn func(Context)) {
 }
 
 func (ctx uiContext) Emit(fn func()) {
-	if ctx.emit != nil {
-		ctx.emit(ctx.Src(), fn)
-	}
 	ctx.Dispatcher().Emit(ctx.Src(), fn)
 }
 
@@ -383,6 +377,14 @@ func (ctx uiContext) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
+func (ctx uiContext) update(Composer) {
+	panic("not implementable")
+}
+
+func (ctx uiContext) preventUpdate(Composer) {
+	panic("not implementable")
+}
+
 func makeContext(src UI) Context {
 	return uiContext{
 		Context:            context.Background(),
@@ -392,4 +394,171 @@ func makeContext(src UI) Context {
 		page:               src.getDispatcher().getCurrentPage(),
 		disp:               src.getDispatcher(),
 	}
+}
+
+type nodeContext struct {
+	context.Context
+
+	sourceElement          UI
+	appUpdatable           bool
+	page                   Page
+	resolveURL             func(string) string
+	localStorage           BrowserStorage
+	sessionStorage         BrowserStorage
+	dispatch               func(func())
+	defere                 func(func())
+	updateComponent        func(Composer)
+	preventComponentUpdate func(Composer)
+}
+
+func (ctx nodeContext) Src() UI {
+	return ctx.sourceElement
+}
+
+func (ctx nodeContext) JSSrc() Value {
+	return ctx.sourceElement.JSValue()
+}
+
+func (ctx nodeContext) AppUpdateAvailable() bool {
+	return ctx.appUpdatable
+}
+
+func (ctx nodeContext) IsAppInstallable() bool {
+	if Window().Get("goappIsAppInstallable").Truthy() {
+		return Window().Call("goappIsAppInstallable").Bool()
+	}
+	return false
+}
+
+func (ctx nodeContext) ShowAppInstallPrompt() {
+	if ctx.IsAppInstallable() {
+		Window().Call("goappShowInstallPrompt")
+	}
+}
+
+func (ctx nodeContext) DeviceID() string {
+	var id string
+	if err := ctx.localStorage.Get("/go-app/deviceID", &id); err != nil {
+		panic(errors.New("retrieving device id failed").Wrap(err))
+	}
+	if id != "" {
+		return id
+	}
+
+	id = uuid.NewString()
+	if err := ctx.sessionStorage.Set("/go-app/deviceID", id); err != nil {
+		panic(errors.New("creating device id failed").Wrap(err))
+	}
+	return id
+}
+
+func (ctx nodeContext) Page() Page {
+	return ctx.page
+}
+
+func (ctx nodeContext) Reload() {
+	if IsServer {
+		return
+	}
+	Window().Get("location").Call("reload")
+}
+
+func (ctx nodeContext) Navigate(url string) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) NavigateTo(u *url.URL) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) ResolveStaticResource(v string) string {
+	return ctx.resolveURL(v)
+}
+
+func (ctx nodeContext) ScrollTo(id string) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) LocalStorage() BrowserStorage {
+	return ctx.localStorage
+}
+
+func (ctx nodeContext) SessionStorage() BrowserStorage {
+	return ctx.sessionStorage
+}
+
+func (ctx nodeContext) Encrypt(v any) ([]byte, error) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) Decrypt(crypted []byte, v any) error {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) Notifications() NotificationService {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) Dispatch(v func(Context)) {
+	ctx.dispatch(func() {
+		v(ctx)
+	})
+}
+
+func (ctx nodeContext) Defer(v func(Context)) {
+	ctx.defere(func() {
+		v(ctx)
+	})
+}
+
+func (ctx nodeContext) Async(fn func()) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) After(d time.Duration, fn func(Context)) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) PreventUpdate() {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) Handle(actionName string, h ActionHandler) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) NewAction(name string, tags ...Tagger) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) NewActionWithValue(name string, v any, tags ...Tagger) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) SetState(state string, v any, opts ...StateOption) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) GetState(state string, recv any) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) DelState(state string) {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) ObserveState(state string) Observer {
+	panic("not implemented")
+}
+
+func (ctx nodeContext) Dispatcher() Dispatcher {
+	panic("deprecate this")
+}
+
+func (ctx nodeContext) update(v Composer) {
+	ctx.updateComponent(v)
+}
+
+func (ctx nodeContext) preventUpdate(v Composer) {
+	ctx.preventComponentUpdate(v)
 }

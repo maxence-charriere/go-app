@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"sync"
@@ -234,10 +235,12 @@ func TestHTMLString(t *testing.T) {
 }
 
 func TestNodeManagerMount(t *testing.T) {
+	ctx := makeTestContext()
+
 	t.Run("mounting a text succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		hello, err := m.Mount(1, Text("hello"))
+		hello, err := m.Mount(ctx, 1, Text("hello"))
 		require.NoError(t, err)
 		require.NotZero(t, hello)
 		require.True(t, hello.Mounted())
@@ -248,10 +251,10 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting an already mounted text returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		text, err := m.Mount(1, Text("hello"))
+		text, err := m.Mount(ctx, 1, Text("hello"))
 		require.NoError(t, err)
 
-		text, err = m.Mount(1, text)
+		text, err = m.Mount(ctx, 1, text)
 		require.Error(t, err)
 		require.Zero(t, text)
 		t.Log(err)
@@ -260,7 +263,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting html succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div())
+		div, err := m.Mount(ctx, 1, Div())
 		require.NoError(t, err)
 		require.NotZero(t, div)
 		require.True(t, div.Mounted())
@@ -271,7 +274,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting html body succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		body, err := m.Mount(1, Body())
+		body, err := m.Mount(ctx, 1, Body())
 		require.NoError(t, err)
 		require.NotZero(t, body)
 		require.True(t, body.Mounted())
@@ -282,7 +285,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting html with attributes succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Img().
+		div, err := m.Mount(ctx, 1, Img().
 			Class("test").
 			Src("/web/test.webp"))
 		require.NoError(t, err)
@@ -293,7 +296,7 @@ func TestNodeManagerMount(t *testing.T) {
 		var m nodeManager
 		var wg sync.WaitGroup
 
-		div, err := m.Mount(1, A().
+		div, err := m.Mount(ctx, 1, A().
 			On("testJSEvent", func(ctx Context, e Event) {
 				wg.Done()
 			}))
@@ -315,7 +318,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting html with children succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			Span(),
 		))
 		require.NoError(t, err)
@@ -332,10 +335,10 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting an already mounted html returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div())
+		div, err := m.Mount(ctx, 1, Div())
 		require.NoError(t, err)
 
-		div, err = m.Mount(1, div)
+		div, err = m.Mount(ctx, 1, div)
 		require.Error(t, err)
 		require.Zero(t, div)
 		t.Log(err)
@@ -344,7 +347,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting html with non mountable child returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			&compoWithNilRendering{},
 		))
 		require.Error(t, err)
@@ -355,7 +358,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting a component succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &hello{})
+		compo, err := m.Mount(ctx, 1, &hello{})
 		require.NoError(t, err)
 		require.NotNil(t, compo)
 		require.True(t, compo.Mounted())
@@ -372,7 +375,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting a component which renders nil returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &compoWithNilRendering{})
+		compo, err := m.Mount(ctx, 1, &compoWithNilRendering{})
 		require.Error(t, err)
 		require.Nil(t, compo)
 		t.Log(err)
@@ -381,10 +384,10 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting an already mounted component returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &hello{})
+		compo, err := m.Mount(ctx, 1, &hello{})
 		require.NoError(t, err)
 
-		compo, err = m.Mount(1, compo)
+		compo, err = m.Mount(ctx, 1, compo)
 		require.Error(t, err)
 		require.Nil(t, compo)
 		t.Log(err)
@@ -393,7 +396,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting a component with a non mountable root returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &compoWithNonMountableRoot{})
+		compo, err := m.Mount(ctx, 1, &compoWithNonMountableRoot{})
 		require.Error(t, err)
 		require.Nil(t, compo)
 		t.Log(err)
@@ -402,7 +405,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting raw html succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		span, err := m.Mount(1, Raw(`<span>hello</span>`))
+		span, err := m.Mount(ctx, 1, Raw(`<span>hello</span>`))
 		require.NoError(t, err)
 		require.NotZero(t, span)
 		require.NotNil(t, span.(*raw).jsElement)
@@ -413,10 +416,10 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting an already mounted raw html returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		span, err := m.Mount(1, Raw(`<span>hello</span>`))
+		span, err := m.Mount(ctx, 1, Raw(`<span>hello</span>`))
 		require.NoError(t, err)
 
-		span, err = m.Mount(1, span)
+		span, err = m.Mount(ctx, 1, span)
 		require.Error(t, err)
 		require.Zero(t, span)
 	})
@@ -424,7 +427,7 @@ func TestNodeManagerMount(t *testing.T) {
 	t.Run("mounting not supported element returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		condition, err := m.Mount(1, condition{})
+		condition, err := m.Mount(ctx, 1, condition{})
 		require.Error(t, err)
 		require.Zero(t, condition)
 	})
@@ -432,17 +435,20 @@ func TestNodeManagerMount(t *testing.T) {
 
 func BenchmarkNodeManagerMount(b *testing.B) {
 	var m nodeManager
+	ctx := makeTestContext()
 
 	for n := 0; n < b.N; n++ {
-		m.Mount(1, Div())
+		m.Mount(ctx, 1, Div())
 	}
 }
 
 func TestNodeManagerDismount(t *testing.T) {
+	ctx := makeTestContext()
+
 	t.Run("html is dismounted", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div())
+		div, err := m.Mount(ctx, 1, Div())
 		require.NoError(t, err)
 
 		m.Dismount(div)
@@ -453,7 +459,7 @@ func TestNodeManagerDismount(t *testing.T) {
 	t.Run("html child is dismounted", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			Span(),
 		))
 		require.NoError(t, err)
@@ -466,7 +472,7 @@ func TestNodeManagerDismount(t *testing.T) {
 	t.Run("html event handler is dismounted", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().
+		div, err := m.Mount(ctx, 1, Div().
 			On("", func(ctx Context, e Event) {}))
 		require.NoError(t, err)
 
@@ -476,7 +482,7 @@ func TestNodeManagerDismount(t *testing.T) {
 	t.Run("component is dismounted", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &hello{})
+		compo, err := m.Mount(ctx, 1, &hello{})
 		require.NoError(t, err)
 
 		m.Dismount(compo)
@@ -488,7 +494,7 @@ func TestNodeManagerDismount(t *testing.T) {
 	t.Run("raw html is dismounted", func(t *testing.T) {
 		var m nodeManager
 
-		span, err := m.Mount(1, Raw("<span>hi</span>"))
+		span, err := m.Mount(ctx, 1, Raw("<span>hi</span>"))
 		require.NoError(t, err)
 
 		m.Dismount(span)
@@ -537,10 +543,12 @@ func BenchmarkNodeManagerCanUpdate(b *testing.B) {
 }
 
 func TestNodeManagerUpdate(t *testing.T) {
+	ctx := makeTestContext()
+
 	t.Run("updating a non mounted element returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		_, err := m.Update(Div(), Div())
+		_, err := m.Update(ctx, Div(), Div())
 		require.Error(t, err)
 		t.Log(err)
 	})
@@ -548,10 +556,10 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("updating text succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		greeting, err := m.Mount(1, Text("hello"))
+		greeting, err := m.Mount(ctx, 1, Text("hello"))
 		require.NoError(t, err)
 
-		greeting, err = m.Update(greeting, Text("bye"))
+		greeting, err = m.Update(ctx, greeting, Text("bye"))
 		require.NoError(t, err)
 		require.Equal(t, "bye", greeting.(*text).value)
 	})
@@ -559,10 +567,10 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("updating same text succeeds", func(t *testing.T) {
 		var m nodeManager
 
-		greeting, err := m.Mount(1, Text("hello"))
+		greeting, err := m.Mount(ctx, 1, Text("hello"))
 		require.NoError(t, err)
 
-		greeting, err = m.Update(greeting, Text("hello"))
+		greeting, err = m.Update(ctx, greeting, Text("hello"))
 		require.NoError(t, err)
 		require.Equal(t, "hello", greeting.(*text).value)
 	})
@@ -570,16 +578,16 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html adds an attribute", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div())
+		div, err := m.Mount(ctx, 1, Div())
 		require.NoError(t, err)
 		require.Empty(t, div.(HTML).attrs())
 
-		div, err = m.Update(div, Div().Class("test"))
+		div, err = m.Update(ctx, div, Div().Class("test"))
 		require.NoError(t, err)
 		require.Len(t, div.(HTML).attrs(), 1)
 		require.Equal(t, "test", div.(HTML).attrs()["class"])
 
-		div, err = m.Update(div, Div().
+		div, err = m.Update(ctx, div, Div().
 			Class("test").
 			ID("test"))
 		require.NoError(t, err)
@@ -590,11 +598,11 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html updates an attribute", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Class("hello"))
+		div, err := m.Mount(ctx, 1, Div().Class("hello"))
 		require.NoError(t, err)
 		require.Equal(t, "hello", div.(HTML).attrs()["class"])
 
-		div, err = m.Update(div, Div().Class("bye"))
+		div, err = m.Update(ctx, div, Div().Class("bye"))
 		require.NoError(t, err)
 		require.Len(t, div.(HTML).attrs(), 1)
 		require.Equal(t, "bye", div.(HTML).attrs()["class"])
@@ -603,12 +611,12 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html removes an attribute", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Class("hello"))
+		div, err := m.Mount(ctx, 1, Div().Class("hello"))
 		require.NoError(t, err)
 		require.Len(t, div.(HTML).attrs(), 1)
 		require.Equal(t, "hello", div.(HTML).attrs()["class"])
 
-		div, err = m.Update(div, Div())
+		div, err = m.Update(ctx, div, Div())
 		require.NoError(t, err)
 		require.Empty(t, div.(HTML).attrs()["class"])
 	})
@@ -616,12 +624,12 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html adds an event handler", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div())
+		div, err := m.Mount(ctx, 1, Div())
 		require.NoError(t, err)
 		require.Empty(t, div.(HTML).events())
 
 		handler1 := func(ctx Context, e Event) {}
-		div, err = m.Update(div, Div().OnClick(handler1))
+		div, err = m.Update(ctx, div, Div().OnClick(handler1))
 		require.NoError(t, err)
 		require.Len(t, div.(HTML).events(), 1)
 		require.True(t, div.(HTML).events()["click"].Equal(eventHandler{
@@ -630,7 +638,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 		}))
 
 		handler2 := func(ctx Context, e Event) {}
-		div, err = m.Update(div, Div().
+		div, err = m.Update(ctx, div, Div().
 			OnClick(handler1).
 			OnChange(handler2))
 		require.NoError(t, err)
@@ -645,11 +653,11 @@ func TestNodeManagerUpdate(t *testing.T) {
 		var m nodeManager
 
 		handler1 := func(ctx Context, e Event) {}
-		div, err := m.Mount(1, Div().OnClick(handler1))
+		div, err := m.Mount(ctx, 1, Div().OnClick(handler1))
 		require.NoError(t, err)
 
 		handler2 := func(ctx Context, e Event) {}
-		div, err = m.Update(div, Div().OnClick(handler2))
+		div, err = m.Update(ctx, div, Div().OnClick(handler2))
 		require.NoError(t, err)
 		require.Len(t, div.(HTML).events(), 1)
 		require.False(t, div.(HTML).events()["click"].Equal(eventHandler{
@@ -665,11 +673,11 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("udpate html removes an event handler", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().OnClick(func(ctx Context, e Event) {}))
+		div, err := m.Mount(ctx, 1, Div().OnClick(func(ctx Context, e Event) {}))
 		require.NoError(t, err)
 		require.Len(t, div.(HTML).events(), 1)
 
-		div, err = m.Update(div, Div())
+		div, err = m.Update(ctx, div, Div())
 		require.NoError(t, err)
 		require.Empty(t, div.(HTML).events())
 	})
@@ -677,11 +685,11 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html adds a child", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div())
+		div, err := m.Mount(ctx, 1, Div())
 		require.NoError(t, err)
 		require.Empty(t, div.(HTML).body())
 
-		div, err = m.Update(div, Div().Body(
+		div, err = m.Update(ctx, div, Div().Body(
 			Span(),
 		))
 		require.NoError(t, err)
@@ -692,10 +700,10 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html by adding non mountable child returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div())
+		div, err := m.Mount(ctx, 1, Div())
 		require.NoError(t, err)
 
-		div, err = m.Update(div, Div().Body(
+		div, err = m.Update(ctx, div, Div().Body(
 			&compoWithNilRendering{},
 		))
 		require.Error(t, err)
@@ -706,7 +714,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html updates a child", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			Span(),
 		))
 		require.NoError(t, err)
@@ -715,7 +723,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.IsType(t, Span(), child)
 		require.Empty(t, child.(HTML).attrs())
 
-		div, err = m.Update(div, Div().Body(
+		div, err = m.Update(ctx, div, Div().Body(
 			Span().Class("test"),
 		))
 		require.NoError(t, err)
@@ -728,12 +736,12 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html by updating child with a non mountable element returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			Span().Text("test"),
 		))
 		require.NoError(t, err)
 
-		div, err = m.Update(div, Div().Body(
+		div, err = m.Update(ctx, div, Div().Body(
 			Span().Body(
 				&compoWithNilRendering{},
 			),
@@ -746,7 +754,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html replaces a child", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			Span(),
 		))
 		require.NoError(t, err)
@@ -754,7 +762,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 		child := div.(HTML).body()[0]
 		require.IsType(t, Span(), child)
 
-		div, err = m.Update(div, Div().Body(
+		div, err = m.Update(ctx, div, Div().Body(
 			Div(),
 		))
 		require.NoError(t, err)
@@ -766,12 +774,12 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html by replacing child with a non mountable element returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			Span(),
 		))
 		require.NoError(t, err)
 
-		div, err = m.Update(div, Div().Body(
+		div, err = m.Update(ctx, div, Div().Body(
 			&compoWithNilRendering{},
 		))
 		require.Error(t, err)
@@ -782,13 +790,13 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update html removes a child", func(t *testing.T) {
 		var m nodeManager
 
-		div, err := m.Mount(1, Div().Body(
+		div, err := m.Mount(ctx, 1, Div().Body(
 			Span(),
 		))
 		require.NoError(t, err)
 		require.Len(t, div.(HTML).body(), 1)
 
-		div, err = m.Update(div, Div())
+		div, err = m.Update(ctx, div, Div())
 		require.NoError(t, err)
 		require.Empty(t, div.(HTML).body())
 	})
@@ -796,12 +804,12 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update component updates a field", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &bar{})
+		compo, err := m.Mount(ctx, 1, &bar{})
 		require.NoError(t, err)
 		require.NotNil(t, compo)
 		require.Equal(t, "", compo.(Composer).root().(*text).value)
 
-		updatedCompo, err := m.Update(compo, &bar{
+		updatedCompo, err := m.Update(ctx, compo, &bar{
 			Value: "bar",
 		})
 		require.NoError(t, err)
@@ -812,13 +820,13 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update component skips update", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &bar{
+		compo, err := m.Mount(ctx, 1, &bar{
 			Value: "bar",
 		})
 		require.NoError(t, err)
 		require.Equal(t, "bar", compo.(Composer).root().(*text).value)
 
-		updatedCompo, err := m.Update(compo, &bar{
+		updatedCompo, err := m.Update(ctx, compo, &bar{
 			Value: "bar",
 		})
 		require.NoError(t, err)
@@ -829,10 +837,10 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update component with non renderable component returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &compoWithCustomRoot{Root: Text("hi")})
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: Text("hi")})
 		require.NoError(t, err)
 
-		newCompo, err := m.Update(compo, &compoWithCustomRoot{Root: nil})
+		newCompo, err := m.Update(ctx, compo, &compoWithCustomRoot{Root: nil})
 		require.Error(t, err)
 		require.Nil(t, newCompo)
 	})
@@ -840,10 +848,10 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update component with non mountable root returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &compoWithCustomRoot{Root: Div()})
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: Div()})
 		require.NoError(t, err)
 
-		newCompo, err := m.Update(compo, &compoWithCustomRoot{Root: Div().Body(&compoWithNilRendering{})})
+		newCompo, err := m.Update(ctx, compo, &compoWithCustomRoot{Root: Div().Body(&compoWithNilRendering{})})
 		require.Error(t, err)
 		require.Nil(t, newCompo)
 	})
@@ -851,7 +859,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update component replaces its root", func(t *testing.T) {
 		var m nodeManager
 
-		body, err := m.Mount(1, Body().privateBody(
+		body, err := m.Mount(ctx, 1, Body().privateBody(
 			&compoWithCustomRoot{Root: Div()}),
 		)
 		require.NoError(t, err)
@@ -863,7 +871,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.IsType(t, &compoWithCustomRoot{}, compo)
 		require.IsType(t, Div(), compo.(*compoWithCustomRoot).Root)
 
-		newCompo, err := m.Update(compo, &compoWithCustomRoot{Root: Span()})
+		newCompo, err := m.Update(ctx, compo, &compoWithCustomRoot{Root: Span()})
 		require.NoError(t, err)
 		require.Equal(t, compo, newCompo)
 		require.IsType(t, Span(), compo.(*compoWithCustomRoot).Root)
@@ -872,13 +880,13 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update component with non mountable replaced component returns an error", func(t *testing.T) {
 		var m nodeManager
 
-		compo, err := m.Mount(1, &compoWithCustomRoot{
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{
 			Root: &compoWithCustomRoot{Root: Div()},
 		})
 		require.NoError(t, err)
 		require.NotNil(t, compo)
 
-		newCompo, err := m.Update(compo, &compoWithCustomRoot{
+		newCompo, err := m.Update(ctx, compo, &compoWithCustomRoot{
 			Root: &compoWithCustomRoot{Root: &compoWithNilRendering{}},
 		})
 		require.Error(t, err)
@@ -888,7 +896,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update raw html replaces its value", func(t *testing.T) {
 		var m nodeManager
 
-		body, err := m.Mount(1, Body().privateBody(
+		body, err := m.Mount(ctx, 1, Body().privateBody(
 			Raw("<span>hi</span>"),
 		))
 		require.NoError(t, err)
@@ -899,7 +907,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.NotZero(t, span)
 		require.IsType(t, Raw(""), span)
 
-		newSpan, err := m.Update(span, Raw("<span>bye</span>"))
+		newSpan, err := m.Update(ctx, span, Raw("<span>bye</span>"))
 		require.NoError(t, err)
 		require.NotEqual(t, span, newSpan)
 		require.IsType(t, Raw(""), newSpan)
@@ -911,7 +919,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 	t.Run("update raw html skips update", func(t *testing.T) {
 		var m nodeManager
 
-		body, err := m.Mount(1, Body().privateBody(
+		body, err := m.Mount(ctx, 1, Body().privateBody(
 			Raw("<span>hi</span>"),
 		))
 		require.NoError(t, err)
@@ -922,7 +930,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.NotZero(t, span)
 		require.IsType(t, Raw(""), span)
 
-		newSpan, err := m.Update(span, Raw("<span>hi</span>"))
+		newSpan, err := m.Update(ctx, span, Raw("<span>hi</span>"))
 		require.NoError(t, err)
 		require.Equal(t, span, newSpan)
 		require.IsType(t, Raw(""), newSpan)
@@ -934,153 +942,181 @@ func TestNodeManagerUpdate(t *testing.T) {
 func TestNodeManagerMakeContext(t *testing.T) {
 	var m nodeManager
 
-	div, err := m.Mount(1, Div())
+	ctx := makeTestContext()
+	div, err := m.Mount(ctx, 1, Div())
 	require.NoError(t, err)
 
-	ctx := m.MakeContext(div).(uiContext)
+	ctx = m.MakeContext(ctx, div).(nodeContext)
 	require.NotZero(t, ctx)
-	require.NotNil(t, ctx.src)
-	require.NotNil(t, ctx.jsSrc)
-	require.NotNil(t, ctx.page)
-	require.NotNil(t, ctx.emit)
+	require.NotNil(t, ctx.(nodeContext).sourceElement)
+	require.NotNil(t, ctx.(nodeContext).page)
+	require.NotNil(t, ctx.(nodeContext).resolveURL)
+	require.NotNil(t, ctx.(nodeContext).localStorage)
+	require.NotNil(t, ctx.(nodeContext).sessionStorage)
 }
 
 func TestTriggerComponentUpdates(t *testing.T) {
 	t.Run("ignores dismounted element", func(t *testing.T) {
 		var m nodeManager
-		m.triggerComponentUpdates(Div())
+		m.triggerComponentUpdates(makeTestContext(), Div())
 	})
 
 	t.Run("component is updated", func(t *testing.T) {
 		updated := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
-			updated[c] = struct{}{}
-		}}
+		ctx := nodeContext{
+			Context: context.Background(),
+			updateComponent: func(c Composer) {
+				updated[c] = struct{}{}
+			},
+		}
 
-		compo, err := m.Mount(1, &compoWithCustomRoot{Root: Div()})
+		var m nodeManager
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: Div()})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(compo)
+		m.triggerComponentUpdates(ctx, compo)
 		require.Contains(t, updated, compo)
 	})
 
 	t.Run("parent component is updated", func(t *testing.T) {
 		updated := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
-			updated[c] = struct{}{}
-		}}
+		ctx := nodeContext{
+			Context: context.Background(),
+			updateComponent: func(c Composer) {
+				updated[c] = struct{}{}
+			},
+		}
 
+		var m nodeManager
 		div := Div()
-		compo, err := m.Mount(1, &compoWithCustomRoot{Root: div})
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: div})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(div)
+		m.triggerComponentUpdates(ctx, div)
 		require.Contains(t, updated, compo)
 	})
 
 	t.Run("parent component is not updated", func(t *testing.T) {
 		updated := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
-			updated[c] = struct{}{}
-		}}
+		ctx := nodeContext{
+			Context: context.Background(),
+			updateComponent: func(c Composer) {
+				updated[c] = struct{}{}
+			},
+		}
 
+		var m nodeManager
 		hello := &hello{}
-		compo, err := m.Mount(1, &compoWithCustomRoot{Root: hello})
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: hello})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(hello)
+		m.triggerComponentUpdates(ctx, hello)
 		require.Contains(t, updated, hello)
 		require.NotContains(t, updated, compo)
 	})
 
 	t.Run("update notifier prevents parent component update", func(t *testing.T) {
 		updated := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
-			updated[c] = struct{}{}
-		}}
+		ctx := nodeContext{
+			Context: context.Background(),
+			updateComponent: func(c Composer) {
+				updated[c] = struct{}{}
+			},
+		}
 
+		var m nodeManager
 		notifier := &updateNotifierCompo{notify: false}
-		compo, err := m.Mount(1, &compoWithCustomRoot{Root: notifier})
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: notifier})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(notifier)
+		m.triggerComponentUpdates(ctx, notifier)
 		require.Contains(t, updated, notifier)
 		require.NotContains(t, updated, compo)
 	})
 
 	t.Run("update notifier allows parent component update", func(t *testing.T) {
 		updated := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
-			updated[c] = struct{}{}
-		}}
+		ctx := nodeContext{
+			Context: context.Background(),
+			updateComponent: func(c Composer) {
+				updated[c] = struct{}{}
+			},
+		}
 
+		var m nodeManager
 		notifier := &updateNotifierCompo{notify: true}
-		compo, err := m.Mount(1, &compoWithCustomRoot{Root: notifier})
+		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: notifier})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(notifier)
+		m.triggerComponentUpdates(ctx, notifier)
 		require.Contains(t, updated, notifier)
 		require.Contains(t, updated, compo)
 	})
 }
 
 func TestNodeManagerNotifyComponentEvent(t *testing.T) {
+	ctx := makeTestContext().(nodeContext)
+
 	t.Run("nav event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
+		ctx.updateComponent = func(c Composer) {
 			updates[c] = struct{}{}
-		}}
+		}
 
+		var m nodeManager
 		compo := &hello{}
-		div, err := m.Mount(1, Div().Body(compo))
+		div, err := m.Mount(ctx, 1, Div().Body(compo))
 		require.NoError(t, err)
 
-		m.NotifyComponentEvent(div, nav{})
+		m.NotifyComponentEvent(ctx, div, nav{})
 		require.NotEmpty(t, compo.onNavURL)
 		require.Contains(t, updates, compo)
 	})
 
 	t.Run("app update event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
+		ctx.updateComponent = func(c Composer) {
 			updates[c] = struct{}{}
-		}}
+		}
 
+		var m nodeManager
 		compo := &hello{}
-		div, err := m.Mount(1, Div().Body(compo))
+		div, err := m.Mount(ctx, 1, Div().Body(compo))
 		require.NoError(t, err)
 
-		m.NotifyComponentEvent(div, appUpdate{})
+		m.NotifyComponentEvent(ctx, div, appUpdate{})
 		require.True(t, compo.appUpdated)
 		require.Contains(t, updates, compo)
 	})
 
 	t.Run("app install change event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
+		ctx.updateComponent = func(c Composer) {
 			updates[c] = struct{}{}
-		}}
+		}
 
+		var m nodeManager
 		compo := &hello{}
-		div, err := m.Mount(1, Div().Body(compo))
+		div, err := m.Mount(ctx, 1, Div().Body(compo))
 		require.NoError(t, err)
 
-		m.NotifyComponentEvent(div, appInstallChange{})
+		m.NotifyComponentEvent(ctx, div, appInstallChange{})
 		require.True(t, compo.appInstalled)
 		require.Contains(t, updates, compo)
 	})
 
 	t.Run("resize change event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		m := nodeManager{UpdateComponent: func(c Composer) {
+		ctx.updateComponent = func(c Composer) {
 			updates[c] = struct{}{}
-		}}
+		}
 
+		var m nodeManager
 		compo := &hello{}
-		div, err := m.Mount(1, Div().Body(compo))
+		div, err := m.Mount(ctx, 1, Div().Body(compo))
 		require.NoError(t, err)
 
-		m.NotifyComponentEvent(div, resize{})
+		m.NotifyComponentEvent(ctx, div, resize{})
 		require.True(t, compo.appResized)
 		require.Contains(t, updates, compo)
 	})

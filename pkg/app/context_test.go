@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"net/url"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -162,4 +163,46 @@ func TestContextStates(t *testing.T) {
 	ctx.SetState(state, "bye")
 	client.Consume()
 	require.Equal(t, "bye", v)
+}
+
+func makeTestContext() Context {
+	resolveURL := func(v string) string {
+		return v
+	}
+
+	var page Page
+	url, _ := url.Parse("https://goapp.dev")
+	if IsServer {
+		page = &requestPage{
+			url:                   url,
+			resolveStaticResource: resolveURL,
+		}
+	} else {
+		page = browserPage{
+			url:                   url,
+			resolveStaticResource: resolveURL,
+		}
+	}
+
+	var localStorage BrowserStorage
+	var sessionStorage BrowserStorage
+	if IsServer {
+		localStorage = newMemoryStorage()
+		sessionStorage = newMemoryStorage()
+	} else {
+		localStorage = newJSStorage("localStorage")
+		sessionStorage = newJSStorage("sessionStorage")
+	}
+
+	return nodeContext{
+		Context:                context.Background(),
+		page:                   page,
+		resolveURL:             resolveURL,
+		localStorage:           localStorage,
+		sessionStorage:         sessionStorage,
+		dispatch:               func(f func()) { f() },
+		defere:                 func(f func()) { f() },
+		updateComponent:        func(Composer) {},
+		preventComponentUpdate: func(Composer) {},
+	}
 }
