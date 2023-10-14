@@ -196,7 +196,7 @@ func makeTestContext() Context {
 
 	return nodeContext{
 		Context:                context.Background(),
-		page:                   page,
+		page:                   func() Page { return page },
 		resolveURL:             resolveURL,
 		localStorage:           localStorage,
 		sessionStorage:         sessionStorage,

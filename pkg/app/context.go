@@ -401,7 +401,7 @@ type nodeContext struct {
 
 	sourceElement          UI
 	appUpdatable           bool
-	page                   Page
+	page                   func() Page
 	resolveURL             func(string) string
 	localStorage           BrowserStorage
 	sessionStorage         BrowserStorage
@@ -453,7 +453,7 @@ func (ctx nodeContext) DeviceID() string {
 }
 
 func (ctx nodeContext) Page() Page {
-	return ctx.page
+	return ctx.page()
 }
 
 func (ctx nodeContext) Reload() {
