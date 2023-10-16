@@ -297,11 +297,15 @@ func (w *browserWindow) createTextNode(v string) Value {
 }
 
 func (w *browserWindow) addHistory(u *url.URL) {
+	u.Scheme = w.URL().Scheme
+	u.Host = w.URL().Host
 	w.Get("history").Call("pushState", nil, "", u.String())
 	lastURLVisited = u
 }
 
 func (w *browserWindow) replaceHistory(u *url.URL) {
+	u.Scheme = w.URL().Scheme
+	u.Host = w.URL().Host
 	w.Get("history").Call("replaceState", nil, "", u.String())
 	lastURLVisited = u
 }

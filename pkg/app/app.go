@@ -48,7 +48,7 @@ var (
 // Getenv retrieves the value of the environment variable named by the key. It
 // returns the value, which will be empty if the variable is not present.
 func Getenv(k string) string {
-	if IsServer {
+	if IsServer || !Window().Get("goappGetenv").Truthy() {
 		return os.Getenv(k)
 	}
 

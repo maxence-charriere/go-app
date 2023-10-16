@@ -296,22 +296,22 @@ func TestNodeManagerMount(t *testing.T) {
 		var m nodeManager
 		var wg sync.WaitGroup
 
-		div, err := m.Mount(ctx, 1, A().
-			On("testJSEvent", func(ctx Context, e Event) {
+		elem, err := m.Mount(ctx, 1, Body().
+			On("testgoapp", func(ctx Context, e Event) {
 				wg.Done()
 			}))
 		require.NoError(t, err)
-		require.True(t, div.Mounted())
+		require.True(t, elem.Mounted())
 
 		if IsServer {
 			return
 		}
 
 		wg.Add(1)
-		customEvent := Window().Get("CustomEvent").New("testJSEvent", map[string]any{
+		customEvent := Window().Get("CustomEvent").New("testgoapp", map[string]any{
 			"detail": "a js custom event",
 		})
-		div.JSValue().Call("dispatchEvent", customEvent)
+		elem.JSValue().Call("dispatchEvent", customEvent)
 		wg.Wait()
 	})
 
@@ -953,6 +953,8 @@ func TestNodeManagerMakeContext(t *testing.T) {
 	require.NotNil(t, ctx.(nodeContext).resolveURL)
 	require.NotNil(t, ctx.(nodeContext).localStorage)
 	require.NotNil(t, ctx.(nodeContext).sessionStorage)
+	require.NotNil(t, ctx.(nodeContext).dispatch)
+	require.NotNil(t, ctx.(nodeContext).defere)
 }
 
 func TestTriggerComponentUpdates(t *testing.T) {

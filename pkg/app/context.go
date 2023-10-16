@@ -400,9 +400,9 @@ type nodeContext struct {
 	context.Context
 
 	sourceElement          UI
-	appUpdatable           bool
 	page                   func() Page
 	resolveURL             func(string) string
+	navigate               func(*url.URL, bool)
 	localStorage           BrowserStorage
 	sessionStorage         BrowserStorage
 	dispatch               func(func())
@@ -420,7 +420,7 @@ func (ctx nodeContext) JSSrc() Value {
 }
 
 func (ctx nodeContext) AppUpdateAvailable() bool {
-	return ctx.appUpdatable
+	return appUpdateAvailable
 }
 
 func (ctx nodeContext) IsAppInstallable() bool {
@@ -463,12 +463,19 @@ func (ctx nodeContext) Reload() {
 	Window().Get("location").Call("reload")
 }
 
-func (ctx nodeContext) Navigate(url string) {
-	panic("not implemented")
+func (ctx nodeContext) Navigate(rawURL string) {
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		Log(errors.New("navigating to URL failed").
+			WithTag("url", rawURL).
+			Wrap(err))
+		return
+	}
+	ctx.NavigateTo(u)
 }
 
 func (ctx nodeContext) NavigateTo(u *url.URL) {
-	panic("not implemented")
+	ctx.navigate(u, true)
 }
 
 func (ctx nodeContext) ResolveStaticResource(v string) string {

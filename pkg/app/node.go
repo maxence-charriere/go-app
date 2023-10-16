@@ -143,20 +143,11 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 // nodeManager orchestrates the lifecycle of UI elements, providing specialized
 // mechanisms for mounting, dismounting, and updating nodes.
 type nodeManager struct {
-
-	// TODO:
-	// - StateManager
-	// - NotificationService
-	// - UI Goroutine manager
-	//   - Add component update func
-	//   - remove component update func
-	//   - Prevent update component func
-
 }
 
 // Mount mounts a UI element based on its type and the specified depth. It
 // returns the mounted UI element and any potential error during the process.
-func (m *nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
+func (m nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 	switch v := v.(type) {
 	case *text:
 		return m.mountText(ctx, depth, v)
@@ -177,7 +168,7 @@ func (m *nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 	}
 }
 
-func (m *nodeManager) mountText(ctx Context, depth uint, v *text) (UI, error) {
+func (m nodeManager) mountText(ctx Context, depth uint, v *text) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("text is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -188,7 +179,7 @@ func (m *nodeManager) mountText(ctx Context, depth uint, v *text) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) mountHTML(ctx Context, depth uint, v HTML) (UI, error) {
+func (m nodeManager) mountHTML(ctx Context, depth uint, v HTML) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("html element is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -230,7 +221,7 @@ func (m *nodeManager) mountHTML(ctx Context, depth uint, v HTML) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) mountHTMLAttributes(ctx Context, v HTML) {
+func (m nodeManager) mountHTMLAttributes(ctx Context, v HTML) {
 	for name, value := range v.attrs() {
 		setJSAttribute(v.JSValue(), name, resolveAttributeURLValue(
 			name,
@@ -240,14 +231,14 @@ func (m *nodeManager) mountHTMLAttributes(ctx Context, v HTML) {
 	}
 }
 
-func (m *nodeManager) mountHTMLEventHandlers(ctx Context, v HTML) {
+func (m nodeManager) mountHTMLEventHandlers(ctx Context, v HTML) {
 	events := v.events()
 	for event, handler := range events {
 		events[event] = m.mountHTMLEventHandler(ctx, v, handler)
 	}
 }
 
-func (m *nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHandler) eventHandler {
+func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHandler) eventHandler {
 	event := handler.event
 
 	jsHandler := FuncOf(func(this Value, args []Value) any {
@@ -275,7 +266,7 @@ func (m *nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHa
 	}
 }
 
-func (m *nodeManager) triggerComponentUpdates(ctx Context, u UI) {
+func (m nodeManager) triggerComponentUpdates(ctx Context, u UI) {
 	if !u.Mounted() {
 		return
 	}
@@ -295,7 +286,7 @@ func (m *nodeManager) triggerComponentUpdates(ctx Context, u UI) {
 	}
 }
 
-func (m *nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, error) {
+func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("component is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -329,7 +320,7 @@ func (m *nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, e
 	return v, nil
 }
 
-func (m *nodeManager) renderComponent(v Composer) (UI, error) {
+func (m nodeManager) renderComponent(v Composer) (UI, error) {
 	rendering := FilterUIElems(v.Render())
 	if len(rendering) == 0 {
 		return nil, errors.New("render method does not returns a text, html element, or component")
@@ -337,7 +328,7 @@ func (m *nodeManager) renderComponent(v Composer) (UI, error) {
 	return rendering[0], nil
 }
 
-func (m *nodeManager) mountRawHTML(ctx Context, depth uint, v *raw) (UI, error) {
+func (m nodeManager) mountRawHTML(ctx Context, depth uint, v *raw) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("raw html is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -354,7 +345,7 @@ func (m *nodeManager) mountRawHTML(ctx Context, depth uint, v *raw) (UI, error) 
 }
 
 // Dismount removes a UI element based on its type.
-func (m *nodeManager) Dismount(v UI) {
+func (m nodeManager) Dismount(v UI) {
 	switch v := v.(type) {
 	case *text:
 
@@ -369,7 +360,7 @@ func (m *nodeManager) Dismount(v UI) {
 	}
 }
 
-func (m *nodeManager) dismountHTML(v HTML) {
+func (m nodeManager) dismountHTML(v HTML) {
 	for _, child := range v.body() {
 		m.Dismount(child)
 	}
@@ -381,13 +372,13 @@ func (m *nodeManager) dismountHTML(v HTML) {
 	v.setJSElement(nil)
 }
 
-func (m *nodeManager) dismountHTMLEventHandler(handler eventHandler) {
+func (m nodeManager) dismountHTMLEventHandler(handler eventHandler) {
 	if handler.close != nil {
 		handler.close()
 	}
 }
 
-func (m *nodeManager) dismountComponent(v Composer) {
+func (m nodeManager) dismountComponent(v Composer) {
 	m.Dismount(v.root())
 	v.setRef(nil)
 
@@ -396,7 +387,7 @@ func (m *nodeManager) dismountComponent(v Composer) {
 	}
 }
 
-func (m *nodeManager) dismountRawHTML(v *raw) {
+func (m nodeManager) dismountRawHTML(v *raw) {
 	v.jsElement = nil
 }
 
@@ -406,7 +397,7 @@ func (m *nodeManager) dismountRawHTML(v *raw) {
 //
 // For HTML elements, it ensures that the tag names match. Otherwise, it returns
 // true indicating that an update is feasible.
-func (m *nodeManager) CanUpdate(v, new UI) bool {
+func (m nodeManager) CanUpdate(v, new UI) bool {
 	if vType, newType := reflect.TypeOf(v), reflect.TypeOf(new); vType != newType {
 		return false
 	}
@@ -423,7 +414,7 @@ func (m *nodeManager) CanUpdate(v, new UI) bool {
 // Update updates the existing UI element 'v' with a new UI element 'new'. It
 // returns the updated UI element and any error encountered during the update
 // process.
-func (m *nodeManager) Update(ctx Context, v, new UI) (UI, error) {
+func (m nodeManager) Update(ctx Context, v, new UI) (UI, error) {
 	if !v.Mounted() {
 		return nil, errors.New("element not mounted").WithTag("type", reflect.TypeOf(v))
 	}
@@ -446,7 +437,7 @@ func (m *nodeManager) Update(ctx Context, v, new UI) (UI, error) {
 	}
 }
 
-func (m *nodeManager) updateText(ctx Context, v, new *text) (UI, error) {
+func (m nodeManager) updateText(ctx Context, v, new *text) (UI, error) {
 	if v.value == new.value {
 		return v, nil
 	}
@@ -456,7 +447,7 @@ func (m *nodeManager) updateText(ctx Context, v, new *text) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) updateHTML(ctx Context, v, new HTML) (UI, error) {
+func (m nodeManager) updateHTML(ctx Context, v, new HTML) (UI, error) {
 	attrs := v.attrs()
 	newAttrs := new.attrs()
 	if attrs == nil && len(newAttrs) != 0 {
@@ -537,7 +528,7 @@ func (m *nodeManager) updateHTML(ctx Context, v, new HTML) (UI, error) {
 	return v, nil
 }
 
-func (m *nodeManager) updateHTMLAttributes(ctx Context, v HTML, newAttrs attributes) {
+func (m nodeManager) updateHTMLAttributes(ctx Context, v HTML, newAttrs attributes) {
 	attrs := v.attrs()
 	for name := range attrs {
 		if _, remains := newAttrs[name]; !remains {
@@ -560,7 +551,7 @@ func (m *nodeManager) updateHTMLAttributes(ctx Context, v HTML, newAttrs attribu
 	}
 }
 
-func (m *nodeManager) updateHTMLEventHandlers(ctx Context, v HTML, newEvents eventHandlers) {
+func (m nodeManager) updateHTMLEventHandlers(ctx Context, v HTML, newEvents eventHandlers) {
 	events := v.events()
 	for event, handler := range events {
 		if _, remains := newEvents[event]; !remains {
@@ -585,7 +576,7 @@ func (m *nodeManager) updateHTMLEventHandlers(ctx Context, v HTML, newEvents eve
 	}
 }
 
-func (m *nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
+func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 	value := reflect.Indirect(reflect.ValueOf(v))
 	newValue := reflect.Indirect(reflect.ValueOf(new))
 
@@ -652,7 +643,7 @@ func (m *nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) 
 	return v, nil
 }
 
-func (m *nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
+func (m nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
 	if v.value == new.value {
 		return v, nil
 	}
@@ -679,7 +670,7 @@ func (m *nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
 // MakeContext creates and returns a new context derived from the nodeManager's
 // base context (Ctx). The derived context is configured and tailored for the
 // provided UI element 'v'.
-func (m *nodeManager) MakeContext(ctx Context, v UI) Context {
+func (m nodeManager) MakeContext(ctx Context, v UI) Context {
 	newContext := ctx.(nodeContext)
 	newContext.sourceElement = v
 	return newContext
@@ -692,7 +683,7 @@ func (m *nodeManager) MakeContext(ctx Context, v UI) Context {
 // Parameters:
 //   - 'v': the initial UI element from which the event begins to propagate.
 //   - 'e': the event being disseminated through the UI elements.
-func (m *nodeManager) NotifyComponentEvent(ctx Context, v UI, e any) {
+func (m nodeManager) NotifyComponentEvent(ctx Context, v UI, e any) {
 	switch v := v.(type) {
 	case HTML:
 		for _, child := range v.body() {
