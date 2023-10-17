@@ -202,6 +202,7 @@ func makeTestContext() Context {
 		sessionStorage:         sessionStorage,
 		dispatch:               func(f func()) { f() },
 		defere:                 func(f func()) { f() },
+		async:                  func(f func()) { f() },
 		updateComponent:        func(Composer) {},
 		preventComponentUpdate: func(Composer) {},
 	}

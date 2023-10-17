@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -23,6 +24,9 @@ type engineX struct {
 	body            UI
 	initBrowserOnce sync.Once
 	browser         browser
+	dispatches      chan func()
+	defers          chan func()
+	goroutines      sync.WaitGroup
 }
 
 func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, origin *url.URL, newBody func() HTMLBody) *engineX {
@@ -52,6 +56,8 @@ func newEngineX(ctx context.Context, routes *router, resolveURL func(string) str
 		sessionStorage: sessionStorage,
 		newBody:        newBody,
 		nodes:          nodeManager{},
+		dispatches:     make(chan func(), 4096),
+		defers:         make(chan func(), 4096),
 	}
 }
 
@@ -140,6 +146,7 @@ func (e *engineX) baseContext() Context {
 		sessionStorage:         e.sessionStorage,
 		dispatch:               e.dispatch,
 		defere:                 e.defere,
+		async:                  e.async,
 		updateComponent:        func(c Composer) {},
 		preventComponentUpdate: func(c Composer) {},
 	}
@@ -170,11 +177,57 @@ func (e *engineX) load(v Composer) {
 }
 
 func (e *engineX) dispatch(v func()) {
-	// TODO implementd
-	v()
+	e.dispatches <- v
 }
 
 func (e *engineX) defere(v func()) {
-	// TODO implement
-	v()
+	e.defers <- v
+}
+
+func (e *engineX) async(v func()) {
+	e.goroutines.Add(1)
+	go func() {
+		v()
+		e.goroutines.Done()
+	}()
+}
+
+func (e *engineX) Start(framerate int) {
+	activeFrameDuration := time.Second / time.Duration(framerate)
+	iddleFrameDuration := time.Hour
+	currentFrameDuration := iddleFrameDuration
+
+	frames := time.NewTicker(currentFrameDuration)
+	defer frames.Stop()
+
+	for {
+		select {
+		case dispatch := <-e.dispatches:
+			if currentFrameDuration != activeFrameDuration {
+				frames.Reset(activeFrameDuration)
+				currentFrameDuration = activeFrameDuration
+			}
+			dispatch()
+
+		case <-frames.C:
+			// perform all updated
+
+			e.executeDefers()
+
+			frames.Reset(iddleFrameDuration)
+			currentFrameDuration = iddleFrameDuration
+		}
+	}
+}
+
+func (e *engineX) executeDefers() {
+	for {
+		select {
+		case defere := <-e.defers:
+			defere()
+
+		default:
+			return
+		}
+	}
 }

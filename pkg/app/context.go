@@ -407,6 +407,7 @@ type nodeContext struct {
 	sessionStorage         BrowserStorage
 	dispatch               func(func())
 	defere                 func(func())
+	async                  func(func())
 	updateComponent        func(Composer)
 	preventComponentUpdate func(Composer)
 }
