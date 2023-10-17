@@ -125,14 +125,58 @@ func TestEngineXNavigate(t *testing.T) {
 	})
 }
 
-func newTestEngine() *engineX {
-	url, _ := url.Parse("/")
-	routes := makeRouter()
+func TestEngineXInternalURL(t *testing.T) {
+	t.Run("destination is internal URL", func(t *testing.T) {
+		os.Setenv("GOAPP_INTERNAL_URLS", `["https://murlok.io"]`)
+		defer os.Unsetenv("GOAPP_INTERNAL_URLS")
 
+		e := newTestEngine()
+		destination, _ := url.Parse("https://murlok.io/warrior")
+		require.True(t, e.internalURL(destination))
+	})
+
+	t.Run("destination is internal URL", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("https://murlok.io/warrior")
+		require.False(t, e.internalURL(destination))
+	})
+}
+
+func TestEngineXMailTo(t *testing.T) {
+	t.Run("destination is mailto", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("mailto:maxence@goapp.dev")
+		require.True(t, e.mailTo(destination))
+	})
+
+	t.Run("destination is not mailto", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("/hello")
+		require.False(t, e.mailTo(destination))
+	})
+}
+
+func TestEngineXExternalNavigation(t *testing.T) {
+	t.Run("destination is external navigation", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("https://murlok.io")
+		require.True(t, e.externalNavigation(destination))
+	})
+
+	t.Run("destination is not external navigation", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("/hello")
+		require.False(t, e.externalNavigation(destination))
+	})
+}
+
+func newTestEngine() *engineX {
+	origin, _ := url.Parse("/")
+	routes := makeRouter()
 	return newEngineX(context.Background(),
 		&routes,
 		nil,
-		url,
+		origin,
 		Body,
 	)
 }

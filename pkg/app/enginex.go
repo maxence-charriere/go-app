@@ -110,10 +110,7 @@ func (e *engineX) initBrowser() {
 }
 
 func (e *engineX) externalNavigation(v *url.URL) bool {
-	return v.Host != "" &&
-		!strings.HasPrefix(v.Host, "127.0.0.1") &&
-		!strings.HasPrefix(Window().URL().Host, "localhost") &&
-		v.Host != "" && v.Host != Window().URL().Host
+	return v.Host != e.originPage.URL().Host
 }
 
 func (e *engineX) mailTo(v *url.URL) bool {
