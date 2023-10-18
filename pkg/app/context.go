@@ -474,7 +474,9 @@ func (ctx nodeContext) ResolveStaticResource(v string) string {
 }
 
 func (ctx nodeContext) ScrollTo(id string) {
-	panic("not implemented")
+	ctx.Defer(func(ctx Context) {
+		Window().ScrollToID(id)
+	})
 }
 
 func (ctx nodeContext) LocalStorage() BrowserStorage {
@@ -486,11 +488,32 @@ func (ctx nodeContext) SessionStorage() BrowserStorage {
 }
 
 func (ctx nodeContext) Encrypt(v any) ([]byte, error) {
-	panic("not implemented")
+	b, err := json.Marshal(v)
+	if err != nil {
+		return nil, errors.New("encoding value failed").Wrap(err)
+	}
+
+	b, err = encrypt(ctx.cryptoKey(), b)
+	if err != nil {
+		return nil, errors.New("encrypting value failed").Wrap(err)
+	}
+	return b, nil
 }
 
 func (ctx nodeContext) Decrypt(crypted []byte, v any) error {
-	panic("not implemented")
+	b, err := decrypt(ctx.cryptoKey(), crypted)
+	if err != nil {
+		return errors.New("decrypting value failed").Wrap(err)
+	}
+
+	if err := json.Unmarshal(b, v); err != nil {
+		return errors.New("decoding value failed").Wrap(err)
+	}
+	return nil
+}
+
+func (ctx nodeContext) cryptoKey() string {
+	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
 func (ctx nodeContext) Notifications() NotificationService {
@@ -520,8 +543,11 @@ func (ctx nodeContext) Async(v func()) {
 	ctx.async(v)
 }
 
-func (ctx nodeContext) After(d time.Duration, fn func(Context)) {
-	panic("not implemented")
+func (ctx nodeContext) After(d time.Duration, f func(Context)) {
+	ctx.async(func() {
+		time.Sleep(d)
+		ctx.Dispatch(f)
+	})
 }
 
 func (ctx nodeContext) PreventUpdate() {
@@ -557,5 +583,5 @@ func (ctx nodeContext) ObserveState(state string) Observer {
 }
 
 func (ctx nodeContext) Dispatcher() Dispatcher {
-	panic("deprecate this")
+	panic("to deprecate")
 }
