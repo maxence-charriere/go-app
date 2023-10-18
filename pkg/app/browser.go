@@ -1,11 +1,15 @@
 package app
 
 type browser struct {
-	anchorClick Func
-	popState    Func
+	AppUpdatable bool
+
+	anchorClick      Func
+	popState         Func
+	navigationFromJS Func
+	appUpdate        Func
 }
 
-func (b *browser) HandleEvents(ctx Context) {
+func (b *browser) HandleEvents(ctx nodeContext, notifyComponentEvent func(any)) {
 	b.handleAnchorClick(ctx)
 	b.handlePopState(ctx)
 	b.handleNavigationFromJS(ctx)
@@ -15,9 +19,9 @@ func (b *browser) HandleEvents(ctx Context) {
 	b.handleAppOrientationChange(ctx)
 }
 
-func (b *browser) handleAnchorClick(ctx Context) {
+func (b *browser) handleAnchorClick(ctx nodeContext) {
 	b.anchorClick = FuncOf(func(this Value, args []Value) any {
-		ctx.Dispatch(func(ctx Context) {
+		ctx.dispatch(func() {
 			event := Event{Value: args[0]}
 			if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
 				return
@@ -44,17 +48,41 @@ func (b *browser) handleAnchorClick(ctx Context) {
 				}
 			}
 		})
-
 		return nil
 	})
 	Window().Set("onclick", b.anchorClick)
 }
 
-func (b *browser) handlePopState(ctx Context) {}
+func (b *browser) handlePopState(ctx nodeContext) {
+	b.popState = FuncOf(func(this Value, args []Value) any {
+		ctx.dispatch(func() {
+			ctx.navigate(Window().URL(), false)
+		})
+		return nil
+	})
+	Window().Set("onpopstate", b.popState)
+}
 
-func (b *browser) handleNavigationFromJS(ctx Context) {}
+func (b *browser) handleNavigationFromJS(ctx nodeContext) {
+	b.navigationFromJS = FuncOf(func(this Value, args []Value) any {
+		ctx.dispatch(func() {
+			ctx.Navigate(args[0].String())
+		})
+		return nil
+	})
+	Window().Set("goappNav", b.navigationFromJS)
+}
 
-func (b *browser) handleAppUpdate(ctx Context) {}
+func (b *browser) handleAppUpdate(ctx nodeContext, notifyComponentEvent func(any)) {
+	b.appUpdate = FuncOf(func(this Value, args []Value) any {
+		ctx.dispatch(func() {
+			b.AppUpdatable = true
+			notifyComponentEvent(appUpdate{})
+		})
+		return nil
+	})
+	Window().Set("goappOnUpdate", b.appUpdate)
+}
 
 func (b *browser) handleAppInstallChange(ctx Context) {}
 

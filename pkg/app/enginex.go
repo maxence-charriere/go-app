@@ -115,7 +115,11 @@ func (e *engineX) initBrowser() {
 	if IsServer {
 		return
 	}
-	e.browser.HandleEvents(e.baseContext())
+	e.browser.HandleEvents(e.baseContext(), e.notifyComponentEvent)
+}
+
+func (e *engineX) notifyComponentEvent(event any) {
+	e.nodes.NotifyComponentEvent(e.baseContext(), e.body, event)
 }
 
 func (e *engineX) externalNavigation(v *url.URL) bool {
@@ -140,10 +144,11 @@ func (e *engineX) internalURL(v *url.URL) bool {
 	return false
 }
 
-func (e *engineX) baseContext() Context {
+func (e *engineX) baseContext() nodeContext {
 	return nodeContext{
 		Context:               e.ctx,
 		resolveURL:            e.resolveURL,
+		appUpdatable:          e.browser.AppUpdatable,
 		page:                  e.page,
 		navigate:              e.Navigate,
 		localStorage:          e.localStorage,

@@ -690,46 +690,42 @@ func (m nodeManager) context(baseCtx Context, v UI) Context {
 // NotifyComponentEvent traverses a UI element tree to propagate a component
 // event, activating pertinent component handlers and potentially enqueuing
 // component updates as needed.
-//
-// Parameters:
-//   - 'v': the initial UI element from which the event begins to propagate.
-//   - 'e': the event being disseminated through the UI elements.
-func (m nodeManager) NotifyComponentEvent(ctx Context, v UI, e any) {
-	ctx = m.context(ctx, v)
+func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
+	ctx = m.context(ctx, root)
 
-	switch v := v.(type) {
+	switch element := root.(type) {
 	case HTML:
-		for _, child := range v.body() {
-			m.NotifyComponentEvent(ctx, child, e)
+		for _, child := range element.body() {
+			m.NotifyComponentEvent(ctx, child, event)
 		}
 
 	case Composer:
-		switch e.(type) {
+		switch event.(type) {
 		case nav:
-			if navigator, ok := v.(Navigator); ok {
-				ctx.(nodeContext).addComponentUpdate(v)
+			if navigator, ok := element.(Navigator); ok {
+				ctx.(nodeContext).addComponentUpdate(element)
 				navigator.OnNav(ctx)
 			}
 
 		case appUpdate:
-			if updater, ok := v.(AppUpdater); ok {
-				ctx.(nodeContext).addComponentUpdate(v)
+			if updater, ok := element.(AppUpdater); ok {
+				ctx.(nodeContext).addComponentUpdate(element)
 				updater.OnAppUpdate(ctx)
 			}
 
 		case appInstallChange:
-			if appInstaller, ok := v.(AppInstaller); ok {
-				ctx.(nodeContext).addComponentUpdate(v)
+			if appInstaller, ok := element.(AppInstaller); ok {
+				ctx.(nodeContext).addComponentUpdate(element)
 				appInstaller.OnAppInstallChange(ctx)
 			}
 
 		case resize:
-			if resizer, ok := v.(Resizer); ok {
-				ctx.(nodeContext).addComponentUpdate(v)
+			if resizer, ok := element.(Resizer); ok {
+				ctx.(nodeContext).addComponentUpdate(element)
 				resizer.OnResize(ctx)
 			}
 		}
-		m.NotifyComponentEvent(ctx, v.root(), e)
+		m.NotifyComponentEvent(ctx, element.root(), event)
 	}
 }
 

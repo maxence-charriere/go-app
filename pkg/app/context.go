@@ -390,6 +390,7 @@ type nodeContext struct {
 
 	sourceElement             UI
 	page                      func() Page
+	appUpdatable              bool
 	resolveURL                func(string) string
 	navigate                  func(*url.URL, bool)
 	localStorage              BrowserStorage
@@ -411,7 +412,7 @@ func (ctx nodeContext) JSSrc() Value {
 }
 
 func (ctx nodeContext) AppUpdateAvailable() bool {
-	return appUpdateAvailable
+	return ctx.appUpdatable
 }
 
 func (ctx nodeContext) IsAppInstallable() bool {
