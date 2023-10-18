@@ -12,23 +12,28 @@ import (
 )
 
 type engineX struct {
-	ctx             context.Context
-	routes          *router
-	internalURLs    []string
-	resolveURL      func(string) string
-	originPage      requestPage
-	lastVisitedURL  *url.URL
-	localStorage    BrowserStorage
-	sessionStorage  BrowserStorage
-	nodes           nodeManager
-	newBody         func() HTMLBody
-	body            UI
+	ctx context.Context
+
+	localStorage   BrowserStorage
+	sessionStorage BrowserStorage
+
 	initBrowserOnce sync.Once
 	browser         browser
-	updates         updateManager
-	dispatches      chan func()
-	defers          chan func()
-	goroutines      sync.WaitGroup
+
+	routes         *router
+	internalURLs   []string
+	resolveURL     func(string) string
+	originPage     requestPage
+	lastVisitedURL *url.URL
+
+	nodes   nodeManager
+	updates updateManager
+	newBody func() HTMLBody
+	body    UI
+
+	dispatches chan func()
+	defers     chan func()
+	goroutines sync.WaitGroup
 }
 
 func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, origin *url.URL, newBody func() HTMLBody) *engineX {
