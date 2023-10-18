@@ -947,6 +947,7 @@ func TestNodeManagerContext(t *testing.T) {
 
 	ctx = m.context(ctx, div).(nodeContext)
 	require.NotZero(t, ctx)
+	require.NotNil(t, ctx.(nodeContext).Context)
 	require.NotNil(t, ctx.(nodeContext).sourceElement)
 	require.NotNil(t, ctx.(nodeContext).page)
 	require.NotNil(t, ctx.(nodeContext).resolveURL)

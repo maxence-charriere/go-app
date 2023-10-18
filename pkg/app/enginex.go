@@ -12,6 +12,7 @@ import (
 )
 
 type engineX struct {
+	ctx             context.Context
 	routes          *router
 	internalURLs    []string
 	resolveURL      func(string) string
@@ -46,6 +47,7 @@ func newEngineX(ctx context.Context, routes *router, resolveURL func(string) str
 	}
 
 	return &engineX{
+		ctx:        ctx,
 		routes:     routes,
 		resolveURL: resolveURL,
 		originPage: requestPage{
@@ -140,6 +142,7 @@ func (e *engineX) internalURL(v *url.URL) bool {
 
 func (e *engineX) baseContext() Context {
 	return nodeContext{
+		Context:               e.ctx,
 		resolveURL:            e.resolveURL,
 		page:                  e.page,
 		navigate:              e.Navigate,
