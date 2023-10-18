@@ -1,5 +1,7 @@
 package app
 
+import "time"
+
 type browser struct {
 	AppUpdatable bool
 
@@ -7,6 +9,9 @@ type browser struct {
 	popState         Func
 	navigationFromJS Func
 	appUpdate        Func
+	appInstallChange Func
+	appResize        Func
+	resizeTimer      *time.Timer
 }
 
 func (b *browser) HandleEvents(ctx nodeContext, notifyComponentEvent func(any)) {
@@ -14,9 +19,8 @@ func (b *browser) HandleEvents(ctx nodeContext, notifyComponentEvent func(any)) 
 	b.handlePopState(ctx)
 	b.handleNavigationFromJS(ctx)
 	b.handleAppUpdate(ctx, notifyComponentEvent)
-	b.handleAppInstallChange(ctx)
-	b.handleAppResize(ctx)
-	b.handleAppOrientationChange(ctx)
+	b.handleAppInstallChange(ctx, notifyComponentEvent)
+	b.handleAppResize(ctx, notifyComponentEvent)
 }
 
 func (b *browser) handleAnchorClick(ctx nodeContext) {
@@ -84,8 +88,34 @@ func (b *browser) handleAppUpdate(ctx nodeContext, notifyComponentEvent func(any
 	Window().Set("goappOnUpdate", b.appUpdate)
 }
 
-func (b *browser) handleAppInstallChange(ctx Context) {}
+func (b *browser) handleAppInstallChange(ctx nodeContext, notifyComponentEvent func(any)) {
+	b.appInstallChange = FuncOf(func(this Value, args []Value) any {
+		ctx.dispatch(func() {
+			notifyComponentEvent(appInstallChange{})
+		})
+		return nil
+	})
+	Window().Set("goappOnAppInstallChange", b.appInstallChange)
+}
 
-func (b *browser) handleAppResize(ctx Context) {}
+func (b *browser) handleAppResize(ctx nodeContext, notifyComponentEvent func(any)) {
+	const resizeCooldown = time.Millisecond * 250
 
-func (b *browser) handleAppOrientationChange(ctx Context) {}
+	b.appResize = FuncOf(func(this Value, args []Value) any {
+		ctx.dispatch(func() {
+			if b.resizeTimer != nil {
+				b.resizeTimer.Stop()
+				b.resizeTimer.Reset(resizeCooldown)
+				return
+			}
+
+			b.resizeTimer = time.AfterFunc(resizeCooldown, func() {
+				ctx.dispatch(func() {
+					notifyComponentEvent(resize{})
+				})
+			})
+		})
+		return nil
+	})
+	Window().Set("onresize", b.appResize)
+}
