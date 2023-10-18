@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"fmt"
 	"reflect"
 	"sync"
@@ -939,14 +938,14 @@ func TestNodeManagerUpdate(t *testing.T) {
 	})
 }
 
-func TestNodeManagerMakeContext(t *testing.T) {
+func TestNodeManagerContext(t *testing.T) {
 	var m nodeManager
 
 	ctx := makeTestContext()
 	div, err := m.Mount(ctx, 1, Div())
 	require.NoError(t, err)
 
-	ctx = m.MakeContext(ctx, div).(nodeContext)
+	ctx = m.context(ctx, div).(nodeContext)
 	require.NotZero(t, ctx)
 	require.NotNil(t, ctx.(nodeContext).sourceElement)
 	require.NotNil(t, ctx.(nodeContext).page)
@@ -957,102 +956,87 @@ func TestNodeManagerMakeContext(t *testing.T) {
 	require.NotNil(t, ctx.(nodeContext).defere)
 }
 
-func TestTriggerComponentUpdates(t *testing.T) {
+func TestNodeManagerForEachUpdatableComponent(t *testing.T) {
 	t.Run("ignores dismounted element", func(t *testing.T) {
 		var m nodeManager
-		m.triggerComponentUpdates(makeTestContext(), Div())
+
+		funcCalled := false
+		m.ForEachUpdatableComponent(Div(), func(c Composer) {
+			funcCalled = true
+		})
+		require.False(t, funcCalled)
 	})
 
-	t.Run("component is updated", func(t *testing.T) {
-		updated := make(map[UI]struct{})
-		ctx := nodeContext{
-			Context: context.Background(),
-			updateComponent: func(c Composer) {
-				updated[c] = struct{}{}
-			},
-		}
+	t.Run("function is called on component", func(t *testing.T) {
+		componentCalls := make(map[UI]struct{})
 
 		var m nodeManager
-		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: Div()})
+		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: Div()})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(ctx, compo)
-		require.Contains(t, updated, compo)
+		m.ForEachUpdatableComponent(compo, func(c Composer) {
+			componentCalls[c] = struct{}{}
+		})
+		require.Contains(t, componentCalls, compo)
 	})
 
-	t.Run("parent component is updated", func(t *testing.T) {
-		updated := make(map[UI]struct{})
-		ctx := nodeContext{
-			Context: context.Background(),
-			updateComponent: func(c Composer) {
-				updated[c] = struct{}{}
-			},
-		}
+	t.Run("function is called on first parent component", func(t *testing.T) {
+		componentCalls := make(map[UI]struct{})
 
 		var m nodeManager
 		div := Div()
-		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: div})
+		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: div})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(ctx, div)
-		require.Contains(t, updated, compo)
+		m.ForEachUpdatableComponent(div, func(c Composer) {
+			componentCalls[c] = struct{}{}
+		})
+		require.Contains(t, componentCalls, compo)
 	})
 
-	t.Run("parent component is not updated", func(t *testing.T) {
-		updated := make(map[UI]struct{})
-		ctx := nodeContext{
-			Context: context.Background(),
-			updateComponent: func(c Composer) {
-				updated[c] = struct{}{}
-			},
-		}
+	t.Run("function is not call on parent component", func(t *testing.T) {
+		componentCalls := make(map[UI]struct{})
 
 		var m nodeManager
 		hello := &hello{}
-		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: hello})
+		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: hello})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(ctx, hello)
-		require.Contains(t, updated, hello)
-		require.NotContains(t, updated, compo)
+		m.ForEachUpdatableComponent(hello, func(c Composer) {
+			componentCalls[c] = struct{}{}
+		})
+		require.Contains(t, componentCalls, hello)
+		require.NotContains(t, componentCalls, compo)
 	})
 
-	t.Run("update notifier prevents parent component update", func(t *testing.T) {
-		updated := make(map[UI]struct{})
-		ctx := nodeContext{
-			Context: context.Background(),
-			updateComponent: func(c Composer) {
-				updated[c] = struct{}{}
-			},
-		}
+	t.Run("function call is prevented by update notifier", func(t *testing.T) {
+		componentCalls := make(map[UI]struct{})
 
 		var m nodeManager
 		notifier := &updateNotifierCompo{notify: false}
-		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: notifier})
+		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: notifier})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(ctx, notifier)
-		require.Contains(t, updated, notifier)
-		require.NotContains(t, updated, compo)
+		m.ForEachUpdatableComponent(notifier, func(c Composer) {
+			componentCalls[c] = struct{}{}
+		})
+		require.Contains(t, componentCalls, notifier)
+		require.NotContains(t, componentCalls, compo)
 	})
 
-	t.Run("update notifier allows parent component update", func(t *testing.T) {
-		updated := make(map[UI]struct{})
-		ctx := nodeContext{
-			Context: context.Background(),
-			updateComponent: func(c Composer) {
-				updated[c] = struct{}{}
-			},
-		}
+	t.Run("function call is enabled by update notifier", func(t *testing.T) {
+		componentCalls := make(map[UI]struct{})
 
 		var m nodeManager
 		notifier := &updateNotifierCompo{notify: true}
-		compo, err := m.Mount(ctx, 1, &compoWithCustomRoot{Root: notifier})
+		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: notifier})
 		require.NoError(t, err)
 
-		m.triggerComponentUpdates(ctx, notifier)
-		require.Contains(t, updated, notifier)
-		require.Contains(t, updated, compo)
+		m.ForEachUpdatableComponent(notifier, func(c Composer) {
+			componentCalls[c] = struct{}{}
+		})
+		require.Contains(t, componentCalls, notifier)
+		require.Contains(t, componentCalls, compo)
 	})
 }
 
@@ -1061,7 +1045,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("nav event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.updateComponent = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer) {
 			updates[c] = struct{}{}
 		}
 
@@ -1077,7 +1061,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("app update event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.updateComponent = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer) {
 			updates[c] = struct{}{}
 		}
 
@@ -1093,7 +1077,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("app install change event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.updateComponent = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer) {
 			updates[c] = struct{}{}
 		}
 
@@ -1109,7 +1093,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("resize change event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.updateComponent = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer) {
 			updates[c] = struct{}{}
 		}
 

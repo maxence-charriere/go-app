@@ -24,6 +24,7 @@ type engineX struct {
 	body            UI
 	initBrowserOnce sync.Once
 	browser         browser
+	updates         updateManager
 	dispatches      chan func()
 	defers          chan func()
 	goroutines      sync.WaitGroup
@@ -139,16 +140,16 @@ func (e *engineX) internalURL(v *url.URL) bool {
 
 func (e *engineX) baseContext() Context {
 	return nodeContext{
-		resolveURL:             e.resolveURL,
-		page:                   e.page,
-		navigate:               e.Navigate,
-		localStorage:           e.localStorage,
-		sessionStorage:         e.sessionStorage,
-		dispatch:               e.dispatch,
-		defere:                 e.defere,
-		async:                  e.async,
-		updateComponent:        func(c Composer) {},
-		preventComponentUpdate: func(c Composer) {},
+		resolveURL:            e.resolveURL,
+		page:                  e.page,
+		navigate:              e.Navigate,
+		localStorage:          e.localStorage,
+		sessionStorage:        e.sessionStorage,
+		dispatch:              e.dispatch,
+		defere:                e.defere,
+		async:                 e.async,
+		addComponentUpdate:    e.updates.Add,
+		removeComponentUpdate: e.updates.Done,
 	}
 }
 
@@ -210,8 +211,12 @@ func (e *engineX) Start(framerate int) {
 			dispatch()
 
 		case <-frames.C:
-			// perform all updated
-
+			e.updates.ForEach(func(c Composer) {
+				if _, err := e.nodes.UpdateComponentRoot(e.baseContext(), c); err != nil {
+					panic(errors.New("updating component failed").Wrap(err))
+				}
+				e.updates.Done(c)
+			})
 			e.executeDefers()
 
 			frames.Reset(iddleFrameDuration)

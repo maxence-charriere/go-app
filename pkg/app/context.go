@@ -156,9 +156,6 @@ type Context interface {
 
 	// Returns the app dispatcher.
 	Dispatcher() Dispatcher
-
-	update(Composer)
-	preventUpdate(Composer)
 }
 
 type uiContext struct {
@@ -377,14 +374,6 @@ func (ctx uiContext) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
-func (ctx uiContext) update(Composer) {
-	panic("not implementable")
-}
-
-func (ctx uiContext) preventUpdate(Composer) {
-	panic("not implementable")
-}
-
 func makeContext(src UI) Context {
 	return uiContext{
 		Context:            context.Background(),
@@ -399,17 +388,18 @@ func makeContext(src UI) Context {
 type nodeContext struct {
 	context.Context
 
-	sourceElement          UI
-	page                   func() Page
-	resolveURL             func(string) string
-	navigate               func(*url.URL, bool)
-	localStorage           BrowserStorage
-	sessionStorage         BrowserStorage
-	dispatch               func(func())
-	defere                 func(func())
-	async                  func(func())
-	updateComponent        func(Composer)
-	preventComponentUpdate func(Composer)
+	sourceElement             UI
+	page                      func() Page
+	resolveURL                func(string) string
+	navigate                  func(*url.URL, bool)
+	localStorage              BrowserStorage
+	sessionStorage            BrowserStorage
+	dispatch                  func(func())
+	defere                    func(func())
+	async                     func(func())
+	addComponentUpdate        func(Composer)
+	removeComponentUpdate     func(Composer)
+	foreachUpdatableComponent func(UI, func(Composer))
 }
 
 func (ctx nodeContext) Src() UI {
@@ -509,18 +499,25 @@ func (ctx nodeContext) Notifications() NotificationService {
 
 func (ctx nodeContext) Dispatch(v func(Context)) {
 	ctx.dispatch(func() {
+		if !ctx.sourceElement.Mounted() {
+			return
+		}
+		ctx.foreachUpdatableComponent(ctx.sourceElement, ctx.addComponentUpdate)
 		v(ctx)
 	})
 }
 
 func (ctx nodeContext) Defer(v func(Context)) {
 	ctx.defere(func() {
+		if !ctx.sourceElement.Mounted() {
+			return
+		}
 		v(ctx)
 	})
 }
 
-func (ctx nodeContext) Async(fn func()) {
-	panic("not implemented")
+func (ctx nodeContext) Async(v func()) {
+	ctx.async(v)
 }
 
 func (ctx nodeContext) After(d time.Duration, fn func(Context)) {
@@ -528,7 +525,7 @@ func (ctx nodeContext) After(d time.Duration, fn func(Context)) {
 }
 
 func (ctx nodeContext) PreventUpdate() {
-	panic("not implemented")
+	ctx.foreachUpdatableComponent(ctx.sourceElement, ctx.removeComponentUpdate)
 }
 
 func (ctx nodeContext) Handle(actionName string, h ActionHandler) {
@@ -561,12 +558,4 @@ func (ctx nodeContext) ObserveState(state string) Observer {
 
 func (ctx nodeContext) Dispatcher() Dispatcher {
 	panic("deprecate this")
-}
-
-func (ctx nodeContext) update(v Composer) {
-	ctx.updateComponent(v)
-}
-
-func (ctx nodeContext) preventUpdate(v Composer) {
-	ctx.preventComponentUpdate(v)
 }

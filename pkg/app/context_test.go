@@ -195,15 +195,15 @@ func makeTestContext() Context {
 	}
 
 	return nodeContext{
-		Context:                context.Background(),
-		page:                   func() Page { return page },
-		resolveURL:             resolveURL,
-		localStorage:           localStorage,
-		sessionStorage:         sessionStorage,
-		dispatch:               func(f func()) { f() },
-		defere:                 func(f func()) { f() },
-		async:                  func(f func()) { f() },
-		updateComponent:        func(Composer) {},
-		preventComponentUpdate: func(Composer) {},
+		Context:               context.Background(),
+		page:                  func() Page { return page },
+		resolveURL:            resolveURL,
+		localStorage:          localStorage,
+		sessionStorage:        sessionStorage,
+		dispatch:              func(f func()) { f() },
+		defere:                func(f func()) { f() },
+		async:                 func(f func()) { f() },
+		addComponentUpdate:    func(Composer) {},
+		removeComponentUpdate: func(Composer) {},
 	}
 }

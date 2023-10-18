@@ -148,6 +148,8 @@ type nodeManager struct {
 // Mount mounts a UI element based on its type and the specified depth. It
 // returns the mounted UI element and any potential error during the process.
 func (m nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
+	ctx = m.context(ctx, v)
+
 	switch v := v.(type) {
 	case *text:
 		return m.mountText(ctx, depth, v)
@@ -246,8 +248,7 @@ func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHan
 			ctx.Dispatch(func(ctx Context) {
 				event := Event{Value: args[0]}
 				trackMousePosition(event)
-				handler.goHandler(m.MakeContext(ctx, v), event)
-				m.triggerComponentUpdates(ctx, v)
+				handler.goHandler(ctx, event)
 			})
 		}
 		return nil
@@ -266,26 +267,6 @@ func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHan
 	}
 }
 
-func (m nodeManager) triggerComponentUpdates(ctx Context, u UI) {
-	if !u.Mounted() {
-		return
-	}
-
-	for v := u; v != nil; v = v.parent() {
-		switch v := v.(type) {
-		case UpdateNotifier:
-			ctx.update(v)
-			if !v.NotifyUpdate() {
-				return
-			}
-
-		case Composer:
-			ctx.update(v)
-			return
-		}
-	}
-}
-
 func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("component is already mounted").
@@ -298,7 +279,7 @@ func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, er
 	v = v.setDepth(depth)
 
 	if mounter, ok := v.(Mounter); ok {
-		mounter.OnMount(m.MakeContext(ctx, v))
+		mounter.OnMount(ctx)
 	}
 
 	root, err := m.renderComponent(v)
@@ -419,6 +400,7 @@ func (m nodeManager) Update(ctx Context, v, new UI) (UI, error) {
 		return nil, errors.New("element not mounted").WithTag("type", reflect.TypeOf(v))
 	}
 
+	ctx = m.context(ctx, v)
 	switch v := v.(type) {
 	case *text:
 		return m.updateText(ctx, v, new.(*text))
@@ -600,6 +582,14 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 		return v, nil
 	}
 
+	ctx.(nodeContext).removeComponentUpdate(v)
+	return m.UpdateComponentRoot(ctx, v)
+}
+
+// UpdateComponentRoot updates the root element of the given component.
+func (m nodeManager) UpdateComponentRoot(ctx Context, v Composer) (UI, error) {
+	ctx = m.context(ctx, v)
+
 	root := v.root()
 	newRoot, err := m.renderComponent(v)
 	if err != nil {
@@ -637,7 +627,7 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 	}
 
 	if updater, ok := v.(Updater); ok {
-		updater.OnUpdate(m.MakeContext(ctx, v))
+		updater.OnUpdate(ctx)
 	}
 
 	return v, nil
@@ -667,13 +657,34 @@ func (m nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
 	return newMount, nil
 }
 
-// MakeContext creates and returns a new context derived from the nodeManager's
-// base context (Ctx). The derived context is configured and tailored for the
-// provided UI element 'v'.
-func (m nodeManager) MakeContext(ctx Context, v UI) Context {
-	newContext := ctx.(nodeContext)
-	newContext.sourceElement = v
-	return newContext
+// ForEachUpdatableComponent iterates over the UI element hierarchy from the given element upwards,
+// applying the provided function to the first component it encounters. If the component implements the UpdateNotifier
+// interface and indicates no further updates are required, the iteration halts.
+func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
+	if !v.Mounted() {
+		return
+	}
+
+	for element := v; element != nil; element = v.parent() {
+		switch element := element.(type) {
+		case UpdateNotifier:
+			f(element)
+			if !element.NotifyUpdate() {
+				return
+			}
+
+		case Composer:
+			f(element)
+			return
+		}
+	}
+}
+
+func (m nodeManager) context(baseCtx Context, v UI) Context {
+	ctx := baseCtx.(nodeContext)
+	ctx.sourceElement = v
+	ctx.foreachUpdatableComponent = m.ForEachUpdatableComponent
+	return ctx
 }
 
 // NotifyComponentEvent traverses a UI element tree to propagate a component
@@ -684,6 +695,8 @@ func (m nodeManager) MakeContext(ctx Context, v UI) Context {
 //   - 'v': the initial UI element from which the event begins to propagate.
 //   - 'e': the event being disseminated through the UI elements.
 func (m nodeManager) NotifyComponentEvent(ctx Context, v UI, e any) {
+	ctx = m.context(ctx, v)
+
 	switch v := v.(type) {
 	case HTML:
 		for _, child := range v.body() {
@@ -694,26 +707,26 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, v UI, e any) {
 		switch e.(type) {
 		case nav:
 			if navigator, ok := v.(Navigator); ok {
-				navigator.OnNav(m.MakeContext(ctx, v))
-				ctx.update(v)
+				ctx.(nodeContext).addComponentUpdate(v)
+				navigator.OnNav(ctx)
 			}
 
 		case appUpdate:
 			if updater, ok := v.(AppUpdater); ok {
-				updater.OnAppUpdate(m.MakeContext(ctx, v))
-				ctx.update(v)
+				ctx.(nodeContext).addComponentUpdate(v)
+				updater.OnAppUpdate(ctx)
 			}
 
 		case appInstallChange:
 			if appInstaller, ok := v.(AppInstaller); ok {
-				appInstaller.OnAppInstallChange(m.MakeContext(ctx, v))
-				ctx.update(v)
+				ctx.(nodeContext).addComponentUpdate(v)
+				appInstaller.OnAppInstallChange(ctx)
 			}
 
 		case resize:
 			if resizer, ok := v.(Resizer); ok {
-				resizer.OnResize(m.MakeContext(ctx, v))
-				ctx.update(v)
+				ctx.(nodeContext).addComponentUpdate(v)
+				resizer.OnResize(ctx)
 			}
 		}
 		m.NotifyComponentEvent(ctx, v.root(), e)
