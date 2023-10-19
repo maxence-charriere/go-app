@@ -11,150 +11,108 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// Context is the interface that describes a context tied to a UI element.
-//
-// A context provides mechanisms to deal with the browser, the current page,
-// navigation, concurrency, and component communication.
-//
-// It is canceled when its associated UI element is dismounted.
+// Context represents a UI element-associated environment enabling interactions
+// with the browser, page navigation, concurrency, and component communication.
 type Context interface {
 	context.Context
 
-	// Returns the UI element tied to the context.
+	// Src retrieves the linked UI element of the context.
 	Src() UI
 
-	// Returns the associated JavaScript value. The is an helper method for:
-	//  ctx.Src.JSValue()
+	// JSSrc fetches the JavaScript representation of the associated UI element.
 	JSSrc() Value
 
-	// Reports whether the app has been updated in background. Use app.Reload()
-	// to load the updated version.
+	// AppUpdateAvailable checks if there's a pending app update.
 	AppUpdateAvailable() bool
 
-	// Reports whether the app is installable.
+	// IsAppInstallable verifies if the app is eligible for installation.
 	IsAppInstallable() bool
 
-	// Shows the app install prompt if the app is installable.
+	// ShowAppInstallPrompt initiates the app installation process.
 	ShowAppInstallPrompt()
 
-	// Returns a UUID that identifies the app on the current device.
+	// DeviceID fetches a distinct identifier for the app on the present device.
 	DeviceID() string
 
-	// Returns the current page.
+	// Page retrieves the current active page.
 	Page() Page
 
-	// Reloads the WebAssembly app to the current page. It is like refreshing
-	// the browser page.
+	// Reload refreshes the present page.
 	Reload()
 
-	// Navigates to the given URL. This is a helper method that converts url to
-	// an *url.URL and then calls ctx.NavigateTo under the hood.
+	// Navigate transitions to the given URL string.
 	Navigate(url string)
 
-	// Navigates to the given URL.
+	// NavigateTo transitions to the provided URL.
 	NavigateTo(u *url.URL)
 
-	// Resolves the given path to make it point to the right location whether
-	// static resources are located on a local directory or a remote bucket.
+	// ResolveStaticResource adjusts a given path to point to the correct static
+	// resource location.
 	ResolveStaticResource(string) string
 
-	// Scrolls to the HTML element with the given id.
+	// ScrollTo adjusts the scrollbar to target an HTML element by its ID.
 	ScrollTo(id string)
 
-	// Returns a storage that uses the browser local storage associated to the
-	// document origin. Data stored has no expiration time.
+	// LocalStorage accesses the browser's local storage tied to the document
+	// origin.
 	LocalStorage() BrowserStorage
 
-	// Returns a storage that uses the browser session storage associated to the
-	// document origin. Data stored expire when the page session ends.
+	// SessionStorage accesses the browser's session storage tied to the
+	// document origin.
 	SessionStorage() BrowserStorage
 
-	// Encrypts the given value using AES encryption.
+	// Encrypt enciphers a value using AES encryption.
 	Encrypt(v any) ([]byte, error)
 
-	// Decrypts the given encrypted bytes and stores them in the given value.
+	// Decrypt deciphers encrypted data into a given reference value.
 	Decrypt(crypted []byte, v any) error
 
-	// Returns the service to setup and display notifications.
+	// Notifications accesses the notifications service.
 	Notifications() NotificationService
 
-	// Executes the given function on the UI goroutine and notifies the
-	// context's nearest component to update its state.
+	// Dispatch prompts the execution of a function on the UI goroutine,
+	// flagging the enclosing component for an update, respecting any
+	// implemented UpdateNotifier behavior.
 	Dispatch(fn func(Context))
 
-	// Executes the given function on the UI goroutine after notifying the
-	// context's nearest component to update its state.
+	// Defer postpones the function execution on the UI goroutine until the
+	// current update cycle completes.
 	Defer(fn func(Context))
 
-	// Executes the given function on a new goroutine.
-	//
-	// The difference versus just launching a goroutine is that it ensures that
-	// the asynchronous function is called before a page is fully pre-rendered
-	// and served over HTTP.
+	// Async initiates a function asynchronously. It enables go-app to monitor
+	// goroutines, ensuring they conclude when rendering server-side.
 	Async(fn func())
 
-	// Asynchronously waits for the given duration and dispatches the given
-	// function.
+	// After pauses for a determined span, then triggers a specified function.
 	After(d time.Duration, fn func(Context))
 
-	// Prevents the component that contains the context source to be updated.
+	// PreventUpdate halts updates for the enclosing component, respecting any
+	// implemented UpdateNotifier behavior.
 	PreventUpdate()
 
-	// Registers the handler for the given action name. When an action occurs,
-	// the handler is executed on the UI goroutine.
-	Handle(actionName string, h ActionHandler)
+	// Handle designates a handler for a particular action, set to run on the UI
+	// goroutine.
+	Handle(action string, h ActionHandler)
 
-	// Creates an action with optional tags, to be handled with Context.Handle.
-	// Eg:
-	//  ctx.NewAction("myAction")
-	//  ctx.NewAction("myAction", app.T("purpose", "test"))
-	//  ctx.NewAction("myAction", app.Tags{
-	//      "foo": "bar",
-	//      "hello": "world",
-	//  })
+	// NewAction generates a new action for handling.
 	NewAction(name string, tags ...Tagger)
 
-	// Creates an action with a value and optional tags, to be handled with
-	// Context.Handle. Eg:
-	//  ctx.NewActionWithValue("processValue", 42)
-	//  ctx.NewActionWithValue("processValue", 42, app.T("type", "number"))
-	//  ctx.NewActionWithValue("myAction", 42, app.Tags{
-	//      "foo": "bar",
-	//      "hello": "world",
-	//  })
+	// NewActionWithValue crafts an action with a given value for processing.
 	NewActionWithValue(name string, v any, tags ...Tagger)
 
-	// Sets the state with the given value.
-	// Example:
-	//  ctx.SetState("/globalNumber", 42, Persistent)
-	//
-	// Options can be added to persist a state into the local storage, encrypt,
-	// expire, or broadcast the state across browser tabs and windows.
-	// Example:
-	//  ctx.SetState("/globalNumber", 42, Persistent, Broadcast)
+	// SetState modifies a state with the provided value.
 	SetState(state string, v any, opts ...StateOption)
 
-	// Stores the specified state value into the given receiver. Panics when the
-	// receiver is not a pointer or nil.
+	// GetState fetches the value of a particular state.
 	GetState(state string, recv any)
 
-	// Deletes the given state. All value observations are stopped.
+	// DelState erases a state, halting all associated observations.
 	DelState(state string)
 
-	// Creates an observer that observes changes for the given state.
-	// Example:
-	//  type myComponent struct {
-	//      app.Compo
-	//
-	//      number int
-	//  }
-	//
-	//  func (c *myComponent) OnMount(ctx app.Context) {
-	//      ctx.ObserveState("/globalNumber").Value(&c.number)
-	//  }
+	// ObserveState establishes an observer for a state, tracking its changes.
 	ObserveState(state string) Observer
 
-	// Returns the app dispatcher.
+	// Dispatcher fetches the app's dispatcher.
 	Dispatcher() Dispatcher
 }
 

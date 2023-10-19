@@ -92,6 +92,10 @@ func (e *engineX) baseContext() nodeContext {
 	}
 }
 
+// Navigate directs the engine to the specified URL destination, which might be
+// an internal page within the app, an external link outside the app, or a
+// mailto link. If the 'updateHistory' flag is true, the destination is added to
+// the browser's history.
 func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 	e.initBrowserOnce.Do(e.initBrowser)
 
