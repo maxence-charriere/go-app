@@ -217,15 +217,17 @@ func (e *engineX) async(v func()) {
 	}()
 }
 
+// Start initiates the main event loop of the engine at the specified framerate.
+// The loop efficiently manages dispatches, component updates, and deferred
+// actions.
 func (e *engineX) Start(framerate int) {
 	if framerate <= 0 {
 		framerate = 30
 	}
 
-	activeFrameDuration := time.Second / time.Duration(framerate)
 	iddleFrameDuration := time.Hour
-	currentFrameDuration := iddleFrameDuration
-
+	activeFrameDuration := time.Second / time.Duration(framerate)
+	currentFrameDuration := time.Nanosecond
 	frames := time.NewTicker(currentFrameDuration)
 	defer frames.Stop()
 
@@ -250,6 +252,9 @@ func (e *engineX) Start(framerate int) {
 
 			frames.Reset(iddleFrameDuration)
 			currentFrameDuration = iddleFrameDuration
+
+		case <-e.ctx.Done():
+			return
 		}
 	}
 }

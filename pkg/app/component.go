@@ -194,18 +194,20 @@ func (c *Compo) Mounted() bool {
 // satisfy the app.Composer interface. It should be redefined when app.Compo is
 // embedded.
 func (c *Compo) Render() UI {
+	componentName := reflect.TypeOf(c.ref).Name()
+
 	return Div().
-		DataSet("compo-type", c.name()).
+		DataSet("compo-type", componentName).
 		Style("border", "1px solid currentColor").
 		Style("padding", "12px 0").
 		Body(
-			H1().Text("Component "+strings.TrimPrefix(c.name(), "*")),
+			H1().Text("Component "+strings.TrimPrefix(componentName, "*")),
 			P().Body(
 				Text("Change appearance by implementing: "),
 				Code().
 					Style("color", "deepskyblue").
 					Style("margin", "0 6px").
-					Text("func (c "+c.name()+") Render() app.UI"),
+					Text("func (c "+componentName+") Render() app.UI"),
 			),
 		)
 }

@@ -598,3 +598,15 @@ func (c *updateNotifierCompo) NotifyUpdate() bool {
 func (c *updateNotifierCompo) Render() UI {
 	return Span()
 }
+
+type navigatorComponent struct {
+	Compo
+
+	onNav func(Context)
+}
+
+func (c *navigatorComponent) OnNav(ctx Context) {
+	if c.onNav != nil {
+		c.onNav(ctx)
+	}
+}

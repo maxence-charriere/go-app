@@ -188,6 +188,44 @@ func TestEngineXExternalNavigation(t *testing.T) {
 	})
 }
 
+func TestEngineXAsync(t *testing.T) {
+	e := newTestEngine()
+
+	called := false
+	e.async(func() {
+		called = true
+	})
+
+	e.goroutines.Wait()
+	require.True(t, called)
+}
+
+func TestEngineXStart(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	routes := makeRouter()
+	routes.route("/", func() Composer {
+		return &navigatorComponent{
+			onNav: func(ctx Context) {
+				ctx.Dispatch(func(ctx Context) {
+					ctx.Defer(func(ctx Context) {
+						cancel()
+					})
+				})
+			},
+		}
+	})
+
+	e := newTestEngine()
+	e.ctx = ctx
+	e.routes = &routes
+
+	destination, _ := url.Parse("/")
+	e.Navigate(destination, false)
+	e.Start(0)
+}
+
 func newTestEngine() *engineX {
 	origin, _ := url.Parse("/")
 	routes := makeRouter()
