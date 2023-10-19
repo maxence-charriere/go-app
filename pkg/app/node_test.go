@@ -947,14 +947,14 @@ func TestNodeManagerContext(t *testing.T) {
 
 	ctx = m.context(ctx, div).(nodeContext)
 	require.NotZero(t, ctx)
-	require.NotNil(t, ctx.(nodeContext).Context)
-	require.NotNil(t, ctx.(nodeContext).sourceElement)
-	require.NotNil(t, ctx.(nodeContext).page)
-	require.NotNil(t, ctx.(nodeContext).resolveURL)
-	require.NotNil(t, ctx.(nodeContext).localStorage)
-	require.NotNil(t, ctx.(nodeContext).sessionStorage)
-	require.NotNil(t, ctx.(nodeContext).dispatch)
-	require.NotNil(t, ctx.(nodeContext).defere)
+	require.NotNil(t, ctx.Context)
+	require.NotNil(t, ctx.sourceElement)
+	require.NotNil(t, ctx.page)
+	require.NotNil(t, ctx.resolveURL)
+	require.NotNil(t, ctx.localStorage)
+	require.NotNil(t, ctx.sessionStorage)
+	require.NotNil(t, ctx.dispatch)
+	require.NotNil(t, ctx.defere)
 }
 
 func TestNodeManagerForEachUpdatableComponent(t *testing.T) {
@@ -1042,7 +1042,7 @@ func TestNodeManagerForEachUpdatableComponent(t *testing.T) {
 }
 
 func TestNodeManagerNotifyComponentEvent(t *testing.T) {
-	ctx := makeTestContext().(nodeContext)
+	ctx := makeTestContext()
 
 	t.Run("nav event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})

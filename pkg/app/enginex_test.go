@@ -9,6 +9,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestEngineXBaseContext(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
+	require.NotNil(t, ctx.Context)
+	require.NotNil(t, ctx.resolveURL)
+	require.NotNil(t, ctx.page)
+	require.NotNil(t, ctx.navigate)
+	require.NotNil(t, ctx.localStorage)
+	require.NotNil(t, ctx.sessionStorage)
+	require.NotNil(t, ctx.dispatch)
+	require.NotNil(t, ctx.defere)
+	require.NotNil(t, ctx.async)
+	require.NotNil(t, ctx.addComponentUpdate)
+	require.NotNil(t, ctx.removeComponentUpdate)
+	require.NotNil(t, ctx.handleAction)
+	require.NotNil(t, ctx.postAction)
+}
+
 func TestEngineXLoad(t *testing.T) {
 	t.Run("load loads a new body", func(t *testing.T) {
 		e := newTestEngine()
@@ -178,5 +196,8 @@ func newTestEngine() *engineX {
 		nil,
 		origin,
 		Body,
+		map[string]ActionHandler{
+			"/test": func(ctx Context, a Action) {},
+		},
 	)
 }

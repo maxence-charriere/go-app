@@ -165,7 +165,7 @@ func TestContextStates(t *testing.T) {
 	require.Equal(t, "bye", v)
 }
 
-func makeTestContext() Context {
+func makeTestContext() nodeContext {
 	resolveURL := func(v string) string {
 		return v
 	}
@@ -205,5 +205,7 @@ func makeTestContext() Context {
 		async:                 func(f func()) { f() },
 		addComponentUpdate:    func(Composer) {},
 		removeComponentUpdate: func(Composer) {},
+		handleAction:          func(string, UI, bool, ActionHandler) {},
+		postAction:            func(Context, Action) {},
 	}
 }

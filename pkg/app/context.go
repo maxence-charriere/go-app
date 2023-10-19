@@ -401,6 +401,8 @@ type nodeContext struct {
 	addComponentUpdate        func(Composer)
 	removeComponentUpdate     func(Composer)
 	foreachUpdatableComponent func(UI, func(Composer))
+	handleAction              func(string, UI, bool, ActionHandler)
+	postAction                func(Context, Action)
 }
 
 func (ctx nodeContext) Src() UI {
@@ -555,16 +557,32 @@ func (ctx nodeContext) PreventUpdate() {
 	ctx.foreachUpdatableComponent(ctx.sourceElement, ctx.removeComponentUpdate)
 }
 
-func (ctx nodeContext) Handle(actionName string, h ActionHandler) {
-	panic("not implemented")
+func (ctx nodeContext) Handle(action string, h ActionHandler) {
+	ctx.handleAction(action, ctx.sourceElement, false, h)
 }
 
-func (ctx nodeContext) NewAction(name string, tags ...Tagger) {
-	panic("not implemented")
+func (ctx nodeContext) NewAction(action string, tags ...Tagger) {
+	ctx.NewActionWithValue(action, nil, tags...)
+
 }
 
-func (ctx nodeContext) NewActionWithValue(name string, v any, tags ...Tagger) {
-	panic("not implemented")
+func (ctx nodeContext) NewActionWithValue(action string, v any, tags ...Tagger) {
+	var tagMap Tags
+	for _, tag := range tags {
+		if tagMap == nil {
+			tagMap = make(Tags)
+		}
+
+		for k, v := range tag.Tags() {
+			tagMap[k] = v
+		}
+	}
+
+	ctx.postAction(ctx, Action{
+		Name:  action,
+		Value: v,
+		Tags:  tagMap,
+	})
 }
 
 func (ctx nodeContext) SetState(state string, v any, opts ...StateOption) {

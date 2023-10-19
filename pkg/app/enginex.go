@@ -34,9 +34,12 @@ type engineX struct {
 	dispatches chan func()
 	defers     chan func()
 	goroutines sync.WaitGroup
+
+	asynchronousActionHandlers map[string]ActionHandler
+	actions                    actionManager
 }
 
-func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, origin *url.URL, newBody func() HTMLBody) *engineX {
+func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, origin *url.URL, newBody func() HTMLBody, actionHandlers map[string]ActionHandler) *engineX {
 	var localStorage BrowserStorage
 	var sessionStorage BrowserStorage
 	if IsServer {
@@ -59,13 +62,33 @@ func newEngineX(ctx context.Context, routes *router, resolveURL func(string) str
 			url:                   origin,
 			resolveStaticResource: resolveURL,
 		},
-		localStorage:   localStorage,
-		lastVisitedURL: &url.URL{},
-		sessionStorage: sessionStorage,
-		newBody:        newBody,
-		nodes:          nodeManager{},
-		dispatches:     make(chan func(), 4096),
-		defers:         make(chan func(), 4096),
+		localStorage:               localStorage,
+		lastVisitedURL:             &url.URL{},
+		sessionStorage:             sessionStorage,
+		newBody:                    newBody,
+		nodes:                      nodeManager{},
+		dispatches:                 make(chan func(), 4096),
+		defers:                     make(chan func(), 4096),
+		asynchronousActionHandlers: actionHandlers,
+	}
+}
+
+func (e *engineX) baseContext() nodeContext {
+	return nodeContext{
+		Context:               e.ctx,
+		resolveURL:            e.resolveURL,
+		appUpdatable:          e.browser.AppUpdatable,
+		page:                  e.page,
+		navigate:              e.Navigate,
+		localStorage:          e.localStorage,
+		sessionStorage:        e.sessionStorage,
+		dispatch:              e.dispatch,
+		defere:                e.defere,
+		async:                 e.async,
+		addComponentUpdate:    e.updates.Add,
+		removeComponentUpdate: e.updates.Done,
+		handleAction:          e.actions.Handle,
+		postAction:            e.actions.Post,
 	}
 }
 
@@ -149,23 +172,6 @@ func (e *engineX) internalURL(v *url.URL) bool {
 	return false
 }
 
-func (e *engineX) baseContext() nodeContext {
-	return nodeContext{
-		Context:               e.ctx,
-		resolveURL:            e.resolveURL,
-		appUpdatable:          e.browser.AppUpdatable,
-		page:                  e.page,
-		navigate:              e.Navigate,
-		localStorage:          e.localStorage,
-		sessionStorage:        e.sessionStorage,
-		dispatch:              e.dispatch,
-		defere:                e.defere,
-		async:                 e.async,
-		addComponentUpdate:    e.updates.Add,
-		removeComponentUpdate: e.updates.Done,
-	}
-}
-
 func (e *engineX) page() Page {
 	if IsClient {
 		return browserPage{resolveStaticResource: e.resolveURL}
@@ -179,6 +185,11 @@ func (e *engineX) load(v Composer) {
 		if err != nil {
 			panic(errors.New("mounting root failed").Wrap(err))
 		}
+
+		for action, handler := range e.asynchronousActionHandlers {
+			e.actions.Handle(action, body, true, handler)
+		}
+
 		e.body = body
 		return
 	}
@@ -207,6 +218,10 @@ func (e *engineX) async(v func()) {
 }
 
 func (e *engineX) Start(framerate int) {
+	if framerate <= 0 {
+		framerate = 30
+	}
+
 	activeFrameDuration := time.Second / time.Duration(framerate)
 	iddleFrameDuration := time.Hour
 	currentFrameDuration := iddleFrameDuration
@@ -231,6 +246,7 @@ func (e *engineX) Start(framerate int) {
 				e.updates.Done(c)
 			})
 			e.executeDefers()
+			e.actions.Cleanup()
 
 			frames.Reset(iddleFrameDuration)
 			currentFrameDuration = iddleFrameDuration
