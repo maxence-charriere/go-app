@@ -321,7 +321,7 @@ func (ctx uiContext) Dispatcher() Dispatcher {
 }
 
 func (ctx uiContext) Notifications() NotificationService {
-	return NotificationService{dispatcher: ctx.Dispatcher()}
+	return NotificationService{}
 }
 
 func (ctx uiContext) PreventUpdate() {
@@ -478,7 +478,7 @@ func (ctx nodeContext) cryptoKey() string {
 }
 
 func (ctx nodeContext) Notifications() NotificationService {
-	panic("not implemented")
+	return NotificationService{}
 }
 
 func (ctx nodeContext) Dispatch(v func(Context)) {
