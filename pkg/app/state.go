@@ -482,6 +482,238 @@ func (s *store) onBroadcast(event Value) {
 	}
 }
 
+type persistentState struct {
+	Value          json.RawMessage `json:",omitempty"`
+	EncryptedValue []byte          `json:",omitempty"`
+	ExpiresAt      time.Time       `json:",omitempty"`
+}
+
+func (s *persistentState) isExpired(now time.Time) bool {
+	return s.ExpiresAt != time.Time{} && now.After(s.ExpiresAt)
+}
+
+// -----------------------------------------------------------------------------
+
+type StateX struct {
+	value     any
+	expiresAt time.Time
+
+	ctx       Context
+	name      string
+	expire    func(StateX, time.Time) StateX
+	persist   func(StateX, bool) StateX
+	broadcast func(StateX) StateX
+}
+
+func (s StateX) ExpiresIn(v time.Duration) StateX {
+	return s.expire(s, time.Now().Add(v))
+}
+
+func (s StateX) ExpiresAt(v time.Time) StateX {
+	return s.expire(s, v)
+}
+
+func (s StateX) Persist() StateX {
+	return s.persist(s, false)
+}
+
+func (s StateX) PersistWithEncryption() StateX {
+	return s.persist(s, true)
+}
+
+func (s StateX) Broadcast() StateX {
+	return s.broadcast(s)
+}
+
+type storableState struct {
+	Value          json.RawMessage `json:",omitempty"`
+	EncryptedValue []byte          `json:",omitempty"`
+	ExpiresAt      time.Time       `json:",omitempty"`
+}
+
+type stateManager struct {
+	mutex            sync.Mutex
+	states           map[string]StateX
+	observers        map[string]map[UI]observer
+	broadcastID      string
+	broadcastChannel Value
+}
+
+func (m *stateManager) Get(ctx nodeContext, state string, receiver any) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	value, exists := m.states[state]
+	if !exists {
+		if err := m.getStoredState(ctx, state, receiver); err != nil {
+			Log(errors.New("getting state from local storage failed").
+				WithTag("state", state).
+				Wrap(err))
+		}
+		return
+	}
+
+	if !value.expiresAt.IsZero() && value.expiresAt.Before(time.Now()) {
+		delete(m.states, state)
+	}
+
+	if err := storeValue(receiver, value.value); err != nil {
+		Log(errors.New("getting state failed").
+			WithTag("state", state).
+			Wrap(err))
+	}
+}
+
+func (m *stateManager) getStoredState(ctx Context, state string, receiver any) error {
+	var value storableState
+	if err := ctx.LocalStorage().Get(state, &value); err != nil {
+		return err
+	}
+
+	if !value.ExpiresAt.IsZero() && value.ExpiresAt.Before(time.Now()) {
+		ctx.LocalStorage().Del(state)
+		return nil
+	}
+
+	if len(value.EncryptedValue) != 0 {
+		return ctx.Decrypt(value.EncryptedValue, receiver)
+	}
+	return json.Unmarshal(value.Value, receiver)
+}
+
+func (m *stateManager) Set(ctx nodeContext, state string, v any) StateX {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	if m.states == nil {
+		m.states = make(map[string]StateX)
+	}
+
+	value := StateX{value: v}
+	m.states[state] = value
+
+	for element, observer := range m.observers[state] {
+		o := observer
+		ctx.Dispatch(func(ctx Context) {
+			if !o.isObserving() {
+				m.mutex.Lock()
+				delete(m.observers[state], element)
+				m.mutex.Unlock()
+				return
+			}
+
+			if err := m.notifyChange(o, v); err != nil {
+				Log(errors.New("notifying state change failed").
+					WithTag("state", state).
+					WithTag("observer-type", reflect.TypeOf(o.element)).
+					Wrap(err))
+			}
+		})
+	}
+
+	return StateX{
+		value:     v,
+		ctx:       ctx,
+		name:      state,
+		expire:    m.setExpiration,
+		persist:   m.persist,
+		broadcast: m.broadcast,
+	}
+}
+
+func (m *stateManager) notifyChange(o observer, v any) error {
+	if err := storeValue(o.receiver, v); err != nil {
+		return errors.New("storing value into receiver failed").Wrap(err)
+	}
+
+	for _, handleChange := range o.onChanges {
+		handleChange()
+	}
+	return nil
+}
+
+func (m *stateManager) setExpiration(s StateX, v time.Time) StateX {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	s.expiresAt = v
+	if !s.expiresAt.IsZero() && v.Before(time.Now()) {
+		delete(m.states, s.name)
+		return s
+	}
+
+	value := m.states[s.name]
+	value.expiresAt = v
+	m.states[s.name] = value
+
+	return s
+}
+
+func (m *stateManager) persist(s StateX, encrypt bool) StateX {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	if !s.expiresAt.IsZero() && s.expiresAt.Before(time.Now()) {
+		s.ctx.LocalStorage().Del(s.name)
+		return s
+	}
+
+	value := storableState{ExpiresAt: s.expiresAt}
+	if encrypt {
+		b, err := s.ctx.Encrypt(s.value)
+		if err != nil {
+			Log(errors.New("persisting encrypted state failed").
+				WithTag("state", s.name).
+				Wrap(err))
+			return s
+		}
+		value.EncryptedValue = b
+	} else {
+		b, err := json.Marshal(s.value)
+		if err != nil {
+			Log(errors.New("persisting state failed").
+				WithTag("state", s.name).
+				Wrap(err))
+			return s
+		}
+		value.Value = b
+	}
+
+	if err := s.ctx.LocalStorage().Set(s.name, value); err != nil {
+		Log(errors.New("persisting state failed").
+			WithTag("state", s.name).
+			Wrap(err))
+	}
+	return s
+}
+
+func (m *stateManager) broadcast(s StateX) StateX {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	if m.broadcastChannel == nil {
+		Log(errors.New("persisting state failed").
+			WithTag("state", s.name).
+			Wrap(errors.New("broadcast is not supported")))
+		return s
+	}
+
+	b, err := json.Marshal(s.value)
+	if err != nil {
+		Log(errors.New("persisting state failed").
+			WithTag("state", s.name).
+			Wrap(err))
+		return s
+	}
+
+	m.broadcastChannel.Call("postMessage", map[string]any{
+		"StoreID": m.broadcastID,
+		"State":   s.name,
+		"Value":   string(b),
+	})
+	return s
+}
+
 func storeValue(recv, v any) error {
 	dst := reflect.ValueOf(recv)
 	if dst.Kind() != reflect.Ptr {
@@ -504,17 +736,6 @@ func storeValue(recv, v any) error {
 			WithTag("value", src.Type()).
 			WithTag("receiver", dst.Type())
 	}
-
 	dst.Set(src)
 	return nil
-}
-
-type persistentState struct {
-	Value          json.RawMessage `json:",omitempty"`
-	EncryptedValue []byte          `json:",omitempty"`
-	ExpiresAt      time.Time       `json:",omitempty"`
-}
-
-func (s *persistentState) isExpired(now time.Time) bool {
-	return s.ExpiresAt != time.Time{} && now.After(s.ExpiresAt)
 }
