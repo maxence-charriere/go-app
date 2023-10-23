@@ -535,7 +535,7 @@ type stateManager struct {
 	mutex            sync.Mutex
 	states           map[string]StateX
 	observers        map[string]map[UI]observer
-	broadcastID      string
+	broadcastStoreID string
 	broadcastChannel Value
 }
 
@@ -592,12 +592,12 @@ func (m *stateManager) Set(ctx nodeContext, state string, v any) StateX {
 	value := StateX{value: v}
 	m.states[state] = value
 
-	for element, observer := range m.observers[state] {
+	for _, observer := range m.observers[state] {
 		o := observer
 		ctx.Dispatch(func(ctx Context) {
 			if !o.isObserving() {
 				m.mutex.Lock()
-				delete(m.observers[state], element)
+				delete(m.observers[state], o.element)
 				m.mutex.Unlock()
 				return
 			}
@@ -707,11 +707,69 @@ func (m *stateManager) broadcast(s StateX) StateX {
 	}
 
 	m.broadcastChannel.Call("postMessage", map[string]any{
-		"StoreID": m.broadcastID,
+		"StoreID": m.broadcastStoreID,
 		"State":   s.name,
 		"Value":   string(b),
 	})
 	return s
+}
+
+func (m *stateManager) InitBroadcast(ctx Context) {
+	broadcastChannel := Window().Get("BroadcastChannel")
+	if !broadcastChannel.Truthy() {
+		return
+	}
+	broadcastChannel = broadcastChannel.New("go-app-broadcast-states")
+	m.broadcastChannel = broadcastChannel
+	m.broadcastStoreID = uuid.NewString()
+
+	handleBroadcast := FuncOf(func(this Value, args []Value) any {
+		m.handleBroadcast(ctx, args[0].Get("data"))
+		return nil
+	})
+	broadcastChannel.Set("onmessage", handleBroadcast)
+}
+
+func (m *stateManager) handleBroadcast(ctx Context, data Value) {
+	if storeID := data.Get("StoreID").String(); storeID != m.broadcastStoreID {
+		return
+	}
+
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	state := data.Get("State").String()
+	value := []byte(data.Get("Value").String())
+
+	for _, observer := range m.observers[state] {
+		o := observer
+		ctx.Dispatch(func(ctx Context) {
+			if !o.isObserving() {
+				m.mutex.Lock()
+				delete(m.observers[state], o.element)
+				m.mutex.Unlock()
+				return
+			}
+
+			if err := m.notifyBroadcastChange(o, value); err != nil {
+				Log(errors.New("notifying broadcast state change failed").
+					WithTag("state", state).
+					WithTag("observer-type", reflect.TypeOf(o.element)).
+					Wrap(err))
+			}
+		})
+	}
+}
+
+func (m *stateManager) notifyBroadcastChange(o observer, v []byte) error {
+	if err := json.Unmarshal(v, o.receiver); err != nil {
+		return errors.New("storing value into receiver failed").Wrap(err)
+	}
+
+	for _, handleChange := range o.onChanges {
+		handleChange()
+	}
+	return nil
 }
 
 func storeValue(recv, v any) error {
