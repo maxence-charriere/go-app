@@ -119,7 +119,7 @@ func TestActionManagerPost(t *testing.T) {
 
 		ctx := makeTestContext()
 		source, err := nm.Mount(ctx, 1, Div())
-		ctx = nm.context(ctx, source).(nodeContext)
+		ctx = nm.context(ctx, source)
 		require.NoError(t, err)
 
 		handlerCalled := false
@@ -139,7 +139,7 @@ func TestActionManagerPost(t *testing.T) {
 
 		ctx := makeTestContext()
 		source, err := nm.Mount(ctx, 1, Div())
-		ctx = nm.context(ctx, source).(nodeContext)
+		ctx = nm.context(ctx, source)
 		require.NoError(t, err)
 
 		handlerCalled := false

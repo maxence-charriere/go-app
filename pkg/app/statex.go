@@ -97,7 +97,7 @@ func (o ObserverX) observing() bool {
 // to state values. It supports concurrency-safe operations and provides
 // functionality to observe state changes.
 type stateManager struct {
-	mutex            sync.Mutex
+	mutex            sync.RWMutex
 	states           map[string]StateX
 	observers        map[string]map[UI]ObserverX
 	broadcastStoreID string
@@ -188,7 +188,7 @@ func (m *stateManager) getStoredState(ctx Context, state string, receiver any) e
 	return nil
 }
 
-func (m *stateManager) Set(ctx nodeContext, state string, v any) StateX {
+func (m *stateManager) Set(ctx Context, state string, v any) StateX {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -202,6 +202,13 @@ func (m *stateManager) Set(ctx nodeContext, state string, v any) StateX {
 	for _, observer := range m.observers[state] {
 		o := observer
 		ctx.Dispatch(func(ctx Context) {
+			m.mutex.RLock()
+			value := m.states[state]
+			m.mutex.RUnlock()
+			if !value.expiresAt.IsZero() && value.expiresAt.Before(time.Now()) {
+				return
+			}
+
 			if !o.observing() {
 				m.mutex.Lock()
 				delete(m.observers[state], o.source)
@@ -209,7 +216,7 @@ func (m *stateManager) Set(ctx nodeContext, state string, v any) StateX {
 				return
 			}
 
-			if err := storeValue(o.receiver, v); err != nil {
+			if err := storeValue(o.receiver, value.value); err != nil {
 				Log(errors.New("storing state value into receiver failed").
 					WithTag("state", state).
 					WithTag("observer-type", reflect.TypeOf(o.source)).

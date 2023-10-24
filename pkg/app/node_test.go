@@ -945,7 +945,7 @@ func TestNodeManagerContext(t *testing.T) {
 	div, err := m.Mount(ctx, 1, Div())
 	require.NoError(t, err)
 
-	ctx = m.context(ctx, div).(nodeContext)
+	ctx = m.context(ctx, div)
 	require.NotZero(t, ctx)
 	require.NotNil(t, ctx.Context)
 	require.NotNil(t, ctx.sourceElement)

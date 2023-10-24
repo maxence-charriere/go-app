@@ -268,6 +268,80 @@ func TestStateManagerGet(t *testing.T) {
 	})
 }
 
+func TestStateManagerSet(t *testing.T) {
+	t.Run("state is set", func(t *testing.T) {
+		var m stateManager
+		ctx := makeTestContext()
+
+		state := m.Set(ctx, "test", 42)
+		require.Equal(t, 42, state.value)
+		require.NotNil(t, state.ctx)
+		require.Equal(t, "test", state.name)
+		require.NotNil(t, state.expire)
+		require.NotNil(t, state.persist)
+		require.NotNil(t, state.broadcast)
+
+		require.NotEmpty(t, m.states)
+		state = m.states["test"]
+		require.Equal(t, 42, state.value)
+		require.Nil(t, state.ctx)
+		require.Empty(t, state.name)
+		require.Nil(t, state.expire)
+		require.Nil(t, state.persist)
+		require.Nil(t, state.broadcast)
+	})
+
+	t.Run("state is set and notified to observers", func(t *testing.T) {
+		var nm nodeManager
+		compo, err := nm.Mount(makeTestContext(), 1, &hello{})
+		require.NoError(t, err)
+
+		dispatcher := make(chan func(), 42)
+		ctx := nm.context(makeTestContext(), compo)
+		ctx.dispatch = func(f func()) {
+			dispatcher <- f
+		}
+
+		var sm stateManager
+		var number int
+		sm.Observe(ctx, "test", &number)
+
+		sm.Set(ctx, "test", 42)
+
+		// TODO: engine X consume
+
+	dispatchLoop:
+		for {
+			select {
+			case f := <-dispatcher:
+				f()
+			default:
+				break dispatchLoop
+			}
+		}
+
+		require.Equal(t, 42, number)
+	})
+
+	t.Run("set state removes a non observing observer", func(t *testing.T) {})
+
+	t.Run("set state log an error when the value cannot be stored in observer receiver", func(t *testing.T) {})
+
+	t.Run("set state trigger observer change handler", func(t *testing.T) {})
+
+	t.Run("set state persists a state in local storage", func(t *testing.T) {})
+
+	t.Run("set state persists an encrypted state in local storage", func(t *testing.T) {})
+
+	t.Run("set state set an expiration duration", func(t *testing.T) {})
+
+	t.Run("set state set an expiration time", func(t *testing.T) {})
+
+	t.Run("expired state is not notified to observers", func(t *testing.T) {})
+
+	t.Run("set state broadcasts a state", func(t *testing.T) {})
+}
+
 func TestStoreValue(t *testing.T) {
 	nb := 42
 	c := copyTester{pointer: &nb}

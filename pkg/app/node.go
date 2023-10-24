@@ -680,7 +680,7 @@ func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
 	}
 }
 
-func (m nodeManager) context(baseCtx Context, v UI) Context {
+func (m nodeManager) context(baseCtx Context, v UI) nodeContext {
 	ctx := baseCtx.(nodeContext)
 	ctx.sourceElement = v
 	ctx.foreachUpdatableComponent = m.ForEachUpdatableComponent
