@@ -163,10 +163,10 @@ func (m *actionManager) Cleanup() {
 			if !handler.Source.Mounted() {
 				delete(handlers, key)
 			}
+		}
 
-			if len(handlers) == 0 {
-				delete(m.handlers, action)
-			}
+		if len(handlers) == 0 {
+			delete(m.handlers, action)
 		}
 	}
 }

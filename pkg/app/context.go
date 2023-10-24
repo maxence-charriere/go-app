@@ -398,7 +398,7 @@ func (ctx nodeContext) DeviceID() string {
 	}
 
 	id = uuid.NewString()
-	if err := ctx.sessionStorage.Set("/go-app/deviceID", id); err != nil {
+	if err := ctx.localStorage.Set("/go-app/deviceID", id); err != nil {
 		panic(errors.New("creating device id failed").Wrap(err))
 	}
 	return id

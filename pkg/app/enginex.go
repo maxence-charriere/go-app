@@ -37,6 +37,7 @@ type engineX struct {
 
 	asynchronousActionHandlers map[string]ActionHandler
 	actions                    actionManager
+	states                     stateManager
 }
 
 func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, origin *url.URL, newBody func() HTMLBody, actionHandlers map[string]ActionHandler) *engineX {
@@ -253,6 +254,7 @@ func (e *engineX) Start(framerate int) {
 			})
 			e.executeDefers()
 			e.actions.Cleanup()
+			e.states.Cleanup()
 
 			frames.Reset(iddleFrameDuration)
 			currentFrameDuration = iddleFrameDuration

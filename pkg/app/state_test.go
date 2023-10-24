@@ -1,7 +1,6 @@
 package app
 
 import (
-	"reflect"
 	"testing"
 	"time"
 
@@ -485,96 +484,6 @@ func TestRemoveUnusedObservers(t *testing.T) {
 
 	s.removeUnusedObservers()
 	require.Empty(t, state.observers)
-}
-
-func TestStoreValue(t *testing.T) {
-	nb := 42
-	c := copyTester{pointer: &nb}
-
-	utests := []struct {
-		scenario string
-		src      any
-		recv     any
-		expected any
-		err      bool
-	}{
-		{
-			scenario: "value to exported field receiver",
-			src:      42,
-			recv:     &c.Exported,
-			expected: 42,
-		},
-		{
-			scenario: "value unexported field receiver",
-			src:      21,
-			recv:     &c.unexported,
-			expected: 21,
-		},
-		{
-			scenario: "nil to receiver",
-			src:      nil,
-			recv:     &c.unexported,
-			expected: 0,
-		},
-		{
-			scenario: "pointer to receiver",
-			src:      new(int),
-			recv:     &c.unexported,
-			expected: 0,
-		},
-		{
-			scenario: "nil to pointer receiver",
-			src:      nil,
-			recv:     &c.pointer,
-			expected: (*int)(nil),
-		},
-		{
-			scenario: "slice to receiver",
-			src:      []int{14, 2, 86},
-			recv:     &c.slice,
-			expected: []int{14, 2, 86},
-		},
-		{
-			scenario: "map to receiver",
-			src:      map[string]int{"foo": 42},
-			recv:     &c.mapp,
-			expected: map[string]int{"foo": 42},
-		},
-		{
-			scenario: "receiver have a different type",
-			src:      "hello",
-			recv:     &c.Exported,
-			err:      true,
-		},
-		{
-			scenario: "receiver is not a pointer",
-			src:      51,
-			recv:     c.Exported,
-			err:      true,
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(u.scenario, func(t *testing.T) {
-			err := storeValue(u.recv, u.src)
-			if u.err {
-				require.Error(t, err)
-				return
-			}
-			require.NoError(t, err)
-
-			recv := reflect.ValueOf(u.recv).Elem().Interface()
-			require.Equal(t, u.expected, recv)
-		})
-	}
-}
-
-type copyTester struct {
-	Exported   int
-	unexported int
-	pointer    *int
-	slice      []int
-	mapp       map[string]int
 }
 
 func TestExpireExpriredPersistentValues(t *testing.T) {
