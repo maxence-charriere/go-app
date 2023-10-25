@@ -149,6 +149,7 @@ func (e *engineX) initBrowser() {
 		return
 	}
 	e.browser.HandleEvents(e.baseContext(), e.notifyComponentEvent)
+	e.states.InitBroadcast(e.baseContext())
 }
 
 func (e *engineX) notifyComponentEvent(event any) {
@@ -246,16 +247,7 @@ func (e *engineX) Start(framerate int) {
 			dispatch()
 
 		case <-frames.C:
-			e.updates.ForEach(func(c Composer) {
-				if _, err := e.nodes.UpdateComponentRoot(e.baseContext(), c); err != nil {
-					panic(errors.New("updating component failed").Wrap(err))
-				}
-				e.updates.Done(c)
-			})
-			e.executeDefers()
-			e.actions.Cleanup()
-			e.states.Cleanup()
-
+			e.processFrame()
 			frames.Reset(iddleFrameDuration)
 			currentFrameDuration = iddleFrameDuration
 
@@ -265,6 +257,18 @@ func (e *engineX) Start(framerate int) {
 	}
 }
 
+func (e *engineX) processFrame() {
+	e.updates.ForEach(func(c Composer) {
+		if _, err := e.nodes.UpdateComponentRoot(e.baseContext(), c); err != nil {
+			panic(errors.New("updating component failed").Wrap(err))
+		}
+		e.updates.Done(c)
+	})
+	e.executeDefers()
+	e.actions.Cleanup()
+	e.states.Cleanup()
+}
+
 func (e *engineX) executeDefers() {
 	for {
 		select {
@@ -272,6 +276,34 @@ func (e *engineX) executeDefers() {
 			defere()
 
 		default:
+			return
+		}
+	}
+}
+
+// ConsumeNext waits for any ongoing goroutines to finish, then executes the
+// next dispatch in the queue. After executing the dispatch, it processes a
+// frame.
+func (e *engineX) ConsumeNext() {
+	e.goroutines.Wait()
+	dispatch := <-e.dispatches
+	dispatch()
+	e.processFrame()
+}
+
+// ConsumeAll continuously waits for ongoing goroutines to finish, executes all
+// available dispatches in the queue until none are left, and then processes a
+// frame.
+func (e *engineX) ConsumeAll() {
+	for {
+		e.goroutines.Wait()
+
+		select {
+		case dispatch := <-e.dispatches:
+			dispatch()
+
+		default:
+			e.processFrame()
 			return
 		}
 	}

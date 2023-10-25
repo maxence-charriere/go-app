@@ -318,7 +318,7 @@ func (m *stateManager) broadcast(s StateX) StateX {
 
 // InitBroadcast initializes a broadcast channel to share state changes
 // across browser tabs or windows.
-func (m *stateManager) InitBroadcast(ctx Context) {
+func (m *stateManager) InitBroadcast(ctx nodeContext) {
 	broadcastChannel := Window().Get("BroadcastChannel")
 	if !broadcastChannel.Truthy() {
 		return
@@ -334,7 +334,7 @@ func (m *stateManager) InitBroadcast(ctx Context) {
 	broadcastChannel.Set("onmessage", handleBroadcast)
 }
 
-func (m *stateManager) handleBroadcast(ctx Context, data Value) {
+func (m *stateManager) handleBroadcast(ctx nodeContext, data Value) {
 	if storeID := data.Get("StoreID").String(); storeID != m.broadcastStoreID {
 		return
 	}
@@ -347,7 +347,7 @@ func (m *stateManager) handleBroadcast(ctx Context, data Value) {
 
 	for _, observer := range m.observers[state] {
 		o := observer
-		ctx.Dispatch(func(ctx Context) {
+		ctx.dispatch(func() {
 			if !o.observing() {
 				m.mutex.Lock()
 				delete(m.observers[state], o.source)

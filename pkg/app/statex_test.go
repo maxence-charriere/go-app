@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
@@ -55,6 +56,8 @@ func TestObserverObserving(t *testing.T) {
 
 func TestStateManagerObserve(t *testing.T) {
 	t.Run("observer is set", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var nm nodeManager
 		compo, err := nm.Mount(makeTestContext(), 1, &hello{})
 		require.NoError(t, err)
@@ -62,18 +65,18 @@ func TestStateManagerObserve(t *testing.T) {
 
 		var sm stateManager
 		var receiver int
-		observer := sm.Observe(ctx, "test", &receiver)
+		observer := sm.Observe(ctx, stateName, &receiver)
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
 		require.Nil(t, observer.condition)
 		require.Nil(t, observer.changeHandler)
-		require.Equal(t, "test", observer.state)
+		require.Equal(t, stateName, observer.state)
 		require.Equal(t, compo, observer.source)
 		require.NotNil(t, observer.setObserver)
 
 		require.Len(t, sm.observers, 1)
-		require.Len(t, sm.observers["test"], 1)
-		observer = sm.observers["test"][compo]
+		require.Len(t, sm.observers[stateName], 1)
+		observer = sm.observers[stateName][compo]
 		require.NotZero(t, observer)
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
@@ -84,6 +87,8 @@ func TestStateManagerObserve(t *testing.T) {
 	})
 
 	t.Run("observer is set with a while condition", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var nm nodeManager
 		compo, err := nm.Mount(makeTestContext(), 1, &hello{})
 		require.NoError(t, err)
@@ -91,19 +96,19 @@ func TestStateManagerObserve(t *testing.T) {
 
 		var sm stateManager
 		var receiver int
-		observer := sm.Observe(ctx, "test", &receiver).
+		observer := sm.Observe(ctx, stateName, &receiver).
 			While(func() bool { return true })
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
 		require.NotNil(t, observer.condition)
 		require.Nil(t, observer.changeHandler)
-		require.Equal(t, "test", observer.state)
+		require.Equal(t, stateName, observer.state)
 		require.Equal(t, compo, observer.source)
 		require.NotNil(t, observer.setObserver)
 
 		require.Len(t, sm.observers, 1)
-		require.Len(t, sm.observers["test"], 1)
-		observer = sm.observers["test"][compo]
+		require.Len(t, sm.observers[stateName], 1)
+		observer = sm.observers[stateName][compo]
 		require.NotZero(t, observer)
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
@@ -114,6 +119,8 @@ func TestStateManagerObserve(t *testing.T) {
 	})
 
 	t.Run("observer is set with a change handler", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var nm nodeManager
 		compo, err := nm.Mount(makeTestContext(), 1, &hello{})
 		require.NoError(t, err)
@@ -121,19 +128,19 @@ func TestStateManagerObserve(t *testing.T) {
 
 		var sm stateManager
 		var receiver int
-		observer := sm.Observe(ctx, "test", &receiver).
+		observer := sm.Observe(ctx, stateName, &receiver).
 			OnChange(func() {})
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
 		require.Nil(t, observer.condition)
 		require.NotNil(t, observer.changeHandler)
-		require.Equal(t, "test", observer.state)
+		require.Equal(t, stateName, observer.state)
 		require.Equal(t, compo, observer.source)
 		require.NotNil(t, observer.setObserver)
 
 		require.Len(t, sm.observers, 1)
-		require.Len(t, sm.observers["test"], 1)
-		observer = sm.observers["test"][compo]
+		require.Len(t, sm.observers[stateName], 1)
+		observer = sm.observers[stateName][compo]
 		require.NotZero(t, observer)
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
@@ -144,6 +151,8 @@ func TestStateManagerObserve(t *testing.T) {
 	})
 
 	t.Run("observer is set with a while condition and a change handler", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var nm nodeManager
 		compo, err := nm.Mount(makeTestContext(), 1, &hello{})
 		require.NoError(t, err)
@@ -151,20 +160,20 @@ func TestStateManagerObserve(t *testing.T) {
 
 		var sm stateManager
 		var receiver int
-		observer := sm.Observe(ctx, "test", &receiver).
+		observer := sm.Observe(ctx, stateName, &receiver).
 			While(func() bool { return true }).
 			OnChange(func() {})
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
 		require.NotNil(t, observer.condition)
 		require.NotNil(t, observer.changeHandler)
-		require.Equal(t, "test", observer.state)
+		require.Equal(t, stateName, observer.state)
 		require.Equal(t, compo, observer.source)
 		require.NotNil(t, observer.setObserver)
 
 		require.Len(t, sm.observers, 1)
-		require.Len(t, sm.observers["test"], 1)
-		observer = sm.observers["test"][compo]
+		require.Len(t, sm.observers[stateName], 1)
+		observer = sm.observers[stateName][compo]
 		require.NotZero(t, observer)
 		require.Equal(t, compo, observer.source)
 		require.Equal(t, &receiver, observer.receiver)
@@ -177,112 +186,142 @@ func TestStateManagerObserve(t *testing.T) {
 
 func TestStateManagerGet(t *testing.T) {
 	t.Run("getting a state from memory succeeds", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
-		m.Set(ctx, "test", 42)
+		m.Set(ctx, stateName, 42)
 
 		var number int
-		m.Get(ctx, "test", &number)
+		m.Get(ctx, stateName, &number)
 		require.Equal(t, 42, number)
 	})
 
 	t.Run("getting a state from local storage succeeds", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
-		m.Set(ctx, "test", 42).Persist()
-		delete(m.states, "test")
+		m.Set(ctx, stateName, 42).Persist()
+		delete(m.states, stateName)
 		require.Empty(t, m.states)
 
 		var number int
-		m.Get(ctx, "test", &number)
+		m.Get(ctx, stateName, &number)
 		require.Equal(t, 42, number)
 	})
 
 	t.Run("getting an encrypted state from local storage succeeds", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
-		m.Set(ctx, "test", 42).PersistWithEncryption()
-		delete(m.states, "test")
+		m.Set(ctx, stateName, 42).PersistWithEncryption()
+		delete(m.states, stateName)
 		require.Empty(t, m.states)
 
 		var number int
-		m.Get(ctx, "test", &number)
+		m.Get(ctx, stateName, &number)
 		require.Equal(t, 42, number)
 	})
 
 	t.Run("getting an expired state removes the state from state manager and local storage", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
-		m.Set(ctx, "test", 42).
+		m.Set(ctx, stateName, 42).
 			ExpiresIn(-time.Second).
 			Persist()
-		require.NotEmpty(t, m.states["test"])
+		require.NotEmpty(t, m.states[stateName])
 
 		var number int
-		m.Get(ctx, "test", &number)
+		m.Get(ctx, stateName, &number)
 		require.Zero(t, number)
-		require.Empty(t, m.states["test"])
+		require.Empty(t, m.states[stateName])
 
-		err := ctx.LocalStorage().Get("test", &number)
+		err := ctx.LocalStorage().Get(stateName, &number)
 		require.NoError(t, err)
 		require.Zero(t, number)
 	})
 
 	t.Run("getting a persisted expired state removes the state from local storage", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
-		m.Set(ctx, "test", 42).
+		m.Set(ctx, stateName, 42).
 			ExpiresIn(-time.Second).
 			Persist()
-		require.NotEmpty(t, m.states["test"])
-		delete(m.states, "test")
+		require.NotEmpty(t, m.states[stateName])
+		delete(m.states, stateName)
 		require.Empty(t, m.states)
 
 		var number int
-		m.Get(ctx, "test", &number)
+		m.Get(ctx, stateName, &number)
 		require.Zero(t, number)
-		require.Empty(t, m.states["test"])
+		require.Empty(t, m.states[stateName])
 
-		err := ctx.LocalStorage().Get("test", &number)
+		err := ctx.LocalStorage().Get(stateName, &number)
 		require.NoError(t, err)
 		require.Zero(t, number)
 	})
 
 	t.Run("storing a state value into a wrong type logs an error", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
-		m.Set(ctx, "test", 42)
+		m.Set(ctx, stateName, 42)
 
 		var number string
-		m.Get(ctx, "test", &number)
-		require.Empty(t, number)
+		m.Get(ctx, stateName, &number)
+		require.Zero(t, number)
+	})
+
+	t.Run("storing a state value from local storage into a wrong type logs an error", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+		m.Set(ctx, stateName, 42).Persist()
+		delete(m.states, stateName)
+		require.Empty(t, m.states)
+
+		var number string
+		m.Get(ctx, stateName, &number)
+		require.Zero(t, number)
 	})
 
 	t.Run("getting a non existing state let receiver with current value", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
 
 		number := 42
-		m.Get(ctx, "test", &number)
+		m.Get(ctx, stateName, &number)
 		require.Equal(t, 42, number)
 	})
 }
 
 func TestStateManagerSet(t *testing.T) {
 	t.Run("state is set", func(t *testing.T) {
+		stateName := uuid.NewString()
+
 		var m stateManager
 		ctx := makeTestContext()
 
-		state := m.Set(ctx, "test", 42)
+		state := m.Set(ctx, stateName, 42)
 		require.Equal(t, 42, state.value)
 		require.NotNil(t, state.ctx)
-		require.Equal(t, "test", state.name)
+		require.Equal(t, stateName, state.name)
 		require.NotNil(t, state.expire)
 		require.NotNil(t, state.persist)
 		require.NotNil(t, state.broadcast)
 
 		require.NotEmpty(t, m.states)
-		state = m.states["test"]
+		state = m.states[stateName]
 		require.Equal(t, 42, state.value)
 		require.Nil(t, state.ctx)
 		require.Empty(t, state.name)
@@ -292,54 +331,314 @@ func TestStateManagerSet(t *testing.T) {
 	})
 
 	t.Run("state is set and notified to observers", func(t *testing.T) {
-		var nm nodeManager
-		compo, err := nm.Mount(makeTestContext(), 1, &hello{})
-		require.NoError(t, err)
+		stateName := uuid.NewString()
 
-		dispatcher := make(chan func(), 42)
-		ctx := nm.context(makeTestContext(), compo)
-		ctx.dispatch = func(f func()) {
-			dispatcher <- f
-		}
+		e := newTestEngine()
+		ctx := e.baseContext()
+
+		var nm nodeManager
+		compo, err := nm.Mount(ctx, 1, &hello{})
+		require.NoError(t, err)
+		ctx = nm.context(ctx, compo)
 
 		var sm stateManager
 		var number int
-		sm.Observe(ctx, "test", &number)
+		sm.Observe(ctx, stateName, &number)
 
-		sm.Set(ctx, "test", 42)
-
-		// TODO: engine X consume
-
-	dispatchLoop:
-		for {
-			select {
-			case f := <-dispatcher:
-				f()
-			default:
-				break dispatchLoop
-			}
-		}
-
+		sm.Set(ctx, stateName, 42)
+		e.ConsumeAll()
 		require.Equal(t, 42, number)
 	})
 
-	t.Run("set state removes a non observing observer", func(t *testing.T) {})
+	t.Run("set state removes a non observing observer", func(t *testing.T) {
+		stateName := uuid.NewString()
 
-	t.Run("set state log an error when the value cannot be stored in observer receiver", func(t *testing.T) {})
+		e := newTestEngine()
+		ctx := e.baseContext()
 
-	t.Run("set state trigger observer change handler", func(t *testing.T) {})
+		var nm nodeManager
+		compo, err := nm.Mount(ctx, 1, &hello{})
+		require.NoError(t, err)
+		ctx = nm.context(ctx, compo)
 
-	t.Run("set state persists a state in local storage", func(t *testing.T) {})
+		var sm stateManager
+		var number int
+		sm.observers = make(map[string]map[UI]ObserverX)
+		sm.observers[stateName] = map[UI]ObserverX{}
+		div := Div()
+		sm.observers[stateName][div] = ObserverX{source: div}
 
-	t.Run("set state persists an encrypted state in local storage", func(t *testing.T) {})
+		sm.Set(ctx, stateName, 42)
+		e.ConsumeAll()
+		require.Zero(t, number)
+		require.Empty(t, sm.observers[stateName])
+	})
 
-	t.Run("set state set an expiration duration", func(t *testing.T) {})
+	t.Run("set state log an error when the value cannot be stored in observer receiver", func(t *testing.T) {
+		stateName := uuid.NewString()
 
-	t.Run("set state set an expiration time", func(t *testing.T) {})
+		e := newTestEngine()
+		ctx := e.baseContext()
 
-	t.Run("expired state is not notified to observers", func(t *testing.T) {})
+		var nm nodeManager
+		compo, err := nm.Mount(ctx, 1, &hello{})
+		require.NoError(t, err)
+		ctx = nm.context(ctx, compo)
 
-	t.Run("set state broadcasts a state", func(t *testing.T) {})
+		var sm stateManager
+		var number string
+		sm.Observe(ctx, stateName, &number)
+
+		sm.Set(ctx, stateName, 42)
+		e.ConsumeAll()
+		require.Zero(t, number)
+	})
+
+	t.Run("set state trigger observer change handler", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		e := newTestEngine()
+		ctx := e.baseContext()
+
+		var nm nodeManager
+		compo, err := nm.Mount(ctx, 1, &hello{})
+		require.NoError(t, err)
+		ctx = nm.context(ctx, compo)
+
+		var sm stateManager
+		var number int
+		sm.Observe(ctx, stateName, &number).OnChange(func() {
+			number = 21
+		})
+
+		sm.Set(ctx, stateName, 42)
+		e.ConsumeAll()
+		require.Equal(t, 21, number)
+	})
+
+	t.Run("set state persists a state in local storage", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		state := m.Set(ctx, stateName, 42).Persist()
+		require.Equal(t, 42, state.value)
+		require.NotNil(t, state.ctx)
+		require.Equal(t, stateName, state.name)
+		require.NotNil(t, state.expire)
+		require.NotNil(t, state.persist)
+		require.NotNil(t, state.broadcast)
+
+		require.NotEmpty(t, m.states)
+		state = m.states[stateName]
+		require.Equal(t, 42, state.value)
+		require.Nil(t, state.ctx)
+		require.Empty(t, state.name)
+		require.Nil(t, state.expire)
+		require.Nil(t, state.persist)
+		require.Nil(t, state.broadcast)
+
+		delete(m.states, stateName)
+		require.Empty(t, m.states)
+
+		var number int
+		m.Get(ctx, stateName, &number)
+		require.Equal(t, 42, number)
+	})
+
+	t.Run("set non encodable state in local storage logs an error", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		m.Set(ctx, stateName, func() {}).Persist()
+		delete(m.states, stateName)
+		require.Empty(t, m.states)
+
+		var number int
+		m.Get(ctx, stateName, &number)
+		require.Zero(t, number)
+	})
+
+	t.Run("set state persists an encrypted state in local storage", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		state := m.Set(ctx, stateName, 42).PersistWithEncryption()
+		require.Equal(t, 42, state.value)
+		require.NotNil(t, state.ctx)
+		require.Equal(t, stateName, state.name)
+		require.NotNil(t, state.expire)
+		require.NotNil(t, state.persist)
+		require.NotNil(t, state.broadcast)
+
+		require.NotEmpty(t, m.states)
+		state = m.states[stateName]
+		require.Equal(t, 42, state.value)
+		require.Nil(t, state.ctx)
+		require.Empty(t, state.name)
+		require.Nil(t, state.expire)
+		require.Nil(t, state.persist)
+		require.Nil(t, state.broadcast)
+
+		delete(m.states, stateName)
+		require.Empty(t, m.states)
+
+		var number int
+		m.Get(ctx, stateName, &number)
+		require.Equal(t, 42, number)
+	})
+
+	t.Run("set non encodable encrypted state in local storage logs an error", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		m.Set(ctx, stateName, func() {}).PersistWithEncryption()
+		delete(m.states, stateName)
+		require.Empty(t, m.states)
+
+		var number int
+		m.Get(ctx, stateName, &number)
+		require.Zero(t, number)
+	})
+
+	t.Run("set state set an expiration duration", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		state := m.Set(ctx, stateName, 42).ExpiresIn(time.Minute)
+		require.Equal(t, 42, state.value)
+		require.NotZero(t, state.expiresAt)
+		require.NotNil(t, state.ctx)
+		require.Equal(t, stateName, state.name)
+		require.NotNil(t, state.expire)
+		require.NotNil(t, state.persist)
+		require.NotNil(t, state.broadcast)
+
+		require.NotEmpty(t, m.states)
+		state = m.states[stateName]
+		require.Equal(t, 42, state.value)
+		require.NotZero(t, state.expiresAt)
+		require.Nil(t, state.ctx)
+		require.Empty(t, state.name)
+		require.Nil(t, state.expire)
+		require.Nil(t, state.persist)
+		require.Nil(t, state.broadcast)
+
+		var number int
+		m.Get(ctx, stateName, &number)
+		require.Equal(t, 42, number)
+	})
+
+	t.Run("set state set an expiration time", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		state := m.Set(ctx, stateName, 42).ExpiresAt(time.Now().Add(time.Minute))
+		require.Equal(t, 42, state.value)
+		require.NotZero(t, state.expiresAt)
+		require.NotNil(t, state.ctx)
+		require.Equal(t, stateName, state.name)
+		require.NotNil(t, state.expire)
+		require.NotNil(t, state.persist)
+		require.NotNil(t, state.broadcast)
+
+		require.NotEmpty(t, m.states)
+		state = m.states[stateName]
+		require.Equal(t, 42, state.value)
+		require.NotZero(t, state.expiresAt)
+		require.Nil(t, state.ctx)
+		require.Empty(t, state.name)
+		require.Nil(t, state.expire)
+		require.Nil(t, state.persist)
+		require.Nil(t, state.broadcast)
+
+		var number int
+		m.Get(ctx, stateName, &number)
+		require.Equal(t, 42, number)
+	})
+
+	t.Run("expired state is not notified to observers", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		e := newTestEngine()
+		ctx := e.baseContext()
+
+		var nm nodeManager
+		compo, err := nm.Mount(ctx, 1, &hello{})
+		require.NoError(t, err)
+		ctx = nm.context(ctx, compo)
+
+		var sm stateManager
+		var number int
+		sm.Observe(ctx, stateName, &number)
+
+		sm.Set(ctx, stateName, 42).ExpiresIn(-time.Hour)
+		e.ConsumeAll()
+		require.Zero(t, number)
+	})
+
+	t.Run("set state broadcasts not supported", func(t *testing.T) {
+		if IsClient {
+			return
+		}
+
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		e := newTestEngine()
+		m.InitBroadcast(e.baseContext())
+		state := m.Set(ctx, stateName, 42).Broadcast()
+		require.Equal(t, 42, state.value)
+		require.NotNil(t, state.ctx)
+		require.Equal(t, stateName, state.name)
+		require.NotNil(t, state.expire)
+		require.NotNil(t, state.persist)
+		require.NotNil(t, state.broadcast)
+
+		require.NotEmpty(t, m.states)
+		state = m.states[stateName]
+		require.Equal(t, 42, state.value)
+		require.Nil(t, state.ctx)
+		require.Empty(t, state.name)
+		require.Nil(t, state.expire)
+		require.Nil(t, state.persist)
+		require.Nil(t, state.broadcast)
+	})
+}
+
+func TestStateManagerCleanup(t *testing.T) {
+	t.Run("non observing observers are removed", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		ctx := makeTestContext()
+
+		var nm nodeManager
+		compo, err := nm.Mount(ctx, 1, &hello{})
+		require.NoError(t, err)
+		ctx = nm.context(ctx, compo)
+
+		var sm stateManager
+		var number int
+		sm.Observe(ctx, stateName, &number)
+		require.NotEmpty(t, sm.observers)
+		nm.Dismount(compo)
+
+		sm.Cleanup()
+		require.Empty(t, sm.observers)
+	})
 }
 
 func TestStoreValue(t *testing.T) {
