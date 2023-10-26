@@ -2,6 +2,7 @@ package app
 
 import (
 	"bytes"
+	"html"
 	"io"
 	"reflect"
 	"strings"
@@ -720,6 +721,9 @@ func (m nodeManager) encode(w *bytes.Buffer, v UI) {
 }
 
 func (m nodeManager) encodeText(w *bytes.Buffer, v *text) {
+	if v.value != "" {
+		w.WriteString(html.EscapeString(v.value))
+	}
 }
 
 func (m nodeManager) encodeHTML(w *bytes.Buffer, v HTML) {
