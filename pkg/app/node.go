@@ -82,14 +82,6 @@ func HTMLString(ui UI) string {
 	return w.String()
 }
 
-// HTMLStringWithIndent return an indented HTML string representation of the
-// given UI element.
-func HTMLStringWithIndent(ui UI) string {
-	var w strings.Builder
-	PrintHTMLWithIndent(&w, ui)
-	return w.String()
-}
-
 // PrintHTML writes an HTML representation of the UI element into the given
 // writer.
 func PrintHTML(w io.Writer, ui UI) {
@@ -98,16 +90,6 @@ func PrintHTML(w io.Writer, ui UI) {
 	// 	ui.setSelf(ui)
 	// }
 	// ui.html(w)
-}
-
-// PrintHTMLWithIndent writes an idented HTML representation of the UI element
-// into the given writer.
-func PrintHTMLWithIndent(w io.Writer, ui UI) {
-	panic("not implemented")
-	// if !ui.Mounted() {
-	// 	ui.setSelf(ui)
-	// }
-	// ui.htmlWithIndent(w, 0)
 }
 
 // Component events.
@@ -798,10 +780,13 @@ func (m nodeManager) encodeHTMLAttribute(ctx Context, w *bytes.Buffer, name, val
 }
 
 func (m nodeManager) encodeComponent(ctx Context, w *bytes.Buffer, depth int, v Composer) {
-	if !v.Mounted() {
-		return
+	root := v.root()
+	if root == nil {
+		root, _ = m.renderComponent(v)
 	}
-	m.encode(ctx, w, depth, v.root())
+	if root != nil {
+		m.encode(ctx, w, depth, root)
+	}
 }
 
 func (m nodeManager) encodeRawHTML(w *bytes.Buffer, depth int, v *raw) {
