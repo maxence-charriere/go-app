@@ -633,9 +633,10 @@ func (m nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
 	return newMount, nil
 }
 
-// ForEachUpdatableComponent iterates over the UI element hierarchy from the given element upwards,
-// applying the provided function to the first component it encounters. If the component implements the UpdateNotifier
-// interface and indicates no further updates are required, the iteration halts.
+// ForEachUpdatableComponent iterates over the UI element hierarchy from the
+// given element upwards, applying the provided function to the first component
+// it encounters. If the component implements the UpdateNotifier interface and
+// indicates no further updates are required, the iteration halts.
 func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
 	if !v.Mounted() {
 		return
@@ -705,6 +706,9 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
 	}
 }
 
+// Encode transforms the provided UI element into its HTML byte slice
+// representation. This allows for the conversion of in-memory UI structures
+// into a format suitable for server rendering.
 func (m nodeManager) Encode(ctx Context, v UI) []byte {
 	var w bytes.Buffer
 	m.encode(ctx, &w, 0, v)
