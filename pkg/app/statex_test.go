@@ -624,7 +624,6 @@ func TestStateManagerCleanup(t *testing.T) {
 		stateName := uuid.NewString()
 
 		ctx := makeTestContext()
-
 		var nm nodeManager
 		compo, err := nm.Mount(ctx, 1, &hello{})
 		require.NoError(t, err)

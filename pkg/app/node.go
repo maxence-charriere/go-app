@@ -109,6 +109,12 @@ func PrintHTMLWithIndent(w io.Writer, ui UI) {
 	// ui.htmlWithIndent(w, 0)
 }
 
+// Component events.
+type nav struct{}
+type appUpdate struct{}
+type appInstallChange struct{}
+type resize struct{}
+
 // nodeManager orchestrates the lifecycle of UI elements, providing specialized
 // mechanisms for mounting, dismounting, and updating nodes.
 type nodeManager struct {
@@ -551,6 +557,10 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 		return v, nil
 	}
 
+	if updater, ok := v.(Updater); ok {
+		updater.OnUpdate(ctx)
+	}
+
 	ctx.(nodeContext).removeComponentUpdate(v)
 	return m.UpdateComponentRoot(ctx, v)
 }
@@ -593,10 +603,6 @@ func (m nodeManager) UpdateComponentRoot(ctx Context, v Composer) (UI, error) {
 		newRoot.setParent(v)
 		v.setRoot(newRoot)
 		m.Dismount(root)
-	}
-
-	if updater, ok := v.(Updater); ok {
-		updater.OnUpdate(ctx)
 	}
 
 	return v, nil
@@ -730,6 +736,10 @@ func (m nodeManager) encodeHTML(w *bytes.Buffer, v HTML) {
 }
 
 func (m nodeManager) encodeComponent(w *bytes.Buffer, v Composer) {
+	if !v.Mounted() {
+		return
+	}
+	m.encode(w, v.root())
 }
 
 func (m nodeManager) encodeRawHTML(w *bytes.Buffer, v *raw) {

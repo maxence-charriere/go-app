@@ -1,18 +1,19 @@
 package app
 
 import (
-	"io"
 	"reflect"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// Composer is the interface that describes a customized, independent and
-// reusable UI element.
+// Composer defines a contract for creating custom, independent, and reusable
+// UI elements. Components that satisfy the Composer interface serve as building
+// blocks for richer user interfaces in a structured manner.
 //
-// Satisfying this interface is done by embedding app.Compo into a struct and
-// implementing the Render function.
+// Implementing the Composer interface typically involves embedding app.Compo
+// into a struct and defining the Render method, which dictates the component's
+// visual representation.
 //
 // Example:
 //
@@ -26,17 +27,9 @@ import (
 type Composer interface {
 	UI
 
-	// Render returns the node tree that define how the component is desplayed.
+	// Render constructs and returns the visual representation of the component
+	// as a node tree.
 	Render() UI
-
-	// ValueTo stores the value of the DOM element (if exists) that emitted an
-	// event into the given value.
-	//
-	// The given value must be a pointer to a signed integer, unsigned integer,
-	// or a float.
-	//
-	// It panics if the given value is not a pointer.
-	ValueTo(any) EventHandler
 
 	setRef(Composer) Composer
 	depth() uint
@@ -46,91 +39,93 @@ type Composer interface {
 	setRoot(UI) Composer
 }
 
-// PreRenderer is the interface that describes a component that performs
-// instruction when it is server-side pre-rendered.
-//
-// A pre-rendered component helps in achieving SEO friendly content.
-type PreRenderer interface {
-	// The function called when the component is server-side pre-rendered.
-	//
-	// If pre-rendering requires blocking operations such as performing an HTTP
-	// request, ensure that they are done synchronously. A good practice is to
-	// avoid using goroutines during pre-rendering.
-	OnPreRender(Context)
-}
-
-// Initializer is the interface that describes a component that performs
-// initialization instruction before being pre-rendered or mounted.
-type Initializer interface {
-	Composer
-
-	// The function called before the component is pre-rendered or mounted.
-	OnInit()
-}
-
-// Mounter is the interface that describes a component that can perform
-// additional actions when mounted.
+// Mounter represents components that require initialization or setup actions
+// when they are integrated into the DOM. By implementing the Mounter interface,
+// components gain the ability to define specific behaviors that occur right
+// before they are visually rendered or reintegrated into the DOM hierarchy.
 type Mounter interface {
-	Composer
-
-	// The function called when the component is mounted. It is always called on
-	// the UI goroutine.
+	// OnMount is triggered just before the component is embedded into the DOM.
+	// Use this hook to perform any pre-render configurations or
+	// initializations.
+	// This method operates within the UI goroutine.
 	OnMount(Context)
 }
 
-// Dismounter is the interface that describes a component that can perform
-// additional actions when dismounted.
+// Dismounter outlines the behavior for components that require specific
+// tasks or cleanup operations when they're detached from the DOM. Components
+// adhering to this interface can designate procedures to run immediately
+// after their removal from the DOM structure.
 type Dismounter interface {
-	Composer
-
-	// The function called when the component is dismounted. It is always called
-	// on the UI goroutine.
+	// OnDismount is invoked immediately after the component is detached from
+	// the DOM. This method offers a stage for executing cleanup or other
+	// concluding operations.
+	// This function is executed within the UI goroutine.
 	OnDismount()
 }
 
-// Navigator is the interface that describes a component that can perform
-// additional actions when navigated on.
+// Navigator characterizes components that need to perform specific
+// actions or initializations when they become the target of navigation.
+// By adopting the Navigator interface, components can specify behaviors
+// to be executed when they are navigated to within the application.
 type Navigator interface {
-	Composer
-
-	// The function that called when the component is navigated on. It is always
-	// called on the UI goroutine.
+	// OnNav is invoked when the component becomes the navigation target.
+	// Use this method to handle actions or setups related to navigation events.
+	// This function is always executed within the UI goroutine.
 	OnNav(Context)
 }
 
-// Updater is the interface that describes a component that can do additional
-// instructions when one of its exported fields is modified by its nearest
-// parent component.
+// Updater encapsulates components that require specific behaviors or reactions
+// when one of their exported fields is updated by the closest parent component.
+// Implementing the Updater interface allows components to define responsive
+// actions that should be executed whenever they are modified by a parent.
 type Updater interface {
-	// The function called when one of the component exported fields is modified
-	// by its nearest parent component. It is always called on the UI goroutine.
+	// OnUpdate is triggered whenever an exported field of the component gets
+	// modified by its immediate parent component. This method is an opportunity
+	// to handle related reactions or recalculations.
+	// This function always runs within the UI goroutine context.
 	OnUpdate(Context)
 }
 
-// AppUpdater is the interface that describes a component that is notified when
-// the application is updated.
+// AppUpdater defines components that are alerted when a newer version of the
+// application is downloaded in the background. Implementing this interface
+// allows components to proactively adapt to app updates, ensuring coherence
+// with the most up-to-date version of the application.
 type AppUpdater interface {
-	// The function called when the application is updated. It is always called
-	// on the UI goroutine.
+	// OnAppUpdate is called once a new version of the application has been
+	// fetched in the background. It offers a window for components to execute
+	// actions, such as prompting a page reload, to transition to the updated
+	// app version.
+	// This function always operates within the UI goroutine context.
 	OnAppUpdate(Context)
 }
 
-// AppInstaller is the interface that describes a component that is notified
-// when the application installation state changes.
+// AppInstaller outlines components that receive notifications about changes in
+// the application's installation status. Through this interface, components can
+// actively respond to installation state transitions, facilitating dynamic
+// user experiences tailored to the app's current status.
 type AppInstaller interface {
-	// The function called when the application becomes installable or
-	// installed. Use Context.IsAppInstallable() or Context.IsAppInstalled to
-	// check the install state. OnAppInstallChange is always called on the UI
-	// goroutine.
+	// OnAppInstallChange is invoked when the application shifts between the
+	// states of being installable and actually installed.
+	//
+	// To determine the current installation state, one can use
+	// Context.IsAppInstallable() or Context.IsAppInstalled().
+	//
+	// By leveraging this method, components can maintain alignment with the
+	// app's installation status, potentially influencing UI elements like an
+	// "Install" button visibility or behavior.
+	// This method is always executed in the UI goroutine context.
 	OnAppInstallChange(Context)
 }
 
-// Resizer is the interface that describes a component that is notified when the
-// app has been resized or a parent component calls the ResizeContent() method.
+// Resizer identifies components that respond to size alterations within the
+// application. These components can dynamically adjust to diverse size
+// scenarios, ensuring they maintain both a visually appealing and functional
+// display.
 type Resizer interface {
-	// The function called when the application is resized or a parent component
-	// called its ResizeContent() method. It is always called on the UI
-	// goroutine.
+	// OnResize is called whenever the application experiences a change in size.
+	// Components can use this method to make appropriate adjustments,
+	// recalculations, or layout shifts in response to the modified dimensions.
+	// Note: This method operates exclusively within the UI goroutine context.
 	OnResize(Context)
 }
 
@@ -146,13 +141,8 @@ type UpdateNotifier interface {
 	NotifyUpdate() bool
 }
 
-// Component events.
-type nav struct{}
-type appUpdate struct{}
-type appInstallChange struct{}
-type resize struct{}
-
-// Compo represents the base struct to use in order to build a component.
+// Compo serves as the foundational struct for constructing a component. It
+// provides basic methods and fields needed for component management.
 type Compo struct {
 	treeDepth     uint
 	ref           Composer
@@ -160,7 +150,8 @@ type Compo struct {
 	rootElement   UI
 }
 
-// JSValue returns the javascript value of the component root.
+// JSValue retrieves the JavaScript value associated with the component's root.
+// If the root element isn't defined, it returns a nil JavaScript value.
 func (c *Compo) JSValue() Value {
 	if c.rootElement == nil {
 		return ValueOf(nil)
@@ -168,14 +159,15 @@ func (c *Compo) JSValue() Value {
 	return c.rootElement.JSValue()
 }
 
-// Mounted reports whether the component is mounted.
+// Mounted checks if the component is currently mounted within the UI.
 func (c *Compo) Mounted() bool {
 	return c.ref != nil
 }
 
-// Render describes the component content. This is a default implementation to
-// satisfy the app.Composer interface. It should be redefined when app.Compo is
-// embedded.
+// Render produces a visual representation of the component's content. This
+// default implementation ensures the app.Composer interface is satisfied
+// when app.Compo is embedded. However, developers are encouraged to redefine
+// this method to customize the component's appearance.
 func (c *Compo) Render() UI {
 	componentName := reflect.TypeOf(c.ref).Name()
 
@@ -195,13 +187,10 @@ func (c *Compo) Render() UI {
 		)
 }
 
-// ValueTo stores the value of the DOM element (if exists) that emitted an event
-// into the given value.
-//
-// The given value must be a pointer to a signed integer, unsigned integer, or a
-// float.
-//
-// It panics if the given value is not a pointer.
+// ValueTo captures the value of the DOM element (if it exists) that triggered
+// an event, and assigns it to the provided receiver. The receiver must be a
+// pointer pointing to either a string, integer, unsigned integer, or a float.
+// This method panics if the provided value isn't a pointer.
 func (c *Compo) ValueTo(v any) EventHandler {
 	return func(ctx Context, e Event) {
 		value := ctx.JSSrc().Get("value")
@@ -242,24 +231,4 @@ func (c *Compo) root() UI {
 func (c *Compo) setRoot(v UI) Composer {
 	c.rootElement = v
 	return c.ref
-}
-
-func (c *Compo) html(w io.Writer) {
-	// if c.rootElement == nil {
-	// 	c.rootElement = c.render()
-	// 	c.rootElement.setSelf(c.rootElement)
-	// }
-	// c.rootElement.html(w)
-
-	panic("not implemented")
-}
-
-func (c *Compo) htmlWithIndent(w io.Writer, indent int) {
-	// if c.rootElement == nil {
-	// 	c.rootElement = c.render()
-	// 	c.rootElement.setSelf(c.rootElement)
-	// }
-
-	// c.rootElement.htmlWithIndent(w, indent)
-	panic("not implemented")
 }

@@ -8,7 +8,7 @@ import (
 // have a single root element. If the root tag cannot be determined, it defaults
 // to a div element.
 //
-// Caution: Using Raw can be risky since there's no validation of the provided
+// Using Raw can be risky since there's no validation of the provided
 // string content. Ensure that the content is safe and sanitized before use.
 func Raw(v string) UI {
 	v = strings.TrimSpace(v)
