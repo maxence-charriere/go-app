@@ -1,22 +1,21 @@
 package app
 
-import (
-	"io"
-	"strconv"
-)
-
-// HTML represents an interface for HTML elements.
+// HTML provides an interface for representing HTML elements within the
+// application.
 type HTML interface {
 	UI
 
-	// Returns the name of the HTML tag represented by the element.
+	// Tag retrieves the name of the HTML tag that the element represents.
 	Tag() string
 
-	// Returns the XML namespace of the HTML element.
+	// XMLNamespace fetches the XML namespace associated with the HTML element.
+	// This is relevant for elements like SVG which might have a different
+	// namespace.
 	XMLNamespace() string
 
-	// Indicates whether the HTML element is self-closing (like <img> or <br>).
-	// Returns true for self-closing elements, otherwise false.
+	// SelfClosing determines whether the HTML element is self-closing.
+	// For elements like <img> or <br> which don't have closing tags, this
+	// method returns true. Otherwise, it returns false.
 	SelfClosing() bool
 
 	depth() uint
@@ -32,9 +31,6 @@ type HTML interface {
 }
 
 type htmlElement struct {
-	dispatcher Dispatcher
-	this       UI
-
 	tag           string
 	xmlns         string
 	treeDepth     uint
@@ -98,105 +94,4 @@ func (e *htmlElement) parent() UI {
 
 func (e *htmlElement) body() []UI {
 	return e.children
-}
-
-func (e *htmlElement) html(w io.Writer) {
-	panic("not implemented")
-
-	// io.WriteString(w, "<")
-	// io.WriteString(w, e.tag)
-
-	// for k, v := range e.attributes {
-	// 	e.writeHTMLAttribute(w, k, v)
-	// }
-
-	// io.WriteString(w, ">")
-
-	// if e.isSelfClosing {
-	// 	return
-	// }
-
-	// hasNewLineChildren := len(e.children) > 1
-
-	// for _, c := range e.children {
-	// 	if hasNewLineChildren {
-	// 		io.WriteString(w, "\n")
-	// 	}
-
-	// 	if c.self() == nil {
-	// 		c.setSelf(c)
-	// 	}
-	// 	c.html(w)
-	// }
-
-	// if hasNewLineChildren {
-	// 	io.WriteString(w, "\n")
-	// }
-
-	// io.WriteString(w, "</")
-	// io.WriteString(w, e.tag)
-	// io.WriteString(w, ">")
-}
-
-func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
-	panic("not implemented")
-
-	// writeIndent(w, indent)
-	// io.WriteString(w, "<")
-	// io.WriteString(w, e.tag)
-
-	// for k, v := range e.attributes {
-	// 	e.writeHTMLAttribute(w, k, v)
-	// }
-
-	// io.WriteString(w, ">")
-
-	// if e.isSelfClosing {
-	// 	return
-	// }
-
-	// var hasNewLineChildren bool
-	// if len(e.children) > 0 {
-	// 	_, isText := e.children[0].(*text)
-	// 	hasNewLineChildren = len(e.children) > 1 || !isText
-	// }
-
-	// for _, c := range e.children {
-	// 	if hasNewLineChildren {
-	// 		io.WriteString(w, "\n")
-	// 	}
-
-	// 	if c.self() == nil {
-	// 		c.setSelf(c)
-	// 	}
-	// 	c.htmlWithIndent(w, indent+1)
-	// }
-
-	// if hasNewLineChildren {
-	// 	io.WriteString(w, "\n")
-	// 	writeIndent(w, indent)
-	// }
-
-	// io.WriteString(w, "</")
-	// io.WriteString(w, e.tag)
-	// io.WriteString(w, ">")
-}
-
-func (e *htmlElement) writeHTMLAttribute(w io.Writer, k, v string) {
-	if (k == "id" || k == "class") && v == "" {
-		return
-	}
-
-	io.WriteString(w, " ")
-	io.WriteString(w, k)
-
-	if v != "" && v != "true" {
-		io.WriteString(w, `=`)
-		io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
-			if e.dispatcher != nil {
-				return e.dispatcher.resolveStaticResource(s)
-			}
-			return s
-		})))
-	}
 }

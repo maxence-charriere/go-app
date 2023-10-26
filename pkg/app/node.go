@@ -5,6 +5,7 @@ import (
 	"html"
 	"io"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -127,7 +128,7 @@ func (m nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 
 	switch v := v.(type) {
 	case *text:
-		return m.mountText(ctx, depth, v)
+		return m.mountText(depth, v)
 
 	case HTML:
 		return m.mountHTML(ctx, depth, v)
@@ -136,7 +137,7 @@ func (m nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 		return m.mountComponent(ctx, depth, v)
 
 	case *raw:
-		return m.mountRawHTML(ctx, depth, v)
+		return m.mountRawHTML(depth, v)
 
 	default:
 		return nil, errors.New("unsupported element").
@@ -145,7 +146,7 @@ func (m nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 	}
 }
 
-func (m nodeManager) mountText(ctx Context, depth uint, v *text) (UI, error) {
+func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("text is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -284,7 +285,7 @@ func (m nodeManager) renderComponent(v Composer) (UI, error) {
 	return rendering[0], nil
 }
 
-func (m nodeManager) mountRawHTML(ctx Context, depth uint, v *raw) (UI, error) {
+func (m nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("raw html is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -378,7 +379,7 @@ func (m nodeManager) Update(ctx Context, v, new UI) (UI, error) {
 	ctx = m.context(ctx, v)
 	switch v := v.(type) {
 	case *text:
-		return m.updateText(ctx, v, new.(*text))
+		return m.updateText(v, new.(*text))
 
 	case HTML:
 		return m.updateHTML(ctx, v, new.(HTML))
@@ -394,7 +395,7 @@ func (m nodeManager) Update(ctx Context, v, new UI) (UI, error) {
 	}
 }
 
-func (m nodeManager) updateText(ctx Context, v, new *text) (UI, error) {
+func (m nodeManager) updateText(v, new *text) (UI, error) {
 	if v.value == new.value {
 		return v, nil
 	}
@@ -704,46 +705,104 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
 	}
 }
 
-func (m nodeManager) Encode(v UI) []byte {
+func (m nodeManager) Encode(ctx Context, v UI) []byte {
 	var w bytes.Buffer
-	m.encode(&w, v)
+	m.encode(ctx, &w, 0, v)
 	return w.Bytes()
 }
 
-func (m nodeManager) encode(w *bytes.Buffer, v UI) {
+func (m nodeManager) encode(ctx Context, w *bytes.Buffer, depth int, v UI) {
 	switch v := v.(type) {
 	case *text:
-		m.encodeText(w, v)
+		m.encodeText(w, depth, v)
 
 	case HTML:
-		m.encodeHTML(w, v)
+		m.encodeHTML(ctx, w, depth, v)
 
 	case Composer:
-		m.encodeComponent(w, v)
+		m.encodeComponent(ctx, w, depth, v)
 
 	case *raw:
-		m.encodeRawHTML(w, v)
+		m.encodeRawHTML(w, depth, v)
 	}
 }
 
-func (m nodeManager) encodeText(w *bytes.Buffer, v *text) {
+func (m nodeManager) encodeText(w *bytes.Buffer, depth int, v *text) {
 	if v.value != "" {
+		m.encodeIndent(w, depth)
 		w.WriteString(html.EscapeString(v.value))
 	}
 }
 
-func (m nodeManager) encodeHTML(w *bytes.Buffer, v HTML) {
+func (m nodeManager) encodeIndent(w *bytes.Buffer, depth int) {
+	for i := 0; i < depth*2; i++ {
+		w.WriteByte(' ')
+	}
 }
 
-func (m nodeManager) encodeComponent(w *bytes.Buffer, v Composer) {
+func (m nodeManager) encodeHTML(ctx Context, w *bytes.Buffer, depth int, v HTML) {
+	m.encodeIndent(w, depth)
+	w.WriteByte('<')
+	w.WriteString(v.Tag())
+	for name, value := range v.attrs() {
+		m.encodeHTMLAttribute(ctx, w, name, value)
+	}
+	w.WriteByte('>')
+
+	if v.SelfClosing() {
+		return
+	}
+
+	children := v.body()
+	switch {
+	case len(children) > 1:
+		w.WriteByte('\n')
+		for _, child := range children {
+			m.encode(ctx, w, depth+1, child)
+			w.WriteByte('\n')
+		}
+		m.encodeIndent(w, depth)
+
+	case len(children) == 1:
+		child := children[0]
+		if text, ok := child.(*text); ok {
+			m.encodeText(w, 0, text)
+		} else {
+			w.WriteByte('\n')
+			m.encode(ctx, w, depth+1, child)
+			w.WriteByte('\n')
+			m.encodeIndent(w, depth)
+		}
+	}
+
+	w.WriteString("</")
+	w.WriteString(v.Tag())
+	w.WriteByte('>')
+}
+
+func (m nodeManager) encodeHTMLAttribute(ctx Context, w *bytes.Buffer, name, value string) {
+	if (name == "id" || name == "class") && value == "" {
+		return
+	}
+
+	w.WriteString(" ")
+	w.WriteString(name)
+	if value != "" && value != "true" {
+		w.WriteString("=")
+		w.WriteString(strconv.Quote(resolveAttributeURLValue(name, value, ctx.ResolveStaticResource)))
+	}
+}
+
+func (m nodeManager) encodeComponent(ctx Context, w *bytes.Buffer, depth int, v Composer) {
 	if !v.Mounted() {
 		return
 	}
-	m.encode(w, v.root())
+	m.encode(ctx, w, depth, v.root())
 }
 
-func (m nodeManager) encodeRawHTML(w *bytes.Buffer, v *raw) {
+func (m nodeManager) encodeRawHTML(w *bytes.Buffer, depth int, v *raw) {
 	if v.value != "" {
+		m.encodeIndent(w, depth)
 		w.WriteString(v.value)
 	}
 }
