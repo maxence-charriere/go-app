@@ -100,247 +100,17 @@ type Context interface {
 	// NewActionWithValue crafts an action with a given value for processing.
 	NewActionWithValue(name string, v any, tags ...Tagger)
 
-	// SetState modifies a state with the provided value.
-	SetState(state string, v any, opts ...StateOption)
+	// ObserveState establishes an observer for a state, tracking its changes.
+	ObserveState(state string, recv any) ObserverX
 
 	// GetState fetches the value of a particular state.
 	GetState(state string, recv any)
 
+	// SetState modifies a state with the provided value.
+	SetState(state string, v any) StateX
+
 	// DelState erases a state, halting all associated observations.
 	DelState(state string)
-
-	// ObserveState establishes an observer for a state, tracking its changes.
-	ObserveState(state string) Observer
-
-	// Dispatcher fetches the app's dispatcher.
-	Dispatcher() Dispatcher
-}
-
-type uiContext struct {
-	context.Context
-
-	src                UI
-	jsSrc              Value
-	appUpdateAvailable bool
-	page               Page
-	disp               Dispatcher
-}
-
-func (ctx uiContext) Src() UI {
-	return ctx.src
-}
-
-func (ctx uiContext) JSSrc() Value {
-	return ctx.jsSrc
-}
-
-func (ctx uiContext) AppUpdateAvailable() bool {
-	return ctx.appUpdateAvailable
-}
-
-func (ctx uiContext) IsAppInstallable() bool {
-	if Window().Get("goappIsAppInstallable").Truthy() {
-		return Window().Call("goappIsAppInstallable").Bool()
-	}
-	return false
-}
-
-func (ctx uiContext) IsAppInstalled() bool {
-	if Window().Get("goappIsAppInstalled").Truthy() {
-		return Window().Call("goappIsAppInstalled").Bool()
-	}
-	return false
-}
-
-func (ctx uiContext) ShowAppInstallPrompt() {
-	if ctx.IsAppInstallable() {
-		Window().Call("goappShowInstallPrompt")
-	}
-}
-
-func (ctx uiContext) Page() Page {
-	return ctx.page
-}
-
-func (ctx uiContext) Dispatch(fn func(Context)) {
-	ctx.Dispatcher().Dispatch(Dispatch{
-		Mode:     Update,
-		Source:   ctx.Src(),
-		Function: fn,
-	})
-}
-
-func (ctx uiContext) Defer(fn func(Context)) {
-	ctx.Dispatcher().Dispatch(Dispatch{
-		Mode:     Defer,
-		Source:   ctx.Src(),
-		Function: fn,
-	})
-}
-
-func (ctx uiContext) Handle(actionName string, h ActionHandler) {
-	ctx.Dispatcher().Handle(actionName, ctx.Src(), h)
-}
-
-func (ctx uiContext) NewAction(name string, tags ...Tagger) {
-	ctx.NewActionWithValue(name, nil, tags...)
-}
-
-func (ctx uiContext) NewActionWithValue(name string, v any, tags ...Tagger) {
-	var tagMap Tags
-	for _, t := range tags {
-		if tagMap == nil {
-			tagMap = t.Tags()
-			continue
-		}
-		for k, v := range t.Tags() {
-			tagMap[k] = v
-		}
-	}
-
-	ctx.Dispatcher().Post(Action{
-		Name:  name,
-		Value: v,
-		Tags:  tagMap,
-	})
-}
-
-func (ctx uiContext) Async(fn func()) {
-	ctx.Dispatcher().Async(fn)
-}
-
-func (ctx uiContext) After(d time.Duration, fn func(Context)) {
-	ctx.Async(func() {
-		time.Sleep(d)
-		ctx.Dispatch(fn)
-	})
-}
-
-func (ctx uiContext) Emit(fn func()) {
-	ctx.Dispatcher().Emit(ctx.Src(), fn)
-}
-
-func (ctx uiContext) Reload() {
-	if IsServer {
-		return
-	}
-	ctx.Defer(func(ctx Context) {
-		Window().Get("location").Call("reload")
-	})
-}
-
-func (ctx uiContext) Navigate(rawURL string) {
-	ctx.Defer(func(ctx Context) {
-		navigate(ctx.Dispatcher(), rawURL)
-	})
-}
-
-func (ctx uiContext) NavigateTo(u *url.URL) {
-	ctx.Defer(func(ctx Context) {
-		navigateTo(ctx.Dispatcher(), u, true)
-	})
-}
-
-func (ctx uiContext) ResolveStaticResource(path string) string {
-	return ctx.Dispatcher().resolveStaticResource(path)
-}
-
-func (ctx uiContext) LocalStorage() BrowserStorage {
-	return ctx.Dispatcher().getLocalStorage()
-}
-
-func (ctx uiContext) SessionStorage() BrowserStorage {
-	return ctx.Dispatcher().getSessionStorage()
-}
-
-func (ctx uiContext) ScrollTo(id string) {
-	ctx.Defer(func(ctx Context) {
-		Window().ScrollToID(id)
-	})
-}
-
-func (ctx uiContext) DeviceID() string {
-	var id string
-	if err := ctx.LocalStorage().Get("/go-app/deviceID", &id); err != nil {
-		panic(errors.New("retrieving device id failed").Wrap(err))
-	}
-	if id != "" {
-		return id
-	}
-
-	id = uuid.NewString()
-	if err := ctx.LocalStorage().Set("/go-app/deviceID", id); err != nil {
-		panic(errors.New("creating device id failed").Wrap(err))
-	}
-	return id
-}
-
-func (ctx uiContext) Encrypt(v any) ([]byte, error) {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return nil, errors.New("encoding value failed").Wrap(err)
-	}
-
-	b, err = encrypt(ctx.cryptoKey(), b)
-	if err != nil {
-		return nil, errors.New("encrypting value failed").Wrap(err)
-	}
-	return b, nil
-}
-
-func (ctx uiContext) Decrypt(crypted []byte, v any) error {
-	b, err := decrypt(ctx.cryptoKey(), crypted)
-	if err != nil {
-		return errors.New("decrypting value failed").Wrap(err)
-	}
-
-	if err := json.Unmarshal(b, v); err != nil {
-		return errors.New("decoding value failed").Wrap(err)
-	}
-	return nil
-}
-
-func (ctx uiContext) SetState(state string, v any, opts ...StateOption) {
-	ctx.Dispatcher().SetState(state, v, opts...)
-}
-
-func (ctx uiContext) GetState(state string, recv any) {
-	ctx.Dispatcher().GetState(state, recv)
-}
-
-func (ctx uiContext) DelState(state string) {
-	ctx.Dispatcher().DelState(state)
-}
-
-func (ctx uiContext) ObserveState(state string) Observer {
-	return ctx.Dispatcher().ObserveState(state, ctx.src)
-}
-
-func (ctx uiContext) Dispatcher() Dispatcher {
-	return ctx.disp
-}
-
-func (ctx uiContext) Notifications() NotificationService {
-	return NotificationService{}
-}
-
-func (ctx uiContext) PreventUpdate() {
-	ctx.Dispatcher().preventComponentUpdate(getComponent(ctx.src))
-}
-
-func (ctx uiContext) cryptoKey() string {
-	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
-}
-
-func makeContext(src UI) Context {
-	return uiContext{
-		Context:            context.Background(),
-		src:                src,
-		jsSrc:              src.JSValue(),
-		appUpdateAvailable: appUpdateAvailable,
-		page:               src.getDispatcher().getCurrentPage(),
-		disp:               src.getDispatcher(),
-	}
 }
 
 type nodeContext struct {
@@ -361,6 +131,10 @@ type nodeContext struct {
 	foreachUpdatableComponent func(UI, func(Composer))
 	handleAction              func(string, UI, bool, ActionHandler)
 	postAction                func(Context, Action)
+	observeState              func(Context, string, any) ObserverX
+	getState                  func(Context, string, any)
+	setState                  func(Context, string, any) StateX
+	delState                  func(Context, string)
 }
 
 func (ctx nodeContext) Src() UI {
@@ -487,6 +261,9 @@ func (ctx nodeContext) Dispatch(v func(Context)) {
 			return
 		}
 		ctx.foreachUpdatableComponent(ctx.sourceElement, ctx.addComponentUpdate)
+		if v == nil {
+			return
+		}
 		v(ctx)
 	})
 }
@@ -494,6 +271,9 @@ func (ctx nodeContext) Dispatch(v func(Context)) {
 func (ctx nodeContext) Defer(v func(Context)) {
 	ctx.defere(func() {
 		if !ctx.sourceElement.Mounted() {
+			return
+		}
+		if v == nil {
 			return
 		}
 		v(ctx)
@@ -543,22 +323,18 @@ func (ctx nodeContext) NewActionWithValue(action string, v any, tags ...Tagger) 
 	})
 }
 
-func (ctx nodeContext) SetState(state string, v any, opts ...StateOption) {
-	panic("not implemented")
+func (ctx nodeContext) ObserveState(state string, recv any) ObserverX {
+	return ctx.observeState(ctx, state, recv)
 }
 
 func (ctx nodeContext) GetState(state string, recv any) {
-	panic("not implemented")
+	ctx.getState(ctx, state, recv)
+}
+
+func (ctx nodeContext) SetState(state string, v any) StateX {
+	return ctx.setState(ctx, state, v)
 }
 
 func (ctx nodeContext) DelState(state string) {
 	panic("not implemented")
-}
-
-func (ctx nodeContext) ObserveState(state string) Observer {
-	panic("not implemented")
-}
-
-func (ctx nodeContext) Dispatcher() Dispatcher {
-	panic("to deprecate")
 }

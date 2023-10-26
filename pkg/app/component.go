@@ -29,14 +29,6 @@ type Composer interface {
 	// Render returns the node tree that define how the component is desplayed.
 	Render() UI
 
-	// Update update the component appearance. It should be called when a field
-	// used to render the component has been modified.
-	Update()
-
-	// ResizeContent triggers OnResize() on all the component children that
-	// implement the Resizer interface.
-	ResizeContent()
-
 	// ValueTo stores the value of the DOM element (if exists) that emitted an
 	// event into the given value.
 	//
@@ -45,9 +37,6 @@ type Composer interface {
 	//
 	// It panics if the given value is not a pointer.
 	ValueTo(any) EventHandler
-
-	updateRoot() error
-	dispatch(func(Context))
 
 	setRef(Composer) Composer
 	depth() uint
@@ -165,9 +154,6 @@ type resize struct{}
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
-	disp Dispatcher
-	this Composer
-
 	treeDepth     uint
 	ref           Composer
 	parentElement UI
@@ -184,10 +170,7 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.ref != nil ||
-		(c.getDispatcher() != nil && // TODO: remove from here
-			c.rootElement != nil && c.rootElement.Mounted() &&
-			c.self() != nil)
+	return c.ref != nil
 }
 
 // Render describes the component content. This is a default implementation to
@@ -212,21 +195,6 @@ func (c *Compo) Render() UI {
 		)
 }
 
-// Update triggers a component appearance update. It should be called when a
-// field used to render the component has been modified. Updates are always
-// performed on the UI goroutine.
-func (c *Compo) Update() {
-	c.dispatch(func(Context) {})
-}
-
-// ResizeContent triggers OnResize() on all the component children that
-// implement the Resizer interface.
-func (c *Compo) ResizeContent() {
-	c.dispatch(func(Context) {
-		c.rootElement.onComponentEvent(resize{})
-	})
-}
-
 // ValueTo stores the value of the DOM element (if exists) that emitted an event
 // into the given value.
 //
@@ -244,272 +212,6 @@ func (c *Compo) ValueTo(v any) EventHandler {
 	}
 }
 
-func (c *Compo) name() string {
-	name := reflect.TypeOf(c.self()).String()
-	name = strings.ReplaceAll(name, "main.", "")
-	return name
-}
-
-func (c *Compo) self() UI {
-	return c.this
-}
-
-func (c *Compo) setSelf(v UI) {
-	if v != nil {
-		c.this = v.(Composer)
-		return
-	}
-
-	c.this = nil
-}
-
-func (c *Compo) getDispatcher() Dispatcher {
-	return c.disp
-}
-
-func (c *Compo) getAttributes() attributes {
-	return nil
-}
-
-func (c *Compo) getEventHandlers() eventHandlers {
-	return nil
-}
-
-func (c *Compo) getParent() UI {
-	return c.parent()
-}
-
-func (c *Compo) setParent(p UI) UI {
-	c.parentElement = p
-	if c.ref != nil {
-		return c.ref
-	}
-	return c.self()
-}
-
-func (c *Compo) getChildren() []UI {
-	return []UI{c.rootElement}
-}
-
-func (c *Compo) mount(d Dispatcher) error {
-	if c.Mounted() {
-		return errors.New("mounting component failed").
-			WithTag("reason", "already mounted").
-			WithTag("name", c.name())
-	}
-
-	if initializer, ok := c.self().(Initializer); ok {
-		initializer.OnInit()
-	}
-
-	c.disp = d
-
-	root := c.render()
-	if err := mount(d, root); err != nil {
-		return errors.New("mounting component failed").
-			WithTag("name", c.name()).
-			Wrap(err)
-	}
-	root.setParent(c.this)
-	c.rootElement = root
-
-	if mounter, ok := c.self().(Mounter); IsClient && ok {
-		c.dispatch(mounter.OnMount)
-		return nil
-	}
-
-	if preRenderer, ok := c.self().(PreRenderer); IsServer && ok {
-		c.dispatch(preRenderer.OnPreRender)
-		return nil
-	}
-
-	c.dispatch(nil)
-	return nil
-}
-
-func (c *Compo) dismount() {
-	dismount(c.rootElement)
-
-	if dismounter, ok := c.this.(Dismounter); ok {
-		dismounter.OnDismount()
-	}
-}
-
-func (c *Compo) canUpdateWith(v UI) bool {
-	return c.Mounted() && c.name() == v.name()
-}
-
-func (c *Compo) updateWith(v UI) error {
-	if c.self() == v {
-		return nil
-	}
-
-	if !c.canUpdateWith(v) {
-		return errors.New("cannot update component with given element").
-			WithTag("current", reflect.TypeOf(c.self())).
-			WithTag("new", reflect.TypeOf(v))
-	}
-
-	aval := reflect.Indirect(reflect.ValueOf(c.self()))
-	bval := reflect.Indirect(reflect.ValueOf(v))
-	compotype := reflect.ValueOf(c).Elem().Type()
-	haveModifiedFields := false
-
-	for i := 0; i < aval.NumField(); i++ {
-		a := aval.Field(i)
-		b := bval.Field(i)
-
-		if a.Type() == compotype {
-			continue
-		}
-
-		if !a.CanSet() {
-			continue
-		}
-
-		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
-			a.Set(b)
-			haveModifiedFields = true
-		}
-	}
-
-	if !haveModifiedFields {
-		return nil
-	}
-
-	if err := c.updateRoot(); err != nil {
-		return errors.New("updating root failed").Wrap(err)
-	}
-
-	if updater, ok := c.self().(Updater); ok {
-		c.dispatch(updater.OnUpdate)
-	}
-
-	c.getDispatcher().removeComponentUpdate(c.this)
-	return nil
-}
-
-func (c *Compo) dispatch(fn func(Context)) {
-	c.getDispatcher().Dispatch(Dispatch{
-		Mode:     Update,
-		Source:   c.self(),
-		Function: fn,
-	})
-}
-
-func (c *Compo) updateRoot() error {
-	a := c.rootElement
-	b := c.render()
-
-	if canUpdate(a, b) {
-		return update(a, b)
-	}
-	return c.replaceRoot(b)
-}
-
-func (c *Compo) replaceRoot(v UI) error {
-	old := c.rootElement
-	new := v
-
-	if err := mount(c.getDispatcher(), new); err != nil {
-		return errors.New("replacing component root failed").
-			WithTag("name", c.name()).
-			WithTag("root-name", old.name()).
-			WithTag("new-root-name", new.name()).
-			Wrap(err)
-	}
-
-	var parent UI
-	for parent = c.getParent(); parent != nil; parent = parent.getParent() {
-		if _, isCompo := parent.(Composer); !isCompo {
-			break
-		}
-	}
-
-	if parent == nil {
-		return errors.New("replacing component root failed").
-			WithTag("name", c.name()).
-			WithTag("reason", "coponent does not have html element parents")
-	}
-
-	new.setParent(c.self())
-	c.rootElement = new
-
-	oldjs := old.JSValue()
-	newjs := v.JSValue()
-	parent.JSValue().replaceChild(newjs, oldjs)
-
-	dismount(old)
-	return nil
-}
-
-func (c *Compo) render() UI {
-	elems := FilterUIElems(c.this.Render())
-	return elems[0]
-}
-
-func (c *Compo) onComponentEvent(le any) {
-	switch le := le.(type) {
-	case nav:
-		c.onNav(le)
-
-	case appUpdate:
-		c.onAppUpdate(le)
-
-	case appInstallChange:
-		c.onAppInstallChange(le)
-
-	case resize:
-		c.onResize(le)
-	}
-
-	c.rootElement.onComponentEvent(le)
-}
-
-func (c *Compo) onNav(n nav) {
-	if nav, ok := c.self().(Navigator); ok {
-		c.dispatch(nav.OnNav)
-		return
-	}
-}
-
-func (c *Compo) onAppUpdate(au appUpdate) {
-	if updater, ok := c.self().(AppUpdater); ok {
-		c.dispatch(updater.OnAppUpdate)
-	}
-}
-
-func (c *Compo) onAppInstallChange(ai appInstallChange) {
-	if installer, ok := c.self().(AppInstaller); ok {
-		c.dispatch(installer.OnAppInstallChange)
-	}
-}
-
-func (c *Compo) onResize(r resize) {
-	if resizer, ok := c.self().(Resizer); ok {
-		c.dispatch(resizer.OnResize)
-		return
-	}
-}
-
-func (c *Compo) html(w io.Writer) {
-	if c.rootElement == nil {
-		c.rootElement = c.render()
-		c.rootElement.setSelf(c.rootElement)
-	}
-	c.rootElement.html(w)
-}
-
-func (c *Compo) htmlWithIndent(w io.Writer, indent int) {
-	if c.rootElement == nil {
-		c.rootElement = c.render()
-		c.rootElement.setSelf(c.rootElement)
-	}
-
-	c.rootElement.htmlWithIndent(w, indent)
-}
-
-// -----------------------------------------------------------------------------
 func (c *Compo) setRef(v Composer) Composer {
 	c.ref = v
 	return v
@@ -528,6 +230,11 @@ func (c *Compo) parent() UI {
 	return c.parentElement
 }
 
+func (c *Compo) setParent(p UI) UI {
+	c.parentElement = p
+	return c.ref
+}
+
 func (c *Compo) root() UI {
 	return c.rootElement
 }
@@ -535,4 +242,24 @@ func (c *Compo) root() UI {
 func (c *Compo) setRoot(v UI) Composer {
 	c.rootElement = v
 	return c.ref
+}
+
+func (c *Compo) html(w io.Writer) {
+	// if c.rootElement == nil {
+	// 	c.rootElement = c.render()
+	// 	c.rootElement.setSelf(c.rootElement)
+	// }
+	// c.rootElement.html(w)
+
+	panic("not implemented")
+}
+
+func (c *Compo) htmlWithIndent(w io.Writer, indent int) {
+	// if c.rootElement == nil {
+	// 	c.rootElement = c.render()
+	// 	c.rootElement.setSelf(c.rootElement)
+	// }
+
+	// c.rootElement.htmlWithIndent(w, indent)
+	panic("not implemented")
 }

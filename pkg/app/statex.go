@@ -414,3 +414,102 @@ func storeValue(recv, v any) error {
 	dst.Set(src)
 	return nil
 }
+
+// TODO:
+// - expire all expired values from local storage
+// - test broadcast
+
+// func TestExpireExpriredPersistentValues(t *testing.T) {
+// 	if IsServer {
+// 		t.Skip()
+// 	}
+
+// 	d := NewClientTester(&foo{})
+// 	defer d.Close()
+// 	localStorage := d.getLocalStorage()
+
+// 	s := newStore(d)
+// 	defer s.Close()
+
+// 	t.Run("non expired state is not removed", func(t *testing.T) {
+// 		localStorage.Clear()
+// 		s.setPersistent("/hello", false, time.Now().Add(time.Minute), "hello")
+// 		require.Equal(t, 1, localStorage.Len())
+
+// 		s.expireExpriredPersistentValues()
+// 		require.Equal(t, 1, localStorage.Len())
+// 	})
+
+// 	t.Run("expired state is removed", func(t *testing.T) {
+// 		localStorage.Clear()
+// 		s.setPersistent("/bye", false, time.Now().Add(-time.Minute), "bye")
+// 		require.Equal(t, 1, localStorage.Len())
+
+// 		s.expireExpriredPersistentValues()
+// 		require.Equal(t, 0, localStorage.Len())
+// 	})
+
+// 	t.Run("non state value is not removed", func(t *testing.T) {
+// 		localStorage.Clear()
+// 		localStorage.Set("/hi", "hi")
+// 		require.Equal(t, 1, localStorage.Len())
+
+// 		s.expireExpriredPersistentValues()
+// 		require.Equal(t, 1, localStorage.Len())
+// 	})
+// }
+
+// func TestStoreBroadcast(t *testing.T) {
+// 	d1 := NewClientTester(&foo{})
+// 	s1 := newStore(d1)
+// 	defer d1.Close()
+// 	defer s1.Close()
+
+// 	bar := &bar{}
+// 	d2 := NewClientTester(bar)
+// 	s2 := newStore(d2)
+// 	defer d2.Close()
+// 	defer s2.Close()
+
+// 	require.NotEqual(t, s1.id, s2.id)
+
+// 	key := "/test/store/broadcast"
+// 	t.Run("state is not broadcasted", func(t *testing.T) {
+// 		var v int
+// 		s2.Observe(key, bar).Value(&v)
+
+// 		s1.Set(key, func() {}, Broadcast)
+// 		d2.Consume()
+// 		require.Zero(t, v)
+// 	})
+
+// 	t.Run("state is broadcasted", func(t *testing.T) {
+// 		if IsServer {
+// 			t.Skip()
+// 		}
+
+// 		var v int
+
+// 		s2.Observe(key, bar).Value(&v)
+// 		s1.Set(key, 42, Broadcast)
+
+// 		time.Sleep(time.Millisecond * 100)
+// 		d2.Consume()
+// 		require.Equal(t, 42, v)
+// 	})
+
+// 	t.Run("broadcasted state is not observed", func(t *testing.T) {
+// 		if IsServer {
+// 			t.Skip()
+// 		}
+
+// 		var v func()
+
+// 		s2.Observe(key, bar).Value(&v)
+// 		s1.Set(key, 42, Broadcast)
+
+// 		time.Sleep(time.Millisecond * 50)
+// 		d2.Consume()
+// 		require.Zero(t, v)
+// 	})
+// }

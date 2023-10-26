@@ -25,6 +25,10 @@ func TestEngineXBaseContext(t *testing.T) {
 	require.NotNil(t, ctx.removeComponentUpdate)
 	require.NotNil(t, ctx.handleAction)
 	require.NotNil(t, ctx.postAction)
+	require.NotNil(t, ctx.observeState)
+	require.NotNil(t, ctx.getState)
+	require.NotNil(t, ctx.setState)
+	// require.NotNil(t, ctx.delState) TODO
 }
 
 func TestEngineXLoad(t *testing.T) {
@@ -228,11 +232,13 @@ func TestEngineXStart(t *testing.T) {
 
 func newTestEngine() *engineX {
 	origin, _ := url.Parse("/")
+	originPage := makeRequestPage(origin, nil)
+
 	routes := makeRouter()
 	return newEngineX(context.Background(),
 		&routes,
 		nil,
-		origin,
+		&originPage,
 		Body,
 		map[string]ActionHandler{
 			"/test": func(ctx Context, a Action) {},

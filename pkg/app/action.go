@@ -43,68 +43,6 @@ type actionManager struct {
 	handlers map[string]map[string]actionHandler
 }
 
-// TODO: deprecate
-func (m *actionManager) post(a Action) {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
-
-	handlers := m.handlers[a.Name]
-	for key, h := range handlers {
-		source := h.Source
-		if !source.Mounted() {
-			delete(handlers, key)
-			continue
-		}
-
-		ctx := makeContext(source)
-		function := h.Function
-		if h.Async {
-			ctx.Async(func() { function(ctx, a) })
-		} else {
-			ctx.Dispatch(func(ctx Context) { function(ctx, a) })
-		}
-	}
-}
-
-func (m *actionManager) handle(actionName string, async bool, source UI, h ActionHandler) {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
-
-	if m.handlers == nil {
-		m.handlers = make(map[string]map[string]actionHandler)
-	}
-
-	handlers, isRegistered := m.handlers[actionName]
-	if !isRegistered {
-		handlers = make(map[string]actionHandler)
-		m.handlers[actionName] = handlers
-	}
-
-	key := fmt.Sprintf("/%T:%p/%p", source, source, h)
-	handlers[key] = actionHandler{
-		Source:   source,
-		Function: h,
-		Async:    async,
-	}
-}
-
-func (m *actionManager) closeUnusedHandlers() {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
-
-	for actionName, handlers := range m.handlers {
-		for key, h := range handlers {
-			if !h.Source.Mounted() {
-				delete(handlers, key)
-			}
-		}
-
-		if len(handlers) == 0 {
-			delete(m.handlers, actionName)
-		}
-	}
-}
-
 // Handle registers an ActionHandler for the given action and source.
 func (m *actionManager) Handle(action string, source UI, async bool, handler ActionHandler) {
 	m.mutex.Lock()

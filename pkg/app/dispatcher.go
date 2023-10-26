@@ -15,43 +15,9 @@ type Dispatcher interface {
 	// Context returns the context associated with the root element.
 	Context() Context
 
-	// Executes the given dispatch operation on the UI goroutine.
-	Dispatch(d Dispatch)
-
-	// Emit executes the given function and notifies the source's parent
-	// components to update their state.
-	Emit(src UI, fn func())
-
 	// Handle registers the handler for the given action name. When an action
 	// occurs, the handler is executed on the UI goroutine.
 	Handle(actionName string, src UI, h ActionHandler)
-
-	// Post posts the given action. The action is then handled by handlers
-	// registered with Handle() and Context.Handle().
-	Post(a Action)
-
-	// Sets the state with the given value.
-	SetState(state string, v any, opts ...StateOption)
-
-	// Stores the specified state value into the given receiver. Panics when the
-	// receiver is not a pointer or nil.
-	GetState(state string, recv any)
-
-	// Deletes the given state.
-	DelState(state string)
-
-	// Creates an observer that observes changes for the specified state while
-	// the given element is mounted.
-	ObserveState(state string, elem UI) Observer
-
-	// 	Async launches the given function on a new goroutine.
-	//
-	// The difference versus just launching a goroutine is that it ensures that
-	// the asynchronous instructions are called before the dispatcher is closed.
-	//
-	// This is important during component prerendering since asynchronous
-	// operations need to complete before sending a pre-rendered page over HTTP.
-	Async(fn func())
 
 	// Wait waits for the asynchronous operations launched with Async() to
 	// complete.
@@ -99,24 +65,25 @@ type ClientDispatcher interface {
 
 // NewClientTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
-func NewClientTester(n UI) ClientDispatcher {
-	e := &engine{
-		ActionHandlers: actionHandlers,
-	}
+// func NewClientTester(n UI) ClientDispatcher {
+// panic("not implemented")
+// e := &engine{
+// 	ActionHandlers: actionHandlers,
+// }
 
-	if IsClient {
-		e.LocalStorage = newJSStorage("localStorage")
-		e.LocalStorage.Clear()
+// if IsClient {
+// 	e.LocalStorage = newJSStorage("localStorage")
+// 	e.LocalStorage.Clear()
 
-		e.SessionStorage = newJSStorage("sessionStorage")
-		e.SessionStorage.Clear()
-	}
+// 	e.SessionStorage = newJSStorage("sessionStorage")
+// 	e.SessionStorage.Clear()
+// }
 
-	e.init()
-	e.Mount(n)
-	e.Consume()
-	return e
-}
+// e.init()
+// e.Mount(n)
+// e.Consume()
+// return e
+// }
 
 // ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
 type ServerDispatcher interface {
@@ -136,27 +103,15 @@ type ServerDispatcher interface {
 // NewServerTester creates a testing dispatcher that simulates a
 // client environment.
 func NewServerTester(n UI) ServerDispatcher {
-	e := &engine{
-		ActionHandlers: actionHandlers,
-	}
-	e.init()
-	e.Mount(n)
-	e.Consume()
-	return e
-}
+	panic("not implemented")
 
-// Dispatch represents an operation executed on the UI goroutine.
-type Dispatch struct {
-	Mode     DispatchMode
-	Source   UI
-	Function func(Context)
-}
-
-func (d Dispatch) do() {
-	if d.Source == nil || !d.Source.Mounted() || d.Function == nil {
-		return
-	}
-	d.Function(makeContext(d.Source))
+	// e := &engine{
+	// 	ActionHandlers: actionHandlers,
+	// }
+	// e.init()
+	// e.Mount(n)
+	// e.Consume()
+	// return e
 }
 
 // DispatchMode represents how a dispatch is processed.

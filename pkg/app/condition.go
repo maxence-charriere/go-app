@@ -1,11 +1,5 @@
 package app
 
-import (
-	"io"
-
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-)
-
 // Condition represents a control structure for conditionally displaying UI
 // elements. It extends the UI interface to include methods for handling
 // conditional logic.
@@ -38,6 +32,8 @@ type Condition interface {
 	// expr: Boolean expression to evaluate.
 	// elems: Function that returns a slice of UI elements to display.
 	ElseSlice(elems func() []UI) Condition
+
+	body() []UI
 }
 
 // If returns a Condition that will display the given UI element based on the
@@ -54,11 +50,11 @@ func IfSlice(expr bool, elems func() []UI) Condition {
 	if !expr {
 		return condition{}
 	}
-	return condition{body: FilterUIElems(elems()...)}
+	return condition{children: FilterUIElems(elems()...)}
 }
 
 type condition struct {
-	body []UI
+	children []UI
 }
 
 func (c condition) ElseIf(expr bool, elem func() UI) Condition {
@@ -68,11 +64,11 @@ func (c condition) ElseIf(expr bool, elem func() UI) Condition {
 }
 
 func (c condition) ElseIfSlice(expr bool, elems func() []UI) Condition {
-	if len(c.body) != 0 || !expr {
+	if len(c.children) != 0 || !expr {
 		return c
 	}
 
-	c.body = FilterUIElems(elems()...)
+	c.children = FilterUIElems(elems()...)
 	return c
 }
 
@@ -94,67 +90,14 @@ func (c condition) Mounted() bool {
 	return false
 }
 
-func (c condition) name() string {
-	return "if.else"
+func (c condition) body() []UI {
+	return c.children
 }
 
-func (c condition) self() UI {
-	return c
-}
-
-func (c condition) setSelf(UI) {
-}
-
-func (c condition) getDispatcher() Dispatcher {
-	return nil
-}
-
-func (c condition) getAttributes() attributes {
-	return nil
-}
-
-func (c condition) getEventHandlers() eventHandlers {
-	return nil
-}
-
-func (c condition) getParent() UI {
+func (c condition) parent() UI {
 	return nil
 }
 
 func (c condition) setParent(UI) UI {
-	return nil
-}
-
-func (c condition) getChildren() []UI {
-	return c.body
-}
-
-func (c condition) mount(Dispatcher) error {
-	return errors.New("condition is not mountable").WithTag("name", c.name())
-}
-
-func (c condition) dismount() {
-}
-
-func (c condition) canUpdateWith(UI) bool {
-	return false
-}
-
-func (c condition) updateWith(UI) error {
-	return errors.New("condition cannot be updated").WithTag("name", c.name())
-}
-
-func (c condition) onComponentEvent(any) {
-}
-
-func (c condition) html(w io.Writer) {
-	panic("shoulnd not be called")
-}
-
-func (c condition) htmlWithIndent(w io.Writer, indent int) {
-	panic("shoulnd not be called")
-}
-
-func (c condition) parent() UI {
 	return nil
 }

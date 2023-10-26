@@ -83,6 +83,9 @@ func (b *browser) handleAppUpdate(ctx nodeContext, notifyComponentEvent func(any
 			b.AppUpdatable = true
 			notifyComponentEvent(appUpdate{})
 		})
+		ctx.defere(func() {
+			Log(Window().URL().Hostname() + " has been updated, reload to see changes")
+		})
 		return nil
 	})
 	Window().Set("goappOnUpdate", b.appUpdate)

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"io"
 	"reflect"
 	"strings"
@@ -17,22 +18,6 @@ type UI interface {
 
 	// Reports whether the element is mounted.
 	Mounted() bool
-
-	name() string
-	self() UI
-	setSelf(UI)
-	getDispatcher() Dispatcher
-	getAttributes() attributes
-	getEventHandlers() eventHandlers
-	getParent() UI
-	getChildren() []UI
-	mount(Dispatcher) error
-	dismount()
-	canUpdateWith(UI) bool
-	updateWith(UI) error
-	onComponentEvent(any)
-	html(w io.Writer)
-	htmlWithIndent(w io.Writer, indent int)
 
 	parent() UI
 	setParent(UI) UI
@@ -76,35 +61,16 @@ func FilterUIElems(v ...UI) []UI {
 			removeELemAt(i)
 		}
 
-		switch elem.(type) {
-		case Condition, RangeLoop:
-			replaceElemAt(i, elem.getChildren()...)
+		switch elem := elem.(type) {
+		case Condition:
+			replaceElemAt(i, elem.body()...)
+
+		case RangeLoop:
+			replaceElemAt(i, elem.body()...)
 		}
 	}
 
 	return v
-}
-
-func mount(d Dispatcher, n UI) error {
-	n.setSelf(n)
-	return n.mount(d)
-}
-
-func dismount(n UI) {
-	n.dismount()
-	n.setSelf(nil)
-}
-
-func canUpdate(a, b UI) bool {
-	a.setSelf(a)
-	b.setSelf(b)
-	return a.canUpdateWith(b)
-}
-
-func update(a, b UI) error {
-	a.setSelf(a)
-	b.setSelf(b)
-	return a.updateWith(b)
 }
 
 // HTMLString return an HTML string representation of the given UI element.
@@ -125,19 +91,21 @@ func HTMLStringWithIndent(ui UI) string {
 // PrintHTML writes an HTML representation of the UI element into the given
 // writer.
 func PrintHTML(w io.Writer, ui UI) {
-	if !ui.Mounted() {
-		ui.setSelf(ui)
-	}
-	ui.html(w)
+	panic("not implemented")
+	// if !ui.Mounted() {
+	// 	ui.setSelf(ui)
+	// }
+	// ui.html(w)
 }
 
 // PrintHTMLWithIndent writes an idented HTML representation of the UI element
 // into the given writer.
 func PrintHTMLWithIndent(w io.Writer, ui UI) {
-	if !ui.Mounted() {
-		ui.setSelf(ui)
-	}
-	ui.htmlWithIndent(w, 0)
+	panic("not implemented")
+	// if !ui.Mounted() {
+	// 	ui.setSelf(ui)
+	// }
+	// ui.htmlWithIndent(w, 0)
 }
 
 // nodeManager orchestrates the lifecycle of UI elements, providing specialized
@@ -727,6 +695,40 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
 		}
 		m.NotifyComponentEvent(ctx, element.root(), event)
 	}
+}
+
+func (m nodeManager) Encode(v UI) []byte {
+	var w bytes.Buffer
+	m.encode(&w, v)
+	return w.Bytes()
+}
+
+func (m nodeManager) encode(w *bytes.Buffer, v UI) {
+	switch v := v.(type) {
+	case *text:
+		m.encodeText(w, v)
+
+	case HTML:
+		m.encodeHTML(w, v)
+
+	case Composer:
+		m.encodeComponent(w, v)
+
+	case *raw:
+		m.encodeRawHTML(w, v)
+	}
+}
+
+func (m nodeManager) encodeText(w *bytes.Buffer, v *text) {
+}
+
+func (m nodeManager) encodeHTML(w *bytes.Buffer, v HTML) {
+}
+
+func (m nodeManager) encodeComponent(w *bytes.Buffer, v Composer) {
+}
+
+func (m nodeManager) encodeRawHTML(w *bytes.Buffer, v *raw) {
 }
 
 func canUpdateValue(v, new reflect.Value) bool {

@@ -9,21 +9,21 @@ import (
 
 func TestRequestPage(t *testing.T) {
 	testPage(t, &requestPage{
-		width:                 42,
-		height:                21,
-		url:                   &url.URL{Path: "/"},
-		resolveStaticResource: func(v string) string { return v },
+		width:      42,
+		height:     21,
+		url:        &url.URL{Path: "/"},
+		resolveURL: func(v string) string { return v },
 	})
 }
 
 func TestBrowserPage(t *testing.T) {
 	testSkipNonWasm(t)
 
-	client := NewClientTester(Div())
-	defer client.Close()
-	testPage(t, browserPage{
-		resolveStaticResource: func(v string) string { return v },
-	})
+	// client := NewClientTester(Div())
+	// defer client.Close()
+	// testPage(t, browserPage{
+	// 	resolveStaticResource: func(v string) string { return v },
+	// })
 }
 
 func testPage(t *testing.T, p Page) {

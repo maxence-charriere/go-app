@@ -220,8 +220,7 @@ type htmlA struct {
 }
 
 func (e *htmlA) Body(v ...UI) HTMLA {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlA)
 }
 
 func (e *htmlA) Text(v any) HTMLA {
@@ -766,8 +765,7 @@ type htmlAbbr struct {
 }
 
 func (e *htmlAbbr) Body(v ...UI) HTMLAbbr {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAbbr)
 }
 
 func (e *htmlAbbr) Text(v any) HTMLAbbr {
@@ -1272,8 +1270,7 @@ type htmlAddress struct {
 }
 
 func (e *htmlAddress) Body(v ...UI) HTMLAddress {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAddress)
 }
 
 func (e *htmlAddress) Text(v any) HTMLAddress {
@@ -2342,8 +2339,7 @@ type htmlArticle struct {
 }
 
 func (e *htmlArticle) Body(v ...UI) HTMLArticle {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlArticle)
 }
 
 func (e *htmlArticle) Text(v any) HTMLArticle {
@@ -2848,8 +2844,7 @@ type htmlAside struct {
 }
 
 func (e *htmlAside) Body(v ...UI) HTMLAside {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAside)
 }
 
 func (e *htmlAside) Text(v any) HTMLAside {
@@ -3444,8 +3439,7 @@ type htmlAudio struct {
 }
 
 func (e *htmlAudio) Body(v ...UI) HTMLAudio {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAudio)
 }
 
 func (e *htmlAudio) Text(v any) HTMLAudio {
@@ -4100,8 +4094,7 @@ type htmlB struct {
 }
 
 func (e *htmlB) Body(v ...UI) HTMLB {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlB)
 }
 
 func (e *htmlB) Text(v any) HTMLB {
@@ -5106,8 +5099,7 @@ type htmlBdi struct {
 }
 
 func (e *htmlBdi) Body(v ...UI) HTMLBdi {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBdi)
 }
 
 func (e *htmlBdi) Text(v any) HTMLBdi {
@@ -5612,8 +5604,7 @@ type htmlBdo struct {
 }
 
 func (e *htmlBdo) Body(v ...UI) HTMLBdo {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBdo)
 }
 
 func (e *htmlBdo) Text(v any) HTMLBdo {
@@ -6121,8 +6112,7 @@ type htmlBlockquote struct {
 }
 
 func (e *htmlBlockquote) Body(v ...UI) HTMLBlockquote {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBlockquote)
 }
 
 func (e *htmlBlockquote) Text(v any) HTMLBlockquote {
@@ -6670,8 +6660,7 @@ type htmlBody struct {
 }
 
 func (e *htmlBody) privateBody(v ...UI) HTMLBody {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBody)
 }
 
 func (e *htmlBody) AccessKey(format string, v ...any) HTMLBody {
@@ -7760,8 +7749,7 @@ type htmlButton struct {
 }
 
 func (e *htmlButton) Body(v ...UI) HTMLButton {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlButton)
 }
 
 func (e *htmlButton) Text(v any) HTMLButton {
@@ -8327,8 +8315,7 @@ type htmlCanvas struct {
 }
 
 func (e *htmlCanvas) Body(v ...UI) HTMLCanvas {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCanvas)
 }
 
 func (e *htmlCanvas) Text(v any) HTMLCanvas {
@@ -8843,8 +8830,7 @@ type htmlCaption struct {
 }
 
 func (e *htmlCaption) Body(v ...UI) HTMLCaption {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCaption)
 }
 
 func (e *htmlCaption) Text(v any) HTMLCaption {
@@ -9349,8 +9335,7 @@ type htmlCite struct {
 }
 
 func (e *htmlCite) Body(v ...UI) HTMLCite {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCite)
 }
 
 func (e *htmlCite) Text(v any) HTMLCite {
@@ -9855,8 +9840,7 @@ type htmlCode struct {
 }
 
 func (e *htmlCode) Body(v ...UI) HTMLCode {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCode)
 }
 
 func (e *htmlCode) Text(v any) HTMLCode {
@@ -10856,8 +10840,7 @@ type htmlColGroup struct {
 }
 
 func (e *htmlColGroup) Body(v ...UI) HTMLColGroup {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlColGroup)
 }
 
 func (e *htmlColGroup) Text(v any) HTMLColGroup {
@@ -11268,8 +11251,7 @@ type htmlData struct {
 }
 
 func (e *htmlData) Body(v ...UI) HTMLData {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlData)
 }
 
 func (e *htmlData) Text(v any) HTMLData {
@@ -11609,8 +11591,7 @@ type htmlDataList struct {
 }
 
 func (e *htmlDataList) Body(v ...UI) HTMLDataList {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDataList)
 }
 
 func (e *htmlDataList) Text(v any) HTMLDataList {
@@ -12115,8 +12096,7 @@ type htmlDd struct {
 }
 
 func (e *htmlDd) Body(v ...UI) HTMLDd {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDd)
 }
 
 func (e *htmlDd) Text(v any) HTMLDd {
@@ -12627,8 +12607,7 @@ type htmlDel struct {
 }
 
 func (e *htmlDel) Body(v ...UI) HTMLDel {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDel)
 }
 
 func (e *htmlDel) Text(v any) HTMLDel {
@@ -13149,8 +13128,7 @@ type htmlDetails struct {
 }
 
 func (e *htmlDetails) Body(v ...UI) HTMLDetails {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDetails)
 }
 
 func (e *htmlDetails) Text(v any) HTMLDetails {
@@ -13665,8 +13643,7 @@ type htmlDfn struct {
 }
 
 func (e *htmlDfn) Body(v ...UI) HTMLDfn {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDfn)
 }
 
 func (e *htmlDfn) Text(v any) HTMLDfn {
@@ -14174,8 +14151,7 @@ type htmlDialog struct {
 }
 
 func (e *htmlDialog) Body(v ...UI) HTMLDialog {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDialog)
 }
 
 func (e *htmlDialog) Text(v any) HTMLDialog {
@@ -14685,8 +14661,7 @@ type htmlDiv struct {
 }
 
 func (e *htmlDiv) Body(v ...UI) HTMLDiv {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDiv)
 }
 
 func (e *htmlDiv) Text(v any) HTMLDiv {
@@ -15191,8 +15166,7 @@ type htmlDl struct {
 }
 
 func (e *htmlDl) Body(v ...UI) HTMLDl {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDl)
 }
 
 func (e *htmlDl) Text(v any) HTMLDl {
@@ -15697,8 +15671,7 @@ type htmlDt struct {
 }
 
 func (e *htmlDt) Body(v ...UI) HTMLDt {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDt)
 }
 
 func (e *htmlDt) Text(v any) HTMLDt {
@@ -16206,8 +16179,7 @@ type htmlElem struct {
 }
 
 func (e *htmlElem) Body(v ...UI) HTMLElem {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlElem)
 }
 
 func (e *htmlElem) Text(v any) HTMLElem {
@@ -17209,8 +17181,7 @@ type htmlEm struct {
 }
 
 func (e *htmlEm) Body(v ...UI) HTMLEm {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlEm)
 }
 
 func (e *htmlEm) Text(v any) HTMLEm {
@@ -18424,8 +18395,7 @@ type htmlFieldSet struct {
 }
 
 func (e *htmlFieldSet) Body(v ...UI) HTMLFieldSet {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFieldSet)
 }
 
 func (e *htmlFieldSet) Text(v any) HTMLFieldSet {
@@ -18945,8 +18915,7 @@ type htmlFigCaption struct {
 }
 
 func (e *htmlFigCaption) Body(v ...UI) HTMLFigCaption {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFigCaption)
 }
 
 func (e *htmlFigCaption) Text(v any) HTMLFigCaption {
@@ -19451,8 +19420,7 @@ type htmlFigure struct {
 }
 
 func (e *htmlFigure) Body(v ...UI) HTMLFigure {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFigure)
 }
 
 func (e *htmlFigure) Text(v any) HTMLFigure {
@@ -19957,8 +19925,7 @@ type htmlFooter struct {
 }
 
 func (e *htmlFooter) Body(v ...UI) HTMLFooter {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFooter)
 }
 
 func (e *htmlFooter) Text(v any) HTMLFooter {
@@ -20487,8 +20454,7 @@ type htmlForm struct {
 }
 
 func (e *htmlForm) Body(v ...UI) HTMLForm {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlForm)
 }
 
 func (e *htmlForm) Text(v any) HTMLForm {
@@ -21038,8 +21004,7 @@ type htmlH1 struct {
 }
 
 func (e *htmlH1) Body(v ...UI) HTMLH1 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH1)
 }
 
 func (e *htmlH1) Text(v any) HTMLH1 {
@@ -21544,8 +21509,7 @@ type htmlH2 struct {
 }
 
 func (e *htmlH2) Body(v ...UI) HTMLH2 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH2)
 }
 
 func (e *htmlH2) Text(v any) HTMLH2 {
@@ -22050,8 +22014,7 @@ type htmlH3 struct {
 }
 
 func (e *htmlH3) Body(v ...UI) HTMLH3 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH3)
 }
 
 func (e *htmlH3) Text(v any) HTMLH3 {
@@ -22556,8 +22519,7 @@ type htmlH4 struct {
 }
 
 func (e *htmlH4) Body(v ...UI) HTMLH4 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH4)
 }
 
 func (e *htmlH4) Text(v any) HTMLH4 {
@@ -23062,8 +23024,7 @@ type htmlH5 struct {
 }
 
 func (e *htmlH5) Body(v ...UI) HTMLH5 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH5)
 }
 
 func (e *htmlH5) Text(v any) HTMLH5 {
@@ -23568,8 +23529,7 @@ type htmlH6 struct {
 }
 
 func (e *htmlH6) Body(v ...UI) HTMLH6 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH6)
 }
 
 func (e *htmlH6) Text(v any) HTMLH6 {
@@ -23972,8 +23932,7 @@ type htmlHead struct {
 }
 
 func (e *htmlHead) Body(v ...UI) HTMLHead {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlHead)
 }
 
 func (e *htmlHead) Text(v any) HTMLHead {
@@ -24308,8 +24267,7 @@ type htmlHeader struct {
 }
 
 func (e *htmlHeader) Body(v ...UI) HTMLHeader {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlHeader)
 }
 
 func (e *htmlHeader) Text(v any) HTMLHeader {
@@ -25189,8 +25147,7 @@ type htmlHtml struct {
 }
 
 func (e *htmlHtml) privateBody(v ...UI) HTMLHtml {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlHtml)
 }
 
 func (e *htmlHtml) AccessKey(format string, v ...any) HTMLHtml {
@@ -25517,8 +25474,7 @@ type htmlI struct {
 }
 
 func (e *htmlI) Body(v ...UI) HTMLI {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlI)
 }
 
 func (e *htmlI) Text(v any) HTMLI {
@@ -26059,8 +26015,7 @@ type htmlIFrame struct {
 }
 
 func (e *htmlIFrame) Body(v ...UI) HTMLIFrame {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlIFrame)
 }
 
 func (e *htmlIFrame) Text(v any) HTMLIFrame {
@@ -28136,8 +28091,7 @@ type htmlIns struct {
 }
 
 func (e *htmlIns) Body(v ...UI) HTMLIns {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlIns)
 }
 
 func (e *htmlIns) Text(v any) HTMLIns {
@@ -28642,8 +28596,7 @@ type htmlKbd struct {
 }
 
 func (e *htmlKbd) Body(v ...UI) HTMLKbd {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlKbd)
 }
 
 func (e *htmlKbd) Text(v any) HTMLKbd {
@@ -29154,8 +29107,7 @@ type htmlLabel struct {
 }
 
 func (e *htmlLabel) Body(v ...UI) HTMLLabel {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlLabel)
 }
 
 func (e *htmlLabel) Text(v any) HTMLLabel {
@@ -29670,8 +29622,7 @@ type htmlLegend struct {
 }
 
 func (e *htmlLegend) Body(v ...UI) HTMLLegend {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlLegend)
 }
 
 func (e *htmlLegend) Text(v any) HTMLLegend {
@@ -30179,8 +30130,7 @@ type htmlLi struct {
 }
 
 func (e *htmlLi) Body(v ...UI) HTMLLi {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlLi)
 }
 
 func (e *htmlLi) Text(v any) HTMLLi {
@@ -31254,8 +31204,7 @@ type htmlMain struct {
 }
 
 func (e *htmlMain) Body(v ...UI) HTMLMain {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMain)
 }
 
 func (e *htmlMain) Text(v any) HTMLMain {
@@ -31763,8 +31712,7 @@ type htmlMap struct {
 }
 
 func (e *htmlMap) Body(v ...UI) HTMLMap {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMap)
 }
 
 func (e *htmlMap) Text(v any) HTMLMap {
@@ -32274,8 +32222,7 @@ type htmlMark struct {
 }
 
 func (e *htmlMark) Body(v ...UI) HTMLMark {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMark)
 }
 
 func (e *htmlMark) Text(v any) HTMLMark {
@@ -33053,8 +33000,7 @@ type htmlMeter struct {
 }
 
 func (e *htmlMeter) Body(v ...UI) HTMLMeter {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMeter)
 }
 
 func (e *htmlMeter) Text(v any) HTMLMeter {
@@ -33594,8 +33540,7 @@ type htmlNav struct {
 }
 
 func (e *htmlNav) Body(v ...UI) HTMLNav {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlNav)
 }
 
 func (e *htmlNav) Text(v any) HTMLNav {
@@ -33998,8 +33943,7 @@ type htmlNoScript struct {
 }
 
 func (e *htmlNoScript) Body(v ...UI) HTMLNoScript {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlNoScript)
 }
 
 func (e *htmlNoScript) Text(v any) HTMLNoScript {
@@ -34424,8 +34368,7 @@ type htmlObject struct {
 }
 
 func (e *htmlObject) Body(v ...UI) HTMLObject {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlObject)
 }
 
 func (e *htmlObject) Text(v any) HTMLObject {
@@ -35089,8 +35032,7 @@ type htmlOl struct {
 }
 
 func (e *htmlOl) Body(v ...UI) HTMLOl {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOl)
 }
 
 func (e *htmlOl) Text(v any) HTMLOl {
@@ -35616,8 +35558,7 @@ type htmlOptGroup struct {
 }
 
 func (e *htmlOptGroup) Body(v ...UI) HTMLOptGroup {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOptGroup)
 }
 
 func (e *htmlOptGroup) Text(v any) HTMLOptGroup {
@@ -36144,8 +36085,7 @@ type htmlOption struct {
 }
 
 func (e *htmlOption) Body(v ...UI) HTMLOption {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOption)
 }
 
 func (e *htmlOption) Text(v any) HTMLOption {
@@ -36679,8 +36619,7 @@ type htmlOutput struct {
 }
 
 func (e *htmlOutput) Body(v ...UI) HTMLOutput {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOutput)
 }
 
 func (e *htmlOutput) Text(v any) HTMLOutput {
@@ -37200,8 +37139,7 @@ type htmlP struct {
 }
 
 func (e *htmlP) Body(v ...UI) HTMLP {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlP)
 }
 
 func (e *htmlP) Text(v any) HTMLP {
@@ -38206,8 +38144,7 @@ type htmlPicture struct {
 }
 
 func (e *htmlPicture) Body(v ...UI) HTMLPicture {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlPicture)
 }
 
 func (e *htmlPicture) Text(v any) HTMLPicture {
@@ -38712,8 +38649,7 @@ type htmlPre struct {
 }
 
 func (e *htmlPre) Body(v ...UI) HTMLPre {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlPre)
 }
 
 func (e *htmlPre) Text(v any) HTMLPre {
@@ -39224,8 +39160,7 @@ type htmlProgress struct {
 }
 
 func (e *htmlProgress) Body(v ...UI) HTMLProgress {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlProgress)
 }
 
 func (e *htmlProgress) Text(v any) HTMLProgress {
@@ -39743,8 +39678,7 @@ type htmlQ struct {
 }
 
 func (e *htmlQ) Body(v ...UI) HTMLQ {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlQ)
 }
 
 func (e *htmlQ) Text(v any) HTMLQ {
@@ -40254,8 +40188,7 @@ type htmlRp struct {
 }
 
 func (e *htmlRp) Body(v ...UI) HTMLRp {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlRp)
 }
 
 func (e *htmlRp) Text(v any) HTMLRp {
@@ -40760,8 +40693,7 @@ type htmlRt struct {
 }
 
 func (e *htmlRt) Body(v ...UI) HTMLRt {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlRt)
 }
 
 func (e *htmlRt) Text(v any) HTMLRt {
@@ -41266,8 +41198,7 @@ type htmlRuby struct {
 }
 
 func (e *htmlRuby) Body(v ...UI) HTMLRuby {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlRuby)
 }
 
 func (e *htmlRuby) Text(v any) HTMLRuby {
@@ -41772,8 +41703,7 @@ type htmlS struct {
 }
 
 func (e *htmlS) Body(v ...UI) HTMLS {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlS)
 }
 
 func (e *htmlS) Text(v any) HTMLS {
@@ -42278,8 +42208,7 @@ type htmlSamp struct {
 }
 
 func (e *htmlSamp) Body(v ...UI) HTMLSamp {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSamp)
 }
 
 func (e *htmlSamp) Text(v any) HTMLSamp {
@@ -42703,8 +42632,7 @@ type htmlScript struct {
 }
 
 func (e *htmlScript) Body(v ...UI) HTMLScript {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlScript)
 }
 
 func (e *htmlScript) Text(v any) HTMLScript {
@@ -43074,8 +43002,7 @@ type htmlSection struct {
 }
 
 func (e *htmlSection) Body(v ...UI) HTMLSection {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSection)
 }
 
 func (e *htmlSection) Text(v any) HTMLSection {
@@ -43601,8 +43528,7 @@ type htmlSelect struct {
 }
 
 func (e *htmlSelect) Body(v ...UI) HTMLSelect {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSelect)
 }
 
 func (e *htmlSelect) Text(v any) HTMLSelect {
@@ -44142,8 +44068,7 @@ type htmlSmall struct {
 }
 
 func (e *htmlSmall) Body(v ...UI) HTMLSmall {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSmall)
 }
 
 func (e *htmlSmall) Text(v any) HTMLSmall {
@@ -45172,8 +45097,7 @@ type htmlSpan struct {
 }
 
 func (e *htmlSpan) Body(v ...UI) HTMLSpan {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSpan)
 }
 
 func (e *htmlSpan) Text(v any) HTMLSpan {
@@ -45678,8 +45602,7 @@ type htmlStrong struct {
 }
 
 func (e *htmlStrong) Body(v ...UI) HTMLStrong {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlStrong)
 }
 
 func (e *htmlStrong) Text(v any) HTMLStrong {
@@ -46193,8 +46116,7 @@ type htmlStyle struct {
 }
 
 func (e *htmlStyle) Body(v ...UI) HTMLStyle {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlStyle)
 }
 
 func (e *htmlStyle) Text(v any) HTMLStyle {
@@ -46714,8 +46636,7 @@ type htmlSub struct {
 }
 
 func (e *htmlSub) Body(v ...UI) HTMLSub {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSub)
 }
 
 func (e *htmlSub) Text(v any) HTMLSub {
@@ -47220,8 +47141,7 @@ type htmlSummary struct {
 }
 
 func (e *htmlSummary) Body(v ...UI) HTMLSummary {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSummary)
 }
 
 func (e *htmlSummary) Text(v any) HTMLSummary {
@@ -47726,8 +47646,7 @@ type htmlSup struct {
 }
 
 func (e *htmlSup) Body(v ...UI) HTMLSup {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSup)
 }
 
 func (e *htmlSup) Text(v any) HTMLSup {
@@ -48232,8 +48151,7 @@ type htmlTable struct {
 }
 
 func (e *htmlTable) Body(v ...UI) HTMLTable {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTable)
 }
 
 func (e *htmlTable) Text(v any) HTMLTable {
@@ -48738,8 +48656,7 @@ type htmlTBody struct {
 }
 
 func (e *htmlTBody) Body(v ...UI) HTMLTBody {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTBody)
 }
 
 func (e *htmlTBody) Text(v any) HTMLTBody {
@@ -49253,8 +49170,7 @@ type htmlTd struct {
 }
 
 func (e *htmlTd) Body(v ...UI) HTMLTd {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTd)
 }
 
 func (e *htmlTd) Text(v any) HTMLTd {
@@ -49672,8 +49588,7 @@ type htmlTemplate struct {
 }
 
 func (e *htmlTemplate) Body(v ...UI) HTMLTemplate {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTemplate)
 }
 
 func (e *htmlTemplate) Text(v any) HTMLTemplate {
@@ -50044,8 +49959,7 @@ type htmlTextarea struct {
 }
 
 func (e *htmlTextarea) Body(v ...UI) HTMLTextarea {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTextarea)
 }
 
 func (e *htmlTextarea) Text(v any) HTMLTextarea {
@@ -50612,8 +50526,7 @@ type htmlTFoot struct {
 }
 
 func (e *htmlTFoot) Body(v ...UI) HTMLTFoot {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTFoot)
 }
 
 func (e *htmlTFoot) Text(v any) HTMLTFoot {
@@ -51133,8 +51046,7 @@ type htmlTh struct {
 }
 
 func (e *htmlTh) Body(v ...UI) HTMLTh {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTh)
 }
 
 func (e *htmlTh) Text(v any) HTMLTh {
@@ -51664,8 +51576,7 @@ type htmlTHead struct {
 }
 
 func (e *htmlTHead) Body(v ...UI) HTMLTHead {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTHead)
 }
 
 func (e *htmlTHead) Text(v any) HTMLTHead {
@@ -52173,8 +52084,7 @@ type htmlTime struct {
 }
 
 func (e *htmlTime) Body(v ...UI) HTMLTime {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTime)
 }
 
 func (e *htmlTime) Text(v any) HTMLTime {
@@ -52582,8 +52492,7 @@ type htmlTitle struct {
 }
 
 func (e *htmlTitle) Body(v ...UI) HTMLTitle {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTitle)
 }
 
 func (e *htmlTitle) Text(v any) HTMLTitle {
@@ -52918,8 +52827,7 @@ type htmlTr struct {
 }
 
 func (e *htmlTr) Body(v ...UI) HTMLTr {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTr)
 }
 
 func (e *htmlTr) Text(v any) HTMLTr {
@@ -53424,8 +53332,7 @@ type htmlU struct {
 }
 
 func (e *htmlU) Body(v ...UI) HTMLU {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlU)
 }
 
 func (e *htmlU) Text(v any) HTMLU {
@@ -53930,8 +53837,7 @@ type htmlUl struct {
 }
 
 func (e *htmlUl) Body(v ...UI) HTMLUl {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlUl)
 }
 
 func (e *htmlUl) Text(v any) HTMLUl {
@@ -54436,8 +54342,7 @@ type htmlVar struct {
 }
 
 func (e *htmlVar) Body(v ...UI) HTMLVar {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlVar)
 }
 
 func (e *htmlVar) Text(v any) HTMLVar {
@@ -55041,8 +54946,7 @@ type htmlVideo struct {
 }
 
 func (e *htmlVideo) Body(v ...UI) HTMLVideo {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlVideo)
 }
 
 func (e *htmlVideo) Text(v any) HTMLVideo {
@@ -55712,8 +55616,7 @@ type htmlWbr struct {
 }
 
 func (e *htmlWbr) Body(v ...UI) HTMLWbr {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlWbr)
 }
 
 func (e *htmlWbr) Text(v any) HTMLWbr {

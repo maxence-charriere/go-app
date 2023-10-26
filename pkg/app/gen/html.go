@@ -2254,10 +2254,10 @@ func writeStruct(w io.Writer, t tag) {
 	case parent:
 		fmt.Fprintf(w, `
 			func (e *html%s) Body(v ...UI) HTML%s {
-				e.setChildren(v...)
-				return e
+				return e.setBody(FilterUIElems(v...)).(*html%s)
 			}
 			`,
+			t.Name,
 			t.Name,
 			t.Name,
 		)
@@ -2304,10 +2304,10 @@ func writeStruct(w io.Writer, t tag) {
 	case privateParent:
 		fmt.Fprintf(w, `
 			func (e *html%s) privateBody(v ...UI) HTML%s {
-				e.setChildren(v...)
-				return e
+				return e.setBody(FilterUIElems(v...)).(*html%s)
 			}
 			`,
+			t.Name,
 			t.Name,
 			t.Name,
 		)

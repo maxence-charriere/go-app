@@ -46,57 +46,6 @@ func TestAttributesSet(t *testing.T) {
 	})
 }
 
-func TestAttributesMount(t *testing.T) {
-	attributes := make(attributes)
-	attributes.Set("value", "foo")
-
-	div := Div()
-	client := NewClientTester(div)
-	defer client.Close()
-
-	attributes.Mount(div.JSValue(), func(s string) string {
-		return s
-	})
-}
-
-func TestAttributesUpdate(t *testing.T) {
-	div := Div()
-	client := NewClientTester(div)
-	defer client.Close()
-
-	resolveURL := func(s string) string {
-		return s
-	}
-
-	t.Run("attribute is deleted", func(t *testing.T) {
-		attributes := make(attributes)
-		attributes.Set("value", "foo")
-		attributes.Update(div.JSValue(), nil, resolveURL)
-		require.Empty(t, attributes)
-	})
-
-	t.Run("same attribute value is skipped", func(t *testing.T) {
-		a := make(attributes)
-		a.Set("value", "foo")
-
-		b := make(attributes)
-		b.Set("value", "foo")
-
-		a.Update(div.JSValue(), b, resolveURL)
-	})
-
-	t.Run("attribute is updated", func(t *testing.T) {
-		a := make(attributes)
-		a.Set("value", "foo")
-
-		b := make(attributes)
-		b.Set("value", "bar")
-
-		a.Update(div.JSValue(), b, resolveURL)
-		require.Equal(t, "bar", a["value"])
-	})
-}
-
 func TestToAttributeValue(t *testing.T) {
 	utests := []struct {
 		scenario string
@@ -263,9 +212,9 @@ func TestSetDeleteJSAttribute(t *testing.T) {
 		},
 	}
 
-	div := Div()
-	client := NewClientTester(div)
-	defer client.Close()
+	var m nodeManager
+	div, err := m.Mount(makeTestContext(), 1, Div())
+	require.NoError(t, err)
 
 	for _, u := range utests {
 		t.Run(u.name, func(t *testing.T) {

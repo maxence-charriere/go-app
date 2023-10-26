@@ -85,25 +85,38 @@ func (r *router) routeWithRegexp(pattern string, newComponent func() Composer) {
 	})
 }
 
+func (r *router) routed(path string) bool {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	if _, routed := r.routes[path]; routed {
+		return true
+	}
+
+	for _, rwr := range r.routesWithRegexp {
+		if rwr.regexp.MatchString(path) {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (r *router) createComponent(path string) (Composer, bool) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	newComponent, isRouted := r.routes[path]
-	if !isRouted {
-		for _, rwr := range r.routesWithRegexp {
-			if rwr.regexp.MatchString(path) {
-				newComponent = rwr.newComponent
-				isRouted = true
-				break
-			}
-		}
-	}
-	if !isRouted {
-		return nil, false
+	if newComponent, routed := r.routes[path]; routed {
+		return newComponent(), true
 	}
 
-	return newComponent(), true
+	for _, rwr := range r.routesWithRegexp {
+		if rwr.regexp.MatchString(path) {
+			return rwr.newComponent(), true
+		}
+	}
+
+	return nil, false
 }
 
 type regexpRoute struct {

@@ -40,7 +40,7 @@ type engineX struct {
 	states                     stateManager
 }
 
-func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, origin *url.URL, newBody func() HTMLBody, actionHandlers map[string]ActionHandler) *engineX {
+func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, originPage *requestPage, newBody func() HTMLBody, actionHandlers map[string]ActionHandler) *engineX {
 	var localStorage BrowserStorage
 	var sessionStorage BrowserStorage
 	if IsServer {
@@ -54,15 +54,13 @@ func newEngineX(ctx context.Context, routes *router, resolveURL func(string) str
 	if resolveURL == nil {
 		resolveURL = func(v string) string { return v }
 	}
+	originPage.resolveURL = resolveURL
 
 	return &engineX{
-		ctx:        ctx,
-		routes:     routes,
-		resolveURL: resolveURL,
-		originPage: requestPage{
-			url:                   origin,
-			resolveStaticResource: resolveURL,
-		},
+		ctx:                        ctx,
+		routes:                     routes,
+		resolveURL:                 resolveURL,
+		originPage:                 *originPage,
 		localStorage:               localStorage,
 		lastVisitedURL:             &url.URL{},
 		sessionStorage:             sessionStorage,
@@ -90,6 +88,10 @@ func (e *engineX) baseContext() nodeContext {
 		removeComponentUpdate: e.updates.Done,
 		handleAction:          e.actions.Handle,
 		postAction:            e.actions.Post,
+		observeState:          e.states.Observe,
+		getState:              e.states.Get,
+		setState:              e.states.Set,
+		delState:              nil, // TODO: delete
 	}
 }
 
@@ -180,7 +182,7 @@ func (e *engineX) internalURL(v *url.URL) bool {
 
 func (e *engineX) page() Page {
 	if IsClient {
-		return browserPage{resolveStaticResource: e.resolveURL}
+		return makeBrowserPage(e.resolveURL)
 	}
 	return &e.originPage
 }
@@ -296,15 +298,17 @@ func (e *engineX) ConsumeNext() {
 // frame.
 func (e *engineX) ConsumeAll() {
 	for {
-		e.goroutines.Wait()
-
 		select {
 		case dispatch := <-e.dispatches:
 			dispatch()
 
 		default:
 			e.processFrame()
-			return
+			e.goroutines.Wait()
+
+			if len(e.dispatches) == 0 {
+				return
+			}
 		}
 	}
 }

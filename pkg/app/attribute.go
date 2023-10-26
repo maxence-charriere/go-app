@@ -33,38 +33,6 @@ func (a attributes) Set(name string, value any) {
 	}
 }
 
-func (a attributes) Mount(jsElement Value, resolveURL attributeURLResolver) {
-	for name, value := range a {
-		setJSAttribute(jsElement, name, resolveAttributeURLValue(
-			name,
-			value,
-			resolveURL,
-		))
-	}
-}
-
-func (a attributes) Update(jsElement Value, b attributes, resolveURL attributeURLResolver) {
-	for name := range a {
-		if _, ok := b[name]; !ok {
-			deleteJSAttribute(jsElement, name)
-			delete(a, name)
-		}
-	}
-
-	for name, value := range b {
-		if a[name] == value {
-			continue
-		}
-
-		a[name] = value
-		setJSAttribute(jsElement, name, resolveAttributeURLValue(
-			name,
-			value,
-			resolveURL,
-		))
-	}
-}
-
 type attributeURLResolver func(string) string
 
 func toAttributeValue(v any) string {

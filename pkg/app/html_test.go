@@ -1,93 +1,75 @@
 package app
 
 import (
-	"bytes"
 	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-func TestHTMLElementHTML(t *testing.T) {
-	t.Run("srcset", func(t *testing.T) {
-		e := Img().Src("/web/test.jpg").
-			SrcSet("/web/test.webp").
-			SrcSet("/web/test/jpg")
+// func BenchmarkMountHTMLElement(b *testing.B) {
+// 	for n := 0; n < b.N; n++ {
+// 		client := NewClientTester(Div().
+// 			Class("shell").
+// 			Body(
+// 				H1().Class("title").
+// 					Text("Hello"),
+// 				Input().
+// 					Type("text").
+// 					Class("in").
+// 					Value("World").
+// 					Placeholder("Type a name.").
+// 					OnChange(func(ctx Context, e Event) {
+// 						fmt.Println("Yo!")
+// 					}),
+// 			))
+// 		client.Close()
+// 	}
+// }
 
-		var b strings.Builder
-		e.html(&b)
+// func BenchmarkHTMLElementHTML(b *testing.B) {
+// 	div := Div().
+// 		Class("shell").
+// 		Body(
+// 			H1().Class("title").
+// 				Text("Hello"),
+// 			Input().
+// 				Type("text").
+// 				Class("in").
+// 				Value("World").
+// 				Placeholder("Type a name.").
+// 				OnChange(func(ctx Context, e Event) {
+// 					fmt.Println("Yo!")
+// 				}),
+// 		)
 
-		html := b.String()
+// 	for n := 0; n < b.N; n++ {
+// 		var bytes bytes.Buffer
+// 		div.html(&bytes)
+// 	}
+// }
 
-		require.Equal(t, 1, strings.Count(html, "/web/test.webp"))
-		t.Log(html)
-	})
-}
+// func BenchmarkHTMLElementHTMLIndent(b *testing.B) {
+// 	div := Div().
+// 		Class("shell").
+// 		Body(
+// 			H1().Class("title").
+// 				Text("Hello"),
+// 			Input().
+// 				Type("text").
+// 				Class("in").
+// 				Value("World").
+// 				Placeholder("Type a name.").
+// 				OnChange(func(ctx Context, e Event) {
+// 					fmt.Println("Yo!")
+// 				}),
+// 		)
 
-func BenchmarkMountHTMLElement(b *testing.B) {
-	for n := 0; n < b.N; n++ {
-		client := NewClientTester(Div().
-			Class("shell").
-			Body(
-				H1().Class("title").
-					Text("Hello"),
-				Input().
-					Type("text").
-					Class("in").
-					Value("World").
-					Placeholder("Type a name.").
-					OnChange(func(ctx Context, e Event) {
-						fmt.Println("Yo!")
-					}),
-			))
-		client.Close()
-	}
-}
-
-func BenchmarkHTMLElementHTML(b *testing.B) {
-	div := Div().
-		Class("shell").
-		Body(
-			H1().Class("title").
-				Text("Hello"),
-			Input().
-				Type("text").
-				Class("in").
-				Value("World").
-				Placeholder("Type a name.").
-				OnChange(func(ctx Context, e Event) {
-					fmt.Println("Yo!")
-				}),
-		)
-
-	for n := 0; n < b.N; n++ {
-		var bytes bytes.Buffer
-		div.html(&bytes)
-	}
-}
-
-func BenchmarkHTMLElementHTMLIndent(b *testing.B) {
-	div := Div().
-		Class("shell").
-		Body(
-			H1().Class("title").
-				Text("Hello"),
-			Input().
-				Type("text").
-				Class("in").
-				Value("World").
-				Placeholder("Type a name.").
-				OnChange(func(ctx Context, e Event) {
-					fmt.Println("Yo!")
-				}),
-		)
-
-	for n := 0; n < b.N; n++ {
-		var bytes bytes.Buffer
-		div.htmlWithIndent(&bytes, 0)
-	}
-}
+// 	for n := 0; n < b.N; n++ {
+// 		var bytes bytes.Buffer
+// 		div.htmlWithIndent(&bytes, 0)
+// 	}
+// }
 
 func TestKeyCondition(t *testing.T) {
 	utests := []struct {
