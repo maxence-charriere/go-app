@@ -733,6 +733,9 @@ func (m nodeManager) encodeComponent(w *bytes.Buffer, v Composer) {
 }
 
 func (m nodeManager) encodeRawHTML(w *bytes.Buffer, v *raw) {
+	if v.value != "" {
+		w.WriteString(v.value)
+	}
 }
 
 func canUpdateValue(v, new reflect.Value) bool {

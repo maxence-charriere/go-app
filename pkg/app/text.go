@@ -4,12 +4,14 @@ import (
 	"fmt"
 )
 
-// Text creates a simple text element.
+// Text returns a UI element representing plain text, converting the provided
+// value to its string representation.
 func Text(v any) UI {
 	return &text{value: toString(v)}
 }
 
-// Text creates a simple text element with the given format and values.
+// Textf returns a UI element representing formatted text. The format and values
+// follow the conventions of fmt.Sprintf.
 func Textf(format string, v ...any) UI {
 	return &text{value: fmt.Sprintf(format, v...)}
 }

@@ -1,17 +1,15 @@
 package app
 
 import (
-	"io"
 	"strings"
-
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// Raw returns a ui element from the given raw value. HTML raw value must have a
-// single root.
+// Raw creates a UI element from the given raw HTML string. The raw HTML must
+// have a single root element. If the root tag cannot be determined, it defaults
+// to a div element.
 //
-// It is not recommended to use this kind of node since there is no check on the
-// raw string content.
+// Caution: Using Raw can be risky since there's no validation of the provided
+// string content. Ensure that the content is safe and sanitized before use.
 func Raw(v string) UI {
 	v = strings.TrimSpace(v)
 
@@ -27,125 +25,19 @@ func Raw(v string) UI {
 }
 
 type raw struct {
-	disp          Dispatcher
-	jsvalue       Value
+	jsElement     Value
 	parentElement UI
+	treeDepth     uint
 	tag           string
 	value         string
-
-	treeDepth uint
-	jsElement Value
 }
 
 func (r *raw) JSValue() Value {
-	if r.jsElement != nil {
-		return r.jsElement
-	}
-	return r.jsvalue
+	return r.jsElement
 }
 
 func (r *raw) Mounted() bool {
-	if r.jsElement != nil {
-		return r.jsElement != nil
-	}
-
-	return r.jsvalue != nil && r.getDispatcher() != nil
-}
-
-func (r *raw) name() string {
-	return "raw." + r.tag
-}
-
-func (r *raw) self() UI {
-	return r
-}
-
-func (r *raw) setSelf(UI) {
-}
-
-func (r *raw) getDispatcher() Dispatcher {
-	return r.disp
-}
-
-func (r *raw) getAttributes() attributes {
-	return nil
-}
-
-func (r *raw) getEventHandlers() eventHandlers {
-	return nil
-}
-
-func (r *raw) getParent() UI {
-	return r.parentElement
-}
-
-func (r *raw) setParent(p UI) UI {
-	r.parentElement = p
-	return r
-}
-
-func (r *raw) getChildren() []UI {
-	return nil
-}
-
-func (r *raw) mount(d Dispatcher) error {
-	if r.Mounted() {
-		return errors.New("mounting raw html element failed").
-			WithTag("reason", "already mounted").
-			WithTag("name", r.name())
-	}
-
-	r.disp = d
-
-	wrapper, err := Window().createElement("div", "")
-	if err != nil {
-		return errors.New("creating raw node wrapper failed").Wrap(err)
-	}
-
-	if IsServer {
-		r.jsvalue = wrapper
-		return nil
-	}
-
-	wrapper.setInnerHTML(r.value)
-	value := wrapper.firstChild()
-	if !value.Truthy() {
-		return errors.New("mounting raw html element failed").
-			WithTag("reason", "converting raw html to html elements returned nil").
-			WithTag("name", r.name()).
-			WithTag("raw-html", r.value)
-	}
-	wrapper.removeChild(value)
-	r.jsvalue = value
-	return nil
-}
-
-func (r *raw) dismount() {
-	r.jsvalue = nil
-	r.jsElement = nil
-}
-
-func (r *raw) canUpdateWith(n UI) bool {
-	if n, ok := n.(*raw); ok {
-		return r.value == n.value
-	}
-	return false
-}
-
-func (r *raw) updateWith(n UI) error {
-	return nil
-}
-
-func (r *raw) onComponentEvent(any) {
-}
-
-func (r *raw) html(w io.Writer) {
-	w.Write([]byte(r.value))
-}
-
-func (r *raw) htmlWithIndent(w io.Writer, indent int) {
-	writeIndent(w, indent)
-	w.Write([]byte(r.value))
+	return r.jsElement != nil
 }
 
 func (r *raw) depth() uint {
@@ -154,6 +46,11 @@ func (r *raw) depth() uint {
 
 func (r *raw) parent() UI {
 	return r.parentElement
+}
+
+func (r *raw) setParent(p UI) UI {
+	r.parentElement = p
+	return r
 }
 
 func rawRootTagName(raw string) string {
