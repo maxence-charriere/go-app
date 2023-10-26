@@ -203,11 +203,11 @@ func (s *shell) Render() app.UI {
 				Style("cursor", "pointer").
 				OnClick(s.onHamburgerButtonClick).
 				Body(
-					app.If(s.IhamburgerButton == nil,
-						app.Div().
+					app.If(s.IhamburgerButton == nil, func() app.UI {
+						return app.Div().
 							Class("goapp-shell-hamburger-button-default").
-							Text("☰"),
-					),
+							Text("☰")
+					}),
 				),
 			app.Div().
 				Style("display", visible(s.hideMenu && s.showHamburgerMenu)).

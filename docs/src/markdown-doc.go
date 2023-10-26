@@ -130,10 +130,10 @@ func (d *remoteMarkdownDoc) Render() app.UI {
 				Loading(d.md.Status == loading).
 				Err(d.md.Err).
 				Label(fmt.Sprintf("Loading %s...", filepath.Base(d.Isrc))),
-			app.If(d.md.Status == loaded,
-				newMarkdownDoc().
+			app.If(d.md.Status == loaded, func() app.UI {
+				return newMarkdownDoc().
 					Class("fill").
-					MD(d.md.Data),
-			).Else(),
+					MD(d.md.Data)
+			}),
 		)
 }

@@ -78,12 +78,11 @@ func (c *referenceContent) Render() app.UI {
 				Err(c.content.Err).
 				Size(loaderSize).
 				Spacing(loaderSpacing),
-
-			app.If(!c.Iindex && c.content.Content != "",
-				app.Raw(c.content.Content),
-			).ElseIf(c.Iindex && c.content.Index != "",
-				app.Raw(c.content.Index),
-			),
+			app.If(!c.Iindex && c.content.Content != "", func() app.UI {
+				return app.Raw(c.content.Content)
+			}).ElseIf(c.Iindex && c.content.Index != "", func() app.UI {
+				return app.Raw(c.content.Index)
+			}),
 			app.Div().Text(c.content.Err),
 		)
 }

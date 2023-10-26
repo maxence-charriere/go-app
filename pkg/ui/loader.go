@@ -150,8 +150,8 @@ func (l *loader) Render() app.UI {
 				Center().
 				Middle().
 				Content(
-					app.If(l.Ierr == nil,
-						app.Div().
+					app.If(l.Ierr == nil, func() app.UI {
+						return app.Div().
 							Style("width", pxToString(l.Isize-4)).
 							Style("height", pxToString(l.Isize-4)).
 							Style("min-width", pxToString(l.Isize-4)).
@@ -159,22 +159,22 @@ func (l *loader) Render() app.UI {
 							Style("border", "2px solid currentColor").
 							Style("border-top", "2px solid "+l.Icolor).
 							Style("border-radius", "50%").
-							Style("animation", fmt.Sprintf("goapp-spin-frames %vms linear infinite", l.Ispeed.Milliseconds())),
-					).Else(
-						Icon().
+							Style("animation", fmt.Sprintf("goapp-spin-frames %vms linear infinite", l.Ispeed.Milliseconds()))
+					}).Else(func() app.UI {
+						return Icon().
 							Size(l.Isize).
-							Src(l.IerrIcon),
-					),
+							Src(l.IerrIcon)
+					}),
 					app.Div().
 						Style("margin-left", pxToString(l.Ispacing)).
 						Body(
-							app.If(l.Ierr == nil,
-								app.Div().Text(l.Ilabel),
-							).Else(
-								app.Div().
+							app.If(l.Ierr == nil, func() app.UI {
+								return app.Div().Text(l.Ilabel)
+							}).Else(func() app.UI {
+								return app.Div().
 									Style("white-space", "pre-wrap").
-									Text(l.Ierr),
-							),
+									Text(l.Ierr)
+							}),
 						),
 				),
 		)
