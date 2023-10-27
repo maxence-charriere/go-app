@@ -204,6 +204,25 @@ func TestEngineXAsync(t *testing.T) {
 	require.True(t, called)
 }
 
+func TestEngineXRoot(t *testing.T) {
+	t.Run("getting root when engine did not load a component returns an error", func(t *testing.T) {
+		e := newTestEngine()
+		root, err := e.Root()
+		require.Error(t, err)
+		require.Nil(t, root)
+	})
+
+	t.Run("getting root returns the root component", func(t *testing.T) {
+		e := newTestEngine()
+		compo := &hello{}
+		e.load(compo)
+
+		root, err := e.Root()
+		require.NoError(t, err)
+		require.Equal(t, compo, root)
+	})
+}
+
 func TestEngineXStart(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

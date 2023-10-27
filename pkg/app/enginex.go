@@ -204,6 +204,16 @@ func (e *engineX) load(v Composer) {
 	e.body = body
 }
 
+// Root retrieves the root UI element of the engine. This method extracts the
+// primary child of the body, effectively serving as a way to get the root
+// component.
+func (e *engineX) Root() (UI, error) {
+	if e.body == nil {
+		return nil, errors.New("no component loaded")
+	}
+	return e.body.(HTML).body()[0], nil
+}
+
 func (e *engineX) dispatch(v func()) {
 	e.dispatches <- v
 }
