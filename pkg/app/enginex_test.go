@@ -38,20 +38,6 @@ func TestEngineXLoad(t *testing.T) {
 		require.IsType(t, &hello{}, e.body.(HTML).body()[0])
 	})
 
-	t.Run("load loads a new body with children", func(t *testing.T) {
-		e := newTestEngine()
-		e.newBody = func() HTMLBody {
-			return Body().privateBody(
-				Div(),
-				Span(),
-			)
-		}
-
-		e.load(&hello{})
-		require.IsType(t, &hello{}, e.body.(HTML).body()[0])
-		require.IsType(t, Span(), e.body.(HTML).body()[1])
-	})
-
 	t.Run("loading a non mountable component panics", func(t *testing.T) {
 		e := newTestEngine()
 		require.Panics(t, func() {
@@ -253,7 +239,6 @@ func newTestEngine() *engineX {
 		&routes,
 		nil,
 		&originPage,
-		Body,
 		map[string]ActionHandler{
 			"/test": func(ctx Context, a Action) {},
 		},

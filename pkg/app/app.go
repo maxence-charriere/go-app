@@ -113,7 +113,6 @@ func RunWhenOnBrowser() {
 		&routes,
 		resolveURL,
 		&originPage,
-		Body,
 		actionHandlers,
 	)
 

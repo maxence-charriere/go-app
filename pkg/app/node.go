@@ -148,16 +148,8 @@ func (m nodeManager) mountHTML(ctx Context, depth uint, v HTML) (UI, error) {
 			WithTag("depth", v.depth())
 	}
 
-	var jsElement Value
-	switch v.(type) {
-	case *htmlBody:
-		jsElement = Window().Get("document").Get("body")
-
-	default:
-		jsElement, _ = Window().createElement(v.Tag(), v.XMLNamespace())
-	}
+	jsElement, _ := Window().createElement(v.Tag(), v.XMLNamespace())
 	v = v.setJSElement(jsElement)
-
 	m.mountHTMLAttributes(ctx, v)
 	m.mountHTMLEventHandlers(ctx, v)
 

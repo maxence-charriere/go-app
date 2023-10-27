@@ -713,28 +713,29 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
 
+	_ = func() HTMLBody {
+		return h.Body().privateBody(
+			Div(), // Pre-rendeging placeholder
+			Aside().
+				ID("app-wasm-loader").
+				Class("goapp-app-info").
+				Body(
+					Img().
+						ID("app-wasm-loader-icon").
+						Class("goapp-logo goapp-spin").
+						Src(h.Icon.Default),
+					P().
+						ID("app-wasm-loader-label").
+						Class("goapp-label").
+						Text(page.loadingLabel),
+				),
+		)
+	}
+
 	engine := newEngineX(ctx,
 		&routes,
 		h.resolveStaticPath,
 		&page,
-		func() HTMLBody {
-			return h.Body().privateBody(
-				Div(), // Pre-rendeging placeholder
-				Aside().
-					ID("app-wasm-loader").
-					Class("goapp-app-info").
-					Body(
-						Img().
-							ID("app-wasm-loader-icon").
-							Class("goapp-logo goapp-spin").
-							Src(h.Icon.Default),
-						P().
-							ID("app-wasm-loader-label").
-							Class("goapp-label").
-							Text(page.loadingLabel),
-					),
-			)
-		},
 		actionHandlers,
 	)
 	engine.Navigate(page.URL(), false)

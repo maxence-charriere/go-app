@@ -28,7 +28,6 @@ type engineX struct {
 
 	nodes   nodeManager
 	updates updateManager
-	newBody func() HTMLBody
 	body    UI
 
 	dispatches chan func()
@@ -40,7 +39,7 @@ type engineX struct {
 	states                     stateManager
 }
 
-func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, originPage *requestPage, newBody func() HTMLBody, actionHandlers map[string]ActionHandler) *engineX {
+func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, originPage *requestPage, actionHandlers map[string]ActionHandler) *engineX {
 	var localStorage BrowserStorage
 	var sessionStorage BrowserStorage
 	if IsServer {
@@ -64,7 +63,6 @@ func newEngineX(ctx context.Context, routes *router, resolveURL func(string) str
 		localStorage:               localStorage,
 		lastVisitedURL:             &url.URL{},
 		sessionStorage:             sessionStorage,
-		newBody:                    newBody,
 		nodes:                      nodeManager{},
 		dispatches:                 make(chan func(), 4096),
 		defers:                     make(chan func(), 4096),
@@ -188,29 +186,18 @@ func (e *engineX) page() Page {
 }
 
 func (e *engineX) load(v Composer) {
-	newBody := e.newBody()
-	if children := newBody.(HTML).body(); len(children) == 0 {
-		newBody = newBody.privateBody(v)
-	} else {
-		children[0] = v
-		newBody = newBody.(HTML).setBody(children).(HTMLBody)
-	}
-
 	if e.body == nil {
-		body, err := e.nodes.Mount(e.baseContext(), 0, newBody)
-		if err != nil {
-			panic(errors.New("mounting root failed").Wrap(err))
-		}
+		body := Body().(*htmlBody)
+		body.jsElement = Window().Get("document").Get("body")
 
-		for action, handler := range e.asynchronousActionHandlers {
-			e.actions.Handle(action, body, true, handler)
-		}
+		root := Div().(*htmlDiv)
+		root.jsElement = body.JSValue().firstChild()
 
+		body = body.setBody([]UI{root}).(*htmlBody)
 		e.body = body
-		return
 	}
 
-	body, err := e.nodes.Update(e.baseContext(), e.body, newBody)
+	body, err := e.nodes.Update(e.baseContext(), e.body, Body().privateBody(v))
 	if err != nil {
 		panic(errors.New("updating root failed").Wrap(err))
 	}
