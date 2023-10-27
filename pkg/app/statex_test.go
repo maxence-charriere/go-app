@@ -618,6 +618,40 @@ func TestStateManagerSet(t *testing.T) {
 	})
 }
 
+func TestStateManagerDelete(t *testing.T) {
+	t.Run("state is deleted from memory", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		m.Set(ctx, stateName, 42)
+		require.NotEmpty(t, m.states)
+		m.Delete(ctx, stateName)
+		require.Empty(t, m.states)
+	})
+
+	t.Run("state is deleted from local storage", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		var m stateManager
+		ctx := makeTestContext()
+
+		m.Set(ctx, stateName, 42).Persist()
+		delete(m.states, stateName)
+		require.Empty(t, m.states)
+
+		var number int
+		m.Get(ctx, stateName, &number)
+		require.Equal(t, 42, number)
+
+		var number2 int
+		m.Delete(ctx, stateName)
+		m.Get(ctx, stateName, &number2)
+		require.Zero(t, number2)
+	})
+}
+
 func TestStateManagerCleanup(t *testing.T) {
 	t.Run("non observing observers are removed", func(t *testing.T) {
 		stateName := uuid.NewString()

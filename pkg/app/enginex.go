@@ -90,7 +90,7 @@ func (e *engineX) baseContext() Context {
 		observeState:          e.states.Observe,
 		getState:              e.states.Get,
 		setState:              e.states.Set,
-		delState:              nil, // TODO: delete
+		delState:              e.states.Delete,
 
 		foreachUpdatableComponent: e.nodes.ForEachUpdatableComponent,
 		notifyComponentEvent:      e.nodes.NotifyComponentEvent,

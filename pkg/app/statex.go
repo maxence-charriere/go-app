@@ -372,6 +372,16 @@ func (m *stateManager) handleBroadcast(ctx Context, data Value) {
 	}
 }
 
+// Delete removes the specified state from the managed states and also deletes
+// it from the local storage if it was previously persisted.
+func (m *stateManager) Delete(ctx Context, state string) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	delete(m.states, state)
+	ctx.LocalStorage().Del(state)
+}
+
 // Cleanup removes observers that are no longer active and cleans up any states
 // without observers.
 func (m *stateManager) Cleanup() {

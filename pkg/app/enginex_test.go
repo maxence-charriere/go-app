@@ -29,7 +29,7 @@ func TestEngineXBaseContext(t *testing.T) {
 	require.NotNil(t, ctx.observeState)
 	require.NotNil(t, ctx.getState)
 	require.NotNil(t, ctx.setState)
-	// require.NotNil(t, ctx.delState) TODO
+	require.NotNil(t, ctx.delState)
 
 	require.NotNil(t, ctx.foreachUpdatableComponent)
 	require.NotNil(t, ctx.notifyComponentEvent)
