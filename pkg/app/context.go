@@ -276,7 +276,7 @@ func (ctx Context) SetState(state string, v any) StateX {
 
 // DelState erases a state, halting all associated observations.
 func (ctx Context) DelState(state string) {
-	panic("not implemented")
+	ctx.delState(ctx, state)
 }
 
 // TODO: see whether to deprecate
