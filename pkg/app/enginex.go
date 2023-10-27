@@ -71,8 +71,8 @@ func newEngineX(ctx context.Context, routes *router, resolveURL func(string) str
 	}
 }
 
-func (e *engineX) baseContext() nodeContext {
-	return nodeContext{
+func (e *engineX) baseContext() Context {
+	return Context{
 		Context:               e.ctx,
 		resolveURL:            e.resolveURL,
 		appUpdatable:          e.browser.AppUpdatable,

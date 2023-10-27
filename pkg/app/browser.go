@@ -14,7 +14,7 @@ type browser struct {
 	resizeTimer      *time.Timer
 }
 
-func (b *browser) HandleEvents(ctx nodeContext, notifyComponentEvent func(any)) {
+func (b *browser) HandleEvents(ctx Context, notifyComponentEvent func(any)) {
 	b.handleAnchorClick(ctx)
 	b.handlePopState(ctx)
 	b.handleNavigationFromJS(ctx)
@@ -23,7 +23,7 @@ func (b *browser) HandleEvents(ctx nodeContext, notifyComponentEvent func(any)) 
 	b.handleAppResize(ctx, notifyComponentEvent)
 }
 
-func (b *browser) handleAnchorClick(ctx nodeContext) {
+func (b *browser) handleAnchorClick(ctx Context) {
 	b.anchorClick = FuncOf(func(this Value, args []Value) any {
 		ctx.dispatch(func() {
 			event := Event{Value: args[0]}
@@ -57,7 +57,7 @@ func (b *browser) handleAnchorClick(ctx nodeContext) {
 	Window().Set("onclick", b.anchorClick)
 }
 
-func (b *browser) handlePopState(ctx nodeContext) {
+func (b *browser) handlePopState(ctx Context) {
 	b.popState = FuncOf(func(this Value, args []Value) any {
 		ctx.dispatch(func() {
 			ctx.navigate(Window().URL(), false)
@@ -67,7 +67,7 @@ func (b *browser) handlePopState(ctx nodeContext) {
 	Window().Set("onpopstate", b.popState)
 }
 
-func (b *browser) handleNavigationFromJS(ctx nodeContext) {
+func (b *browser) handleNavigationFromJS(ctx Context) {
 	b.navigationFromJS = FuncOf(func(this Value, args []Value) any {
 		ctx.dispatch(func() {
 			ctx.Navigate(args[0].String())
@@ -77,7 +77,7 @@ func (b *browser) handleNavigationFromJS(ctx nodeContext) {
 	Window().Set("goappNav", b.navigationFromJS)
 }
 
-func (b *browser) handleAppUpdate(ctx nodeContext, notifyComponentEvent func(any)) {
+func (b *browser) handleAppUpdate(ctx Context, notifyComponentEvent func(any)) {
 	b.appUpdate = FuncOf(func(this Value, args []Value) any {
 		ctx.dispatch(func() {
 			b.AppUpdatable = true
@@ -91,7 +91,7 @@ func (b *browser) handleAppUpdate(ctx nodeContext, notifyComponentEvent func(any
 	Window().Set("goappOnUpdate", b.appUpdate)
 }
 
-func (b *browser) handleAppInstallChange(ctx nodeContext, notifyComponentEvent func(any)) {
+func (b *browser) handleAppInstallChange(ctx Context, notifyComponentEvent func(any)) {
 	b.appInstallChange = FuncOf(func(this Value, args []Value) any {
 		ctx.dispatch(func() {
 			notifyComponentEvent(appInstallChange{})
@@ -101,7 +101,7 @@ func (b *browser) handleAppInstallChange(ctx nodeContext, notifyComponentEvent f
 	Window().Set("goappOnAppInstallChange", b.appInstallChange)
 }
 
-func (b *browser) handleAppResize(ctx nodeContext, notifyComponentEvent func(any)) {
+func (b *browser) handleAppResize(ctx Context, notifyComponentEvent func(any)) {
 	const resizeCooldown = time.Millisecond * 250
 
 	b.appResize = FuncOf(func(this Value, args []Value) any {

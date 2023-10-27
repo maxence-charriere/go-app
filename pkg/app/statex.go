@@ -107,7 +107,7 @@ type stateManager struct {
 // Observe initiates observation for a specified state, ensuring the state
 // is fetched and set into the given receiver. The returned observer object
 // offers methods for advanced observation configurations.
-func (m *stateManager) Observe(ctx nodeContext, state string, receiver any) ObserverX {
+func (m *stateManager) Observe(ctx Context, state string, receiver any) ObserverX {
 	m.Get(ctx, state, receiver)
 	return m.setObserver(ObserverX{
 		source:      ctx.Src(),
@@ -142,7 +142,7 @@ func (m *stateManager) setObserver(v ObserverX) ObserverX {
 
 // Get retrieves the value of a specific state, setting it to the provided
 // receiver.
-func (m *stateManager) Get(ctx nodeContext, state string, receiver any) {
+func (m *stateManager) Get(ctx Context, state string, receiver any) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -169,7 +169,7 @@ func (m *stateManager) Get(ctx nodeContext, state string, receiver any) {
 	}
 }
 
-func (m *stateManager) getStoredState(ctx nodeContext, state string, receiver any) error {
+func (m *stateManager) getStoredState(ctx Context, state string, receiver any) error {
 	var value storableState
 	if err := ctx.LocalStorage().Get(state, &value); err != nil {
 		return err
@@ -188,7 +188,7 @@ func (m *stateManager) getStoredState(ctx nodeContext, state string, receiver an
 	return nil
 }
 
-func (m *stateManager) Set(ctx nodeContext, state string, v any) StateX {
+func (m *stateManager) Set(ctx Context, state string, v any) StateX {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -320,7 +320,7 @@ func (m *stateManager) broadcast(s StateX) StateX {
 
 // InitBroadcast initializes a broadcast channel to share state changes
 // across browser tabs or windows.
-func (m *stateManager) InitBroadcast(ctx nodeContext) {
+func (m *stateManager) InitBroadcast(ctx Context) {
 	broadcastChannel := Window().Get("BroadcastChannel")
 	if !broadcastChannel.Truthy() {
 		return
@@ -336,7 +336,7 @@ func (m *stateManager) InitBroadcast(ctx nodeContext) {
 	broadcastChannel.Set("onmessage", handleBroadcast)
 }
 
-func (m *stateManager) handleBroadcast(ctx nodeContext, data Value) {
+func (m *stateManager) handleBroadcast(ctx Context, data Value) {
 	if storeID := data.Get("StoreID").String(); storeID != m.broadcastStoreID {
 		return
 	}

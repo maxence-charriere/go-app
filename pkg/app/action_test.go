@@ -28,7 +28,7 @@ func TestActionManagerHandle(t *testing.T) {
 	require.Equal(t, source, actionHandler.Source)
 	require.NotNil(t, actionHandler.Function)
 
-	actionHandler.Function(nil, Action{})
+	actionHandler.Function(Context{}, Action{})
 	require.True(t, handlerCalled)
 }
 

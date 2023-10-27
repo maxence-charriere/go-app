@@ -323,7 +323,7 @@ func TestStateManagerSet(t *testing.T) {
 		require.NotEmpty(t, m.states)
 		state = m.states[stateName]
 		require.Equal(t, 42, state.value)
-		require.Nil(t, state.ctx)
+		require.Zero(t, state.ctx)
 		require.Empty(t, state.name)
 		require.Nil(t, state.expire)
 		require.Nil(t, state.persist)
@@ -432,7 +432,7 @@ func TestStateManagerSet(t *testing.T) {
 		require.NotEmpty(t, m.states)
 		state = m.states[stateName]
 		require.Equal(t, 42, state.value)
-		require.Nil(t, state.ctx)
+		require.Zero(t, state.ctx)
 		require.Empty(t, state.name)
 		require.Nil(t, state.expire)
 		require.Nil(t, state.persist)
@@ -478,7 +478,7 @@ func TestStateManagerSet(t *testing.T) {
 		require.NotEmpty(t, m.states)
 		state = m.states[stateName]
 		require.Equal(t, 42, state.value)
-		require.Nil(t, state.ctx)
+		require.Zero(t, state.ctx)
 		require.Empty(t, state.name)
 		require.Nil(t, state.expire)
 		require.Nil(t, state.persist)
@@ -526,7 +526,7 @@ func TestStateManagerSet(t *testing.T) {
 		state = m.states[stateName]
 		require.Equal(t, 42, state.value)
 		require.NotZero(t, state.expiresAt)
-		require.Nil(t, state.ctx)
+		require.Zero(t, state.ctx)
 		require.Empty(t, state.name)
 		require.Nil(t, state.expire)
 		require.Nil(t, state.persist)
@@ -556,7 +556,7 @@ func TestStateManagerSet(t *testing.T) {
 		state = m.states[stateName]
 		require.Equal(t, 42, state.value)
 		require.NotZero(t, state.expiresAt)
-		require.Nil(t, state.ctx)
+		require.Zero(t, state.ctx)
 		require.Empty(t, state.name)
 		require.Nil(t, state.expire)
 		require.Nil(t, state.persist)
@@ -610,7 +610,7 @@ func TestStateManagerSet(t *testing.T) {
 		require.NotEmpty(t, m.states)
 		state = m.states[stateName]
 		require.Equal(t, 42, state.value)
-		require.Nil(t, state.ctx)
+		require.Zero(t, state.ctx)
 		require.Empty(t, state.name)
 		require.Nil(t, state.expire)
 		require.Nil(t, state.persist)

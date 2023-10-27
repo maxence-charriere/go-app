@@ -162,7 +162,7 @@ import (
 // 	require.Equal(t, "bye", v)
 // }
 
-func makeTestContext() nodeContext {
+func makeTestContext() Context {
 	resolveURL := func(v string) string {
 		return v
 	}
@@ -186,7 +186,7 @@ func makeTestContext() nodeContext {
 		sessionStorage = newJSStorage("sessionStorage")
 	}
 
-	return nodeContext{
+	return Context{
 		Context:               context.Background(),
 		page:                  func() Page { return page },
 		resolveURL:            resolveURL,

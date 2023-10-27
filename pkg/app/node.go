@@ -536,7 +536,7 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 		updater.OnUpdate(ctx)
 	}
 
-	ctx.(nodeContext).removeComponentUpdate(v)
+	ctx.removeComponentUpdate(v)
 	return m.UpdateComponentRoot(ctx, v)
 }
 
@@ -631,8 +631,7 @@ func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
 	}
 }
 
-func (m nodeManager) context(baseCtx Context, v UI) nodeContext {
-	ctx := baseCtx.(nodeContext)
+func (m nodeManager) context(ctx Context, v UI) Context {
 	ctx.sourceElement = v
 	ctx.foreachUpdatableComponent = m.ForEachUpdatableComponent
 	return ctx
@@ -654,25 +653,25 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
 		switch event.(type) {
 		case nav:
 			if navigator, ok := element.(Navigator); ok {
-				ctx.(nodeContext).addComponentUpdate(element)
+				ctx.addComponentUpdate(element)
 				navigator.OnNav(ctx)
 			}
 
 		case appUpdate:
 			if updater, ok := element.(AppUpdater); ok {
-				ctx.(nodeContext).addComponentUpdate(element)
+				ctx.addComponentUpdate(element)
 				updater.OnAppUpdate(ctx)
 			}
 
 		case appInstallChange:
 			if appInstaller, ok := element.(AppInstaller); ok {
-				ctx.(nodeContext).addComponentUpdate(element)
+				ctx.addComponentUpdate(element)
 				appInstaller.OnAppInstallChange(ctx)
 			}
 
 		case resize:
 			if resizer, ok := element.(Resizer); ok {
-				ctx.(nodeContext).addComponentUpdate(element)
+				ctx.addComponentUpdate(element)
 				resizer.OnResize(ctx)
 			}
 		}
