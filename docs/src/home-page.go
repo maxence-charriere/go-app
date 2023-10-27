@@ -14,10 +14,6 @@ func newHomePage() *homePage {
 	return &homePage{}
 }
 
-func (p *homePage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *homePage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

@@ -22,10 +22,6 @@ func newNotificationsPage() *notificationsPage {
 	return &notificationsPage{}
 }
 
-func (p *notificationsPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *notificationsPage) OnMount(ctx app.Context) {
 	p.notificationPermission = ctx.Notifications().Permission()
 	p.registerSubscription(ctx)

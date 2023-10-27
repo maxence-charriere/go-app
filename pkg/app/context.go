@@ -131,10 +131,10 @@ type nodeContext struct {
 	foreachUpdatableComponent func(UI, func(Composer))
 	handleAction              func(string, UI, bool, ActionHandler)
 	postAction                func(Context, Action)
-	observeState              func(Context, string, any) ObserverX
-	getState                  func(Context, string, any)
-	setState                  func(Context, string, any) StateX
-	delState                  func(Context, string)
+	observeState              func(nodeContext, string, any) ObserverX
+	getState                  func(nodeContext, string, any)
+	setState                  func(nodeContext, string, any) StateX
+	delState                  func(nodeContext, string)
 }
 
 func (ctx nodeContext) Src() UI {

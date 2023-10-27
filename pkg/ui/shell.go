@@ -256,7 +256,7 @@ func (s *shell) refresh(ctx app.Context) {
 		s.width = w
 
 		ctx.Defer(func(app.Context) {
-			s.ResizeContent()
+			// s.ResizeContent()
 		})
 	}
 }

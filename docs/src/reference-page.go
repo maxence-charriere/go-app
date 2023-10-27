@@ -13,10 +13,6 @@ func newReferencePage() *referencePage {
 	return &referencePage{}
 }
 
-func (p *referencePage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *referencePage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

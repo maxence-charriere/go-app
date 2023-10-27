@@ -363,10 +363,9 @@ func TestStateManagerSet(t *testing.T) {
 
 		var sm stateManager
 		var number int
-		sm.observers = make(map[string]map[UI]ObserverX)
-		sm.observers[stateName] = map[UI]ObserverX{}
-		div := Div()
-		sm.observers[stateName][div] = ObserverX{source: div}
+		sm.Observe(ctx, stateName, &number).While(func() bool {
+			return false
+		})
 
 		sm.Set(ctx, stateName, 42)
 		e.ConsumeAll()

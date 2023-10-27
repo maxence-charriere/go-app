@@ -13,10 +13,6 @@ func newConcurrencyPage() *concurrencyPage {
 	return &concurrencyPage{}
 }
 
-func (p *concurrencyPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *concurrencyPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

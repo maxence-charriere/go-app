@@ -196,6 +196,10 @@ func (e *engineX) load(v Composer) {
 
 		body = body.setBody([]UI{root}).(*htmlBody)
 		e.body = body
+
+		for action, handler := range e.asynchronousActionHandlers {
+			e.actions.Handle(action, body, true, handler)
+		}
 	}
 
 	body, err := e.nodes.Update(e.baseContext(), e.body, Body().privateBody(v))
@@ -241,10 +245,15 @@ func (e *engineX) Start(framerate int) {
 
 func (e *engineX) processFrame() {
 	e.updates.ForEach(func(c Composer) {
+		defer e.updates.Done(c)
+
+		if !c.Mounted() {
+			return
+		}
+
 		if _, err := e.nodes.UpdateComponentRoot(e.baseContext(), c); err != nil {
 			panic(errors.New("updating component failed").Wrap(err))
 		}
-		e.updates.Done(c)
 	})
 	e.executeDefers()
 	e.actions.Cleanup()

@@ -93,10 +93,6 @@ func (d *remoteMarkdownDoc) Src(v string) *remoteMarkdownDoc {
 	return d
 }
 
-func (d *remoteMarkdownDoc) OnPreRender(ctx app.Context) {
-	d.load(ctx)
-}
-
 func (d *remoteMarkdownDoc) OnMount(ctx app.Context) {
 	d.load(ctx)
 }
@@ -107,14 +103,13 @@ func (d *remoteMarkdownDoc) OnUpdate(ctx app.Context) {
 
 func (d *remoteMarkdownDoc) load(ctx app.Context) {
 	src := d.Isrc
-	ctx.ObserveState(markdownState(src)).
+	ctx.ObserveState(markdownState(src), &d.md).
 		While(func() bool {
 			return src == d.Isrc
 		}).
 		OnChange(func() {
 			ctx.Defer(scrollTo)
-		}).
-		Value(&d.md)
+		})
 
 	ctx.NewAction(getMarkdown, app.T("path", d.Isrc))
 }

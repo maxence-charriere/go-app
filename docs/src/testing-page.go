@@ -13,10 +13,6 @@ func newTestingPage() *testingPage {
 	return &testingPage{}
 }
 
-func (p *testingPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *testingPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

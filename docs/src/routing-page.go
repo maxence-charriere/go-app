@@ -13,10 +13,6 @@ func newRoutingPage() *routingPage {
 	return &routingPage{}
 }
 
-func (p *routingPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *routingPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

@@ -713,25 +713,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
 
-	_ = func() HTMLBody {
-		return h.Body().privateBody(
-			Div(), // Pre-rendeging placeholder
-			Aside().
-				ID("app-wasm-loader").
-				Class("goapp-app-info").
-				Body(
-					Img().
-						ID("app-wasm-loader-icon").
-						Class("goapp-logo goapp-spin").
-						Src(h.Icon.Default),
-					P().
-						ID("app-wasm-loader-label").
-						Class("goapp-label").
-						Text(page.loadingLabel),
-				),
-		)
-	}
-
 	engine := newEngineX(ctx,
 		&routes,
 		h.resolveStaticPath,
@@ -747,25 +728,13 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	// 	disp.Wait()
 	// }
 
-	// html, err := engine.nodes.Mount(engine.baseContext(), 0, h.HTML().privateBody())
-	// if err != nil {
-	// 	Log(errors.Newf("mounting html root failed").Wrap(err))
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	return
-	// }
-	// append body to html
-	// generate html bytes
-	// return response
-
 	icon := h.Icon.SVG
 	if icon == "" {
 		icon = h.Icon.Default
 	}
 
 	var b bytes.Buffer
-	b.WriteString("<!DOCTYPE html>\n")
-
-	PrintHTML(&b, h.HTML().
+	err := engine.Encode(&b, h.HTML().
 		Lang(page.Lang()).
 		privateBody(
 			Head().Body(
@@ -944,8 +913,27 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					return Raw(h.RawHeaders[i])
 				}),
 			),
-			// body,
+			h.Body().privateBody(
+				Aside().
+					ID("app-wasm-loader").
+					Class("goapp-app-info").
+					Body(
+						Img().
+							ID("app-wasm-loader-icon").
+							Class("goapp-logo goapp-spin").
+							Src(h.Icon.Default),
+						P().
+							ID("app-wasm-loader-label").
+							Class("goapp-label").
+							Text(page.loadingLabel),
+					),
+			),
 		))
+	if err != nil {
+		Log(errors.New("encoding html document failed").Wrap(err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")

@@ -13,10 +13,6 @@ func newMigratePage() *migratePage {
 	return &migratePage{}
 }
 
-func (p *migratePage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *migratePage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

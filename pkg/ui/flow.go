@@ -165,7 +165,7 @@ func (f *flow) refresh(ctx app.Context) {
 		f.itemWidth = itemWidthFloat
 
 		ctx.Defer(func(app.Context) {
-			f.ResizeContent()
+			// f.ResizeContent()
 		})
 	}
 }

@@ -13,10 +13,6 @@ func newGithubDeployPage() *githubDeployPage {
 	return &githubDeployPage{}
 }
 
-func (p *githubDeployPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *githubDeployPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }
