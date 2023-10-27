@@ -188,8 +188,16 @@ func (e *engineX) page() Page {
 }
 
 func (e *engineX) load(v Composer) {
+	newBody := e.newBody()
+	if children := newBody.(HTML).body(); len(children) == 0 {
+		newBody = newBody.privateBody(v)
+	} else {
+		children[0] = v
+		newBody = newBody.(HTML).setBody(children).(HTMLBody)
+	}
+
 	if e.body == nil {
-		body, err := e.nodes.Mount(e.baseContext(), 0, e.newBody().privateBody(v))
+		body, err := e.nodes.Mount(e.baseContext(), 0, newBody)
 		if err != nil {
 			panic(errors.New("mounting root failed").Wrap(err))
 		}
@@ -202,7 +210,7 @@ func (e *engineX) load(v Composer) {
 		return
 	}
 
-	body, err := e.nodes.Update(e.baseContext(), e.body, e.newBody().privateBody(v))
+	body, err := e.nodes.Update(e.baseContext(), e.body, newBody)
 	if err != nil {
 		panic(errors.New("updating root failed").Wrap(err))
 	}
