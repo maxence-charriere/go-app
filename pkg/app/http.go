@@ -764,6 +764,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
+
 	PrintHTML(&b, h.HTML().
 		Lang(page.Lang()).
 		privateBody(

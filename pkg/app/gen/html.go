@@ -2189,7 +2189,7 @@ func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintf(w, `
 		// The interface that represents a "%s" HTML element.
 		type HTML%s interface {
-			UI
+			HTML
 		`,
 		strings.ToLower(t.Name),
 		t.Name,

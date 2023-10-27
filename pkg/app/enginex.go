@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"net/url"
@@ -28,7 +29,7 @@ type engineX struct {
 
 	nodes   nodeManager
 	updates updateManager
-	body    UI
+	body    HTMLBody
 
 	dispatches chan func()
 	defers     chan func()
@@ -201,33 +202,7 @@ func (e *engineX) load(v Composer) {
 	if err != nil {
 		panic(errors.New("updating root failed").Wrap(err))
 	}
-	e.body = body
-}
-
-// Root retrieves the root UI element of the engine. This method extracts the
-// primary child of the body, effectively serving as a way to get the root
-// component.
-func (e *engineX) Root() (UI, error) {
-	if e.body == nil {
-		return nil, errors.New("no component loaded")
-	}
-	return e.body.(HTML).body()[0], nil
-}
-
-func (e *engineX) dispatch(v func()) {
-	e.dispatches <- v
-}
-
-func (e *engineX) defere(v func()) {
-	e.defers <- v
-}
-
-func (e *engineX) async(v func()) {
-	e.goroutines.Add(1)
-	go func() {
-		v()
-		e.goroutines.Done()
-	}()
+	e.body = body.(HTMLBody)
 }
 
 // Start initiates the main event loop of the engine at the specified framerate.
@@ -316,4 +291,51 @@ func (e *engineX) ConsumeAll() {
 			}
 		}
 	}
+}
+
+// Encode serializes the given HTML element, integrating the engine's root
+// component as the initial child within the document's body. The final HTML
+// content, including the standard DOCTYPE declaration, is written  to the
+// provided buffer.
+func (e *engineX) Encode(w *bytes.Buffer, document HTMLHtml) error {
+	if e.body == nil {
+		return errors.New("no component loaded")
+	}
+	root := e.body.body()[0]
+
+	var body HTML
+	for _, child := range document.(HTML).body() {
+		if child, isBody := child.(HTMLBody); isBody {
+			body = child
+			break
+		}
+	}
+	if body == nil {
+		return errors.New("document does not have a body")
+	}
+
+	children := make([]UI, 0, len(body.body())+1)
+	children = append(children, root)
+	children = append(children, body.body()...)
+	body.setBody(children)
+
+	w.WriteString("<!DOCTYPE html>\n")
+	e.nodes.Encode(e.baseContext(), w, document)
+	return nil
+}
+
+func (e *engineX) dispatch(v func()) {
+	e.dispatches <- v
+}
+
+func (e *engineX) defere(v func()) {
+	e.defers <- v
+}
+
+func (e *engineX) async(v func()) {
+	e.goroutines.Add(1)
+	go func() {
+		v()
+		e.goroutines.Done()
+	}()
 }

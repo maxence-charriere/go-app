@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"context"
 	"net/url"
 	"os"
@@ -35,7 +36,7 @@ func TestEngineXLoad(t *testing.T) {
 	t.Run("load loads a new body", func(t *testing.T) {
 		e := newTestEngine()
 		e.load(&hello{})
-		require.IsType(t, &hello{}, e.body.(HTML).body()[0])
+		require.IsType(t, &hello{}, e.body.body()[0])
 	})
 
 	t.Run("loading a non mountable component panics", func(t *testing.T) {
@@ -49,7 +50,7 @@ func TestEngineXLoad(t *testing.T) {
 		e := newTestEngine()
 		e.load(&hello{})
 		e.load(&bar{})
-		require.IsType(t, &bar{}, e.body.(HTML).body()[0])
+		require.IsType(t, &bar{}, e.body.body()[0])
 	})
 
 	t.Run("load body update with a non mountable component panics", func(t *testing.T) {
@@ -143,7 +144,7 @@ func TestEngineXNavigate(t *testing.T) {
 
 		destination, _ := url.Parse("/hello")
 		e.Navigate(destination, true)
-		require.IsType(t, &notFound{}, e.body.(HTML).body()[0])
+		require.IsType(t, &notFound{}, e.body.body()[0])
 	})
 }
 
@@ -204,25 +205,6 @@ func TestEngineXAsync(t *testing.T) {
 	require.True(t, called)
 }
 
-func TestEngineXRoot(t *testing.T) {
-	t.Run("getting root when engine did not load a component returns an error", func(t *testing.T) {
-		e := newTestEngine()
-		root, err := e.Root()
-		require.Error(t, err)
-		require.Nil(t, root)
-	})
-
-	t.Run("getting root returns the root component", func(t *testing.T) {
-		e := newTestEngine()
-		compo := &hello{}
-		e.load(compo)
-
-		root, err := e.Root()
-		require.NoError(t, err)
-		require.Equal(t, compo, root)
-	})
-}
-
 func TestEngineXStart(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -247,6 +229,43 @@ func TestEngineXStart(t *testing.T) {
 	destination, _ := url.Parse("/")
 	e.Navigate(destination, false)
 	e.Start(0)
+}
+
+func TestEngineXEncode(t *testing.T) {
+	t.Run("encoding when engine did not load a component returns an error", func(t *testing.T) {
+		e := newTestEngine()
+
+		var b bytes.Buffer
+		err := e.Encode(&b, Html())
+		require.Error(t, err)
+		require.Empty(t, b.Bytes())
+	})
+
+	t.Run("encoding a document without body returns an error", func(t *testing.T) {
+		e := newTestEngine()
+		compo := &hello{}
+		e.load(compo)
+
+		var b bytes.Buffer
+		err := e.Encode(&b, Html())
+		require.Error(t, err)
+		require.Empty(t, b.Bytes())
+	})
+
+	t.Run("encoding document succed", func(t *testing.T) {
+		e := newTestEngine()
+		compo := &compoWithCustomRoot{Root: Span()}
+		e.load(compo)
+
+		var b bytes.Buffer
+		err := e.Encode(&b, Html().privateBody(
+			Body().privateBody(
+				Text("bye"),
+			),
+		))
+		require.NoError(t, err)
+		require.Equal(t, "<!DOCTYPE html>\n<html>\n  <body>\n    <span></span>\n    bye\n  </body>\n</html>", b.String())
+	})
 }
 
 func newTestEngine() *engineX {

@@ -8,7 +8,7 @@ import (
 
 // The interface that represents a "a" HTML element.
 type HTMLA interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLA
@@ -577,7 +577,7 @@ func (e *htmlA) setBody(v []UI) HTML {
 
 // The interface that represents a "abbr" HTML element.
 type HTMLAbbr interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAbbr
@@ -1082,7 +1082,7 @@ func (e *htmlAbbr) setBody(v []UI) HTML {
 
 // The interface that represents a "address" HTML element.
 type HTMLAddress interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAddress
@@ -1587,7 +1587,7 @@ func (e *htmlAddress) setBody(v []UI) HTML {
 
 // The interface that represents a "area" HTML element.
 type HTMLArea interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLArea
@@ -2151,7 +2151,7 @@ func (e *htmlArea) setBody(v []UI) HTML {
 
 // The interface that represents a "article" HTML element.
 type HTMLArticle interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLArticle
@@ -2656,7 +2656,7 @@ func (e *htmlArticle) setBody(v []UI) HTML {
 
 // The interface that represents a "aside" HTML element.
 type HTMLAside interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAside
@@ -3161,7 +3161,7 @@ func (e *htmlAside) setBody(v []UI) HTML {
 
 // The interface that represents a "audio" HTML element.
 type HTMLAudio interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAudio
@@ -3906,7 +3906,7 @@ func (e *htmlAudio) setBody(v []UI) HTML {
 
 // The interface that represents a "b" HTML element.
 type HTMLB interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLB
@@ -4411,7 +4411,7 @@ func (e *htmlB) setBody(v []UI) HTML {
 
 // The interface that represents a "base" HTML element.
 type HTMLBase interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLBase
@@ -4911,7 +4911,7 @@ func (e *htmlBase) setBody(v []UI) HTML {
 
 // The interface that represents a "bdi" HTML element.
 type HTMLBdi interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLBdi
@@ -5416,7 +5416,7 @@ func (e *htmlBdi) setBody(v []UI) HTML {
 
 // The interface that represents a "bdo" HTML element.
 type HTMLBdo interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLBdo
@@ -5921,7 +5921,7 @@ func (e *htmlBdo) setBody(v []UI) HTML {
 
 // The interface that represents a "blockquote" HTML element.
 type HTMLBlockquote interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLBlockquote
@@ -6434,7 +6434,7 @@ func (e *htmlBlockquote) setBody(v []UI) HTML {
 
 // The interface that represents a "body" HTML element.
 type HTMLBody interface {
-	UI
+	HTML
 
 	privateBody(elems ...UI) HTMLBody
 
@@ -7044,7 +7044,7 @@ func (e *htmlBody) setBody(v []UI) HTML {
 
 // The interface that represents a "br" HTML element.
 type HTMLBr interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLBr
@@ -7528,7 +7528,7 @@ func (e *htmlBr) setBody(v []UI) HTML {
 
 // The interface that represents a "button" HTML element.
 type HTMLButton interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLButton
@@ -8121,7 +8121,7 @@ func (e *htmlButton) setBody(v []UI) HTML {
 
 // The interface that represents a "canvas" HTML element.
 type HTMLCanvas interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCanvas
@@ -8642,7 +8642,7 @@ func (e *htmlCanvas) setBody(v []UI) HTML {
 
 // The interface that represents a "caption" HTML element.
 type HTMLCaption interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCaption
@@ -9147,7 +9147,7 @@ func (e *htmlCaption) setBody(v []UI) HTML {
 
 // The interface that represents a "cite" HTML element.
 type HTMLCite interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCite
@@ -9652,7 +9652,7 @@ func (e *htmlCite) setBody(v []UI) HTML {
 
 // The interface that represents a "code" HTML element.
 type HTMLCode interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCode
@@ -10157,7 +10157,7 @@ func (e *htmlCode) setBody(v []UI) HTML {
 
 // The interface that represents a "col" HTML element.
 type HTMLCol interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLCol
@@ -10649,7 +10649,7 @@ func (e *htmlCol) setBody(v []UI) HTML {
 
 // The interface that represents a "colgroup" HTML element.
 type HTMLColGroup interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLColGroup
@@ -11162,7 +11162,7 @@ func (e *htmlColGroup) setBody(v []UI) HTML {
 
 // The interface that represents a "data" HTML element.
 type HTMLData interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLData
@@ -11403,7 +11403,7 @@ func (e *htmlData) setBody(v []UI) HTML {
 
 // The interface that represents a "datalist" HTML element.
 type HTMLDataList interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDataList
@@ -11908,7 +11908,7 @@ func (e *htmlDataList) setBody(v []UI) HTML {
 
 // The interface that represents a "dd" HTML element.
 type HTMLDd interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDd
@@ -12413,7 +12413,7 @@ func (e *htmlDd) setBody(v []UI) HTML {
 
 // The interface that represents a "del" HTML element.
 type HTMLDel interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDel
@@ -12934,7 +12934,7 @@ func (e *htmlDel) setBody(v []UI) HTML {
 
 // The interface that represents a "details" HTML element.
 type HTMLDetails interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDetails
@@ -13455,7 +13455,7 @@ func (e *htmlDetails) setBody(v []UI) HTML {
 
 // The interface that represents a "dfn" HTML element.
 type HTMLDfn interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDfn
@@ -13960,7 +13960,7 @@ func (e *htmlDfn) setBody(v []UI) HTML {
 
 // The interface that represents a "dialog" HTML element.
 type HTMLDialog interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDialog
@@ -14473,7 +14473,7 @@ func (e *htmlDialog) setBody(v []UI) HTML {
 
 // The interface that represents a "div" HTML element.
 type HTMLDiv interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDiv
@@ -14978,7 +14978,7 @@ func (e *htmlDiv) setBody(v []UI) HTML {
 
 // The interface that represents a "dl" HTML element.
 type HTMLDl interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDl
@@ -15483,7 +15483,7 @@ func (e *htmlDl) setBody(v []UI) HTML {
 
 // The interface that represents a "dt" HTML element.
 type HTMLDt interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDt
@@ -15988,7 +15988,7 @@ func (e *htmlDt) setBody(v []UI) HTML {
 
 // The interface that represents a "elem" HTML element.
 type HTMLElem interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLElem
@@ -16501,7 +16501,7 @@ func (e *htmlElem) setBody(v []UI) HTML {
 
 // The interface that represents a "elemselfclosing" HTML element.
 type HTMLElemSelfClosing interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLElemSelfClosing
@@ -16993,7 +16993,7 @@ func (e *htmlElemSelfClosing) setBody(v []UI) HTML {
 
 // The interface that represents a "em" HTML element.
 type HTMLEm interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLEm
@@ -17498,7 +17498,7 @@ func (e *htmlEm) setBody(v []UI) HTML {
 
 // The interface that represents a "embed" HTML element.
 type HTMLEmbed interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLEmbed
@@ -18198,7 +18198,7 @@ func (e *htmlEmbed) setBody(v []UI) HTML {
 
 // The interface that represents a "fieldset" HTML element.
 type HTMLFieldSet interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFieldSet
@@ -18727,7 +18727,7 @@ func (e *htmlFieldSet) setBody(v []UI) HTML {
 
 // The interface that represents a "figcaption" HTML element.
 type HTMLFigCaption interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFigCaption
@@ -19232,7 +19232,7 @@ func (e *htmlFigCaption) setBody(v []UI) HTML {
 
 // The interface that represents a "figure" HTML element.
 type HTMLFigure interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFigure
@@ -19737,7 +19737,7 @@ func (e *htmlFigure) setBody(v []UI) HTML {
 
 // The interface that represents a "footer" HTML element.
 type HTMLFooter interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFooter
@@ -20242,7 +20242,7 @@ func (e *htmlFooter) setBody(v []UI) HTML {
 
 // The interface that represents a "form" HTML element.
 type HTMLForm interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLForm
@@ -20816,7 +20816,7 @@ func (e *htmlForm) setBody(v []UI) HTML {
 
 // The interface that represents a "h1" HTML element.
 type HTMLH1 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH1
@@ -21321,7 +21321,7 @@ func (e *htmlH1) setBody(v []UI) HTML {
 
 // The interface that represents a "h2" HTML element.
 type HTMLH2 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH2
@@ -21826,7 +21826,7 @@ func (e *htmlH2) setBody(v []UI) HTML {
 
 // The interface that represents a "h3" HTML element.
 type HTMLH3 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH3
@@ -22331,7 +22331,7 @@ func (e *htmlH3) setBody(v []UI) HTML {
 
 // The interface that represents a "h4" HTML element.
 type HTMLH4 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH4
@@ -22836,7 +22836,7 @@ func (e *htmlH4) setBody(v []UI) HTML {
 
 // The interface that represents a "h5" HTML element.
 type HTMLH5 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH5
@@ -23341,7 +23341,7 @@ func (e *htmlH5) setBody(v []UI) HTML {
 
 // The interface that represents a "h6" HTML element.
 type HTMLH6 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH6
@@ -23846,7 +23846,7 @@ func (e *htmlH6) setBody(v []UI) HTML {
 
 // The interface that represents a "head" HTML element.
 type HTMLHead interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLHead
@@ -24079,7 +24079,7 @@ func (e *htmlHead) setBody(v []UI) HTML {
 
 // The interface that represents a "header" HTML element.
 type HTMLHeader interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLHeader
@@ -24584,7 +24584,7 @@ func (e *htmlHeader) setBody(v []UI) HTML {
 
 // The interface that represents a "hr" HTML element.
 type HTMLHr interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLHr
@@ -25068,7 +25068,7 @@ func (e *htmlHr) setBody(v []UI) HTML {
 
 // The interface that represents a "html" HTML element.
 type HTMLHtml interface {
-	UI
+	HTML
 
 	privateBody(elems ...UI) HTMLHtml
 
@@ -25286,7 +25286,7 @@ func (e *htmlHtml) setBody(v []UI) HTML {
 
 // The interface that represents a "i" HTML element.
 type HTMLI interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLI
@@ -25791,7 +25791,7 @@ func (e *htmlI) setBody(v []UI) HTML {
 
 // The interface that represents a "iframe" HTML element.
 type HTMLIFrame interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLIFrame
@@ -26402,7 +26402,7 @@ func (e *htmlIFrame) setBody(v []UI) HTML {
 
 // The interface that represents a "img" HTML element.
 type HTMLImg interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLImg
@@ -27158,7 +27158,7 @@ func (e *htmlImg) setBody(v []UI) HTML {
 
 // The interface that represents a "input" HTML element.
 type HTMLInput interface {
-	UI
+	HTML
 
 	// Restricts file types the server accepts, especially used for file input elements.
 	Accept(format string, v ...any) HTMLInput
@@ -27903,7 +27903,7 @@ func (e *htmlInput) setBody(v []UI) HTML {
 
 // The interface that represents a "ins" HTML element.
 type HTMLIns interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLIns
@@ -28408,7 +28408,7 @@ func (e *htmlIns) setBody(v []UI) HTML {
 
 // The interface that represents a "kbd" HTML element.
 type HTMLKbd interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLKbd
@@ -28913,7 +28913,7 @@ func (e *htmlKbd) setBody(v []UI) HTML {
 
 // The interface that represents a "label" HTML element.
 type HTMLLabel interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLLabel
@@ -29434,7 +29434,7 @@ func (e *htmlLabel) setBody(v []UI) HTML {
 
 // The interface that represents a "legend" HTML element.
 type HTMLLegend interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLLegend
@@ -29939,7 +29939,7 @@ func (e *htmlLegend) setBody(v []UI) HTML {
 
 // The interface that represents a "li" HTML element.
 type HTMLLi interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLLi
@@ -30452,7 +30452,7 @@ func (e *htmlLi) setBody(v []UI) HTML {
 
 // The interface that represents a "link" HTML element.
 type HTMLLink interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLLink
@@ -31016,7 +31016,7 @@ func (e *htmlLink) setBody(v []UI) HTML {
 
 // The interface that represents a "main" HTML element.
 type HTMLMain interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMain
@@ -31521,7 +31521,7 @@ func (e *htmlMain) setBody(v []UI) HTML {
 
 // The interface that represents a "map" HTML element.
 type HTMLMap interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMap
@@ -32034,7 +32034,7 @@ func (e *htmlMap) setBody(v []UI) HTML {
 
 // The interface that represents a "mark" HTML element.
 type HTMLMark interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMark
@@ -32539,7 +32539,7 @@ func (e *htmlMark) setBody(v []UI) HTML {
 
 // The interface that represents a "meta" HTML element.
 type HTMLMeta interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLMeta
@@ -32791,7 +32791,7 @@ func (e *htmlMeta) setBody(v []UI) HTML {
 
 // The interface that represents a "meter" HTML element.
 type HTMLMeter interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMeter
@@ -33352,7 +33352,7 @@ func (e *htmlMeter) setBody(v []UI) HTML {
 
 // The interface that represents a "nav" HTML element.
 type HTMLNav interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLNav
@@ -33857,7 +33857,7 @@ func (e *htmlNav) setBody(v []UI) HTML {
 
 // The interface that represents a "noscript" HTML element.
 type HTMLNoScript interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLNoScript
@@ -34090,7 +34090,7 @@ func (e *htmlNoScript) setBody(v []UI) HTML {
 
 // The interface that represents a "object" HTML element.
 type HTMLObject interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLObject
@@ -34835,7 +34835,7 @@ func (e *htmlObject) setBody(v []UI) HTML {
 
 // The interface that represents a "ol" HTML element.
 type HTMLOl interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOl
@@ -35364,7 +35364,7 @@ func (e *htmlOl) setBody(v []UI) HTML {
 
 // The interface that represents a "optgroup" HTML element.
 type HTMLOptGroup interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOptGroup
@@ -35885,7 +35885,7 @@ func (e *htmlOptGroup) setBody(v []UI) HTML {
 
 // The interface that represents a "option" HTML element.
 type HTMLOption interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOption
@@ -36422,7 +36422,7 @@ func (e *htmlOption) setBody(v []UI) HTML {
 
 // The interface that represents a "output" HTML element.
 type HTMLOutput interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOutput
@@ -36951,7 +36951,7 @@ func (e *htmlOutput) setBody(v []UI) HTML {
 
 // The interface that represents a "p" HTML element.
 type HTMLP interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLP
@@ -37456,7 +37456,7 @@ func (e *htmlP) setBody(v []UI) HTML {
 
 // The interface that represents a "param" HTML element.
 type HTMLParam interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLParam
@@ -37956,7 +37956,7 @@ func (e *htmlParam) setBody(v []UI) HTML {
 
 // The interface that represents a "picture" HTML element.
 type HTMLPicture interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLPicture
@@ -38461,7 +38461,7 @@ func (e *htmlPicture) setBody(v []UI) HTML {
 
 // The interface that represents a "pre" HTML element.
 type HTMLPre interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLPre
@@ -38966,7 +38966,7 @@ func (e *htmlPre) setBody(v []UI) HTML {
 
 // The interface that represents a "progress" HTML element.
 type HTMLProgress interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLProgress
@@ -39487,7 +39487,7 @@ func (e *htmlProgress) setBody(v []UI) HTML {
 
 // The interface that represents a "q" HTML element.
 type HTMLQ interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLQ
@@ -40000,7 +40000,7 @@ func (e *htmlQ) setBody(v []UI) HTML {
 
 // The interface that represents a "rp" HTML element.
 type HTMLRp interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLRp
@@ -40505,7 +40505,7 @@ func (e *htmlRp) setBody(v []UI) HTML {
 
 // The interface that represents a "rt" HTML element.
 type HTMLRt interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLRt
@@ -41010,7 +41010,7 @@ func (e *htmlRt) setBody(v []UI) HTML {
 
 // The interface that represents a "ruby" HTML element.
 type HTMLRuby interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLRuby
@@ -41515,7 +41515,7 @@ func (e *htmlRuby) setBody(v []UI) HTML {
 
 // The interface that represents a "s" HTML element.
 type HTMLS interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLS
@@ -42020,7 +42020,7 @@ func (e *htmlS) setBody(v []UI) HTML {
 
 // The interface that represents a "samp" HTML element.
 type HTMLSamp interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSamp
@@ -42525,7 +42525,7 @@ func (e *htmlSamp) setBody(v []UI) HTML {
 
 // The interface that represents a "script" HTML element.
 type HTMLScript interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLScript
@@ -42814,7 +42814,7 @@ func (e *htmlScript) setBody(v []UI) HTML {
 
 // The interface that represents a "section" HTML element.
 type HTMLSection interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSection
@@ -43319,7 +43319,7 @@ func (e *htmlSection) setBody(v []UI) HTML {
 
 // The interface that represents a "select" HTML element.
 type HTMLSelect interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSelect
@@ -43880,7 +43880,7 @@ func (e *htmlSelect) setBody(v []UI) HTML {
 
 // The interface that represents a "small" HTML element.
 type HTMLSmall interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSmall
@@ -44385,7 +44385,7 @@ func (e *htmlSmall) setBody(v []UI) HTML {
 
 // The interface that represents a "source" HTML element.
 type HTMLSource interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLSource
@@ -44909,7 +44909,7 @@ func (e *htmlSource) setBody(v []UI) HTML {
 
 // The interface that represents a "span" HTML element.
 type HTMLSpan interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSpan
@@ -45414,7 +45414,7 @@ func (e *htmlSpan) setBody(v []UI) HTML {
 
 // The interface that represents a "strong" HTML element.
 type HTMLStrong interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLStrong
@@ -45919,7 +45919,7 @@ func (e *htmlStrong) setBody(v []UI) HTML {
 
 // The interface that represents a "style" HTML element.
 type HTMLStyle interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLStyle
@@ -46448,7 +46448,7 @@ func (e *htmlStyle) setBody(v []UI) HTML {
 
 // The interface that represents a "sub" HTML element.
 type HTMLSub interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSub
@@ -46953,7 +46953,7 @@ func (e *htmlSub) setBody(v []UI) HTML {
 
 // The interface that represents a "summary" HTML element.
 type HTMLSummary interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSummary
@@ -47458,7 +47458,7 @@ func (e *htmlSummary) setBody(v []UI) HTML {
 
 // The interface that represents a "sup" HTML element.
 type HTMLSup interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSup
@@ -47963,7 +47963,7 @@ func (e *htmlSup) setBody(v []UI) HTML {
 
 // The interface that represents a "table" HTML element.
 type HTMLTable interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTable
@@ -48468,7 +48468,7 @@ func (e *htmlTable) setBody(v []UI) HTML {
 
 // The interface that represents a "tbody" HTML element.
 type HTMLTBody interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTBody
@@ -48973,7 +48973,7 @@ func (e *htmlTBody) setBody(v []UI) HTML {
 
 // The interface that represents a "td" HTML element.
 type HTMLTd interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTd
@@ -49502,7 +49502,7 @@ func (e *htmlTd) setBody(v []UI) HTML {
 
 // The interface that represents a "template" HTML element.
 type HTMLTemplate interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTemplate
@@ -49735,7 +49735,7 @@ func (e *htmlTemplate) setBody(v []UI) HTML {
 
 // The interface that represents a "textarea" HTML element.
 type HTMLTextarea interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTextarea
@@ -50338,7 +50338,7 @@ func (e *htmlTextarea) setBody(v []UI) HTML {
 
 // The interface that represents a "tfoot" HTML element.
 type HTMLTFoot interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTFoot
@@ -50843,7 +50843,7 @@ func (e *htmlTFoot) setBody(v []UI) HTML {
 
 // The interface that represents a "th" HTML element.
 type HTMLTh interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTh
@@ -51388,7 +51388,7 @@ func (e *htmlTh) setBody(v []UI) HTML {
 
 // The interface that represents a "thead" HTML element.
 type HTMLTHead interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTHead
@@ -51893,7 +51893,7 @@ func (e *htmlTHead) setBody(v []UI) HTML {
 
 // The interface that represents a "time" HTML element.
 type HTMLTime interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTime
@@ -52406,7 +52406,7 @@ func (e *htmlTime) setBody(v []UI) HTML {
 
 // The interface that represents a "title" HTML element.
 type HTMLTitle interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTitle
@@ -52639,7 +52639,7 @@ func (e *htmlTitle) setBody(v []UI) HTML {
 
 // The interface that represents a "tr" HTML element.
 type HTMLTr interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTr
@@ -53144,7 +53144,7 @@ func (e *htmlTr) setBody(v []UI) HTML {
 
 // The interface that represents a "u" HTML element.
 type HTMLU interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLU
@@ -53649,7 +53649,7 @@ func (e *htmlU) setBody(v []UI) HTML {
 
 // The interface that represents a "ul" HTML element.
 type HTMLUl interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLUl
@@ -54154,7 +54154,7 @@ func (e *htmlUl) setBody(v []UI) HTML {
 
 // The interface that represents a "var" HTML element.
 type HTMLVar interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLVar
@@ -54659,7 +54659,7 @@ func (e *htmlVar) setBody(v []UI) HTML {
 
 // The interface that represents a "video" HTML element.
 type HTMLVideo interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLVideo
@@ -55428,7 +55428,7 @@ func (e *htmlVideo) setBody(v []UI) HTML {
 
 // The interface that represents a "wbr" HTML element.
 type HTMLWbr interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLWbr
