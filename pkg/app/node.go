@@ -634,6 +634,7 @@ func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
 func (m nodeManager) context(ctx Context, v UI) Context {
 	ctx.sourceElement = v
 	ctx.foreachUpdatableComponent = m.ForEachUpdatableComponent
+	ctx.notifyComponentEvent = m.NotifyComponentEvent
 	return ctx
 }
 

@@ -36,6 +36,7 @@ type Context struct {
 
 	sourceElement             UI
 	foreachUpdatableComponent func(UI, func(Composer))
+	notifyComponentEvent      func(Context, UI, any)
 }
 
 // Src retrieves the linked UI element of the context.
@@ -276,4 +277,13 @@ func (ctx Context) SetState(state string, v any) StateX {
 // DelState erases a state, halting all associated observations.
 func (ctx Context) DelState(state string) {
 	panic("not implemented")
+}
+
+// TODO: see whether to deprecate
+func (ctx Context) ResizeContent() {
+	ctx.Defer(func(ctx Context) {
+		ctx.Dispatch(func(ctx Context) {
+			ctx.notifyComponentEvent(ctx, ctx.Src(), resize{})
+		})
+	})
 }

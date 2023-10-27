@@ -868,13 +868,16 @@ func TestNodeManagerContext(t *testing.T) {
 	ctx = m.context(ctx, div)
 	require.NotZero(t, ctx)
 	require.NotNil(t, ctx.Context)
-	require.NotNil(t, ctx.sourceElement)
 	require.NotNil(t, ctx.page)
 	require.NotNil(t, ctx.resolveURL)
 	require.NotNil(t, ctx.localStorage)
 	require.NotNil(t, ctx.sessionStorage)
 	require.NotNil(t, ctx.dispatch)
 	require.NotNil(t, ctx.defere)
+
+	require.NotNil(t, ctx.sourceElement)
+	require.NotNil(t, ctx.foreachUpdatableComponent)
+	require.NotNil(t, ctx.notifyComponentEvent)
 }
 
 func TestNodeManagerForEachUpdatableComponent(t *testing.T) {

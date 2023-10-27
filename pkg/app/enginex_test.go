@@ -14,8 +14,8 @@ func TestEngineXBaseContext(t *testing.T) {
 	e := newTestEngine()
 	ctx := e.baseContext()
 	require.NotNil(t, ctx.Context)
-	require.NotNil(t, ctx.resolveURL)
 	require.NotNil(t, ctx.page)
+	require.NotNil(t, ctx.resolveURL)
 	require.NotNil(t, ctx.navigate)
 	require.NotNil(t, ctx.localStorage)
 	require.NotNil(t, ctx.sessionStorage)
@@ -30,6 +30,10 @@ func TestEngineXBaseContext(t *testing.T) {
 	require.NotNil(t, ctx.getState)
 	require.NotNil(t, ctx.setState)
 	// require.NotNil(t, ctx.delState) TODO
+
+	require.NotNil(t, ctx.foreachUpdatableComponent)
+	require.NotNil(t, ctx.notifyComponentEvent)
+
 }
 
 func TestEngineXLoad(t *testing.T) {

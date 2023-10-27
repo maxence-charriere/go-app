@@ -255,9 +255,11 @@ func (s *shell) refresh(ctx app.Context) {
 		s.hideAds = hideAds
 		s.width = w
 
-		ctx.Defer(func(app.Context) {
-			// s.ResizeContent()
-		})
+		// ctx.Defer(func(app.Context) {
+		// s.ResizeContent()
+		// })
+
+		ctx.ResizeContent()
 	}
 }
 

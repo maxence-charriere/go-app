@@ -248,6 +248,96 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#Context">type Context</a></dd>
 				
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.After">func (ctx Context) After(d time.Duration, f func(Context))</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.AppUpdateAvailable">func (ctx Context) AppUpdateAvailable() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Async">func (ctx Context) Async(v func())</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Decrypt">func (ctx Context) Decrypt(crypted []byte, v any) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Defer">func (ctx Context) Defer(v func(Context))</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.DelState">func (ctx Context) DelState(state string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.DeviceID">func (ctx Context) DeviceID() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Dispatch">func (ctx Context) Dispatch(v func(Context))</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Encrypt">func (ctx Context) Encrypt(v any) ([]byte, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.GetState">func (ctx Context) GetState(state string, recv any)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Handle">func (ctx Context) Handle(action string, h ActionHandler)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.IsAppInstallable">func (ctx Context) IsAppInstallable() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.JSSrc">func (ctx Context) JSSrc() Value</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.LocalStorage">func (ctx Context) LocalStorage() BrowserStorage</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Navigate">func (ctx Context) Navigate(rawURL string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.NavigateTo">func (ctx Context) NavigateTo(u *url.URL)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.NewAction">func (ctx Context) NewAction(action string, tags ...Tagger)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.NewActionWithValue">func (ctx Context) NewActionWithValue(action string, v any, tags ...Tagger)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Notifications">func (ctx Context) Notifications() NotificationService</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.ObserveState">func (ctx Context) ObserveState(state string, recv any) ObserverX</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Page">func (ctx Context) Page() Page</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.PreventUpdate">func (ctx Context) PreventUpdate()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Reload">func (ctx Context) Reload()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.ResizeContent">func (ctx Context) ResizeContent()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.ResolveStaticResource">func (ctx Context) ResolveStaticResource(v string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.ScrollTo">func (ctx Context) ScrollTo(id string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.SessionStorage">func (ctx Context) SessionStorage() BrowserStorage</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.SetState">func (ctx Context) SetState(state string, v any) StateX</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.ShowAppInstallPrompt">func (ctx Context) ShowAppInstallPrompt()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Src">func (ctx Context) Src() UI</a></dd>
+				
 			
 				
 				<dd><a href="#Dismounter">type Dismounter</a></dd>
@@ -2319,7 +2409,7 @@ based on the evaluation of the provided boolean expression.
 		
 			
 			
-			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=323:3433#L6">Context</a>
+			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=323:1225#L6">Context</a>
 				<a class="permalink" href="#Context">&#xb6;</a>
 				
 				
@@ -2327,105 +2417,11 @@ based on the evaluation of the provided boolean expression.
 			<p>Context represents a UI element-associated environment enabling interactions
 with the browser, page navigation, concurrency, and component communication.
 
-			<pre>type Context interface {
+			<pre>type Context struct {
     <a href="/pkg/context/">context</a>.<a href="/pkg/context/#Context">Context</a>
-
-    <span class="comment">// Src retrieves the linked UI element of the context.</span>
-    Src() <a href="#UI">UI</a>
-
-    <span class="comment">// JSSrc fetches the JavaScript representation of the associated UI element.</span>
-    JSSrc() <a href="#Value">Value</a>
-
-    <span class="comment">// AppUpdateAvailable checks if there&#39;s a pending app update.</span>
-    AppUpdateAvailable() <a href="/pkg/builtin/#bool">bool</a>
-
-    <span class="comment">// IsAppInstallable verifies if the app is eligible for installation.</span>
-    IsAppInstallable() <a href="/pkg/builtin/#bool">bool</a>
-
-    <span class="comment">// ShowAppInstallPrompt initiates the app installation process.</span>
-    ShowAppInstallPrompt()
-
-    <span class="comment">// DeviceID fetches a distinct identifier for the app on the present device.</span>
-    DeviceID() <a href="/pkg/builtin/#string">string</a>
-
-    <span class="comment">// Page retrieves the current active page.</span>
-    Page() <a href="#Page">Page</a>
-
-    <span class="comment">// Reload refreshes the present page.</span>
-    Reload()
-
-    <span class="comment">// Navigate transitions to the given URL string.</span>
-    Navigate(url <a href="/pkg/builtin/#string">string</a>)
-
-    <span class="comment">// NavigateTo transitions to the provided URL.</span>
-    NavigateTo(u *<a href="/pkg/net/url/">url</a>.<a href="/pkg/net/url/#URL">URL</a>)
-
-    <span class="comment">// ResolveStaticResource adjusts a given path to point to the correct static</span>
-    <span class="comment">// resource location.</span>
-    ResolveStaticResource(<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a>
-
-    <span class="comment">// ScrollTo adjusts the scrollbar to target an HTML element by its ID.</span>
-    ScrollTo(id <a href="/pkg/builtin/#string">string</a>)
-
-    <span class="comment">// LocalStorage accesses the browser&#39;s local storage tied to the document</span>
-    <span class="comment">// origin.</span>
-    LocalStorage() <a href="#BrowserStorage">BrowserStorage</a>
-
-    <span class="comment">// SessionStorage accesses the browser&#39;s session storage tied to the</span>
-    <span class="comment">// document origin.</span>
-    SessionStorage() <a href="#BrowserStorage">BrowserStorage</a>
-
-    <span class="comment">// Encrypt enciphers a value using AES encryption.</span>
-    Encrypt(v <a href="/pkg/builtin/#any">any</a>) ([]<a href="/pkg/builtin/#byte">byte</a>, <a href="/pkg/builtin/#error">error</a>)
-
-    <span class="comment">// Decrypt deciphers encrypted data into a given reference value.</span>
-    Decrypt(crypted []<a href="/pkg/builtin/#byte">byte</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="/pkg/builtin/#error">error</a>
-
-    <span class="comment">// Notifications accesses the notifications service.</span>
-    Notifications() <a href="#NotificationService">NotificationService</a>
-
-    <span class="comment">// Dispatch prompts the execution of a function on the UI goroutine,</span>
-    <span class="comment">// flagging the enclosing component for an update, respecting any</span>
-    <span class="comment">// implemented UpdateNotifier behavior.</span>
-    Dispatch(fn func(<a href="#Context">Context</a>))
-
-    <span class="comment">// Defer postpones the function execution on the UI goroutine until the</span>
-    <span class="comment">// current update cycle completes.</span>
-    Defer(fn func(<a href="#Context">Context</a>))
-
-    <span class="comment">// Async initiates a function asynchronously. It enables go-app to monitor</span>
-    <span class="comment">// goroutines, ensuring they conclude when rendering server-side.</span>
-    Async(fn func())
-
-    <span class="comment">// After pauses for a determined span, then triggers a specified function.</span>
-    After(d <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>, fn func(<a href="#Context">Context</a>))
-
-    <span class="comment">// PreventUpdate halts updates for the enclosing component, respecting any</span>
-    <span class="comment">// implemented UpdateNotifier behavior.</span>
-    PreventUpdate()
-
-    <span class="comment">// Handle designates a handler for a particular action, set to run on the UI</span>
-    <span class="comment">// goroutine.</span>
-    Handle(action <a href="/pkg/builtin/#string">string</a>, h <a href="#ActionHandler">ActionHandler</a>)
-
-    <span class="comment">// NewAction generates a new action for handling.</span>
-    NewAction(name <a href="/pkg/builtin/#string">string</a>, tags ...<a href="#Tagger">Tagger</a>)
-
-    <span class="comment">// NewActionWithValue crafts an action with a given value for processing.</span>
-    NewActionWithValue(name <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>, tags ...<a href="#Tagger">Tagger</a>)
-
-    <span class="comment">// ObserveState establishes an observer for a state, tracking its changes.</span>
-    ObserveState(state <a href="/pkg/builtin/#string">string</a>, recv <a href="/pkg/builtin/#any">any</a>) <a href="#ObserverX">ObserverX</a>
-
-    <span class="comment">// GetState fetches the value of a particular state.</span>
-    GetState(state <a href="/pkg/builtin/#string">string</a>, recv <a href="/pkg/builtin/#any">any</a>)
-
-    <span class="comment">// SetState modifies a state with the provided value.</span>
-    SetState(state <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#StateX">StateX</a>
-
-    <span class="comment">// DelState erases a state, halting all associated observations.</span>
-    DelState(state <a href="/pkg/builtin/#string">string</a>)
-}</pre>
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
 
 			
 
@@ -2437,6 +2433,405 @@ with the browser, page navigation, concurrency, and component communication.
 
 			
 
+			
+				
+				<h3 id="Context.After">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5745:5803#L207">After</a>
+					<a class="permalink" href="#Context.After">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) After(d <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>, f func(<a href="#Context">Context</a>))</pre>
+				<p>After pauses for a determined span, then triggers a specified function.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.AppUpdateAvailable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1554:1598#L43">AppUpdateAvailable</a>
+					<a class="permalink" href="#Context.AppUpdateAvailable">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) AppUpdateAvailable() <a href="/pkg/builtin/#bool">bool</a></pre>
+				<p>AppUpdateAvailable checks if there&apos;s a pending app update.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Async">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5616:5650#L202">Async</a>
+					<a class="permalink" href="#Context.Async">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Async(v func())</pre>
+				<p>Async initiates a function asynchronously. It enables go-app to monitor
+goroutines, ensuring they conclude when rendering server-side.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Decrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4253:4308#L149">Decrypt</a>
+					<a class="permalink" href="#Context.Decrypt">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Decrypt(crypted []<a href="/pkg/builtin/#byte">byte</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="/pkg/builtin/#error">error</a></pre>
+				<p>Decrypt deciphers encrypted data into a given reference value.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Defer">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5314:5355#L188">Defer</a>
+					<a class="permalink" href="#Context.Defer">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Defer(v func(<a href="#Context">Context</a>))</pre>
+				<p>Defer postpones the function execution on the UI goroutine until the
+current update cycle completes.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.DelState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7403:7444#L268">DelState</a>
+					<a class="permalink" href="#Context.DelState">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) DelState(state <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>DelState erases a state, halting all associated observations.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.DeviceID">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2134:2170#L63">DeviceID</a>
+					<a class="permalink" href="#Context.DeviceID">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) DeviceID() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>DeviceID fetches a distinct identifier for the app on the present device.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Dispatch">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4966:5010#L173">Dispatch</a>
+					<a class="permalink" href="#Context.Dispatch">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Dispatch(v func(<a href="#Context">Context</a>))</pre>
+				<p>Dispatch prompts the execution of a function on the UI goroutine,
+flagging the enclosing component for an update, respecting any
+implemented UpdateNotifier behavior.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Encrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3889:3938#L135">Encrypt</a>
+					<a class="permalink" href="#Context.Encrypt">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Encrypt(v <a href="/pkg/builtin/#any">any</a>) ([]<a href="/pkg/builtin/#byte">byte</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>Encrypt enciphers a value using AES encryption.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.GetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7098:7149#L258">GetState</a>
+					<a class="permalink" href="#Context.GetState">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) GetState(state <a href="/pkg/builtin/#string">string</a>, recv <a href="/pkg/builtin/#any">any</a>)</pre>
+				<p>GetState fetches the value of a particular state.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Handle">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6190:6247#L222">Handle</a>
+					<a class="permalink" href="#Context.Handle">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Handle(action <a href="/pkg/builtin/#string">string</a>, h <a href="#ActionHandler">ActionHandler</a>)</pre>
+				<p>Handle designates a handler for a particular action, set to run on the UI
+goroutine.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.IsAppInstallable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1699:1741#L48">IsAppInstallable</a>
+					<a class="permalink" href="#Context.IsAppInstallable">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) IsAppInstallable() <a href="/pkg/builtin/#bool">bool</a></pre>
+				<p>IsAppInstallable verifies if the app is eligible for installation.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.JSSrc">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1418:1450#L38">JSSrc</a>
+					<a class="permalink" href="#Context.JSSrc">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) JSSrc() <a href="#Value">Value</a></pre>
+				<p>JSSrc fetches the JavaScript representation of the associated UI element.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.LocalStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3587:3635#L124">LocalStorage</a>
+					<a class="permalink" href="#Context.LocalStorage">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) LocalStorage() <a href="#BrowserStorage">BrowserStorage</a></pre>
+				<p>LocalStorage accesses the browser&apos;s local storage tied to the document
+origin.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Navigate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2809:2851#L93">Navigate</a>
+					<a class="permalink" href="#Context.Navigate">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Navigate(rawURL <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>Navigate transitions to the given URL string.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.NavigateTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3068:3109#L105">NavigateTo</a>
+					<a class="permalink" href="#Context.NavigateTo">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) NavigateTo(u *<a href="/pkg/net/url/">url</a>.<a href="/pkg/net/url/#URL">URL</a>)</pre>
+				<p>NavigateTo transitions to the provided URL.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.NewAction">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6358:6417#L227">NewAction</a>
+					<a class="permalink" href="#Context.NewAction">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) NewAction(action <a href="/pkg/builtin/#string">string</a>, tags ...<a href="#Tagger">Tagger</a>)</pre>
+				<p>NewAction generates a new action for handling.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.NewActionWithValue">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6544:6619#L233">NewActionWithValue</a>
+					<a class="permalink" href="#Context.NewActionWithValue">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) NewActionWithValue(action <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>, tags ...<a href="#Tagger">Tagger</a>)</pre>
+				<p>NewActionWithValue crafts an action with a given value for processing.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Notifications">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4701:4755#L166">Notifications</a>
+					<a class="permalink" href="#Context.Notifications">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Notifications() <a href="#NotificationService">NotificationService</a></pre>
+				<p>Notifications accesses the notifications service.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.ObserveState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6931:6996#L253">ObserveState</a>
+					<a class="permalink" href="#Context.ObserveState">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) ObserveState(state <a href="/pkg/builtin/#string">string</a>, recv <a href="/pkg/builtin/#any">any</a>) <a href="#ObserverX">ObserverX</a></pre>
+				<p>ObserveState establishes an observer for a state, tracking its changes.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Page">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2566:2596#L80">Page</a>
+					<a class="permalink" href="#Context.Page">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Page() <a href="#Page">Page</a></pre>
+				<p>Page retrieves the current active page.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.PreventUpdate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5982:6016#L216">PreventUpdate</a>
+					<a class="permalink" href="#Context.PreventUpdate">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) PreventUpdate()</pre>
+				<p>PreventUpdate halts updates for the enclosing component, respecting any
+implemented UpdateNotifier behavior.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Reload">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2659:2686#L85">Reload</a>
+					<a class="permalink" href="#Context.Reload">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Reload()</pre>
+				<p>Reload refreshes the present page.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.ResizeContent">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7510:7544#L273">ResizeContent</a>
+					<a class="permalink" href="#Context.ResizeContent">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) ResizeContent()</pre>
+				<p>TODO: see whether to deprecate
+
+				
+				
+				
+			
+				
+				<h3 id="Context.ResolveStaticResource">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3237:3294#L111">ResolveStaticResource</a>
+					<a class="permalink" href="#Context.ResolveStaticResource">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) ResolveStaticResource(v <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+				<p>ResolveStaticResource adjusts a given path to point to the correct static
+resource location.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.ScrollTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3397:3435#L116">ScrollTo</a>
+					<a class="permalink" href="#Context.ScrollTo">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) ScrollTo(id <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>ScrollTo adjusts the scrollbar to target an HTML element by its ID.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.SessionStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3755:3805#L130">SessionStorage</a>
+					<a class="permalink" href="#Context.SessionStorage">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) SessionStorage() <a href="#BrowserStorage">BrowserStorage</a></pre>
+				<p>SessionStorage accesses the browser&apos;s session storage tied to the
+document origin.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.SetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7241:7296#L263">SetState</a>
+					<a class="permalink" href="#Context.SetState">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) SetState(state <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#StateX">StateX</a></pre>
+				<p>SetState modifies a state with the provided value.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.ShowAppInstallPrompt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1936:1977#L56">ShowAppInstallPrompt</a>
+					<a class="permalink" href="#Context.ShowAppInstallPrompt">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) ShowAppInstallPrompt()</pre>
+				<p>ShowAppInstallPrompt initiates the app installation process.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Src">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1282:1309#L33">Src</a>
+					<a class="permalink" href="#Context.Src">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Src() <a href="#UI">UI</a></pre>
+				<p>Src retrieves the linked UI element of the context.
+
+				
+				
+				
 			
 		
 			
