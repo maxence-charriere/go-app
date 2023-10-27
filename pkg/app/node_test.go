@@ -1043,139 +1043,154 @@ func TestNodeManagerEncode(t *testing.T) {
 		var b bytes.Buffer
 
 		m.encodeIndent(&b, 2)
-		require.Equal(t, []byte("    "), b.Bytes())
+		require.Equal(t, "    ", b.String())
 	})
 
 	t.Run("encode empty text", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Text(""))
-		require.Empty(t, b)
+		m.Encode(makeTestContext(), &b, Text(""))
+		require.Empty(t, b.String())
 	})
 
 	t.Run("encode text", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Text("hello"))
-		require.Equal(t, []byte("hello"), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Text("hello"))
+		require.Equal(t, "hello", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode self closing html", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Img())
-		require.Equal(t, []byte("<img>"), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Img())
+		require.Equal(t, "<img>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode html", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Div())
-		require.Equal(t, []byte("<div></div>"), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Div())
+		require.Equal(t, "<div></div>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode html with attribute", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Div().Class("test"))
-		require.Equal(t, []byte(`<div class="test"></div>`), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Div().Class("test"))
+		require.Equal(t, `<div class="test"></div>`, b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode html with empty class and id attributes", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Div().
+		m.Encode(makeTestContext(), &b, Div().
 			Class("").
 			ID(""))
-		require.Equal(t, []byte(`<div></div>`), b)
-		t.Log(string(b))
+		require.Equal(t, `<div></div>`, b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode html with a true boolean attribute", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Script().Async(true))
-		require.Equal(t, []byte(`<script async></script>`), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Script().Async(true))
+		require.Equal(t, `<script async></script>`, b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode html with single text child", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Div().Text("hello"))
-		require.Equal(t, []byte(`<div>hello</div>`), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Div().Text("hello"))
+		require.Equal(t, `<div>hello</div>`, b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode html with single non text child", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Div().Body(
+		m.Encode(makeTestContext(), &b, Div().Body(
 			Span(),
 		))
-		require.Equal(t, []byte("<div>\n  <span></span>\n</div>"), b)
-		t.Log(string(b))
+		require.Equal(t, "<div>\n  <span></span>\n</div>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode html with multiple children", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Div().Body(
+		m.Encode(makeTestContext(), &b, Div().Body(
 			Text("hello"),
 			Span().Body(
 				Img(),
 			),
 		))
-		require.Equal(t, []byte("<div>\n  hello\n  <span>\n    <img>\n  </span>\n</div>"), b)
-		t.Log(string(b))
+		require.Equal(t, "<div>\n  hello\n  <span>\n    <img>\n  </span>\n</div>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode component", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), &compoWithCustomRoot{Root: Div()})
-		require.Equal(t, []byte("<div></div>"), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, &compoWithCustomRoot{Root: Div()})
+		require.Equal(t, "<div></div>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode nested component", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Span().Body(
+		m.Encode(makeTestContext(), &b, Span().Body(
 			&compoWithCustomRoot{Root: Div()},
 		))
-		require.Equal(t, []byte("<span>\n  <div></div>\n</span>"), b)
-		t.Log(string(b))
+		require.Equal(t, "<span>\n  <div></div>\n</span>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode empty raw", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Raw(""))
-		require.Equal(t, []byte("<div></div>"), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Raw(""))
+		require.Equal(t, "<div></div>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode raw", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Raw("<img>"))
-		require.Equal(t, []byte("<img>"), b)
-		t.Log(string(b))
+		m.Encode(makeTestContext(), &b, Raw("<img>"))
+		require.Equal(t, "<img>", b.String())
+		t.Log(b.String())
 	})
 
 	t.Run("encode nested raw", func(t *testing.T) {
 		var m nodeManager
+		var b bytes.Buffer
 
-		b := m.Encode(makeTestContext(), Div().Body(
+		m.Encode(makeTestContext(), &b, Div().Body(
 			Raw("<img>"),
 		))
-		require.Equal(t, []byte("<div>\n  <img>\n</div>"), b)
-		t.Log(string(b))
+		require.Equal(t, "<div>\n  <img>\n</div>", b.String())
+		t.Log(b.String())
 	})
 }
 

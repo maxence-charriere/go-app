@@ -683,9 +683,8 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
 // Encode transforms the provided UI element into its HTML byte slice
 // representation. This allows for the conversion of in-memory UI structures
 // into a format suitable for server rendering.
-func (m nodeManager) Encode(ctx Context, v UI) []byte {
-	var w bytes.Buffer
-	m.encode(ctx, &w, 0, v)
+func (m nodeManager) Encode(ctx Context, w *bytes.Buffer, v UI) []byte {
+	m.encode(ctx, w, 0, v)
 	return w.Bytes()
 }
 
