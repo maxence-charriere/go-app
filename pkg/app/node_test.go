@@ -962,6 +962,26 @@ func TestNodeManagerForEachUpdatableComponent(t *testing.T) {
 		require.Contains(t, componentCalls, notifier)
 		require.Contains(t, componentCalls, compo)
 	})
+
+	t.Run("each component are different", func(t *testing.T) {
+		componentCalls := make(map[UI]int)
+
+		var m nodeManager
+		notifier1 := &updateNotifierCompo{notify: true}
+		notifier2 := &updateNotifierCompo{notify: true, Root: notifier1}
+		notifier3 := &updateNotifierCompo{notify: true, Root: notifier2}
+		notifier4 := &updateNotifierCompo{notify: true, Root: notifier3}
+		_, err := m.Mount(makeTestContext(), 1, notifier4)
+		require.NoError(t, err)
+
+		m.ForEachUpdatableComponent(notifier1, func(c Composer) {
+			componentCalls[c]++
+		})
+		require.Equal(t, 1, componentCalls[notifier1])
+		require.Equal(t, 1, componentCalls[notifier2])
+		require.Equal(t, 1, componentCalls[notifier3])
+		require.Equal(t, 1, componentCalls[notifier4])
+	})
 }
 
 func TestNodeManagerNotifyComponentEvent(t *testing.T) {

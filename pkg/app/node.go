@@ -616,7 +616,7 @@ func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
 		return
 	}
 
-	for element := v; element != nil; element = v.parent() {
+	for element := v; element != nil; element = element.parent() {
 		switch element := element.(type) {
 		case UpdateNotifier:
 			f(element)

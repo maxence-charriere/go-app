@@ -137,6 +137,7 @@ func (c *compoWithCustomRoot) Render() UI {
 
 type updateNotifierCompo struct {
 	Compo
+	Root   UI
 	notify bool
 }
 
@@ -145,6 +146,9 @@ func (c *updateNotifierCompo) NotifyUpdate() bool {
 }
 
 func (c *updateNotifierCompo) Render() UI {
+	if c.Root != nil {
+		return c.Root
+	}
 	return Span()
 }
 
