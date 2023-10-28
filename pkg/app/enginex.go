@@ -104,6 +104,10 @@ func (e *engineX) baseContext() Context {
 func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 	e.initBrowserOnce.Do(e.initBrowser)
 
+	if destination.Host == "" {
+		destination.Host = e.originPage.URL().Host
+	}
+
 	switch {
 	case e.internalURL(destination),
 		e.mailTo(destination):
@@ -124,11 +128,10 @@ func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 		}
 		e.lastVisitedURL = destination
 
-		e.nodes.NotifyComponentEvent(e.baseContext(), e.body, nav{})
+		ctx := e.baseContext()
+		e.nodes.NotifyComponentEvent(ctx, e.body, nav{})
 		if destination.Fragment != "" {
-			e.defere(func() {
-				Window().ScrollToID(destination.Fragment)
-			})
+			ctx.ScrollTo(destination.Fragment)
 		}
 	}()
 
