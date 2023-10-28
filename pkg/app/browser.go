@@ -27,16 +27,18 @@ func (b *browser) handleAnchorClick(ctx Context) {
 	b.anchorClick = FuncOf(func(this Value, args []Value) any {
 		ctx.dispatch(func() {
 			event := Event{Value: args[0]}
-			if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
-				return
-			}
-			if ctrl := event.Get("ctrlKey"); ctrl.Truthy() && ctrl.Bool() {
-				return
-			}
 
 			for target := event.Get("target"); target.Truthy(); target = target.Get("parentElement") {
 				switch target.Get("tagName").String() {
 				case "A":
+					if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
+						return
+					}
+
+					if ctrl := event.Get("ctrlKey"); ctrl.Truthy() && ctrl.Bool() {
+						return
+					}
+
 					if download := target.Call("getAttribute", "download"); !download.IsNull() {
 						return
 					}
