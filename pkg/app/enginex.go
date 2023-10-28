@@ -117,21 +117,22 @@ func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 	case e.externalNavigation(destination):
 		Window().Call("open", destination.String())
 		return
-	}
 
-	if destination.String() == e.lastVisitedURL.String() {
+	case destination.String() == e.lastVisitedURL.String():
 		return
 	}
+
 	defer func() {
 		if updateHistory {
 			Window().addHistory(destination)
 		}
 		e.lastVisitedURL = destination
 
-		ctx := e.baseContext()
-		e.nodes.NotifyComponentEvent(ctx, e.body, nav{})
+		e.nodes.NotifyComponentEvent(e.baseContext(), e.body, nav{})
 		if destination.Fragment != "" {
-			ctx.ScrollTo(destination.Fragment)
+			e.defere(func() {
+				Window().ScrollToID(destination.Fragment)
+			})
 		}
 	}()
 
@@ -194,13 +195,14 @@ func (e *engineX) page() Page {
 
 func (e *engineX) load(v Composer) {
 	if e.body == nil {
-		body := Body().(*htmlBody)
-		body.jsElement = Window().Get("document").Get("body")
+		body := Body()
+		body = body.setJSElement(Window().Get("document").Get("body")).(HTMLBody)
 
-		root := Div().(*htmlDiv)
-		root.jsElement = body.JSValue().firstChild()
+		firstChild := Div()
+		firstChild = firstChild.setJSElement(body.JSValue().firstElementChild()).(HTMLDiv)
+		firstChild = firstChild.setParent(body).(HTMLDiv)
 
-		body = body.setBody([]UI{root}).(*htmlBody)
+		body = body.setBody([]UI{firstChild}).(HTMLBody)
 		e.body = body
 
 		for action, handler := range e.asynchronousActionHandlers {
