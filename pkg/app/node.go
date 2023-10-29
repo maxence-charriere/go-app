@@ -626,7 +626,7 @@ func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
 
 		case Composer:
 			f(element)
-			return
+			// return
 		}
 	}
 }
