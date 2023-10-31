@@ -13,11 +13,9 @@ package app
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"os"
 	"runtime"
 	"strings"
-	"time"
 )
 
 const (
@@ -28,18 +26,6 @@ const (
 	// IsServer reports whether the code is running on a server for
 	// pre-rendering purposes.
 	IsServer = runtime.GOARCH != "wasm" || runtime.GOOS != "js"
-
-	orientationChangeDelay = time.Millisecond * 500
-	engineUpdateRate       = 120
-	resizeInterval         = time.Millisecond * 250
-)
-
-var (
-	rootPrefix         string
-	isInternalURL      func(string) bool
-	appUpdateAvailable bool
-	lastURLVisited     *url.URL
-	resizeTimer        *time.Timer
 )
 
 // Getenv retrieves the value of the environment variable named by the key. It
