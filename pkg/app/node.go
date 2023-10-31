@@ -659,9 +659,9 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
 			}
 
 		case appUpdate:
-			if updater, ok := element.(AppUpdater); ok {
+			if appUpdater, ok := element.(AppUpdater); ok {
 				ctx.addComponentUpdate(element)
-				updater.OnAppUpdate(ctx)
+				appUpdater.OnAppUpdate(ctx)
 			}
 
 		case appInstallChange:

@@ -117,7 +117,7 @@ func RunWhenOnBrowser() {
 	)
 
 	engine.Navigate(window.URL(), false)
-	engine.Start(30)
+	engine.Start(60)
 }
 
 func displayLoadError(err any) {
