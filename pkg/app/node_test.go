@@ -880,7 +880,6 @@ func TestNodeManagerContext(t *testing.T) {
 	require.NotNil(t, ctx.defere)
 
 	require.NotNil(t, ctx.sourceElement)
-	require.NotNil(t, ctx.foreachUpdatableComponent)
 	require.NotNil(t, ctx.notifyComponentEvent)
 }
 

@@ -195,7 +195,7 @@ func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHan
 
 	jsHandler := FuncOf(func(this Value, args []Value) any {
 		if len(args) != 0 {
-			ctx.Emit(func(ctx Context) {
+			ctx.Dispatch(func(ctx Context) {
 				event := Event{Value: args[0]}
 				trackMousePosition(event)
 				handler.goHandler(ctx, event)
