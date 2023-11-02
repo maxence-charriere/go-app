@@ -5,10 +5,6 @@ import (
 	"net/url"
 )
 
-const (
-	dispatcherSize = 4096
-)
-
 // Dispatcher is the interface that describes an environment that synchronizes
 // UI instructions and UI elements lifecycle.
 type Dispatcher interface {
@@ -113,24 +109,3 @@ func NewServerTester(n UI) ServerDispatcher {
 	// e.Consume()
 	// return e
 }
-
-// DispatchMode represents how a dispatch is processed.
-type DispatchMode int
-
-const (
-	// A dispatch mode where the dispatched operation is enqueued to be executed
-	// as soon as possible and its associated UI element is updated at the end
-	// of the current update cycle.
-	Update DispatchMode = iota
-
-	// A dispatch mode that schedules the dispatched operation to be executed
-	// after the current update frame.
-	Defer
-
-	// A dispatch mode where the dispatched operation is enqueued to be executed
-	// as soon as possible.
-	Next
-)
-
-// MsgHandler represents a handler to listen to messages sent with Context.Post.
-type MsgHandler func(Context, any)

@@ -223,12 +223,6 @@ func (ctx Context) After(d time.Duration, f func(Context)) {
 	})
 }
 
-// Update signals the component associated with the context to refresh its state
-// and re-render its UI.
-func (ctx Context) Update() {
-	ctx.Dispatch(nil)
-}
-
 // PreventUpdate halts updates for the enclosing component, respecting any
 // implemented UpdateNotifier behavior.
 func (ctx Context) PreventUpdate() {
