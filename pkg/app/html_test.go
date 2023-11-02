@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"fmt"
 	"testing"
 
@@ -28,49 +29,29 @@ func BenchmarkMountHTMLElement(b *testing.B) {
 	}
 }
 
-// func BenchmarkHTMLElementHTML(b *testing.B) {
-// 	div := Div().
-// 		Class("shell").
-// 		Body(
-// 			H1().Class("title").
-// 				Text("Hello"),
-// 			Input().
-// 				Type("text").
-// 				Class("in").
-// 				Value("World").
-// 				Placeholder("Type a name.").
-// 				OnChange(func(ctx Context, e Event) {
-// 					fmt.Println("Yo!")
-// 				}),
-// 		)
+func BenchmarkHTMLElementHTML(b *testing.B) {
+	var m nodeManager
 
-// 	for n := 0; n < b.N; n++ {
-// 		var bytes bytes.Buffer
-// 		div.html(&bytes)
-// 	}
-// }
+	div := Div().
+		Class("shell").
+		Body(
+			H1().Class("title").
+				Text("Hello"),
+			Input().
+				Type("text").
+				Class("in").
+				Value("World").
+				Placeholder("Type a name.").
+				OnChange(func(ctx Context, e Event) {
+					fmt.Println("Yo!")
+				}),
+		)
 
-// func BenchmarkHTMLElementHTMLIndent(b *testing.B) {
-// 	div := Div().
-// 		Class("shell").
-// 		Body(
-// 			H1().Class("title").
-// 				Text("Hello"),
-// 			Input().
-// 				Type("text").
-// 				Class("in").
-// 				Value("World").
-// 				Placeholder("Type a name.").
-// 				OnChange(func(ctx Context, e Event) {
-// 					fmt.Println("Yo!")
-// 				}),
-// 		)
-
-// 	for n := 0; n < b.N; n++ {
-// 		var bytes bytes.Buffer
-// 		div.htmlWithIndent(&bytes, 0)
-// 	}
-// }
+	for n := 0; n < b.N; n++ {
+		var bytes bytes.Buffer
+		m.Encode(makeTestContext(), &bytes, div)
+	}
+}
 
 func TestKeyCondition(t *testing.T) {
 	utests := []struct {
