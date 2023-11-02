@@ -92,8 +92,7 @@ func (e *engineX) baseContext() Context {
 		setState:              e.states.Set,
 		delState:              e.states.Delete,
 
-		foreachUpdatableComponent: e.nodes.ForEachUpdatableComponent,
-		notifyComponentEvent:      e.nodes.NotifyComponentEvent,
+		notifyComponentEvent: e.nodes.NotifyComponentEvent,
 	}
 }
 
@@ -129,6 +128,7 @@ func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 		e.lastVisitedURL = destination
 
 		e.nodes.NotifyComponentEvent(e.baseContext(), e.body, nav{})
+
 		if destination.Fragment != "" {
 			e.defere(func() {
 				Window().ScrollToID(destination.Fragment)

@@ -8,9 +8,9 @@ type hello struct {
 	appUpdated   bool
 	appInstalled bool
 	appResized   bool
-	preRenderer  bool
 
-	mounted bool
+	mounted     bool
+	preRendered bool
 }
 
 func (h *hello) OnMount(Context) {
@@ -34,8 +34,8 @@ func (h *hello) OnResize(ctx Context) {
 }
 
 func (h *hello) OnPreRender(ctx Context) {
-	h.preRenderer = true
-	ctx.Page().SetTitle("world")
+	h.preRendered = true
+	// ctx.Page().SetTitle("world")
 }
 
 func (h *hello) OnDismount() {

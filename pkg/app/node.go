@@ -195,7 +195,7 @@ func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHan
 
 	jsHandler := FuncOf(func(this Value, args []Value) any {
 		if len(args) != 0 {
-			ctx.Dispatch(func(ctx Context) {
+			ctx.Emit(func(ctx Context) {
 				event := Event{Value: args[0]}
 				trackMousePosition(event)
 				handler.goHandler(ctx, event)
@@ -228,8 +228,16 @@ func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, er
 	v = v.setRef(v)
 	v = v.setDepth(depth)
 
-	if mounter, ok := v.(Mounter); ok {
-		mounter.OnMount(ctx)
+	if initializer, ok := v.(Initializer); ok {
+		initializer.OnInit()
+	}
+
+	if preRenderer, ok := v.(PreRenderer); ok && IsServer {
+		ctx.Dispatch(preRenderer.OnPreRender)
+	}
+
+	if mounter, ok := v.(Mounter); ok && IsClient {
+		ctx.Dispatch(mounter.OnMount)
 	}
 
 	root, err := m.renderComponent(v)
@@ -607,33 +615,8 @@ func (m nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
 	return newMount, nil
 }
 
-// ForEachUpdatableComponent iterates over the UI element hierarchy from the
-// given element upwards, applying the provided function to the first component
-// it encounters. If the component implements the UpdateNotifier interface and
-// indicates no further updates are required, the iteration halts.
-func (m nodeManager) ForEachUpdatableComponent(v UI, f func(Composer)) {
-	if !v.Mounted() {
-		return
-	}
-
-	for element := v; element != nil; element = element.parent() {
-		switch element := element.(type) {
-		case UpdateNotifier:
-			f(element)
-			if !element.NotifyUpdate() {
-				return
-			}
-
-		case Composer:
-			f(element)
-			// return
-		}
-	}
-}
-
 func (m nodeManager) context(ctx Context, v UI) Context {
 	ctx.sourceElement = v
-	ctx.foreachUpdatableComponent = m.ForEachUpdatableComponent
 	ctx.notifyComponentEvent = m.NotifyComponentEvent
 	return ctx
 }
@@ -654,26 +637,22 @@ func (m nodeManager) NotifyComponentEvent(ctx Context, root UI, event any) {
 		switch event.(type) {
 		case nav:
 			if navigator, ok := element.(Navigator); ok {
-				ctx.addComponentUpdate(element)
-				navigator.OnNav(ctx)
+				ctx.Dispatch(navigator.OnNav)
 			}
 
 		case appUpdate:
 			if appUpdater, ok := element.(AppUpdater); ok {
-				ctx.addComponentUpdate(element)
-				appUpdater.OnAppUpdate(ctx)
+				ctx.Dispatch(appUpdater.OnAppUpdate)
 			}
 
 		case appInstallChange:
 			if appInstaller, ok := element.(AppInstaller); ok {
-				ctx.addComponentUpdate(element)
-				appInstaller.OnAppInstallChange(ctx)
+				ctx.Dispatch(appInstaller.OnAppInstallChange)
 			}
 
 		case resize:
 			if resizer, ok := element.(Resizer); ok {
-				ctx.addComponentUpdate(element)
-				resizer.OnResize(ctx)
+				ctx.Dispatch(resizer.OnResize)
 			}
 		}
 		m.NotifyComponentEvent(ctx, element.root(), event)
@@ -813,4 +792,13 @@ func canUpdateValue(v, new reflect.Value) bool {
 			return !reflect.DeepEqual(v.Interface(), new.Interface())
 		}
 	}
+}
+
+func component(v UI) (Composer, bool) {
+	for element := v; element != nil; element = element.parent() {
+		if component, ok := element.(Composer); ok {
+			return component, true
+		}
+	}
+	return nil, false
 }

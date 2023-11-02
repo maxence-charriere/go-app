@@ -39,13 +39,31 @@ type Composer interface {
 	setRoot(UI) Composer
 }
 
+// Initializer describes a component that requires initialization
+// instructions to be executed before it is mounted.
+type Initializer interface {
+	// OnInit is invoked before the component is mounted.
+	OnInit()
+}
+
+// PreRenderer is the interface that describes a component that performs
+// additional instructions during server-side rendering.
+//
+// Implementing OnPreRender within a component can enhance SEO by allowing
+// server-side preparations for rendering.
+type PreRenderer interface {
+	// OnPreRender is called during the server-side rendering process of the
+	// component.
+	OnPreRender(Context)
+}
+
 // Mounter represents components that require initialization or setup actions
 // when they are integrated into the DOM. By implementing the Mounter interface,
 // components gain the ability to define specific behaviors that occur right
-// before they are visually rendered or reintegrated into the DOM hierarchy.
+// after they are visually rendered or integrated into the DOM hierarchy.
 type Mounter interface {
-	// OnMount is triggered just before the component is embedded into the DOM.
-	// Use this hook to perform any pre-render configurations or
+	// OnMount is triggered right after the component is embedded into the DOM.
+	// Use this hook to perform any post-render configurations or
 	// initializations.
 	// This method operates within the UI goroutine.
 	OnMount(Context)

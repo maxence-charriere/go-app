@@ -273,6 +273,9 @@ resources to run Go-based progressive web apps.
 					<dd>&nbsp; &nbsp; <a href="#Context.Dispatch">func (ctx Context) Dispatch(v func(Context))</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Context.Emit">func (ctx Context) Emit(v func(Context))</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Context.Encrypt">func (ctx Context) Encrypt(v any) ([]byte, error)</a></dd>
 				
 					
@@ -337,6 +340,9 @@ resources to run Go-based progressive web apps.
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Context.Src">func (ctx Context) Src() UI</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.Update">func (ctx Context) Update()</a></dd>
 				
 			
 				
@@ -1282,6 +1288,11 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#Initializer">type Initializer</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Library">type Library</a></dd>
 				
 				
@@ -1351,6 +1362,11 @@ resources to run Go-based progressive web apps.
 			
 				
 				<dd><a href="#Page">type Page</a></dd>
+				
+				
+			
+				
+				<dd><a href="#PreRenderer">type PreRenderer</a></dd>
 				
 				
 			
@@ -1721,7 +1737,7 @@ directory.
 		
 			
 			
-			<h2 id="Getenv">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=1336:1364#L37">Getenv</a>
+			<h2 id="Getenv">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=1028:1056#L23">Getenv</a>
 				<a class="permalink" href="#Getenv">&#xb6;</a>
 				
 				
@@ -1765,7 +1781,7 @@ action is triggered, the handler executes in a separate goroutine.
 		
 			
 			
-			<h2 id="KeepBodyClean">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=1644:1679#L51">KeepBodyClean</a>
+			<h2 id="KeepBodyClean">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=1336:1371#L37">KeepBodyClean</a>
 				<a class="permalink" href="#KeepBodyClean">&#xb6;</a>
 				
 				
@@ -1889,7 +1905,7 @@ create and mount the associated component.
 		
 			
 			
-			<h2 id="RunWhenOnBrowser">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=2616:2639#L88">RunWhenOnBrowser</a>
+			<h2 id="RunWhenOnBrowser">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=2308:2331#L74">RunWhenOnBrowser</a>
 				<a class="permalink" href="#RunWhenOnBrowser">&#xb6;</a>
 				
 				
@@ -1980,7 +1996,7 @@ via Context.NewAction().
 		
 			
 			
-			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4129:4706#L96">AppInstaller</a>
+			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4737:5314#L114">AppInstaller</a>
 				<a class="permalink" href="#AppInstaller">&#xb6;</a>
 				
 				
@@ -2018,7 +2034,7 @@ user experiences tailored to the app&apos;s current status.
 		
 			
 			
-			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3473:3832#L83">AppUpdater</a>
+			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4081:4440#L101">AppUpdater</a>
 				<a class="permalink" href="#AppUpdater">&#xb6;</a>
 				
 				
@@ -2131,7 +2147,7 @@ with the most up-to-date version of the application.
 
 			
 				
-				<h3 id="Window">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=1860:1887#L63">Window</a>
+				<h3 id="Window">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=1552:1579#L49">Window</a>
 					<a class="permalink" href="#Window">&#xb6;</a>
 					
 					
@@ -2198,7 +2214,7 @@ client environment.
 		
 			
 			
-			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5888:5989#L136">Compo</a>
+			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6496:6597#L154">Compo</a>
 				<a class="permalink" href="#Compo">&#xb6;</a>
 				
 				
@@ -2223,7 +2239,7 @@ provides basic methods and fields needed for component management.
 
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6144:6175#L145">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6752:6783#L163">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue">&#xb6;</a>
 					
 					
@@ -2237,7 +2253,7 @@ If the root element isn&apos;t defined, it returns a nil JavaScript value.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6336:6366#L153">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6944:6974#L171">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted">&#xb6;</a>
 					
 					
@@ -2250,7 +2266,7 @@ If the root element isn&apos;t defined, it returns a nil JavaScript value.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6677:6704#L161">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=7285:7312#L179">Render</a>
 					<a class="permalink" href="#Compo.Render">&#xb6;</a>
 					
 					
@@ -2266,7 +2282,7 @@ this method to customize the component&apos;s appearance.
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=7467:7510#L184">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=8075:8118#L202">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo">&#xb6;</a>
 					
 					
@@ -2409,7 +2425,7 @@ based on the evaluation of the provided boolean expression.
 		
 			
 			
-			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=323:1225#L6">Context</a>
+			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=323:1163#L6">Context</a>
 				<a class="permalink" href="#Context">&#xb6;</a>
 				
 				
@@ -2435,7 +2451,7 @@ with the browser, page navigation, concurrency, and component communication.
 
 			
 				
-				<h3 id="Context.After">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5745:5803#L207">After</a>
+				<h3 id="Context.After">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6226:6284#L229">After</a>
 					<a class="permalink" href="#Context.After">&#xb6;</a>
 					
 					
@@ -2448,7 +2464,7 @@ with the browser, page navigation, concurrency, and component communication.
 				
 			
 				
-				<h3 id="Context.AppUpdateAvailable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1554:1598#L43">AppUpdateAvailable</a>
+				<h3 id="Context.AppUpdateAvailable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1492:1536#L42">AppUpdateAvailable</a>
 					<a class="permalink" href="#Context.AppUpdateAvailable">&#xb6;</a>
 					
 					
@@ -2461,7 +2477,7 @@ with the browser, page navigation, concurrency, and component communication.
 				
 			
 				
-				<h3 id="Context.Async">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5616:5650#L202">Async</a>
+				<h3 id="Context.Async">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6097:6131#L224">Async</a>
 					<a class="permalink" href="#Context.Async">&#xb6;</a>
 					
 					
@@ -2475,7 +2491,7 @@ goroutines, ensuring they conclude when rendering server-side.
 				
 			
 				
-				<h3 id="Context.Decrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4253:4308#L149">Decrypt</a>
+				<h3 id="Context.Decrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4191:4246#L148">Decrypt</a>
 					<a class="permalink" href="#Context.Decrypt">&#xb6;</a>
 					
 					
@@ -2488,7 +2504,7 @@ goroutines, ensuring they conclude when rendering server-side.
 				
 			
 				
-				<h3 id="Context.Defer">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5314:5355#L188">Defer</a>
+				<h3 id="Context.Defer">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5803:5844#L210">Defer</a>
 					<a class="permalink" href="#Context.Defer">&#xb6;</a>
 					
 					
@@ -2502,7 +2518,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.DelState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7403:7444#L268">DelState</a>
+				<h3 id="Context.DelState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=8096:8137#L299">DelState</a>
 					<a class="permalink" href="#Context.DelState">&#xb6;</a>
 					
 					
@@ -2515,7 +2531,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.DeviceID">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2134:2170#L63">DeviceID</a>
+				<h3 id="Context.DeviceID">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2072:2108#L62">DeviceID</a>
 					<a class="permalink" href="#Context.DeviceID">&#xb6;</a>
 					
 					
@@ -2528,7 +2544,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.Dispatch">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4966:5010#L173">Dispatch</a>
+				<h3 id="Context.Dispatch">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4904:4948#L172">Dispatch</a>
 					<a class="permalink" href="#Context.Dispatch">&#xb6;</a>
 					
 					
@@ -2543,7 +2559,23 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.Encrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3889:3938#L135">Encrypt</a>
+				<h3 id="Context.Emit">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5427:5467#L192">Emit</a>
+					<a class="permalink" href="#Context.Emit">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Emit(v func(<a href="#Context">Context</a>))</pre>
+				<p>Emit executes the specified function and requests that parent components
+update their state accordingly. This method is typically used to initiate
+custom HTML event handlers, ensuring that state changes propagate upwards
+through the component hierarchy.
+
+				
+				
+				
+			
+				
+				<h3 id="Context.Encrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3827:3876#L134">Encrypt</a>
 					<a class="permalink" href="#Context.Encrypt">&#xb6;</a>
 					
 					
@@ -2556,7 +2588,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.GetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7098:7149#L258">GetState</a>
+				<h3 id="Context.GetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7791:7842#L289">GetState</a>
 					<a class="permalink" href="#Context.GetState">&#xb6;</a>
 					
 					
@@ -2569,7 +2601,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.Handle">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6190:6247#L222">Handle</a>
+				<h3 id="Context.Handle">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6883:6940#L253">Handle</a>
 					<a class="permalink" href="#Context.Handle">&#xb6;</a>
 					
 					
@@ -2583,7 +2615,7 @@ goroutine.
 				
 			
 				
-				<h3 id="Context.IsAppInstallable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1699:1741#L48">IsAppInstallable</a>
+				<h3 id="Context.IsAppInstallable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1637:1679#L47">IsAppInstallable</a>
 					<a class="permalink" href="#Context.IsAppInstallable">&#xb6;</a>
 					
 					
@@ -2596,7 +2628,7 @@ goroutine.
 				
 			
 				
-				<h3 id="Context.JSSrc">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1418:1450#L38">JSSrc</a>
+				<h3 id="Context.JSSrc">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1356:1388#L37">JSSrc</a>
 					<a class="permalink" href="#Context.JSSrc">&#xb6;</a>
 					
 					
@@ -2609,7 +2641,7 @@ goroutine.
 				
 			
 				
-				<h3 id="Context.LocalStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3587:3635#L124">LocalStorage</a>
+				<h3 id="Context.LocalStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3525:3573#L123">LocalStorage</a>
 					<a class="permalink" href="#Context.LocalStorage">&#xb6;</a>
 					
 					
@@ -2623,7 +2655,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Navigate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2809:2851#L93">Navigate</a>
+				<h3 id="Context.Navigate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2747:2789#L92">Navigate</a>
 					<a class="permalink" href="#Context.Navigate">&#xb6;</a>
 					
 					
@@ -2636,7 +2668,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NavigateTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3068:3109#L105">NavigateTo</a>
+				<h3 id="Context.NavigateTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3006:3047#L104">NavigateTo</a>
 					<a class="permalink" href="#Context.NavigateTo">&#xb6;</a>
 					
 					
@@ -2649,7 +2681,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NewAction">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6358:6417#L227">NewAction</a>
+				<h3 id="Context.NewAction">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7051:7110#L258">NewAction</a>
 					<a class="permalink" href="#Context.NewAction">&#xb6;</a>
 					
 					
@@ -2662,7 +2694,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NewActionWithValue">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6544:6619#L233">NewActionWithValue</a>
+				<h3 id="Context.NewActionWithValue">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7237:7312#L264">NewActionWithValue</a>
 					<a class="permalink" href="#Context.NewActionWithValue">&#xb6;</a>
 					
 					
@@ -2675,7 +2707,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Notifications">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4701:4755#L166">Notifications</a>
+				<h3 id="Context.Notifications">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4639:4693#L165">Notifications</a>
 					<a class="permalink" href="#Context.Notifications">&#xb6;</a>
 					
 					
@@ -2688,7 +2720,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.ObserveState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6931:6996#L253">ObserveState</a>
+				<h3 id="Context.ObserveState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7624:7689#L284">ObserveState</a>
 					<a class="permalink" href="#Context.ObserveState">&#xb6;</a>
 					
 					
@@ -2701,7 +2733,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Page">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2566:2596#L80">Page</a>
+				<h3 id="Context.Page">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2504:2534#L79">Page</a>
 					<a class="permalink" href="#Context.Page">&#xb6;</a>
 					
 					
@@ -2714,7 +2746,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.PreventUpdate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5982:6016#L216">PreventUpdate</a>
+				<h3 id="Context.PreventUpdate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6621:6655#L244">PreventUpdate</a>
 					<a class="permalink" href="#Context.PreventUpdate">&#xb6;</a>
 					
 					
@@ -2728,7 +2760,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.Reload">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2659:2686#L85">Reload</a>
+				<h3 id="Context.Reload">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2597:2624#L84">Reload</a>
 					<a class="permalink" href="#Context.Reload">&#xb6;</a>
 					
 					
@@ -2741,7 +2773,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.ResizeContent">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7510:7544#L273">ResizeContent</a>
+				<h3 id="Context.ResizeContent">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=8203:8237#L304">ResizeContent</a>
 					<a class="permalink" href="#Context.ResizeContent">&#xb6;</a>
 					
 					
@@ -2754,7 +2786,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.ResolveStaticResource">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3237:3294#L111">ResolveStaticResource</a>
+				<h3 id="Context.ResolveStaticResource">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3175:3232#L110">ResolveStaticResource</a>
 					<a class="permalink" href="#Context.ResolveStaticResource">&#xb6;</a>
 					
 					
@@ -2768,7 +2800,7 @@ resource location.
 				
 			
 				
-				<h3 id="Context.ScrollTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3397:3435#L116">ScrollTo</a>
+				<h3 id="Context.ScrollTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3335:3373#L115">ScrollTo</a>
 					<a class="permalink" href="#Context.ScrollTo">&#xb6;</a>
 					
 					
@@ -2781,7 +2813,7 @@ resource location.
 				
 			
 				
-				<h3 id="Context.SessionStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3755:3805#L130">SessionStorage</a>
+				<h3 id="Context.SessionStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3693:3743#L129">SessionStorage</a>
 					<a class="permalink" href="#Context.SessionStorage">&#xb6;</a>
 					
 					
@@ -2795,7 +2827,7 @@ document origin.
 				
 			
 				
-				<h3 id="Context.SetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7241:7296#L263">SetState</a>
+				<h3 id="Context.SetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7934:7989#L294">SetState</a>
 					<a class="permalink" href="#Context.SetState">&#xb6;</a>
 					
 					
@@ -2808,7 +2840,7 @@ document origin.
 				
 			
 				
-				<h3 id="Context.ShowAppInstallPrompt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1936:1977#L56">ShowAppInstallPrompt</a>
+				<h3 id="Context.ShowAppInstallPrompt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1874:1915#L55">ShowAppInstallPrompt</a>
 					<a class="permalink" href="#Context.ShowAppInstallPrompt">&#xb6;</a>
 					
 					
@@ -2821,7 +2853,7 @@ document origin.
 				
 			
 				
-				<h3 id="Context.Src">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1282:1309#L33">Src</a>
+				<h3 id="Context.Src">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1220:1247#L32">Src</a>
 					<a class="permalink" href="#Context.Src">&#xb6;</a>
 					
 					
@@ -2833,10 +2865,24 @@ document origin.
 				
 				
 			
+				
+				<h3 id="Context.Update">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6454:6481#L238">Update</a>
+					<a class="permalink" href="#Context.Update">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) Update()</pre>
+				<p>Update signals the component associated with the context to refresh its state
+and re-render its UI.
+
+				
+				
+				
+			
 		
 			
 			
-			<h2 id="Dismounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1746:2017#L48">Dismounter</a>
+			<h2 id="Dismounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2354:2625#L66">Dismounter</a>
 				<a class="permalink" href="#Dismounter">&#xb6;</a>
 				
 				
@@ -26061,6 +26107,33 @@ application icon, favicon or loading icon.
 		
 			
 			
+			<h2 id="Initializer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1024:1119#L34">Initializer</a>
+				<a class="permalink" href="#Initializer">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Initializer describes a component that requires initialization
+instructions to be executed before it is mounted.
+
+			<pre>type Initializer interface {
+    <span class="comment">// OnInit is invoked before the component is mounted.</span>
+    OnInit()
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="Library">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/library.go?s=88:227#L1">Library</a>
 				<a class="permalink" href="#Library">&#xb6;</a>
 				
@@ -26088,7 +26161,7 @@ application icon, favicon or loading icon.
 		
 			
 			
-			<h2 id="Mounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1218:1472#L36">Mounter</a>
+			<h2 id="Mounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1825:2080#L54">Mounter</a>
 				<a class="permalink" href="#Mounter">&#xb6;</a>
 				
 				
@@ -26096,11 +26169,11 @@ application icon, favicon or loading icon.
 			<p>Mounter represents components that require initialization or setup actions
 when they are integrated into the DOM. By implementing the Mounter interface,
 components gain the ability to define specific behaviors that occur right
-before they are visually rendered or reintegrated into the DOM hierarchy.
+after they are visually rendered or integrated into the DOM hierarchy.
 
 			<pre>type Mounter interface {
-    <span class="comment">// OnMount is triggered just before the component is embedded into the DOM.</span>
-    <span class="comment">// Use this hook to perform any pre-render configurations or</span>
+    <span class="comment">// OnMount is triggered right after the component is embedded into the DOM.</span>
+    <span class="comment">// Use this hook to perform any post-render configurations or</span>
     <span class="comment">// initializations.</span>
     <span class="comment">// This method operates within the UI goroutine.</span>
     OnMount(<a href="#Context">Context</a>)
@@ -26143,7 +26216,7 @@ before they are visually rendered or reintegrated into the DOM hierarchy.
 		
 			
 			
-			<h2 id="Navigator">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2302:2557#L60">Navigator</a>
+			<h2 id="Navigator">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2910:3165#L78">Navigator</a>
 				<a class="permalink" href="#Navigator">&#xb6;</a>
 				
 				
@@ -26577,6 +26650,36 @@ condition returns false.
 		
 			
 			
+			<h2 id="PreRenderer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1372:1513#L44">PreRenderer</a>
+				<a class="permalink" href="#PreRenderer">&#xb6;</a>
+				
+				
+			</h2>
+			<p>PreRenderer is the interface that describes a component that performs
+additional instructions during server-side rendering.
+<p>Implementing OnPreRender within a component can enhance SEO by allowing
+server-side preparations for rendering.
+
+			<pre>type PreRenderer interface {
+    <span class="comment">// OnPreRender is called during the server-side rendering process of the</span>
+    <span class="comment">// component.</span>
+    OnPreRender(<a href="#Context">Context</a>)
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="Preload">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/page.go?s=6112:6223#L304">Preload</a>
 				<a class="permalink" href="#Preload">&#xb6;</a>
 				
@@ -26689,7 +26792,7 @@ be a slice, an array or a map with strings as keys.
 		
 			
 			
-			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4947:5291#L114">Resizer</a>
+			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5555:5899#L132">Resizer</a>
 				<a class="permalink" href="#Resizer">&#xb6;</a>
 				
 				
@@ -27280,7 +27383,7 @@ follow the conventions of fmt.Sprintf.
 		
 			
 			
-			<h2 id="UpdateNotifier">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5438:5740#L124">UpdateNotifier</a>
+			<h2 id="UpdateNotifier">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6046:6348#L142">UpdateNotifier</a>
 				<a class="permalink" href="#UpdateNotifier">&#xb6;</a>
 				
 				
@@ -27312,7 +27415,7 @@ regarding the requirement for an update in response to an HTML event.
 		
 			
 			
-			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2872:3184#L71">Updater</a>
+			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3480:3792#L89">Updater</a>
 				<a class="permalink" href="#Updater">&#xb6;</a>
 				
 				

@@ -34,9 +34,8 @@ type Context struct {
 	setState              func(Context, string, any) StateX
 	delState              func(Context, string)
 
-	sourceElement             UI
-	foreachUpdatableComponent func(UI, func(Composer))
-	notifyComponentEvent      func(Context, UI, any)
+	sourceElement        UI
+	notifyComponentEvent func(Context, UI, any)
 }
 
 // Src retrieves the linked UI element of the context.
@@ -185,11 +184,34 @@ func (ctx Context) Dispatch(v func(Context)) {
 		if !ctx.sourceElement.Mounted() {
 			return
 		}
-		ctx.foreachUpdatableComponent(ctx.sourceElement, ctx.addComponentUpdate)
-		if v == nil {
+
+		if component, ok := component(ctx.sourceElement); ok {
+			ctx.addComponentUpdate(component)
+		}
+
+		if v != nil {
+			v(ctx)
+		}
+	})
+}
+
+// Emit executes the specified function and requests that parent components
+// update their state accordingly. This method is typically used to initiate
+// custom HTML event handlers, ensuring that state changes propagate upwards
+// through the component hierarchy.
+func (ctx Context) Emit(v func(Context)) {
+	ctx.dispatch(func() {
+		if !ctx.sourceElement.Mounted() {
 			return
 		}
-		v(ctx)
+
+		for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
+			ctx.addComponentUpdate(c)
+		}
+
+		if v != nil {
+			v(ctx)
+		}
 	})
 }
 
@@ -200,10 +222,10 @@ func (ctx Context) Defer(v func(Context)) {
 		if !ctx.sourceElement.Mounted() {
 			return
 		}
-		if v == nil {
-			return
+
+		if v != nil {
+			v(ctx)
 		}
-		v(ctx)
 	})
 }
 
@@ -221,10 +243,19 @@ func (ctx Context) After(d time.Duration, f func(Context)) {
 	})
 }
 
+// Update signals the component associated with the context to refresh its state
+// and re-render its UI.
+func (ctx Context) Update() {
+	ctx.Dispatch(nil)
+}
+
 // PreventUpdate halts updates for the enclosing component, respecting any
 // implemented UpdateNotifier behavior.
 func (ctx Context) PreventUpdate() {
-	ctx.foreachUpdatableComponent(ctx.sourceElement, ctx.removeComponentUpdate)
+	for c, ok := component(ctx.sourceElement); ok; c, ok = component(ctx.sourceElement.parent()) {
+		ctx.removeComponentUpdate(c)
+	}
+
 }
 
 // Handle designates a handler for a particular action, set to run on the UI

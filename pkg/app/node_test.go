@@ -282,7 +282,11 @@ func TestNodeManagerMount(t *testing.T) {
 		require.NotNil(t, compo)
 		require.True(t, compo.Mounted())
 		require.Equal(t, uint(1), compo.(Composer).depth())
-		require.True(t, compo.(*hello).mounted)
+		if IsServer {
+			require.True(t, compo.(*hello).preRendered)
+		} else {
+			require.True(t, compo.(*hello).mounted)
+		}
 
 		root := compo.(Composer).root()
 		require.NotNil(t, root)
@@ -880,110 +884,6 @@ func TestNodeManagerContext(t *testing.T) {
 	require.NotNil(t, ctx.notifyComponentEvent)
 }
 
-func TestNodeManagerForEachUpdatableComponent(t *testing.T) {
-	t.Run("ignores dismounted element", func(t *testing.T) {
-		var m nodeManager
-
-		funcCalled := false
-		m.ForEachUpdatableComponent(Div(), func(c Composer) {
-			funcCalled = true
-		})
-		require.False(t, funcCalled)
-	})
-
-	t.Run("function is called on component", func(t *testing.T) {
-		componentCalls := make(map[UI]struct{})
-
-		var m nodeManager
-		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: Div()})
-		require.NoError(t, err)
-
-		m.ForEachUpdatableComponent(compo, func(c Composer) {
-			componentCalls[c] = struct{}{}
-		})
-		require.Contains(t, componentCalls, compo)
-	})
-
-	t.Run("function is called on first parent component", func(t *testing.T) {
-		componentCalls := make(map[UI]struct{})
-
-		var m nodeManager
-		div := Div()
-		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: div})
-		require.NoError(t, err)
-
-		m.ForEachUpdatableComponent(div, func(c Composer) {
-			componentCalls[c] = struct{}{}
-		})
-		require.Contains(t, componentCalls, compo)
-	})
-
-	t.Run("function is not call on parent component", func(t *testing.T) {
-		componentCalls := make(map[UI]struct{})
-
-		var m nodeManager
-		hello := &hello{}
-		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: hello})
-		require.NoError(t, err)
-
-		m.ForEachUpdatableComponent(hello, func(c Composer) {
-			componentCalls[c] = struct{}{}
-		})
-		require.Contains(t, componentCalls, hello)
-		require.NotContains(t, componentCalls, compo)
-	})
-
-	t.Run("function call is prevented by update notifier", func(t *testing.T) {
-		componentCalls := make(map[UI]struct{})
-
-		var m nodeManager
-		notifier := &updateNotifierCompo{notify: false}
-		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: notifier})
-		require.NoError(t, err)
-
-		m.ForEachUpdatableComponent(notifier, func(c Composer) {
-			componentCalls[c] = struct{}{}
-		})
-		require.Contains(t, componentCalls, notifier)
-		require.NotContains(t, componentCalls, compo)
-	})
-
-	t.Run("function call is enabled by update notifier", func(t *testing.T) {
-		componentCalls := make(map[UI]struct{})
-
-		var m nodeManager
-		notifier := &updateNotifierCompo{notify: true}
-		compo, err := m.Mount(makeTestContext(), 1, &compoWithCustomRoot{Root: notifier})
-		require.NoError(t, err)
-
-		m.ForEachUpdatableComponent(notifier, func(c Composer) {
-			componentCalls[c] = struct{}{}
-		})
-		require.Contains(t, componentCalls, notifier)
-		require.Contains(t, componentCalls, compo)
-	})
-
-	t.Run("each component are different", func(t *testing.T) {
-		componentCalls := make(map[UI]int)
-
-		var m nodeManager
-		notifier1 := &updateNotifierCompo{notify: true}
-		notifier2 := &updateNotifierCompo{notify: true, Root: notifier1}
-		notifier3 := &updateNotifierCompo{notify: true, Root: notifier2}
-		notifier4 := &updateNotifierCompo{notify: true, Root: notifier3}
-		_, err := m.Mount(makeTestContext(), 1, notifier4)
-		require.NoError(t, err)
-
-		m.ForEachUpdatableComponent(notifier1, func(c Composer) {
-			componentCalls[c]++
-		})
-		require.Equal(t, 1, componentCalls[notifier1])
-		require.Equal(t, 1, componentCalls[notifier2])
-		require.Equal(t, 1, componentCalls[notifier3])
-		require.Equal(t, 1, componentCalls[notifier4])
-	})
-}
-
 func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 	ctx := makeTestContext()
 
@@ -1301,4 +1201,44 @@ func TestCanUpdateValue(t *testing.T) {
 			require.Equal(t, u.canUpdate, res)
 		})
 	}
+}
+
+func TestComponent(t *testing.T) {
+
+	t.Run("parent component is returned", func(t *testing.T) {
+		compo := &compoWithCustomRoot{Root: Div()}
+
+		var m nodeManager
+		_, err := m.Mount(makeTestContext(), 1, compo)
+		require.NoError(t, err)
+
+		c, ok := component(compo)
+		require.True(t, ok)
+		require.Equal(t, compo, c)
+	})
+
+	t.Run("parent component is returned", func(t *testing.T) {
+		div := Div()
+		compo := &compoWithCustomRoot{Root: div}
+
+		var m nodeManager
+		_, err := m.Mount(makeTestContext(), 1, compo)
+		require.NoError(t, err)
+
+		c, ok := component(div)
+		require.True(t, ok)
+		require.Equal(t, compo, c)
+	})
+
+	t.Run("no component returned", func(t *testing.T) {
+		div := Div()
+
+		var m nodeManager
+		_, err := m.Mount(makeTestContext(), 1, div)
+		require.NoError(t, err)
+
+		c, ok := component(div)
+		require.False(t, ok)
+		require.Nil(t, c)
+	})
 }
