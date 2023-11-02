@@ -185,26 +185,6 @@ func (ctx Context) Dispatch(v func(Context)) {
 			return
 		}
 
-		if component, ok := component(ctx.sourceElement); ok {
-			ctx.addComponentUpdate(component)
-		}
-
-		if v != nil {
-			v(ctx)
-		}
-	})
-}
-
-// Emit executes the specified function and requests that parent components
-// update their state accordingly. This method is typically used to initiate
-// custom HTML event handlers, ensuring that state changes propagate upwards
-// through the component hierarchy.
-func (ctx Context) Emit(v func(Context)) {
-	ctx.dispatch(func() {
-		if !ctx.sourceElement.Mounted() {
-			return
-		}
-
 		for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
 			ctx.addComponentUpdate(c)
 		}
