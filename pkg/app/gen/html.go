@@ -2526,8 +2526,7 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 	fmt.Fprintf(w, `%s (h EventHandler, scope ...any) HTML%s`, e.Name, t.Name)
 	if !isInterface {
 		fmt.Fprintf(w, `{
-			e.setEventHandler("%s", h, scope...)
-			return e
+			return e.On("%s", h, scope...)
 		}`, strings.TrimPrefix(strings.ToLower(e.Name), "on"))
 	}
 }
@@ -2614,13 +2613,11 @@ import (
 			}
 		}
 
-		if len(t.EventHandlers) != 0 {
-			fmt.Fprint(f, `
+		fmt.Fprint(f, `
 				h := func(ctx Context, e Event) {}
 			`)
-			fmt.Fprintf(f, `elem.On("click", h)`)
-			fmt.Fprintln(f)
-		}
+		fmt.Fprintf(f, `elem.On("click", h)`)
+		fmt.Fprintln(f)
 
 		for _, e := range t.EventHandlers {
 			fmt.Fprintf(f, `elem.%s(h)`, e.Name)

@@ -1607,6 +1607,9 @@ func TestData(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
 	elem.Value(42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -3391,6 +3394,9 @@ func TestHead(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -3565,6 +3571,9 @@ func TestHtml(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.privateBody(Text("hello"))
 }
 
@@ -4623,6 +4632,9 @@ func TestMeta(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 }
 
 func TestMeter(t *testing.T) {
@@ -4804,6 +4816,9 @@ func TestNoScript(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -7012,6 +7027,9 @@ func TestTemplate(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
@@ -7423,6 +7441,9 @@ func TestTitle(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
