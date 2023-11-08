@@ -2563,6 +2563,13 @@ import (
 
 		fmt.Fprintln(f)
 
+		fmt.Fprintln(f, `elem.setDepth(1)`)
+		fmt.Fprintln(f, `elem.setJSElement(nil)`)
+		fmt.Fprintln(f, `elem.setAttrs(nil)`)
+		fmt.Fprintln(f, `elem.setEvents(nil)`)
+		fmt.Fprintln(f, `elem.setParent(nil)`)
+		fmt.Fprintln(f, `elem.setBody(nil)`)
+
 		for _, a := range t.Attrs {
 			fmt.Fprintf(f, `elem.%s(`, a.Name)
 
