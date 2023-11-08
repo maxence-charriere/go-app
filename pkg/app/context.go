@@ -226,10 +226,9 @@ func (ctx Context) After(d time.Duration, f func(Context)) {
 // PreventUpdate halts updates for the enclosing component, respecting any
 // implemented UpdateNotifier behavior.
 func (ctx Context) PreventUpdate() {
-	for c, ok := component(ctx.sourceElement); ok; c, ok = component(ctx.sourceElement.parent()) {
+	for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
 		ctx.removeComponentUpdate(c)
 	}
-
 }
 
 // Handle designates a handler for a particular action, set to run on the UI

@@ -3,164 +3,334 @@ package app
 import (
 	"context"
 	"net/url"
+	"sync"
+	"testing"
+	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
-// func TestContextBehavior(t *testing.T) {
-// 	ctx1 := context.Background()
+func TestContextBehavior(t *testing.T) {
+	ctx1 := context.Background()
 
-// 	ctx2, cancel2 := context.WithCancel(ctx1)
-// 	defer cancel2()
+	ctx2, cancel2 := context.WithCancel(ctx1)
+	defer cancel2()
 
-// 	ctx3, cancel3 := context.WithCancel(ctx2)
-// 	defer cancel3()
+	ctx3, cancel3 := context.WithCancel(ctx2)
+	defer cancel3()
 
-// 	ctx4, cancel4 := context.WithCancel(ctx2)
-// 	defer cancel4()
+	ctx4, cancel4 := context.WithCancel(ctx2)
+	defer cancel4()
 
-// 	ctx5, cancel5 := context.WithCancel(ctx4)
-// 	defer cancel5()
+	ctx5, cancel5 := context.WithCancel(ctx4)
+	defer cancel5()
 
-// 	cancel4()
+	cancel4()
 
-// 	require.NoError(t, ctx1.Err())
-// 	require.NoError(t, ctx2.Err())
-// 	require.NoError(t, ctx3.Err())
-// 	require.Error(t, ctx4.Err())
-// 	require.Error(t, ctx5.Err())
-// }
+	require.NoError(t, ctx1.Err())
+	require.NoError(t, ctx2.Err())
+	require.NoError(t, ctx3.Err())
+	require.Error(t, ctx4.Err())
+	require.Error(t, ctx5.Err())
+}
 
-// func TestContextDeviceID(t *testing.T) {
-// 	div := Div()
-// 	disp := NewClientTester(div)
-// 	defer disp.Close()
+func TestContextSrc(t *testing.T) {
+	e := newTestEngine()
+	hello := &hello{}
+	e.load(hello)
 
-// 	ctx := makeContext(div)
-// 	id := ctx.DeviceID()
-// 	require.NotZero(t, id)
+	ctx := e.nodes.context(e.baseContext(), hello)
+	require.NotZero(t, ctx.Src())
+	require.NotNil(t, ctx.JSSrc())
+}
 
-// 	id2 := ctx.DeviceID()
-// 	require.Equal(t, id, id2)
-// }
+func TestContextDeviceID(t *testing.T) {
+	ctx := makeTestContext()
+	id := ctx.DeviceID()
+	require.NotZero(t, id)
 
-// func TestContextAppInstallable(t *testing.T) {
-// 	foo := &foo{}
-// 	client := NewClientTester(foo)
-// 	defer client.Close()
+	id2 := ctx.DeviceID()
+	require.Equal(t, id, id2)
+}
 
-// 	ctx := makeContext(foo)
-// 	require.False(t, ctx.IsAppInstallable())
-// 	ctx.ShowAppInstallPrompt()
-// }
+func TestContextAppUpdateAvailable(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
+	require.False(t, ctx.AppUpdateAvailable())
+}
 
-// func TestContextEncryptDecryptStruct(t *testing.T) {
-// 	div := Div()
-// 	disp := NewClientTester(div)
-// 	defer disp.Close()
-// 	ctx := makeContext(div)
+func TestContextAppInstallable(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
+	require.False(t, ctx.IsAppInstallable())
+	ctx.ShowAppInstallPrompt()
+}
 
-// 	expected := struct {
-// 		Title string
-// 		Value int
-// 	}{
-// 		Title: "hello",
-// 		Value: 42,
-// 	}
+func TestContextReload(t *testing.T) {
+	if IsClient {
+		t.Skip()
+	}
+	newTestEngine().
+		baseContext().
+		Reload()
+}
 
-// 	item := expected
-// 	item.Title = ""
-// 	item.Value = 0
+func TestContextNavigate(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
 
-// 	crypted, err := ctx.Encrypt(expected)
-// 	require.NoError(t, err)
-// 	require.NotEmpty(t, crypted)
+	t.Run("navigate succeeds", func(t *testing.T) {
+		ctx.Navigate("https://murlok.io")
+	})
 
-// 	err = ctx.Decrypt(crypted, &item)
-// 	require.NoError(t, err)
-// 	require.Equal(t, expected, item)
-// }
+	t.Run("navigate to a bad url logs an error", func(t *testing.T) {
+		ctx.Navigate("ad;lsfjk:/:;/murlok.io")
+	})
+}
 
-// func TestContextEncryptDecryptString(t *testing.T) {
-// 	div := Div()
-// 	disp := NewClientTester(div)
-// 	defer disp.Close()
-// 	ctx := makeContext(div)
+func TestContextResolveStaticResource(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
+	require.Equal(t, "/test", ctx.ResolveStaticResource("/test"))
+}
 
-// 	expected := "hello"
-// 	item := ""
+func TestContextScrollTo(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
+	ctx.ScrollTo("test")
+}
 
-// 	crypted, err := ctx.Encrypt(expected)
-// 	require.NoError(t, err)
-// 	require.NotEmpty(t, crypted)
+func TestContextStorage(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
 
-// 	err = ctx.Decrypt(crypted, &item)
-// 	require.NoError(t, err)
-// 	require.Equal(t, expected, item)
-// }
+	t.Run("local storage is set", func(t *testing.T) {
+		require.NotZero(t, ctx.LocalStorage())
+	})
 
-// func TestContextEncryptDecryptBytes(t *testing.T) {
-// 	div := Div()
-// 	disp := NewClientTester(div)
-// 	defer disp.Close()
-// 	ctx := makeContext(div)
+	t.Run("session storage is set", func(t *testing.T) {
+		require.NotZero(t, ctx.SessionStorage())
+	})
+}
 
-// 	expected := []byte("hello")
-// 	var item []byte
+func TestContextEncryptDecryptStruct(t *testing.T) {
+	ctx := makeTestContext()
 
-// 	crypted, err := ctx.Encrypt(expected)
-// 	require.NoError(t, err)
-// 	require.NotEmpty(t, crypted)
+	expected := struct {
+		Title string
+		Value int
+	}{
+		Title: "hello",
+		Value: 42,
+	}
 
-// 	err = ctx.Decrypt(crypted, &item)
-// 	require.NoError(t, err)
-// 	require.Equal(t, expected, item)
-// }
+	item := expected
+	item.Title = ""
+	item.Value = 0
 
-// func TestContextHandle(t *testing.T) {
-// 	foo := &foo{}
-// 	client := NewClientTester(foo)
-// 	defer client.Close()
+	crypted, err := ctx.Encrypt(expected)
+	require.NoError(t, err)
+	require.NotEmpty(t, crypted)
 
-// 	actionName := "/test/context/handle"
-// 	action := Action{}
-// 	ctx := makeContext(foo)
+	err = ctx.Decrypt(crypted, &item)
+	require.NoError(t, err)
+	require.Equal(t, expected, item)
+}
 
-// 	ctx.Handle(actionName, func(ctx Context, a Action) {
-// 		action = a
-// 	})
+func TestContextEncryptDecryptString(t *testing.T) {
+	ctx := makeTestContext()
 
-// 	ctx.NewActionWithValue(actionName, 21, T("hello", "world"), Tags{"foo": "bar"})
+	expected := "hello"
+	item := ""
 
-// 	client.Consume()
-// 	require.Equal(t, actionName, action.Name)
-// 	require.Equal(t, 21, action.Value)
-// 	require.Equal(t, "world", action.Tags.Get("hello"))
-// 	require.Equal(t, "bar", action.Tags.Get("foo"))
+	crypted, err := ctx.Encrypt(expected)
+	require.NoError(t, err)
+	require.NotEmpty(t, crypted)
 
-// 	ctx.NewAction(actionName)
-// 	client.Consume()
-// 	require.Equal(t, actionName, action.Name)
-// 	require.Nil(t, action.Value)
-// 	require.Nil(t, action.Tags)
-// }
+	err = ctx.Decrypt(crypted, &item)
+	require.NoError(t, err)
+	require.Equal(t, expected, item)
+}
 
-// func TestContextStates(t *testing.T) {
-// 	foo := &foo{}
-// 	client := NewClientTester(foo)
-// 	defer client.Close()
+func TestContextEncryptDecryptBytes(t *testing.T) {
+	ctx := makeTestContext()
 
-// 	state := "/test/context/states"
-// 	v := ""
-// 	ctx := makeContext(foo)
+	expected := []byte("hello")
+	var item []byte
 
-// 	ctx.SetState(state, "hello")
-// 	ctx.GetState(state, &v)
-// 	require.Equal(t, "hello", v)
+	crypted, err := ctx.Encrypt(expected)
+	require.NoError(t, err)
+	require.NotEmpty(t, crypted)
 
-// 	ctx.ObserveState(state).Value(&v)
-// 	ctx.SetState(state, "bye")
-// 	client.Consume()
-// 	require.Equal(t, "bye", v)
-// }
+	err = ctx.Decrypt(crypted, &item)
+	require.NoError(t, err)
+	require.Equal(t, expected, item)
+}
+
+func TestContextNotificationService(t *testing.T) {
+	ctx := makeTestContext()
+	ctx.Notifications()
+}
+
+func TestContextDispatch(t *testing.T) {
+	t.Run("function is executed when source element is mounted", func(t *testing.T) {
+		e := newTestEngine()
+
+		hello := &hello{}
+		e.load(hello)
+		called := false
+
+		ctx := e.nodes.context(e.baseContext(), hello)
+		ctx.Dispatch(func(ctx Context) {
+			called = true
+		})
+
+		e.ConsumeAll()
+		require.True(t, called)
+	})
+
+	t.Run("function is skipped when source element is not mounted", func(t *testing.T) {
+		e := newTestEngine()
+
+		hello := &hello{}
+		called := false
+
+		ctx := e.nodes.context(e.baseContext(), hello)
+		ctx.Dispatch(func(ctx Context) {
+			called = true
+		})
+
+		e.ConsumeAll()
+		require.False(t, called)
+	})
+}
+
+func TestContextDefer(t *testing.T) {
+	t.Run("function is executed when source element is mounted", func(t *testing.T) {
+		e := newTestEngine()
+
+		hello := &hello{}
+		e.load(hello)
+		called := false
+
+		ctx := e.nodes.context(e.baseContext(), hello)
+		ctx.Defer(func(ctx Context) {
+			called = true
+		})
+
+		e.ConsumeAll()
+		require.True(t, called)
+	})
+
+	t.Run("function is skipped dispatched when source element is not mounted", func(t *testing.T) {
+		e := newTestEngine()
+
+		hello := &hello{}
+		called := false
+
+		ctx := e.nodes.context(e.baseContext(), hello)
+		ctx.Defer(func(ctx Context) {
+			called = true
+		})
+
+		e.ConsumeAll()
+		require.False(t, called)
+	})
+}
+
+func TestContextAfter(t *testing.T) {
+	e := newTestEngine()
+
+	hello := &hello{}
+	e.load(hello)
+	ctx := e.nodes.context(e.baseContext(), hello)
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	ctx.After(time.Millisecond, func(ctx Context) {
+		wg.Done()
+	})
+
+	e.ConsumeAll()
+	wg.Wait()
+}
+
+func TestContextPreventUpdate(t *testing.T) {
+	e := newTestEngine()
+
+	hello := &hello{}
+	e.load(hello)
+	ctx := e.nodes.context(e.baseContext(), hello)
+
+	ctx.Dispatch(func(ctx Context) {
+		require.Contains(t, e.updates.pending[1], hello)
+		ctx.PreventUpdate()
+		require.Empty(t, e.updates.pending[1])
+	})
+
+	e.ConsumeAll()
+}
+
+func TestContextHandle(t *testing.T) {
+	e := newTestEngine()
+
+	actionName := "/test/context/handle"
+	action := Action{}
+
+	hello := &hello{}
+	e.load(hello)
+	ctx := e.nodes.context(e.baseContext(), hello)
+
+	ctx.Handle(actionName, func(ctx Context, a Action) {
+		action = a
+	})
+
+	ctx.NewActionWithValue(actionName, 21, T("hello", "world"), Tags{"foo": "bar"})
+	e.ConsumeAll()
+	require.Equal(t, actionName, action.Name)
+	require.Equal(t, 21, action.Value)
+	require.Equal(t, "world", action.Tags.Get("hello"))
+	require.Equal(t, "bar", action.Tags.Get("foo"))
+
+	ctx.NewAction(actionName)
+	e.ConsumeAll()
+	require.Equal(t, actionName, action.Name)
+	require.Nil(t, action.Value)
+	require.Nil(t, action.Tags)
+}
+
+func TestContextStates(t *testing.T) {
+	e := newTestEngine()
+
+	hello := &hello{}
+	e.load(hello)
+	ctx := e.nodes.context(e.baseContext(), hello)
+
+	state := "/test/context/states"
+	var v string
+
+	ctx.SetState(state, "hello")
+	ctx.GetState(state, &v)
+	require.Equal(t, "hello", v)
+
+	ctx.ObserveState(state, &v)
+	ctx.SetState(state, "bye")
+
+	e.ConsumeAll()
+	require.Equal(t, "bye", v)
+
+	ctx.DelState(state)
+	require.Empty(t, e.states.states)
+}
+
+func TestContextResizeContent(t *testing.T) {
+	e := newTestEngine()
+	hello := &hello{}
+	e.load(hello)
+	ctx := e.nodes.context(e.baseContext(), hello)
+	ctx.ResizeContent()
+	e.ConsumeAll()
+}
 
 func makeTestContext() Context {
 	resolveURL := func(v string) string {
