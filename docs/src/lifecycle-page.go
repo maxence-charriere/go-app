@@ -13,10 +13,6 @@ func newLifecyclePage() *lifecyclePage {
 	return &lifecyclePage{}
 }
 
-func (p *lifecyclePage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *lifecyclePage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

@@ -13,10 +13,6 @@ func newPrivacyPolicyPage() *privacyPolicyPage {
 	return &privacyPolicyPage{}
 }
 
-func (p *privacyPolicyPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *privacyPolicyPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

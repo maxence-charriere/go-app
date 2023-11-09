@@ -13,10 +13,6 @@ func newDeclarativeSyntaxPage() *declarativeSyntaxPage {
 	return &declarativeSyntaxPage{}
 }
 
-func (p *declarativeSyntaxPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *declarativeSyntaxPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

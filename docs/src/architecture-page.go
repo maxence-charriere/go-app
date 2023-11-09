@@ -13,10 +13,6 @@ func newArchitecturePage() *architecturePage {
 	return &architecturePage{}
 }
 
-func (p *architecturePage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *architecturePage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

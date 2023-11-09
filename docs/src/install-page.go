@@ -13,10 +13,6 @@ func newInstallPage() *installPage {
 	return &installPage{}
 }
 
-func (p *installPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *installPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

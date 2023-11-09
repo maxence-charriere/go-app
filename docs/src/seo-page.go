@@ -13,10 +13,6 @@ func newSEOPage() *seoPage {
 	return &seoPage{}
 }
 
-func (p *seoPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
-}
-
 func (p *seoPage) OnNav(ctx app.Context) {
 	p.initPage(ctx)
 }

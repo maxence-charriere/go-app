@@ -116,13 +116,21 @@ func TestRoutes(t *testing.T) {
 				u.createRoutes(&r)
 			}
 
-			compo, isRouted := r.createComponent(u.path)
 			if u.notFound {
+				routed := r.routed(u.path)
+				require.False(t, routed)
+
+				compo, routed := r.createComponent(u.path)
 				require.Nil(t, compo)
-				require.False(t, isRouted)
+				require.False(t, routed)
 				return
 			}
-			require.True(t, isRouted)
+
+			routed := r.routed(u.path)
+			require.True(t, routed)
+
+			compo, routed := r.createComponent(u.path)
+			require.True(t, routed)
 			require.NotNil(t, compo)
 			require.Equal(t, reflect.TypeOf(u.expected), reflect.TypeOf(compo))
 		})

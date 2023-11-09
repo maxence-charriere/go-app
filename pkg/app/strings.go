@@ -140,3 +140,10 @@ func FormatString(format string, v ...any) string {
 	}
 	return fmt.Sprintf(format, v...)
 }
+
+func previewText(v string) string {
+	if len(v) <= 80 {
+		return v
+	}
+	return v[:77] + "..."
+}

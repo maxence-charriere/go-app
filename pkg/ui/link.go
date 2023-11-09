@@ -142,12 +142,12 @@ func (l *link) Render() app.UI {
 				Style("padding", fmt.Sprintf("%vpx 0", l.Ipadding)).
 				Middle().
 				Content(
-					app.If(l.Iicon != "",
-						Icon().
+					app.If(l.Iicon != "", func() app.UI {
+						return Icon().
 							Style("margin-right", pxToString(l.IiconSpace)).
 							Size(l.IiconSize).
-							Src(l.Iicon),
-					),
+							Src(l.Iicon)
+					}),
 					app.Div().Text(l.Ilabel),
 				),
 		)

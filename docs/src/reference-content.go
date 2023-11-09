@@ -35,10 +35,6 @@ func (c *referenceContent) Index(v bool) *referenceContent {
 	return c
 }
 
-func (c *referenceContent) OnPreRender(ctx app.Context) {
-	c.load(ctx)
-}
-
 func (c *referenceContent) OnMount(ctx app.Context) {
 	c.load(ctx)
 }
@@ -48,12 +44,11 @@ func (c *referenceContent) OnNav(ctx app.Context) {
 }
 
 func (c *referenceContent) load(ctx app.Context) {
-	ctx.ObserveState(referenceState).
+	ctx.ObserveState(referenceState, &c.content).
 		OnChange(func() {
 			ctx.Defer(c.handleFragment)
 			ctx.Defer(c.scrollTo)
-		}).
-		Value(&c.content)
+		})
 
 	ctx.NewAction(getReference)
 }
@@ -78,12 +73,11 @@ func (c *referenceContent) Render() app.UI {
 				Err(c.content.Err).
 				Size(loaderSize).
 				Spacing(loaderSpacing),
-
-			app.If(!c.Iindex && c.content.Content != "",
-				app.Raw(c.content.Content),
-			).ElseIf(c.Iindex && c.content.Index != "",
-				app.Raw(c.content.Index),
-			),
+			app.If(!c.Iindex && c.content.Content != "", func() app.UI {
+				return app.Raw(c.content.Content)
+			}).ElseIf(c.Iindex && c.content.Index != "", func() app.UI {
+				return app.Raw(c.content.Index)
+			}),
 			app.Div().Text(c.content.Err),
 		)
 }

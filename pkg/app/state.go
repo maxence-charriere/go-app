@@ -10,475 +10,394 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// Observer is an observer that observes changes for a given state.
-type Observer interface {
-	// Defines a condition that reports whether the observer keeps observing the
-	// associated state. Multiple conditions can be defined by successively
-	// calling While().
-	While(condition func() bool) Observer
-
-	// Executes the given function on the UI goroutine when the observed value
-	// changes. Multiple functions can be executed by successively calling
-	// OnChange().
-	OnChange(fn func()) Observer
-
-	// Stores the value associated with the observed state into the given
-	// receiver. Panics when the receiver is not a pointer or nil.
-	//
-	// The receiver is updated each time the associated state changes. It is
-	// unchanged when its pointed value has a different type than the associated
-	// state value.
-	Value(recv any)
-}
-
-// A state represents an observable value available across the app.
+// State represents a state with additional features such as expiration,
+// persistence, and broadcasting capabilities.
 type State struct {
-	// Reports whether the state is persisted in local storage.
-	IsPersistent bool
-
-	// Reports whether the state is encrypted before being persisted in local
-	// storage.
-	IsEncrypted bool
-
-	// The time when the state expires. The state never expires when zero value.
-	ExpiresAt time.Time
-
-	// Reports whether a state is broadcasted to other browser tabs and windows.
-	IsBroadcasted bool
-
 	value     any
-	observers map[*observer]struct{}
+	expiresAt time.Time
+
+	ctx       Context
+	name      string
+	expire    func(State, time.Time) State
+	persist   func(State, bool) State
+	broadcast func(State) State
 }
 
-func (s *State) isExpired(now time.Time) bool {
-	return s.ExpiresAt != time.Time{} && now.After(s.ExpiresAt)
+// ExpiresIn sets the expiration time for the state by specifying a duration
+// from the current time.
+func (s State) ExpiresIn(v time.Duration) State {
+	return s.expire(s, time.Now().Add(v))
 }
 
-// StateOption represents an option applied when a state is set.
-type StateOption func(*State)
-
-// Persist is a state option that persists a state in local storage.
-//
-// Be mindful to not use this option as a cache since local storage is limited
-// to 5MB in a lot of web browsers.
-func Persist(s *State) {
-	s.IsPersistent = true
+// ExpiresAt sets the exact expiration time for the state.
+func (s State) ExpiresAt(v time.Time) State {
+	return s.expire(s, v)
 }
 
-// Encrypt is a state option that encrypts a state before persisting it in local
-// storage. Encryption is performed only when the Persist option is also set.
-func Encrypt(s *State) {
-	s.IsEncrypted = true
+// Persist ensures the state is persisted into the local storage.
+func (s State) Persist() State {
+	return s.persist(s, false)
 }
 
-// ExpiresIn returns a state option that sets a state value to its zero value
-// after the given duration.
-//
-// Values persisted to local storage with the Persist option are removed from
-// it.
-func ExpiresIn(d time.Duration) StateOption {
-	return ExpiresAt(time.Now().Add(d))
+// PersistWithEncryption ensures the state is persisted into the local storage
+// with encryption.
+func (s State) PersistWithEncryption() State {
+	return s.persist(s, true)
 }
 
-// ExpiresAt returns a state option that sets a state value to its zero value at
-// the given time.
-//
-// Values persisted to local storage with the Persist option are removed from
-// it.
-func ExpiresAt(t time.Time) StateOption {
-	return func(s *State) {
-		s.ExpiresAt = t
-	}
+// Broadcast signals that changes to the state will be broadcasted to other
+// browser tabs and windows sharing the same origin when it is supported.
+func (s State) Broadcast() State {
+	return s.broadcast(s)
 }
 
-// Broadcast is a state option that broadcasts a state to other browser tabs and
-// windows from the same origin.
-func Broadcast(s *State) {
-	s.IsBroadcasted = true
+type storableState struct {
+	Value          json.RawMessage `json:",omitempty"`
+	EncryptedValue []byte          `json:",omitempty"`
+	ExpiresAt      time.Time       `json:",omitempty"`
 }
 
-type observer struct {
-	element    UI
-	subscribe  func(*observer)
-	conditions []func() bool
-	onChanges  []func()
-	receiver   any
+// Observer represents a mechanism to monitor and react to changes in a state.
+type Observer struct {
+	source        UI
+	receiver      any
+	condition     func() bool
+	changeHandler func()
+
+	state       string
+	setObserver func(Observer) Observer
 }
 
-func newObserver(elem UI, subscribe func(*observer)) *observer {
-	return &observer{
-		element:   elem,
-		subscribe: subscribe,
-	}
+// While sets a condition for the observer, determining whether it observes
+// a state. The condition is periodically checked. Observation stops when the
+// condition returns false.
+func (o Observer) While(condition func() bool) Observer {
+	o.condition = condition
+	return o.setObserver(o)
 }
 
-func (o *observer) While(fn func() bool) Observer {
-	o.conditions = append(o.conditions, fn)
-	return o
+// OnChange sets a callback function to be executed each time the observer
+// detects a change in the associated state value.
+func (o Observer) OnChange(h func()) Observer {
+	o.changeHandler = h
+	return o.setObserver(o)
 }
 
-func (o *observer) OnChange(fn func()) Observer {
-	o.onChanges = append(o.onChanges, fn)
-	return o
-}
-
-func (o *observer) Value(recv any) {
-	if reflect.ValueOf(recv).Kind() != reflect.Ptr {
-		panic(errors.New("observer value receiver is not a pointer"))
-	}
-
-	o.receiver = recv
-	o.subscribe(o)
-}
-
-func (o *observer) isObserving() bool {
-	if !o.element.Mounted() {
+func (o Observer) observing() bool {
+	if o.source == nil || !o.source.Mounted() {
 		return false
 	}
-
-	for _, c := range o.conditions {
-		if !c() {
-			return false
-		}
+	if o.condition != nil {
+		return o.condition()
 	}
-
 	return true
 }
 
-type store struct {
-	mutex            sync.Mutex
-	id               string
+// stateManager is responsible for managing, tracking, and notifying changes
+// to state values. It supports concurrency-safe operations and provides
+// functionality to observe state changes.
+type stateManager struct {
+	mutex            sync.RWMutex
 	states           map[string]State
-	disp             Dispatcher
+	observers        map[string]map[UI]Observer
+	broadcastStoreID string
 	broadcastChannel Value
-	onBroadcastClose func()
 }
 
-func newStore(d Dispatcher) *store {
-	s := &store{
-		id:     uuid.NewString(),
-		states: make(map[string]State),
-		disp:   d,
-	}
-
-	s.initBroadcast()
-	return s
+// Observe initiates observation for a specified state, ensuring the state
+// is fetched and set into the given receiver. The returned observer object
+// offers methods for advanced observation configurations.
+func (m *stateManager) Observe(ctx Context, state string, receiver any) Observer {
+	m.Get(ctx, state, receiver)
+	return m.setObserver(Observer{
+		source:      ctx.Src(),
+		receiver:    receiver,
+		state:       state,
+		setObserver: m.setObserver,
+	})
 }
 
-func (s *store) Set(key string, v any, opts ...StateOption) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
+func (m *stateManager) setObserver(v Observer) Observer {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
 
-	state := s.states[key]
-	state.value = v
-	for _, o := range opts {
-		o(&state)
+	if m.observers == nil {
+		m.observers = make(map[string]map[UI]Observer)
 	}
-	s.states[key] = state
 
-	if state.IsPersistent {
-		if err := s.setPersistent(key, state.IsEncrypted, state.ExpiresAt, v); err != nil {
-			Log(errors.New("persisting state failed").
-				WithTag("state", key).
+	observers := m.observers[v.state]
+	if observers == nil {
+		observers = map[UI]Observer{}
+		m.observers[v.state] = observers
+	}
+	observers[v.source] = Observer{
+		source:        v.source,
+		receiver:      v.receiver,
+		condition:     v.condition,
+		changeHandler: v.changeHandler,
+	}
+
+	return v
+}
+
+// Get retrieves the value of a specific state, setting it to the provided
+// receiver.
+func (m *stateManager) Get(ctx Context, state string, receiver any) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	value, exists := m.states[state]
+	if !exists {
+		if err := m.getStoredState(ctx, state, receiver); err != nil {
+			Log(errors.New("getting state from local storage failed").
+				WithTag("state", state).
 				Wrap(err))
-			return
 		}
-	}
-
-	if state.isExpired(time.Now()) {
-		state = s.expire(key, state)
-		s.states[key] = state
 		return
 	}
 
-	if state.IsBroadcasted {
-		if err := s.broadcast(key, v); err != nil {
-			Log(errors.New("broadcasting state failed").
-				WithTag("state", key).
-				Wrap(err))
-			return
-		}
+	if !value.expiresAt.IsZero() && value.expiresAt.Before(time.Now()) {
+		delete(m.states, state)
+		ctx.LocalStorage().Del(state)
+		return
 	}
 
-	for obs := range state.observers {
-		o := obs
-
-		if !o.element.Mounted() {
-			delete(state.observers, o)
-			continue
-		}
-
-		s.disp.Dispatch(Dispatch{
-			Mode:   Update,
-			Source: o.element,
-			Function: func(ctx Context) {
-				if !o.isObserving() {
-					s.mutex.Lock()
-					delete(state.observers, o)
-					s.mutex.Unlock()
-					return
-				}
-
-				if err := storeValue(o.receiver, v); err != nil {
-					Log(errors.New("notifying observer failed").
-						WithTag("state", key).
-						WithTag("element", reflect.TypeOf(o.element)).
-						Wrap(err))
-					return
-				}
-
-				for _, fn := range o.onChanges {
-					fn()
-				}
-			},
-		})
-	}
-}
-
-func (s *store) Get(key string, recv any) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	var err error
-	state := s.states[key]
-	if state.isExpired(time.Now()) {
-		state = s.expire(key, state)
-		s.states[key] = state
-	}
-
-	if state.value != nil {
-		err = storeValue(recv, state.value)
-	} else {
-		err = s.getPersistent(key, recv)
-	}
-	if err != nil {
-		Log(errors.New("getting state value failed").
-			WithTag("state", key).
+	if err := storeValue(receiver, value.value); err != nil {
+		Log(errors.New("getting state failed").
+			WithTag("state", state).
 			Wrap(err))
 	}
 }
 
-func (s *store) Del(key string) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	delete(s.states, key)
-	s.disp.getLocalStorage().Del(key)
-}
-
-func (s *store) Observe(key string, elem UI) Observer {
-	return newObserver(elem, func(o *observer) {
-		s.mutex.Lock()
-		defer s.mutex.Unlock()
-
-		if err := s.subscribe(key, o); err != nil {
-			Log(errors.New("notifying observer failed").
-				WithTag("state", key).
-				WithTag("element", reflect.TypeOf(elem)).
-				Wrap(err))
-		}
-	})
-}
-
-func (s *store) Cleanup() {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	s.removeUnusedObservers()
-	s.expireExpiredValues()
-	s.expireExpriredPersistentValues()
-}
-
-func (s *store) Close() {
-	if s.broadcastChannel != nil {
-		s.broadcastChannel.Call("close")
-		s.broadcastChannel = nil
-	}
-	s.onBroadcastClose()
-}
-
-func (s *store) subscribe(key string, o *observer) error {
-	state := s.states[key]
-	if state.observers == nil {
-		state.observers = make(map[*observer]struct{})
-	}
-	state.observers[o] = struct{}{}
-
-	if state.isExpired(time.Now()) {
-		state = s.expire(key, state)
-	}
-	s.states[key] = state
-
-	if state.value != nil {
-		return storeValue(o.receiver, state.value)
-	}
-	return s.getPersistent(key, o.receiver)
-}
-
-func (s *store) removeUnusedObservers() {
-	for _, state := range s.states {
-		for o := range state.observers {
-			if !o.isObserving() {
-				delete(state.observers, o)
-			}
-		}
-	}
-}
-
-func (s *store) getPersistent(key string, recv any) error {
-	var state persistentState
-	s.disp.getLocalStorage().Get(key, &state)
-
-	if state.EncryptedValue == nil && state.Value == nil && state.ExpiresAt == (time.Time{}) {
-		return nil
-	}
-
-	if state.isExpired(time.Now()) {
-		s.disp.getLocalStorage().Del(key)
-		return nil
-	}
-
-	if len(state.EncryptedValue) == 0 {
-		return json.Unmarshal(state.Value, recv)
-	}
-	return s.disp.Context().Decrypt(state.EncryptedValue, recv)
-}
-
-func (s *store) setPersistent(key string, encrypt bool, expiresAt time.Time, v any) error {
-	var err error
-
-	state := persistentState{
-		ExpiresAt: expiresAt,
-	}
-	if encrypt {
-		state.EncryptedValue, err = s.disp.Context().Encrypt(v)
-	} else {
-		state.Value, err = json.Marshal(v)
-	}
-	if err != nil {
+func (m *stateManager) getStoredState(ctx Context, state string, receiver any) error {
+	var value storableState
+	if err := ctx.LocalStorage().Get(state, &value); err != nil {
 		return err
 	}
 
-	return s.disp.getLocalStorage().Set(key, state)
-}
-
-func (s *store) expireExpiredValues() {
-	now := time.Now()
-	for k, state := range s.states {
-		if state.isExpired(now) {
-			state = s.expire(k, state)
-			s.states[k] = state
-		}
-	}
-}
-
-func (s *store) expireExpriredPersistentValues() {
-	object := Window().Get("Object")
-	if !object.Truthy() {
-		return
-	}
-
-	keys := object.Call("keys", Window().Get("localStorage"))
-	for i, l := 0, keys.Get("length").Int(); i < l; i++ {
-		key := keys.Index(i).String()
-
-		var state persistentState
-		s.disp.getLocalStorage().Get(key, &state)
-
-		if state.EncryptedValue == nil && state.Value == nil && state.ExpiresAt == (time.Time{}) {
-			continue
-		}
-
-		if state.isExpired(time.Now()) {
-			s.disp.getLocalStorage().Del(key)
-		}
-	}
-}
-
-func (s *store) expire(key string, state State) State {
-	s.disp.getLocalStorage().Del(key)
-	state.value = nil
-	return state
-}
-
-func (s *store) initBroadcast() {
-	broadcastChannel := Window().Get("BroadcastChannel")
-	if !broadcastChannel.Truthy() {
-		s.onBroadcastClose = func() {}
-		return
-	}
-	broadcastChannel = broadcastChannel.New("go-app-broadcast-states")
-	s.broadcastChannel = broadcastChannel
-
-	onBroadcast := FuncOf(func(this Value, args []Value) any {
-		s.onBroadcast(args[0].Get("data"))
+	if !value.ExpiresAt.IsZero() && value.ExpiresAt.Before(time.Now()) {
+		ctx.LocalStorage().Del(state)
 		return nil
-	})
-	s.onBroadcastClose = onBroadcast.Release
-
-	broadcastChannel.Set("onmessage", onBroadcast)
-}
-
-func (s *store) broadcast(key string, v any) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
 	}
 
-	if s.broadcastChannel != nil {
-		s.broadcastChannel.Call("postMessage", map[string]any{
-			"StoreID": s.id,
-			"State":   key,
-			"Value":   string(b),
-		})
+	if len(value.EncryptedValue) != 0 {
+		return ctx.Decrypt(value.EncryptedValue, receiver)
+	} else if len(value.Value) != 0 {
+		return json.Unmarshal(value.Value, receiver)
 	}
 	return nil
 }
 
-func (s *store) onBroadcast(event Value) {
-	if storeID := event.Get("StoreID").String(); storeID == "" || storeID == s.id {
+func (m *stateManager) Set(ctx Context, state string, v any) State {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	if m.states == nil {
+		m.states = make(map[string]State)
+	}
+
+	value := State{value: v}
+	m.states[state] = value
+
+	for _, observer := range m.observers[state] {
+		o := observer
+		ctx.sourceElement = o.source
+
+		ctx.Dispatch(func(ctx Context) {
+			m.mutex.RLock()
+			value := m.states[state]
+			m.mutex.RUnlock()
+			if !value.expiresAt.IsZero() && value.expiresAt.Before(time.Now()) {
+				return
+			}
+
+			if !o.observing() {
+				m.mutex.Lock()
+				delete(m.observers[state], o.source)
+				m.mutex.Unlock()
+				return
+			}
+
+			if err := storeValue(o.receiver, value.value); err != nil {
+				Log(errors.New("storing state value into receiver failed").
+					WithTag("state", state).
+					WithTag("observer-type", reflect.TypeOf(o.source)).
+					WithTag("receiver-type", reflect.TypeOf(o.receiver)).
+					Wrap(err))
+				return
+			}
+
+			if o.changeHandler != nil {
+				o.changeHandler()
+			}
+		})
+	}
+
+	return State{
+		value:     v,
+		ctx:       ctx,
+		name:      state,
+		expire:    m.setExpiration,
+		persist:   m.persist,
+		broadcast: m.broadcast,
+	}
+}
+
+// Set updates a specified state with a new value and notifies its observers.
+// It returns a state object, offering methods for advanced state manipulations.
+func (m *stateManager) setExpiration(s State, v time.Time) State {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	s.expiresAt = v
+
+	value := m.states[s.name]
+	value.expiresAt = v
+	m.states[s.name] = value
+
+	return s
+}
+
+func (m *stateManager) persist(s State, encrypt bool) State {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	value := storableState{ExpiresAt: s.expiresAt}
+	if encrypt {
+		b, err := s.ctx.Encrypt(s.value)
+		if err != nil {
+			Log(errors.New("persisting encrypted state failed").
+				WithTag("state", s.name).
+				Wrap(err))
+			return s
+		}
+		value.EncryptedValue = b
+	} else {
+		b, err := json.Marshal(s.value)
+		if err != nil {
+			Log(errors.New("persisting state failed").
+				WithTag("state", s.name).
+				Wrap(err))
+			return s
+		}
+		value.Value = b
+	}
+
+	if err := s.ctx.LocalStorage().Set(s.name, value); err != nil {
+		Log(errors.New("persisting state failed").
+			WithTag("state", s.name).
+			Wrap(err))
+	}
+	return s
+}
+
+func (m *stateManager) broadcast(s State) State {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	if m.broadcastChannel == nil {
+		Log(errors.New("persisting state failed").
+			WithTag("state", s.name).
+			Wrap(errors.New("broadcast is not supported")))
+		return s
+	}
+
+	b, err := json.Marshal(s.value)
+	if err != nil {
+		Log(errors.New("persisting state failed").
+			WithTag("state", s.name).
+			Wrap(err))
+		return s
+	}
+
+	m.broadcastChannel.Call("postMessage", map[string]any{
+		"StoreID": m.broadcastStoreID,
+		"State":   s.name,
+		"Value":   string(b),
+	})
+	return s
+}
+
+// InitBroadcast initializes a broadcast channel to share state changes
+// across browser tabs or windows.
+func (m *stateManager) InitBroadcast(ctx Context) {
+	broadcastChannel := Window().Get("BroadcastChannel")
+	if !broadcastChannel.Truthy() {
+		return
+	}
+	broadcastChannel = broadcastChannel.New("go-app-broadcast-states")
+	m.broadcastChannel = broadcastChannel
+	m.broadcastStoreID = uuid.NewString()
+
+	handleBroadcast := FuncOf(func(this Value, args []Value) any {
+		m.handleBroadcast(ctx, args[0].Get("data"))
+		return nil
+	})
+	broadcastChannel.Set("onmessage", handleBroadcast)
+}
+
+func (m *stateManager) handleBroadcast(ctx Context, data Value) {
+	if storeID := data.Get("StoreID").String(); storeID != m.broadcastStoreID {
 		return
 	}
 
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
 
-	key := event.Get("State").String()
-	v := []byte(event.Get("Value").String())
-	state := s.states[key]
+	state := data.Get("State").String()
+	value := []byte(data.Get("Value").String())
 
-	for obs := range state.observers {
-		o := obs
+	for _, observer := range m.observers[state] {
+		o := observer
+		ctx.dispatch(func() {
+			if !o.observing() {
+				m.mutex.Lock()
+				delete(m.observers[state], o.source)
+				m.mutex.Unlock()
+				return
+			}
 
-		if !o.element.Mounted() {
-			delete(state.observers, o)
-			continue
+			if err := json.Unmarshal(value, o.receiver); err != nil {
+				Log(errors.New("storing broadcast state value into receiver failed").
+					WithTag("state", state).
+					WithTag("observer-type", reflect.TypeOf(o.source)).
+					WithTag("receiver-type", reflect.TypeOf(o.receiver)).
+					Wrap(err))
+			}
+
+			if o.changeHandler != nil {
+				o.changeHandler()
+			}
+		})
+	}
+}
+
+// Delete removes the specified state from the managed states and also deletes
+// it from the local storage if it was previously persisted.
+func (m *stateManager) Delete(ctx Context, state string) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	delete(m.states, state)
+	ctx.LocalStorage().Del(state)
+}
+
+// Cleanup removes observers that are no longer active and cleans up any states
+// without observers.
+func (m *stateManager) Cleanup() {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	for state, observers := range m.observers {
+		for _, observer := range observers {
+			if !observer.observing() {
+				delete(observers, observer.source)
+			}
 		}
 
-		s.disp.Dispatch(Dispatch{
-			Mode:   Update,
-			Source: o.element,
-			Function: func(ctx Context) {
-				if !o.isObserving() {
-					s.mutex.Lock()
-					delete(state.observers, o)
-					s.mutex.Unlock()
-					return
-				}
-
-				if err := json.Unmarshal(v, o.receiver); err != nil {
-					Log(errors.New("notifying observer failed").
-						WithTag("state", key).
-						WithTag("element", reflect.TypeOf(o.element)).
-						Wrap(err))
-					return
-				}
-
-				for _, fn := range o.onChanges {
-					fn()
-				}
-			},
-		})
+		if len(observers) == 0 {
+			delete(m.observers, state)
+		}
 	}
 }
 
@@ -501,20 +420,108 @@ func storeValue(recv, v any) error {
 
 	if src.Type() != dst.Type() {
 		return errors.New("value and receiver are not of the same type").
-			WithTag("value", src.Type()).
-			WithTag("receiver", dst.Type())
+			WithTag("value-type", src.Type()).
+			WithTag("receiver-type", dst.Type())
 	}
-
 	dst.Set(src)
 	return nil
 }
 
-type persistentState struct {
-	Value          json.RawMessage `json:",omitempty"`
-	EncryptedValue []byte          `json:",omitempty"`
-	ExpiresAt      time.Time       `json:",omitempty"`
-}
+// TODO:
+// - expire all expired values from local storage
+// - test broadcast
 
-func (s *persistentState) isExpired(now time.Time) bool {
-	return s.ExpiresAt != time.Time{} && now.After(s.ExpiresAt)
-}
+// func TestExpireExpriredPersistentValues(t *testing.T) {
+// 	if IsServer {
+// 		t.Skip()
+// 	}
+
+// 	d := NewClientTester(&foo{})
+// 	defer d.Close()
+// 	localStorage := d.getLocalStorage()
+
+// 	s := newStore(d)
+// 	defer s.Close()
+
+// 	t.Run("non expired state is not removed", func(t *testing.T) {
+// 		localStorage.Clear()
+// 		s.setPersistent("/hello", false, time.Now().Add(time.Minute), "hello")
+// 		require.Equal(t, 1, localStorage.Len())
+
+// 		s.expireExpriredPersistentValues()
+// 		require.Equal(t, 1, localStorage.Len())
+// 	})
+
+// 	t.Run("expired state is removed", func(t *testing.T) {
+// 		localStorage.Clear()
+// 		s.setPersistent("/bye", false, time.Now().Add(-time.Minute), "bye")
+// 		require.Equal(t, 1, localStorage.Len())
+
+// 		s.expireExpriredPersistentValues()
+// 		require.Equal(t, 0, localStorage.Len())
+// 	})
+
+// 	t.Run("non state value is not removed", func(t *testing.T) {
+// 		localStorage.Clear()
+// 		localStorage.Set("/hi", "hi")
+// 		require.Equal(t, 1, localStorage.Len())
+
+// 		s.expireExpriredPersistentValues()
+// 		require.Equal(t, 1, localStorage.Len())
+// 	})
+// }
+
+// func TestStoreBroadcast(t *testing.T) {
+// 	d1 := NewClientTester(&foo{})
+// 	s1 := newStore(d1)
+// 	defer d1.Close()
+// 	defer s1.Close()
+
+// 	bar := &bar{}
+// 	d2 := NewClientTester(bar)
+// 	s2 := newStore(d2)
+// 	defer d2.Close()
+// 	defer s2.Close()
+
+// 	require.NotEqual(t, s1.id, s2.id)
+
+// 	key := "/test/store/broadcast"
+// 	t.Run("state is not broadcasted", func(t *testing.T) {
+// 		var v int
+// 		s2.Observe(key, bar).Value(&v)
+
+// 		s1.Set(key, func() {}, Broadcast)
+// 		d2.Consume()
+// 		require.Zero(t, v)
+// 	})
+
+// 	t.Run("state is broadcasted", func(t *testing.T) {
+// 		if IsServer {
+// 			t.Skip()
+// 		}
+
+// 		var v int
+
+// 		s2.Observe(key, bar).Value(&v)
+// 		s1.Set(key, 42, Broadcast)
+
+// 		time.Sleep(time.Millisecond * 100)
+// 		d2.Consume()
+// 		require.Equal(t, 42, v)
+// 	})
+
+// 	t.Run("broadcasted state is not observed", func(t *testing.T) {
+// 		if IsServer {
+// 			t.Skip()
+// 		}
+
+// 		var v func()
+
+// 		s2.Observe(key, bar).Value(&v)
+// 		s1.Set(key, 42, Broadcast)
+
+// 		time.Sleep(time.Millisecond * 50)
+// 		d2.Consume()
+// 		require.Zero(t, v)
+// 	})
+// }

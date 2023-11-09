@@ -2,6 +2,7 @@ package app
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -694,20 +694,17 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
-	content, ok := routes.createComponent(r.URL.Path)
-	if !ok {
+	if routed := routes.routed(r.URL.Path); !routed {
 		http.NotFound(w, r)
 		return
 	}
 
-	url := *r.URL
-	url.Host = r.Host
-	url.Scheme = "http"
+	ctx := context.Background()
 
-	page := requestPage{
-		url:                   &url,
-		resolveStaticResource: h.resolveStaticPath,
-	}
+	origin := *r.URL
+	origin.Scheme = "http"
+
+	page := makeRequestPage(&origin, h.resolveStaticPath)
 	page.SetTitle(h.Title)
 	page.SetLang(h.Lang)
 	page.SetDescription(h.Description)
@@ -716,42 +713,20 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
 
-	disp := engine{
-		Page:                   &page,
-		StaticResourceResolver: h.resolveStaticPath,
-		ActionHandlers:         actionHandlers,
-	}
-	body := h.Body().privateBody(
-		Div(), // Pre-rendeging placeholder
-		Aside().
-			ID("app-wasm-loader").
-			Class("goapp-app-info").
-			Body(
-				Img().
-					ID("app-wasm-loader-icon").
-					Class("goapp-logo goapp-spin").
-					Src(h.Icon.Default),
-				P().
-					ID("app-wasm-loader-label").
-					Class("goapp-label").
-					Text(page.loadingLabel),
-			),
+	engine := newEngine(ctx,
+		&routes,
+		h.resolveStaticPath,
+		&page,
+		actionHandlers,
 	)
-	if err := mount(&disp, body); err != nil {
-		panic(errors.New("mounting pre-rendering container failed").
-			WithTag("body-type", reflect.TypeOf(disp.Body)).
-			Wrap(err))
-	}
-	disp.Body = body
-	disp.init()
-	defer disp.Close()
+	engine.Navigate(page.URL(), false)
+	engine.ConsumeAll()
 
-	disp.Mount(content)
-
-	for len(disp.dispatches) != 0 {
-		disp.Consume()
-		disp.Wait()
-	}
+	// TODO: remove this:
+	// for len(disp.dispatches) != 0 {
+	// 	disp.Consume()
+	// 	disp.Wait()
+	// }
 
 	icon := h.Icon.SVG
 	if icon == "" {
@@ -759,8 +734,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var b bytes.Buffer
-	b.WriteString("<!DOCTYPE html>\n")
-	PrintHTML(&b, h.HTML().
+	err := engine.Encode(&b, h.HTML().
 		Lang(page.Lang()).
 		privateBody(
 			Head().Body(
@@ -939,8 +913,27 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					return Raw(h.RawHeaders[i])
 				}),
 			),
-			body,
+			h.Body().privateBody(
+				Aside().
+					ID("app-wasm-loader").
+					Class("goapp-app-info").
+					Body(
+						Img().
+							ID("app-wasm-loader-icon").
+							Class("goapp-logo goapp-spin").
+							Src(h.Icon.Default),
+						P().
+							ID("app-wasm-loader-label").
+							Class("goapp-label").
+							Text(page.loadingLabel),
+					),
+			),
 		))
+	if err != nil {
+		Log(errors.New("encoding html document failed").Wrap(err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")

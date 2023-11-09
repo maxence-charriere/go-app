@@ -161,8 +161,8 @@ func Undefined() Value {
 //	| bool                   | boolean                |
 //	| integers and floats    | number                 |
 //	| string                 | string                 |
-//	| []any          | new array              |
-//	| map[string]any | new object             |
+//	| []any                  | new array              |
+//	| map[string]any         | new object             |
 //
 // Panics if x is not one of the expected types.
 func ValueOf(x any) Value {
@@ -219,11 +219,6 @@ type BrowserWindow interface {
 
 	// Scrolls to the HTML element with the given id.
 	ScrollToID(id string)
-
-	// AddEventListener subscribes a given handler to the specified event. It
-	// returns a function that must be called to unsubscribe the handler and
-	// release allocated resources.
-	AddEventListener(event string, h EventHandler) func()
 
 	setBody(body UI)
 	createElement(tag, xmlns string) (Value, error)

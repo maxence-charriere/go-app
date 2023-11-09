@@ -1,250 +1,275 @@
 package app
 
 import (
+	"bytes"
+	"context"
+	"net/url"
+	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestEngineInit(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
+func TestEngineBaseContext(t *testing.T) {
+	e := newTestEngine()
+	ctx := e.baseContext()
+	require.NotNil(t, ctx.Context)
+	require.NotNil(t, ctx.page)
+	require.NotNil(t, ctx.resolveURL)
+	require.NotNil(t, ctx.navigate)
+	require.NotNil(t, ctx.localStorage)
+	require.NotNil(t, ctx.sessionStorage)
+	require.NotNil(t, ctx.dispatch)
+	require.NotNil(t, ctx.defere)
+	require.NotNil(t, ctx.async)
+	require.NotNil(t, ctx.addComponentUpdate)
+	require.NotNil(t, ctx.removeComponentUpdate)
+	require.NotNil(t, ctx.handleAction)
+	require.NotNil(t, ctx.postAction)
+	require.NotNil(t, ctx.observeState)
+	require.NotNil(t, ctx.getState)
+	require.NotNil(t, ctx.setState)
+	require.NotNil(t, ctx.delState)
 
-	assert.NotZero(t, e.FrameRate)
-	assert.NotNil(t, e.Page)
-	assert.NotNil(t, e.LocalStorage)
-	assert.NotNil(t, e.SessionStorage)
-	assert.NotNil(t, e.StaticResourceResolver)
-	assert.NotNil(t, e.Body)
-	assert.NotNil(t, e.dispatches)
-	assert.NotNil(t, e.componentUpdates)
-	assert.NotNil(t, e.deferables)
+	require.NotNil(t, ctx.notifyComponentEvent)
 }
 
-func TestEngineDispatch(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
-
-	e.Dispatch(Dispatch{})
-
-	require.Len(t, e.dispatches, 1)
-
-	d := <-e.dispatches
-	require.Equal(t, Update, d.Mode)
-	require.Equal(t, e.Body, d.Source)
-}
-
-func TestEngineEmit(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
-
-	foo := &foo{Bar: "bar"}
-	e.Mount(foo)
-	e.Consume()
-	require.Empty(t, e.dispatches)
-	require.Empty(t, e.componentUpdates)
-
-	bar := foo.getChildren()[0].(*bar)
-
-	emitted := false
-	e.Emit(bar, func() {
-		emitted = true
-	})
-	require.False(t, emitted)
-	require.Len(t, e.dispatches, 1)
-
-	e.Consume()
-	require.True(t, emitted)
-	require.Empty(t, e.dispatches)
-}
-
-func TestEngineHandleDispatch(t *testing.T) {
-	t.Run("update", func(t *testing.T) {
-		e := engine{}
-		e.init()
-		defer e.Close()
-
-		bar := &bar{}
-		e.Mount(bar)
-		e.Consume()
-
-		called := false
-		e.handleDispatch(Dispatch{
-			Mode:     Update,
-			Source:   bar,
-			Function: func(Context) { called = true },
-		})
-		require.True(t, called)
-		require.NotEmpty(t, e.componentUpdates)
+func TestEngineLoad(t *testing.T) {
+	t.Run("load loads a new body", func(t *testing.T) {
+		e := newTestEngine()
+		e.Load(&hello{})
+		require.IsType(t, &hello{}, e.body.body()[0])
 	})
 
-	t.Run("defer", func(t *testing.T) {
-		e := engine{}
-		e.init()
-		defer e.Close()
-
-		bar := &bar{}
-		e.Mount(bar)
-		e.Consume()
-
-		called := false
-		e.handleDispatch(Dispatch{
-			Mode:     Defer,
-			Source:   bar,
-			Function: func(Context) { called = true },
-		})
-		require.Empty(t, e.componentUpdates)
-		require.Len(t, e.deferables, 1)
-		require.False(t, called)
+	t.Run("loading a non mountable component panics", func(t *testing.T) {
+		e := newTestEngine()
+		err := e.Load(&compoWithNilRendering{})
+		require.Error(t, err)
+		t.Log(err)
 	})
 
-	t.Run("next", func(t *testing.T) {
-		e := engine{}
-		e.init()
-		defer e.Close()
+	t.Run("load updates body", func(t *testing.T) {
+		e := newTestEngine()
+		e.Load(&hello{})
+		e.Load(&bar{})
+		require.IsType(t, &bar{}, e.body.body()[0])
+	})
 
-		bar := &bar{}
-		e.Mount(bar)
-		e.Consume()
-
-		called := false
-		e.handleDispatch(Dispatch{
-			Mode:     Next,
-			Source:   bar,
-			Function: func(Context) { called = true },
-		})
-		require.True(t, called)
-		require.Empty(t, e.componentUpdates)
+	t.Run("load body update with a non mountable component panics", func(t *testing.T) {
+		e := newTestEngine()
+		e.Load(&hello{})
+		err := e.Load(&compoWithNilRendering{})
+		require.Error(t, err)
+		t.Log(err)
 	})
 }
 
-func TestEngineAddComponentUpdate(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
+func TestEngineNavigate(t *testing.T) {
+	t.Run("url is loaded and history is updated", func(t *testing.T) {
+		e := newTestEngine()
+		e.routes.route("/hello", NewZeroComponentFactory(&hello{}))
 
-	h := &hello{}
-	e.addComponentUpdate(h)
-	require.Empty(t, e.componentUpdates)
+		destination, _ := url.Parse("/hello")
+		e.Navigate(destination, true)
+		require.Equal(t, "/hello", e.lastVisitedURL.Path)
+	})
 
-	e.Mount(h)
-	e.Consume()
-	require.Empty(t, e.dispatches)
-	require.Empty(t, e.componentUpdates)
+	t.Run("url is loaded and history is not updated", func(t *testing.T) {
+		e := newTestEngine()
+		e.routes.route("/hello", NewZeroComponentFactory(&hello{}))
 
-	e.addComponentUpdate(h)
-	require.Len(t, e.componentUpdates, 1)
-	require.True(t, e.componentUpdates[h])
+		destination, _ := url.Parse("/hello")
+		e.Navigate(destination, false)
+		require.Equal(t, "/hello", e.lastVisitedURL.Path)
+	})
 
-	e.addComponentUpdate(h)
-	require.Len(t, e.componentUpdates, 1)
+	t.Run("mailto is loaded", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("mailto:contact@murlok.io")
+		e.Navigate(destination, true)
+	})
+
+	t.Run("external url is opened", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("https://murlok.io")
+		e.Navigate(destination, true)
+	})
+
+	t.Run("navigation on current page is skipped", func(t *testing.T) {
+		e := newTestEngine()
+		e.routes.route("/hello", NewZeroComponentFactory(&hello{}))
+
+		destination, _ := url.Parse("/hello#bye")
+		e.Navigate(destination, true)
+		lastVisitedURL := e.lastVisitedURL
+
+		e.Navigate(destination, true)
+		require.Equal(t, lastVisitedURL, e.lastVisitedURL)
+	})
+
+	t.Run("url with fragment is loaded", func(t *testing.T) {
+		e := newTestEngine()
+		e.routes.route("/hello", NewZeroComponentFactory(&hello{}))
+
+		destination, _ := url.Parse("/hello#bye")
+		e.Navigate(destination, true)
+		require.Equal(t, "/hello", e.lastVisitedURL.Path)
+		require.Equal(t, "bye", e.lastVisitedURL.Fragment)
+	})
+
+	t.Run("fragment navigation after initial load", func(t *testing.T) {
+		e := newTestEngine()
+		e.routes.route("/hello", NewZeroComponentFactory(&hello{}))
+
+		destination, _ := url.Parse("/hello")
+		e.Navigate(destination, true)
+		require.Equal(t, "/hello", e.lastVisitedURL.Path)
+		require.Empty(t, e.lastVisitedURL.Fragment)
+
+		destination, _ = url.Parse("/hello#bye")
+		e.Navigate(destination, true)
+		require.Equal(t, "bye", e.lastVisitedURL.Fragment)
+	})
+
+	t.Run("url with prefix root is loaded", func(t *testing.T) {
+		e := newTestEngine()
+		e.routes.route("/", NewZeroComponentFactory(&hello{}))
+
+		os.Setenv("GOAPP_ROOT_PREFIX", "/prefix")
+		destination, _ := url.Parse("/prefix")
+		e.Navigate(destination, true)
+		require.Equal(t, "/prefix", e.lastVisitedURL.Path)
+	})
+
+	t.Run("not found component is loaded", func(t *testing.T) {
+		e := newTestEngine()
+
+		destination, _ := url.Parse("/hello")
+		e.Navigate(destination, true)
+		require.IsType(t, &notFound{}, e.body.body()[0])
+	})
 }
 
-func TestPreventComponentUpdate(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
+func TestEngineInternalURL(t *testing.T) {
+	t.Run("destination is internal URL", func(t *testing.T) {
+		os.Setenv("GOAPP_INTERNAL_URLS", `["https://murlok.io"]`)
+		defer os.Unsetenv("GOAPP_INTERNAL_URLS")
 
-	h := &hello{}
-	e.Mount(h)
-	e.Consume()
-	require.Empty(t, e.dispatches)
-	require.Empty(t, e.componentUpdates)
+		e := newTestEngine()
+		destination, _ := url.Parse("https://murlok.io/warrior")
+		require.True(t, e.internalURL(destination))
+	})
 
-	e.preventComponentUpdate(h)
-	require.Len(t, e.componentUpdates, 1)
-	require.False(t, e.componentUpdates[h])
+	t.Run("destination is internal URL", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("https://murlok.io/warrior")
+		require.False(t, e.internalURL(destination))
+	})
 }
 
-func TestEngineHandleComponentUpdates(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
+func TestEngineMailTo(t *testing.T) {
+	t.Run("destination is mailto", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("mailto:maxence@goapp.dev")
+		require.True(t, e.mailTo(destination))
+	})
 
-	foo := &foo{Bar: "bar"}
-	e.Mount(foo)
-	e.Consume()
-	require.Empty(t, e.dispatches)
-	require.Empty(t, e.componentUpdates)
-	bar := foo.root.(*bar)
-
-	e.addComponentUpdate(foo)
-	e.addComponentUpdate(bar)
-	require.Len(t, e.componentUpdates, 2)
-
-	e.handleComponentUpdates()
-	require.Empty(t, e.componentUpdates)
+	t.Run("destination is not mailto", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("/hello")
+		require.False(t, e.mailTo(destination))
+	})
 }
 
-func TestEngineExecDeferableEvents(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
+func TestEngineExternalNavigation(t *testing.T) {
+	t.Run("destination is external navigation", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("https://murlok.io")
+		require.True(t, e.externalNavigation(destination))
+	})
 
-	h := &hello{}
-	e.Mount(h)
-	e.Consume()
-	require.Empty(t, e.dispatches)
-	require.Empty(t, e.componentUpdates)
+	t.Run("destination is not external navigation", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("/hello")
+		require.False(t, e.externalNavigation(destination))
+	})
+}
+
+func TestEngineAsync(t *testing.T) {
+	e := newTestEngine()
 
 	called := false
-
-	e.addDeferable(Dispatch{
-		Mode:   Defer,
-		Source: h,
-		Function: func(Context) {
-			called = true
-		},
+	e.async(func() {
+		called = true
 	})
-	require.Len(t, e.deferables, 1)
 
-	e.handleDeferables()
+	e.goroutines.Wait()
 	require.True(t, called)
-	require.Empty(t, e.deferables)
 }
 
-func TestEngineHandlePost(t *testing.T) {
-	isAppHandleCalled := false
-	isHandleACalled := false
-	isHandleBCalled := false
-	isHandleCCalled := false
+func TestEngineStart(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	e := engine{
-		ActionHandlers: map[string]ActionHandler{
-			"/test": func(ctx Context, a Action) {
-				isAppHandleCalled = true
+	routes := makeRouter()
+	routes.route("/", func() Composer {
+		return &navigatorComponent{
+			onNav: func(ctx Context) {
+				ctx.Dispatch(func(ctx Context) {
+					ctx.Defer(func(ctx Context) {
+						cancel()
+					})
+				})
 			},
-		},
-	}
-	e.init()
-	defer e.Close()
-
-	h := &hello{}
-	e.Mount(h)
-	e.Consume()
-
-	e.Handle("/test", h, func(ctx Context, a Action) {
-		isHandleACalled = true
+		}
 	})
 
-	e.Handle("/test", h, func(ctx Context, a Action) {
-		isHandleBCalled = true
+	e := newTestEngine()
+	e.ctx = ctx
+	e.routes = &routes
+
+	destination, _ := url.Parse("/")
+	e.Navigate(destination, false)
+	e.Start(0)
+}
+
+func TestEngineEncode(t *testing.T) {
+	t.Run("encoding when engine did not load a component returns an error", func(t *testing.T) {
+		e := newTestEngine()
+
+		var b bytes.Buffer
+		err := e.Encode(&b, Html())
+		require.Error(t, err)
+		require.Empty(t, b.Bytes())
 	})
 
-	f := &foo{}
-	e.Handle("/test", f, func(ctx Context, a Action) {
-		isHandleCCalled = true
+	t.Run("encoding a document without body returns an error", func(t *testing.T) {
+		e := newTestEngine()
+		compo := &hello{}
+		e.Load(compo)
+
+		var b bytes.Buffer
+		err := e.Encode(&b, Html())
+		require.Error(t, err)
+		require.Empty(t, b.Bytes())
 	})
 
-	e.Post(Action{Name: "/test"})
-	e.Consume()
+	t.Run("encoding document succed", func(t *testing.T) {
+		e := newTestEngine()
+		compo := &compoWithCustomRoot{Root: Span()}
+		e.Load(compo)
 
-	require.True(t, isAppHandleCalled)
-	require.True(t, isHandleACalled)
-	require.True(t, isHandleBCalled)
-	require.False(t, isHandleCCalled)
+		var b bytes.Buffer
+		err := e.Encode(&b, Html().privateBody(
+			Body().privateBody(
+				Text("bye"),
+			),
+		))
+		require.NoError(t, err)
+		require.Equal(t, "<!DOCTYPE html>\n<html>\n  <body>\n    <span></span>\n    bye\n  </body>\n</html>", b.String())
+	})
+}
+
+func newTestEngine() *engineX {
+	return NewTestEngine().(*engineX)
 }

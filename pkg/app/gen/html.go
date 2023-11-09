@@ -2189,7 +2189,7 @@ func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintf(w, `
 		// The interface that represents a "%s" HTML element.
 		type HTML%s interface {
-			UI
+			HTML
 		`,
 		strings.ToLower(t.Name),
 		t.Name,
@@ -2254,10 +2254,10 @@ func writeStruct(w io.Writer, t tag) {
 	case parent:
 		fmt.Fprintf(w, `
 			func (e *html%s) Body(v ...UI) HTML%s {
-				e.setChildren(v...)
-				return e
+				return e.setBody(FilterUIElems(v...)).(*html%s)
 			}
 			`,
+			t.Name,
 			t.Name,
 			t.Name,
 		)
@@ -2304,10 +2304,10 @@ func writeStruct(w io.Writer, t tag) {
 	case privateParent:
 		fmt.Fprintf(w, `
 			func (e *html%s) privateBody(v ...UI) HTML%s {
-				e.setChildren(v...)
-				return e
+				return e.setBody(FilterUIElems(v...)).(*html%s)
 			}
 			`,
+			t.Name,
 			t.Name,
 			t.Name,
 		)
@@ -2338,6 +2338,47 @@ func writeStruct(w io.Writer, t tag) {
 
 		writeEventFunction(w, e, t, false)
 	}
+
+	fmt.Fprintln(w)
+
+	fmt.Fprintf(w, `
+	func (e *html%s) setDepth(v uint) UI {
+		e.treeDepth = v
+		return e
+	}
+
+	func (e *html%s) setJSElement(v Value) HTML {
+		e.jsElement = v
+		return e
+	}
+
+	func (e *html%s) setAttrs(v attributes) HTML {
+		e.attributes = v
+		return e
+	}
+
+	func (e *html%s) setEvents(v eventHandlers) HTML {
+		e.eventHandlers = v
+		return e
+	}
+
+	func (e *html%s) setParent(v UI) UI {
+		e.parentElement = v
+		return e
+	}
+
+	func (e *html%s) setBody(v []UI) HTML {
+		e.children = v
+		return e
+	}
+	`,
+		t.Name,
+		t.Name,
+		t.Name,
+		t.Name,
+		t.Name,
+		t.Name,
+	)
 }
 
 func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
@@ -2485,8 +2526,7 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 	fmt.Fprintf(w, `%s (h EventHandler, scope ...any) HTML%s`, e.Name, t.Name)
 	if !isInterface {
 		fmt.Fprintf(w, `{
-			e.setEventHandler("%s", h, scope...)
-			return e
+			return e.On("%s", h, scope...)
 		}`, strings.TrimPrefix(strings.ToLower(e.Name), "on"))
 	}
 }
@@ -2521,6 +2561,13 @@ import (
 		}
 
 		fmt.Fprintln(f)
+
+		fmt.Fprintln(f, `elem.setDepth(1)`)
+		fmt.Fprintln(f, `elem.setJSElement(nil)`)
+		fmt.Fprintln(f, `elem.setAttrs(nil)`)
+		fmt.Fprintln(f, `elem.setEvents(nil)`)
+		fmt.Fprintln(f, `elem.setParent(nil)`)
+		fmt.Fprintln(f, `elem.setBody(nil)`)
 
 		for _, a := range t.Attrs {
 			fmt.Fprintf(f, `elem.%s(`, a.Name)
@@ -2566,13 +2613,11 @@ import (
 			}
 		}
 
-		if len(t.EventHandlers) != 0 {
-			fmt.Fprint(f, `
+		fmt.Fprint(f, `
 				h := func(ctx Context, e Event) {}
 			`)
-			fmt.Fprintf(f, `elem.On("click", h)`)
-			fmt.Fprintln(f)
-		}
+		fmt.Fprintf(f, `elem.On("click", h)`)
+		fmt.Fprintln(f)
 
 		for _, e := range t.EventHandlers {
 			fmt.Fprintf(f, `elem.%s(h)`, e.Name)

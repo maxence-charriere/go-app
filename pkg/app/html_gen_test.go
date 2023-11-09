@@ -8,6 +8,12 @@ import (
 
 func TestA(t *testing.T) {
 	elem := A()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -81,6 +87,12 @@ func TestA(t *testing.T) {
 
 func TestAbbr(t *testing.T) {
 	elem := Abbr()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -146,6 +158,12 @@ func TestAbbr(t *testing.T) {
 
 func TestAddress(t *testing.T) {
 	elem := Address()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -211,6 +229,12 @@ func TestAddress(t *testing.T) {
 
 func TestArea(t *testing.T) {
 	elem := Area()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Alt("hello %v", 42)
 	elem.Aria("foo", "bar")
@@ -284,6 +308,12 @@ func TestArea(t *testing.T) {
 
 func TestArticle(t *testing.T) {
 	elem := Article()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -349,6 +379,12 @@ func TestArticle(t *testing.T) {
 
 func TestAside(t *testing.T) {
 	elem := Aside()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -414,6 +450,12 @@ func TestAside(t *testing.T) {
 
 func TestAudio(t *testing.T) {
 	elem := Audio()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -513,6 +555,12 @@ func TestAudio(t *testing.T) {
 
 func TestB(t *testing.T) {
 	elem := B()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -578,6 +626,12 @@ func TestB(t *testing.T) {
 
 func TestBase(t *testing.T) {
 	elem := Base()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -643,6 +697,12 @@ func TestBase(t *testing.T) {
 
 func TestBdi(t *testing.T) {
 	elem := Bdi()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -708,6 +768,12 @@ func TestBdi(t *testing.T) {
 
 func TestBdo(t *testing.T) {
 	elem := Bdo()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -773,6 +839,12 @@ func TestBdo(t *testing.T) {
 
 func TestBlockquote(t *testing.T) {
 	elem := Blockquote()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -839,6 +911,12 @@ func TestBlockquote(t *testing.T) {
 
 func TestBody(t *testing.T) {
 	elem := Body()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -918,6 +996,12 @@ func TestBody(t *testing.T) {
 
 func TestBr(t *testing.T) {
 	elem := Br()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -981,6 +1065,12 @@ func TestBr(t *testing.T) {
 
 func TestButton(t *testing.T) {
 	elem := Button()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1060,6 +1150,12 @@ func TestButton(t *testing.T) {
 
 func TestCanvas(t *testing.T) {
 	elem := Canvas()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1127,6 +1223,12 @@ func TestCanvas(t *testing.T) {
 
 func TestCaption(t *testing.T) {
 	elem := Caption()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1192,6 +1294,12 @@ func TestCaption(t *testing.T) {
 
 func TestCite(t *testing.T) {
 	elem := Cite()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1257,6 +1365,12 @@ func TestCite(t *testing.T) {
 
 func TestCode(t *testing.T) {
 	elem := Code()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1322,6 +1436,12 @@ func TestCode(t *testing.T) {
 
 func TestCol(t *testing.T) {
 	elem := Col()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1386,6 +1506,12 @@ func TestCol(t *testing.T) {
 
 func TestColGroup(t *testing.T) {
 	elem := ColGroup()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1452,6 +1578,12 @@ func TestColGroup(t *testing.T) {
 
 func TestData(t *testing.T) {
 	elem := Data()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1475,12 +1607,21 @@ func TestData(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
 	elem.Value(42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
 
 func TestDataList(t *testing.T) {
 	elem := DataList()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1546,6 +1687,12 @@ func TestDataList(t *testing.T) {
 
 func TestDd(t *testing.T) {
 	elem := Dd()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1611,6 +1758,12 @@ func TestDd(t *testing.T) {
 
 func TestDel(t *testing.T) {
 	elem := Del()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1678,6 +1831,12 @@ func TestDel(t *testing.T) {
 
 func TestDetails(t *testing.T) {
 	elem := Details()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1746,6 +1905,12 @@ func TestDetails(t *testing.T) {
 
 func TestDfn(t *testing.T) {
 	elem := Dfn()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1811,6 +1976,12 @@ func TestDfn(t *testing.T) {
 
 func TestDialog(t *testing.T) {
 	elem := Dialog()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1878,6 +2049,12 @@ func TestDialog(t *testing.T) {
 
 func TestDiv(t *testing.T) {
 	elem := Div()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -1943,6 +2120,12 @@ func TestDiv(t *testing.T) {
 
 func TestDl(t *testing.T) {
 	elem := Dl()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2008,6 +2191,12 @@ func TestDl(t *testing.T) {
 
 func TestDt(t *testing.T) {
 	elem := Dt()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2073,6 +2262,12 @@ func TestDt(t *testing.T) {
 
 func TestElem(t *testing.T) {
 	elem := Elem("div")
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2139,6 +2334,12 @@ func TestElem(t *testing.T) {
 
 func TestElemSelfClosing(t *testing.T) {
 	elem := ElemSelfClosing("div")
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2203,6 +2404,12 @@ func TestElemSelfClosing(t *testing.T) {
 
 func TestEm(t *testing.T) {
 	elem := Em()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2268,6 +2475,12 @@ func TestEm(t *testing.T) {
 
 func TestEmbed(t *testing.T) {
 	elem := Embed()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2358,6 +2571,12 @@ func TestEmbed(t *testing.T) {
 
 func TestFieldSet(t *testing.T) {
 	elem := FieldSet()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2427,6 +2646,12 @@ func TestFieldSet(t *testing.T) {
 
 func TestFigCaption(t *testing.T) {
 	elem := FigCaption()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2492,6 +2717,12 @@ func TestFigCaption(t *testing.T) {
 
 func TestFigure(t *testing.T) {
 	elem := Figure()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2557,6 +2788,12 @@ func TestFigure(t *testing.T) {
 
 func TestFooter(t *testing.T) {
 	elem := Footer()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2622,6 +2859,12 @@ func TestFooter(t *testing.T) {
 
 func TestForm(t *testing.T) {
 	elem := Form()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AcceptCharset("hello %v", 42)
 	elem.AccessKey("hello %v", 42)
 	elem.Action("hello %v", 42)
@@ -2697,6 +2940,12 @@ func TestForm(t *testing.T) {
 
 func TestH1(t *testing.T) {
 	elem := H1()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2762,6 +3011,12 @@ func TestH1(t *testing.T) {
 
 func TestH2(t *testing.T) {
 	elem := H2()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2827,6 +3082,12 @@ func TestH2(t *testing.T) {
 
 func TestH3(t *testing.T) {
 	elem := H3()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2892,6 +3153,12 @@ func TestH3(t *testing.T) {
 
 func TestH4(t *testing.T) {
 	elem := H4()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -2957,6 +3224,12 @@ func TestH4(t *testing.T) {
 
 func TestH5(t *testing.T) {
 	elem := H5()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3022,6 +3295,12 @@ func TestH5(t *testing.T) {
 
 func TestH6(t *testing.T) {
 	elem := H6()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3087,6 +3366,12 @@ func TestH6(t *testing.T) {
 
 func TestHead(t *testing.T) {
 	elem := Head()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3109,12 +3394,21 @@ func TestHead(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
 
 func TestHeader(t *testing.T) {
 	elem := Header()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3180,6 +3474,12 @@ func TestHeader(t *testing.T) {
 
 func TestHr(t *testing.T) {
 	elem := Hr()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3243,6 +3543,12 @@ func TestHr(t *testing.T) {
 
 func TestHtml(t *testing.T) {
 	elem := Html()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3265,11 +3571,20 @@ func TestHtml(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.privateBody(Text("hello"))
 }
 
 func TestI(t *testing.T) {
 	elem := I()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3335,6 +3650,12 @@ func TestI(t *testing.T) {
 
 func TestIFrame(t *testing.T) {
 	elem := IFrame()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Allow("hello %v", 42)
 	elem.AllowFullscreen(true)
@@ -3414,6 +3735,12 @@ func TestIFrame(t *testing.T) {
 
 func TestImg(t *testing.T) {
 	elem := Img()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Alt("hello %v", 42)
 	elem.Aria("foo", "bar")
@@ -3512,6 +3839,12 @@ func TestImg(t *testing.T) {
 
 func TestInput(t *testing.T) {
 	elem := Input()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.Accept("hello %v", 42)
 	elem.AccessKey("hello %v", 42)
 	elem.Alt("hello %v", 42)
@@ -3615,6 +3948,12 @@ func TestInput(t *testing.T) {
 
 func TestIns(t *testing.T) {
 	elem := Ins()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3680,6 +4019,12 @@ func TestIns(t *testing.T) {
 
 func TestKbd(t *testing.T) {
 	elem := Kbd()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3745,6 +4090,12 @@ func TestKbd(t *testing.T) {
 
 func TestLabel(t *testing.T) {
 	elem := Label()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3812,6 +4163,12 @@ func TestLabel(t *testing.T) {
 
 func TestLegend(t *testing.T) {
 	elem := Legend()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3877,6 +4234,12 @@ func TestLegend(t *testing.T) {
 
 func TestLi(t *testing.T) {
 	elem := Li()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -3943,6 +4306,12 @@ func TestLi(t *testing.T) {
 
 func TestLink(t *testing.T) {
 	elem := Link()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.As("hello %v", 42)
@@ -4016,6 +4385,12 @@ func TestLink(t *testing.T) {
 
 func TestMain(t *testing.T) {
 	elem := Main()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4081,6 +4456,12 @@ func TestMain(t *testing.T) {
 
 func TestMap(t *testing.T) {
 	elem := Map()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4147,6 +4528,12 @@ func TestMap(t *testing.T) {
 
 func TestMark(t *testing.T) {
 	elem := Mark()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4212,6 +4599,12 @@ func TestMark(t *testing.T) {
 
 func TestMeta(t *testing.T) {
 	elem := Meta()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4239,10 +4632,19 @@ func TestMeta(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 }
 
 func TestMeter(t *testing.T) {
 	elem := Meter()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4315,6 +4717,12 @@ func TestMeter(t *testing.T) {
 
 func TestNav(t *testing.T) {
 	elem := Nav()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4380,6 +4788,12 @@ func TestNav(t *testing.T) {
 
 func TestNoScript(t *testing.T) {
 	elem := NoScript()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4402,12 +4816,21 @@ func TestNoScript(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
 
 func TestObject(t *testing.T) {
 	elem := Object()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4503,6 +4926,12 @@ func TestObject(t *testing.T) {
 
 func TestOl(t *testing.T) {
 	elem := Ol()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4572,6 +5001,12 @@ func TestOl(t *testing.T) {
 
 func TestOptGroup(t *testing.T) {
 	elem := OptGroup()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4640,6 +5075,12 @@ func TestOptGroup(t *testing.T) {
 
 func TestOption(t *testing.T) {
 	elem := Option()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4711,6 +5152,12 @@ func TestOption(t *testing.T) {
 
 func TestOutput(t *testing.T) {
 	elem := Output()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4779,6 +5226,12 @@ func TestOutput(t *testing.T) {
 
 func TestP(t *testing.T) {
 	elem := P()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4844,6 +5297,12 @@ func TestP(t *testing.T) {
 
 func TestParam(t *testing.T) {
 	elem := Param()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4909,6 +5368,12 @@ func TestParam(t *testing.T) {
 
 func TestPicture(t *testing.T) {
 	elem := Picture()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -4974,6 +5439,12 @@ func TestPicture(t *testing.T) {
 
 func TestPre(t *testing.T) {
 	elem := Pre()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5039,6 +5510,12 @@ func TestPre(t *testing.T) {
 
 func TestProgress(t *testing.T) {
 	elem := Progress()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5106,6 +5583,12 @@ func TestProgress(t *testing.T) {
 
 func TestQ(t *testing.T) {
 	elem := Q()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5172,6 +5655,12 @@ func TestQ(t *testing.T) {
 
 func TestRp(t *testing.T) {
 	elem := Rp()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5237,6 +5726,12 @@ func TestRp(t *testing.T) {
 
 func TestRt(t *testing.T) {
 	elem := Rt()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5302,6 +5797,12 @@ func TestRt(t *testing.T) {
 
 func TestRuby(t *testing.T) {
 	elem := Ruby()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5367,6 +5868,12 @@ func TestRuby(t *testing.T) {
 
 func TestS(t *testing.T) {
 	elem := S()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5432,6 +5939,12 @@ func TestS(t *testing.T) {
 
 func TestSamp(t *testing.T) {
 	elem := Samp()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5497,6 +6010,12 @@ func TestSamp(t *testing.T) {
 
 func TestScript(t *testing.T) {
 	elem := Script()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Async(true)
@@ -5537,6 +6056,12 @@ func TestScript(t *testing.T) {
 
 func TestSection(t *testing.T) {
 	elem := Section()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5602,6 +6127,12 @@ func TestSection(t *testing.T) {
 
 func TestSelect(t *testing.T) {
 	elem := Select()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5678,6 +6209,12 @@ func TestSelect(t *testing.T) {
 
 func TestSmall(t *testing.T) {
 	elem := Small()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5743,6 +6280,12 @@ func TestSmall(t *testing.T) {
 
 func TestSource(t *testing.T) {
 	elem := Source()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5811,6 +6354,12 @@ func TestSource(t *testing.T) {
 
 func TestSpan(t *testing.T) {
 	elem := Span()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5876,6 +6425,12 @@ func TestSpan(t *testing.T) {
 
 func TestStrong(t *testing.T) {
 	elem := Strong()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5941,6 +6496,12 @@ func TestStrong(t *testing.T) {
 
 func TestStyle(t *testing.T) {
 	elem := Style()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6009,6 +6570,12 @@ func TestStyle(t *testing.T) {
 
 func TestSub(t *testing.T) {
 	elem := Sub()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6074,6 +6641,12 @@ func TestSub(t *testing.T) {
 
 func TestSummary(t *testing.T) {
 	elem := Summary()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6139,6 +6712,12 @@ func TestSummary(t *testing.T) {
 
 func TestSup(t *testing.T) {
 	elem := Sup()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6204,6 +6783,12 @@ func TestSup(t *testing.T) {
 
 func TestTable(t *testing.T) {
 	elem := Table()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6269,6 +6854,12 @@ func TestTable(t *testing.T) {
 
 func TestTBody(t *testing.T) {
 	elem := TBody()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6334,6 +6925,12 @@ func TestTBody(t *testing.T) {
 
 func TestTd(t *testing.T) {
 	elem := Td()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6402,6 +6999,12 @@ func TestTd(t *testing.T) {
 
 func TestTemplate(t *testing.T) {
 	elem := Template()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6424,12 +7027,21 @@ func TestTemplate(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
 
 func TestTextarea(t *testing.T) {
 	elem := Textarea()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6511,6 +7123,12 @@ func TestTextarea(t *testing.T) {
 
 func TestTFoot(t *testing.T) {
 	elem := TFoot()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6576,6 +7194,12 @@ func TestTFoot(t *testing.T) {
 
 func TestTh(t *testing.T) {
 	elem := Th()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.Abbr("hello %v", 42)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
@@ -6646,6 +7270,12 @@ func TestTh(t *testing.T) {
 
 func TestTHead(t *testing.T) {
 	elem := THead()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6711,6 +7341,12 @@ func TestTHead(t *testing.T) {
 
 func TestTime(t *testing.T) {
 	elem := Time()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6777,6 +7413,12 @@ func TestTime(t *testing.T) {
 
 func TestTitle(t *testing.T) {
 	elem := Title()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6799,12 +7441,21 @@ func TestTitle(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("hello %v", 42)
+
+	h := func(ctx Context, e Event) {}
+	elem.On("click", h)
 	elem.Text("hello")
 	elem.Textf("hello %s", "Maxence")
 }
 
 func TestTr(t *testing.T) {
 	elem := Tr()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6870,6 +7521,12 @@ func TestTr(t *testing.T) {
 
 func TestU(t *testing.T) {
 	elem := U()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -6935,6 +7592,12 @@ func TestU(t *testing.T) {
 
 func TestUl(t *testing.T) {
 	elem := Ul()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -7000,6 +7663,12 @@ func TestUl(t *testing.T) {
 
 func TestVar(t *testing.T) {
 	elem := Var()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -7065,6 +7734,12 @@ func TestVar(t *testing.T) {
 
 func TestVideo(t *testing.T) {
 	elem := Video()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -7167,6 +7842,12 @@ func TestVideo(t *testing.T) {
 
 func TestWbr(t *testing.T) {
 	elem := Wbr()
+	elem.setDepth(1)
+	elem.setJSElement(nil)
+	elem.setAttrs(nil)
+	elem.setEvents(nil)
+	elem.setParent(nil)
+	elem.setBody(nil)
 	elem.AccessKey("hello %v", 42)
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")

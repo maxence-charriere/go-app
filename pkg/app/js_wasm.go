@@ -247,31 +247,6 @@ func (w *browserWindow) ScrollToID(id string) {
 	}
 }
 
-func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeJSEventHandler(w.body, func(ctx Context, e Event) {
-		h(ctx, e)
-
-		// Trigger children components updates:
-		if len(w.body.getChildren()) == 0 {
-			return
-		}
-		compo, ok := w.body.getChildren()[0].(Composer)
-		if !ok {
-			return
-		}
-		ctx.Dispatcher().Dispatch(Dispatch{
-			Mode:   Update,
-			Source: compo,
-		})
-	})
-	w.addEventListener(event, callback)
-
-	return func() {
-		w.removeEventListener(event, callback)
-		callback.Release()
-	}
-}
-
 func (w *browserWindow) setBody(body UI) {
 	w.body = body
 }
@@ -297,13 +272,15 @@ func (w *browserWindow) createTextNode(v string) Value {
 }
 
 func (w *browserWindow) addHistory(u *url.URL) {
+	u.Scheme = w.URL().Scheme
+	u.Host = w.URL().Host
 	w.Get("history").Call("pushState", nil, "", u.String())
-	lastURLVisited = u
 }
 
 func (w *browserWindow) replaceHistory(u *url.URL) {
+	u.Scheme = w.URL().Scheme
+	u.Host = w.URL().Host
 	w.Get("history").Call("replaceState", nil, "", u.String())
-	lastURLVisited = u
 }
 
 func val(v js.Value) Value {

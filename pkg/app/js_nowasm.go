@@ -194,10 +194,6 @@ func (w *browserWindow) GetElementByID(id string) Value {
 func (w *browserWindow) ScrollToID(id string) {
 }
 
-func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	return func() {}
-}
-
 func (w *browserWindow) setBody(body UI) {
 }
 

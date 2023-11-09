@@ -1,7 +1,6 @@
 package app
 
 import (
-	"io"
 	"reflect"
 	"sort"
 
@@ -24,6 +23,8 @@ type RangeLoop interface {
 	//
 	// It panics if the range source is not a map or if map keys are not strings.
 	Map(f func(string) UI) RangeLoop
+
+	body() []UI
 }
 
 // Range returns a range loop that iterates within the given source. Source must
@@ -33,8 +34,8 @@ func Range(src any) RangeLoop {
 }
 
 type rangeLoop struct {
-	body   []UI
-	source any
+	children []UI
+	source   any
 }
 
 func (r rangeLoop) Slice(f func(int) UI) RangeLoop {
@@ -50,7 +51,7 @@ func (r rangeLoop) Slice(f func(int) UI) RangeLoop {
 		body = append(body, FilterUIElems(f(i))...)
 	}
 
-	r.body = body
+	r.children = body
 	return r
 }
 
@@ -81,7 +82,7 @@ func (r rangeLoop) Map(f func(string) UI) RangeLoop {
 		body = append(body, FilterUIElems(f(k))...)
 	}
 
-	r.body = body
+	r.children = body
 	return r
 }
 
@@ -93,62 +94,14 @@ func (r rangeLoop) Mounted() bool {
 	return false
 }
 
-func (r rangeLoop) name() string {
-	return "range"
-}
-
-func (r rangeLoop) self() UI {
-	return r
-}
-
-func (r rangeLoop) setSelf(UI) {
-}
-
-func (r rangeLoop) getDispatcher() Dispatcher {
+func (r rangeLoop) setParent(UI) UI {
 	return nil
 }
 
-func (r rangeLoop) getAttributes() attributes {
+func (r rangeLoop) parent() UI {
 	return nil
 }
 
-func (r rangeLoop) getEventHandlers() eventHandlers {
-	return nil
-}
-
-func (r rangeLoop) getParent() UI {
-	return nil
-}
-
-func (r rangeLoop) setParent(UI) {
-}
-
-func (r rangeLoop) getChildren() []UI {
-	return r.body
-}
-
-func (r rangeLoop) mount(Dispatcher) error {
-	return errors.New("range loop is not mountable").WithTag("name", r.name())
-}
-
-func (r rangeLoop) dismount() {
-}
-
-func (r rangeLoop) canUpdateWith(UI) bool {
-	return false
-}
-
-func (r rangeLoop) updateWith(UI) error {
-	return errors.New("range loop cannot be updated").WithTag("name", r.name())
-}
-
-func (r rangeLoop) onComponentEvent(any) {
-}
-
-func (r rangeLoop) html(w io.Writer) {
-	panic("should not be called")
-}
-
-func (r rangeLoop) htmlWithIndent(w io.Writer, indent int) {
-	panic("should not be called")
+func (r rangeLoop) body() []UI {
+	return r.children
 }

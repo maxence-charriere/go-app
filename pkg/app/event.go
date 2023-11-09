@@ -33,30 +33,6 @@ func (h eventHandlers) Set(event string, eh EventHandler, scope ...any) {
 	}
 }
 
-func (h eventHandlers) Mount(src UI) {
-	for event, eh := range h {
-		h[event] = eh.Mount(src)
-	}
-}
-
-func (h eventHandlers) Update(src UI, v eventHandlers) {
-	for event, eh := range h {
-		if _, ok := v[event]; !ok {
-			eh.Dismount()
-			delete(h, event)
-		}
-	}
-
-	for event, eh := range v {
-		if h[event].Equal(eh) {
-			continue
-		}
-
-		h[event].Dismount()
-		h[event] = eh.Mount(src)
-	}
-}
-
 type eventHandler struct {
 	event     string
 	scope     string
@@ -77,40 +53,6 @@ func (h eventHandler) Equal(v eventHandler) bool {
 	return h.event == v.event &&
 		h.scope == v.scope &&
 		reflect.ValueOf(h.goHandler).Pointer() == reflect.ValueOf(v.goHandler).Pointer()
-}
-
-func (h eventHandler) Mount(src UI) eventHandler {
-	jsHandler := makeJSEventHandler(src, h.goHandler)
-	src.JSValue().addEventListener(h.event, jsHandler)
-
-	close := func() {
-		src.JSValue().removeEventListener(h.event, jsHandler)
-		jsHandler.Release()
-	}
-
-	h.jsHandler = jsHandler
-	h.close = close
-	return h
-}
-
-func (h eventHandler) Dismount() {
-	if h.close != nil {
-		h.close()
-	}
-}
-
-func makeJSEventHandler(src UI, h EventHandler) Func {
-	return FuncOf(func(this Value, args []Value) any {
-		src.getDispatcher().Emit(src, func() {
-			event := Event{
-				Value: args[0],
-			}
-			trackMousePosition(event)
-			h(makeContext(src), event)
-		})
-
-		return nil
-	})
 }
 
 func trackMousePosition(e Event) {

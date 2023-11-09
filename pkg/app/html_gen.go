@@ -8,7 +8,7 @@ import (
 
 // The interface that represents a "a" HTML element.
 type HTMLA interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLA
@@ -220,8 +220,7 @@ type htmlA struct {
 }
 
 func (e *htmlA) Body(v ...UI) HTMLA {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlA)
 }
 
 func (e *htmlA) Text(v any) HTMLA {
@@ -377,178 +376,174 @@ func (e *htmlA) On(event string, h EventHandler, scope ...any) HTMLA {
 }
 
 func (e *htmlA) OnBlur(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlA) OnChange(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlA) OnClick(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlA) OnContextMenu(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlA) OnCopy(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlA) OnCut(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlA) OnDblClick(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlA) OnDrag(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlA) OnDragEnd(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlA) OnDragEnter(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlA) OnDragLeave(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlA) OnDragOver(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlA) OnDragStart(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlA) OnDrop(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlA) OnFocus(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlA) OnInput(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlA) OnInvalid(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlA) OnKeyDown(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlA) OnKeyPress(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlA) OnKeyUp(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlA) OnMouseDown(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlA) OnMouseEnter(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlA) OnMouseLeave(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlA) OnMouseMove(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlA) OnMouseOut(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlA) OnMouseOver(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlA) OnMouseUp(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlA) OnPaste(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlA) OnReset(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlA) OnScroll(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlA) OnSearch(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlA) OnSelect(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlA) OnSubmit(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlA) OnWheel(h EventHandler, scope ...any) HTMLA {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlA) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlA) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlA) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlA) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlA) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlA) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "abbr" HTML element.
 type HTMLAbbr interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAbbr
@@ -736,8 +731,7 @@ type htmlAbbr struct {
 }
 
 func (e *htmlAbbr) Body(v ...UI) HTMLAbbr {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAbbr)
 }
 
 func (e *htmlAbbr) Text(v any) HTMLAbbr {
@@ -853,178 +847,174 @@ func (e *htmlAbbr) On(event string, h EventHandler, scope ...any) HTMLAbbr {
 }
 
 func (e *htmlAbbr) OnBlur(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlAbbr) OnChange(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlAbbr) OnClick(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlAbbr) OnContextMenu(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlAbbr) OnCopy(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlAbbr) OnCut(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlAbbr) OnDblClick(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlAbbr) OnDrag(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlAbbr) OnDragEnd(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlAbbr) OnDragEnter(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlAbbr) OnDragLeave(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlAbbr) OnDragOver(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlAbbr) OnDragStart(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlAbbr) OnDrop(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlAbbr) OnFocus(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlAbbr) OnInput(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlAbbr) OnInvalid(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlAbbr) OnKeyDown(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlAbbr) OnKeyPress(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlAbbr) OnKeyUp(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlAbbr) OnMouseDown(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlAbbr) OnMouseEnter(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlAbbr) OnMouseLeave(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlAbbr) OnMouseMove(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlAbbr) OnMouseOut(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlAbbr) OnMouseOver(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlAbbr) OnMouseUp(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlAbbr) OnPaste(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlAbbr) OnReset(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlAbbr) OnScroll(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlAbbr) OnSearch(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlAbbr) OnSelect(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlAbbr) OnSubmit(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlAbbr) OnWheel(h EventHandler, scope ...any) HTMLAbbr {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlAbbr) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlAbbr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAbbr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlAbbr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlAbbr) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlAbbr) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "address" HTML element.
 type HTMLAddress interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAddress
@@ -1212,8 +1202,7 @@ type htmlAddress struct {
 }
 
 func (e *htmlAddress) Body(v ...UI) HTMLAddress {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAddress)
 }
 
 func (e *htmlAddress) Text(v any) HTMLAddress {
@@ -1329,178 +1318,174 @@ func (e *htmlAddress) On(event string, h EventHandler, scope ...any) HTMLAddress
 }
 
 func (e *htmlAddress) OnBlur(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlAddress) OnChange(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlAddress) OnClick(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlAddress) OnContextMenu(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlAddress) OnCopy(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlAddress) OnCut(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlAddress) OnDblClick(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlAddress) OnDrag(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlAddress) OnDragEnd(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlAddress) OnDragEnter(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlAddress) OnDragLeave(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlAddress) OnDragOver(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlAddress) OnDragStart(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlAddress) OnDrop(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlAddress) OnFocus(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlAddress) OnInput(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlAddress) OnInvalid(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlAddress) OnKeyDown(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlAddress) OnKeyPress(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlAddress) OnKeyUp(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlAddress) OnMouseDown(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlAddress) OnMouseEnter(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlAddress) OnMouseLeave(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlAddress) OnMouseMove(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlAddress) OnMouseOut(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlAddress) OnMouseOver(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlAddress) OnMouseUp(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlAddress) OnPaste(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlAddress) OnReset(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlAddress) OnScroll(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlAddress) OnSearch(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlAddress) OnSelect(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlAddress) OnSubmit(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlAddress) OnWheel(h EventHandler, scope ...any) HTMLAddress {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlAddress) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlAddress) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAddress) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlAddress) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlAddress) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlAddress) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "area" HTML element.
 type HTMLArea interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLArea
@@ -1863,178 +1848,174 @@ func (e *htmlArea) On(event string, h EventHandler, scope ...any) HTMLArea {
 }
 
 func (e *htmlArea) OnBlur(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlArea) OnChange(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlArea) OnClick(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlArea) OnContextMenu(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlArea) OnCopy(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlArea) OnCut(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlArea) OnDblClick(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlArea) OnDrag(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlArea) OnDragEnd(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlArea) OnDragEnter(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlArea) OnDragLeave(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlArea) OnDragOver(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlArea) OnDragStart(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlArea) OnDrop(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlArea) OnFocus(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlArea) OnInput(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlArea) OnInvalid(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlArea) OnKeyDown(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlArea) OnKeyPress(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlArea) OnKeyUp(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlArea) OnMouseDown(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlArea) OnMouseEnter(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlArea) OnMouseLeave(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlArea) OnMouseMove(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlArea) OnMouseOut(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlArea) OnMouseOver(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlArea) OnMouseUp(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlArea) OnPaste(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlArea) OnReset(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlArea) OnScroll(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlArea) OnSearch(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlArea) OnSelect(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlArea) OnSubmit(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlArea) OnWheel(h EventHandler, scope ...any) HTMLArea {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlArea) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlArea) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlArea) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlArea) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlArea) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlArea) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "article" HTML element.
 type HTMLArticle interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLArticle
@@ -2222,8 +2203,7 @@ type htmlArticle struct {
 }
 
 func (e *htmlArticle) Body(v ...UI) HTMLArticle {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlArticle)
 }
 
 func (e *htmlArticle) Text(v any) HTMLArticle {
@@ -2339,178 +2319,174 @@ func (e *htmlArticle) On(event string, h EventHandler, scope ...any) HTMLArticle
 }
 
 func (e *htmlArticle) OnBlur(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlArticle) OnChange(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlArticle) OnClick(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlArticle) OnContextMenu(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlArticle) OnCopy(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlArticle) OnCut(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlArticle) OnDblClick(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlArticle) OnDrag(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlArticle) OnDragEnd(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlArticle) OnDragEnter(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlArticle) OnDragLeave(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlArticle) OnDragOver(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlArticle) OnDragStart(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlArticle) OnDrop(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlArticle) OnFocus(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlArticle) OnInput(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlArticle) OnInvalid(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlArticle) OnKeyDown(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlArticle) OnKeyPress(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlArticle) OnKeyUp(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlArticle) OnMouseDown(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlArticle) OnMouseEnter(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlArticle) OnMouseLeave(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlArticle) OnMouseMove(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlArticle) OnMouseOut(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlArticle) OnMouseOver(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlArticle) OnMouseUp(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlArticle) OnPaste(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlArticle) OnReset(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlArticle) OnScroll(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlArticle) OnSearch(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlArticle) OnSelect(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlArticle) OnSubmit(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlArticle) OnWheel(h EventHandler, scope ...any) HTMLArticle {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlArticle) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlArticle) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlArticle) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlArticle) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlArticle) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlArticle) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "aside" HTML element.
 type HTMLAside interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAside
@@ -2698,8 +2674,7 @@ type htmlAside struct {
 }
 
 func (e *htmlAside) Body(v ...UI) HTMLAside {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAside)
 }
 
 func (e *htmlAside) Text(v any) HTMLAside {
@@ -2815,178 +2790,174 @@ func (e *htmlAside) On(event string, h EventHandler, scope ...any) HTMLAside {
 }
 
 func (e *htmlAside) OnBlur(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlAside) OnChange(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlAside) OnClick(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlAside) OnContextMenu(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlAside) OnCopy(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlAside) OnCut(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlAside) OnDblClick(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlAside) OnDrag(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlAside) OnDragEnd(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlAside) OnDragEnter(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlAside) OnDragLeave(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlAside) OnDragOver(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlAside) OnDragStart(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlAside) OnDrop(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlAside) OnFocus(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlAside) OnInput(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlAside) OnInvalid(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlAside) OnKeyDown(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlAside) OnKeyPress(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlAside) OnKeyUp(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlAside) OnMouseDown(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlAside) OnMouseEnter(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlAside) OnMouseLeave(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlAside) OnMouseMove(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlAside) OnMouseOut(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlAside) OnMouseOver(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlAside) OnMouseUp(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlAside) OnPaste(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlAside) OnReset(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlAside) OnScroll(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlAside) OnSearch(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlAside) OnSelect(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlAside) OnSubmit(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlAside) OnWheel(h EventHandler, scope ...any) HTMLAside {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlAside) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlAside) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAside) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlAside) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlAside) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlAside) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "audio" HTML element.
 type HTMLAudio interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLAudio
@@ -3264,8 +3235,7 @@ type htmlAudio struct {
 }
 
 func (e *htmlAudio) Body(v ...UI) HTMLAudio {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlAudio)
 }
 
 func (e *htmlAudio) Text(v any) HTMLAudio {
@@ -3416,293 +3386,266 @@ func (e *htmlAudio) On(event string, h EventHandler, scope ...any) HTMLAudio {
 }
 
 func (e *htmlAudio) OnAbort(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("abort", h, scope...)
-	return e
+	return e.On("abort", h, scope...)
 }
 
 func (e *htmlAudio) OnBlur(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlAudio) OnCanPlay(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("canplay", h, scope...)
-	return e
+	return e.On("canplay", h, scope...)
 }
 
 func (e *htmlAudio) OnCanPlayThrough(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("canplaythrough", h, scope...)
-	return e
+	return e.On("canplaythrough", h, scope...)
 }
 
 func (e *htmlAudio) OnChange(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlAudio) OnClick(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlAudio) OnContextMenu(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlAudio) OnCopy(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlAudio) OnCueChange(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("cuechange", h, scope...)
-	return e
+	return e.On("cuechange", h, scope...)
 }
 
 func (e *htmlAudio) OnCut(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlAudio) OnDblClick(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlAudio) OnDrag(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlAudio) OnDragEnd(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlAudio) OnDragEnter(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlAudio) OnDragLeave(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlAudio) OnDragOver(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlAudio) OnDragStart(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlAudio) OnDrop(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlAudio) OnDurationChange(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("durationchange", h, scope...)
-	return e
+	return e.On("durationchange", h, scope...)
 }
 
 func (e *htmlAudio) OnEmptied(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("emptied", h, scope...)
-	return e
+	return e.On("emptied", h, scope...)
 }
 
 func (e *htmlAudio) OnEnded(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("ended", h, scope...)
-	return e
+	return e.On("ended", h, scope...)
 }
 
 func (e *htmlAudio) OnError(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("error", h, scope...)
-	return e
+	return e.On("error", h, scope...)
 }
 
 func (e *htmlAudio) OnFocus(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlAudio) OnInput(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlAudio) OnInvalid(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlAudio) OnKeyDown(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlAudio) OnKeyPress(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlAudio) OnKeyUp(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlAudio) OnLoadStart(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("loadstart", h, scope...)
-	return e
+	return e.On("loadstart", h, scope...)
 }
 
 func (e *htmlAudio) OnLoadedData(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("loadeddata", h, scope...)
-	return e
+	return e.On("loadeddata", h, scope...)
 }
 
 func (e *htmlAudio) OnLoadedMetaData(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("loadedmetadata", h, scope...)
-	return e
+	return e.On("loadedmetadata", h, scope...)
 }
 
 func (e *htmlAudio) OnMouseDown(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlAudio) OnMouseEnter(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlAudio) OnMouseLeave(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlAudio) OnMouseMove(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlAudio) OnMouseOut(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlAudio) OnMouseOver(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlAudio) OnMouseUp(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlAudio) OnPaste(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlAudio) OnPause(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("pause", h, scope...)
-	return e
+	return e.On("pause", h, scope...)
 }
 
 func (e *htmlAudio) OnPlay(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("play", h, scope...)
-	return e
+	return e.On("play", h, scope...)
 }
 
 func (e *htmlAudio) OnPlaying(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("playing", h, scope...)
-	return e
+	return e.On("playing", h, scope...)
 }
 
 func (e *htmlAudio) OnProgress(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("progress", h, scope...)
-	return e
+	return e.On("progress", h, scope...)
 }
 
 func (e *htmlAudio) OnRateChange(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("ratechange", h, scope...)
-	return e
+	return e.On("ratechange", h, scope...)
 }
 
 func (e *htmlAudio) OnReset(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlAudio) OnScroll(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlAudio) OnSearch(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlAudio) OnSeeked(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("seeked", h, scope...)
-	return e
+	return e.On("seeked", h, scope...)
 }
 
 func (e *htmlAudio) OnSeeking(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("seeking", h, scope...)
-	return e
+	return e.On("seeking", h, scope...)
 }
 
 func (e *htmlAudio) OnSelect(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlAudio) OnStalled(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("stalled", h, scope...)
-	return e
+	return e.On("stalled", h, scope...)
 }
 
 func (e *htmlAudio) OnSubmit(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlAudio) OnSuspend(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("suspend", h, scope...)
-	return e
+	return e.On("suspend", h, scope...)
 }
 
 func (e *htmlAudio) OnTimeUpdate(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("timeupdate", h, scope...)
-	return e
+	return e.On("timeupdate", h, scope...)
 }
 
 func (e *htmlAudio) OnVolumeChange(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("volumechange", h, scope...)
-	return e
+	return e.On("volumechange", h, scope...)
 }
 
 func (e *htmlAudio) OnWaiting(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("waiting", h, scope...)
-	return e
+	return e.On("waiting", h, scope...)
 }
 
 func (e *htmlAudio) OnWheel(h EventHandler, scope ...any) HTMLAudio {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlAudio) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlAudio) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlAudio) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlAudio) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlAudio) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlAudio) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "b" HTML element.
 type HTMLB interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLB
@@ -3890,8 +3833,7 @@ type htmlB struct {
 }
 
 func (e *htmlB) Body(v ...UI) HTMLB {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlB)
 }
 
 func (e *htmlB) Text(v any) HTMLB {
@@ -4007,178 +3949,174 @@ func (e *htmlB) On(event string, h EventHandler, scope ...any) HTMLB {
 }
 
 func (e *htmlB) OnBlur(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlB) OnChange(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlB) OnClick(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlB) OnContextMenu(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlB) OnCopy(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlB) OnCut(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlB) OnDblClick(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlB) OnDrag(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlB) OnDragEnd(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlB) OnDragEnter(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlB) OnDragLeave(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlB) OnDragOver(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlB) OnDragStart(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlB) OnDrop(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlB) OnFocus(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlB) OnInput(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlB) OnInvalid(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlB) OnKeyDown(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlB) OnKeyPress(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlB) OnKeyUp(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlB) OnMouseDown(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlB) OnMouseEnter(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlB) OnMouseLeave(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlB) OnMouseMove(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlB) OnMouseOut(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlB) OnMouseOver(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlB) OnMouseUp(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlB) OnPaste(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlB) OnReset(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlB) OnScroll(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlB) OnSearch(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlB) OnSelect(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlB) OnSubmit(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlB) OnWheel(h EventHandler, scope ...any) HTMLB {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlB) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlB) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlB) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlB) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlB) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlB) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "base" HTML element.
 type HTMLBase interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLBase
@@ -4477,178 +4415,174 @@ func (e *htmlBase) On(event string, h EventHandler, scope ...any) HTMLBase {
 }
 
 func (e *htmlBase) OnBlur(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlBase) OnChange(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlBase) OnClick(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlBase) OnContextMenu(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlBase) OnCopy(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlBase) OnCut(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlBase) OnDblClick(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlBase) OnDrag(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlBase) OnDragEnd(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlBase) OnDragEnter(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlBase) OnDragLeave(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlBase) OnDragOver(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlBase) OnDragStart(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlBase) OnDrop(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlBase) OnFocus(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlBase) OnInput(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlBase) OnInvalid(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlBase) OnKeyDown(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlBase) OnKeyPress(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlBase) OnKeyUp(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlBase) OnMouseDown(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlBase) OnMouseEnter(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlBase) OnMouseLeave(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlBase) OnMouseMove(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlBase) OnMouseOut(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlBase) OnMouseOver(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlBase) OnMouseUp(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlBase) OnPaste(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlBase) OnReset(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlBase) OnScroll(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlBase) OnSearch(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlBase) OnSelect(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlBase) OnSubmit(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlBase) OnWheel(h EventHandler, scope ...any) HTMLBase {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlBase) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlBase) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBase) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlBase) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlBase) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlBase) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "bdi" HTML element.
 type HTMLBdi interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLBdi
@@ -4836,8 +4770,7 @@ type htmlBdi struct {
 }
 
 func (e *htmlBdi) Body(v ...UI) HTMLBdi {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBdi)
 }
 
 func (e *htmlBdi) Text(v any) HTMLBdi {
@@ -4953,178 +4886,174 @@ func (e *htmlBdi) On(event string, h EventHandler, scope ...any) HTMLBdi {
 }
 
 func (e *htmlBdi) OnBlur(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlBdi) OnChange(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlBdi) OnClick(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlBdi) OnContextMenu(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlBdi) OnCopy(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlBdi) OnCut(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlBdi) OnDblClick(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlBdi) OnDrag(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlBdi) OnDragEnd(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlBdi) OnDragEnter(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlBdi) OnDragLeave(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlBdi) OnDragOver(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlBdi) OnDragStart(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlBdi) OnDrop(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlBdi) OnFocus(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlBdi) OnInput(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlBdi) OnInvalid(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlBdi) OnKeyDown(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlBdi) OnKeyPress(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlBdi) OnKeyUp(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlBdi) OnMouseDown(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlBdi) OnMouseEnter(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlBdi) OnMouseLeave(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlBdi) OnMouseMove(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlBdi) OnMouseOut(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlBdi) OnMouseOver(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlBdi) OnMouseUp(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlBdi) OnPaste(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlBdi) OnReset(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlBdi) OnScroll(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlBdi) OnSearch(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlBdi) OnSelect(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlBdi) OnSubmit(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlBdi) OnWheel(h EventHandler, scope ...any) HTMLBdi {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlBdi) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlBdi) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBdi) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlBdi) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlBdi) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlBdi) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "bdo" HTML element.
 type HTMLBdo interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLBdo
@@ -5312,8 +5241,7 @@ type htmlBdo struct {
 }
 
 func (e *htmlBdo) Body(v ...UI) HTMLBdo {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBdo)
 }
 
 func (e *htmlBdo) Text(v any) HTMLBdo {
@@ -5429,178 +5357,174 @@ func (e *htmlBdo) On(event string, h EventHandler, scope ...any) HTMLBdo {
 }
 
 func (e *htmlBdo) OnBlur(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlBdo) OnChange(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlBdo) OnClick(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlBdo) OnContextMenu(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlBdo) OnCopy(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlBdo) OnCut(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlBdo) OnDblClick(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlBdo) OnDrag(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlBdo) OnDragEnd(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlBdo) OnDragEnter(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlBdo) OnDragLeave(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlBdo) OnDragOver(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlBdo) OnDragStart(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlBdo) OnDrop(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlBdo) OnFocus(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlBdo) OnInput(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlBdo) OnInvalid(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlBdo) OnKeyDown(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlBdo) OnKeyPress(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlBdo) OnKeyUp(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlBdo) OnMouseDown(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlBdo) OnMouseEnter(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlBdo) OnMouseLeave(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlBdo) OnMouseMove(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlBdo) OnMouseOut(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlBdo) OnMouseOver(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlBdo) OnMouseUp(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlBdo) OnPaste(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlBdo) OnReset(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlBdo) OnScroll(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlBdo) OnSearch(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlBdo) OnSelect(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlBdo) OnSubmit(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlBdo) OnWheel(h EventHandler, scope ...any) HTMLBdo {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlBdo) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlBdo) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBdo) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlBdo) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlBdo) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlBdo) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "blockquote" HTML element.
 type HTMLBlockquote interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLBlockquote
@@ -5791,8 +5715,7 @@ type htmlBlockquote struct {
 }
 
 func (e *htmlBlockquote) Body(v ...UI) HTMLBlockquote {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBlockquote)
 }
 
 func (e *htmlBlockquote) Text(v any) HTMLBlockquote {
@@ -5913,178 +5836,174 @@ func (e *htmlBlockquote) On(event string, h EventHandler, scope ...any) HTMLBloc
 }
 
 func (e *htmlBlockquote) OnBlur(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlBlockquote) OnChange(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlBlockquote) OnClick(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlBlockquote) OnContextMenu(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlBlockquote) OnCopy(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlBlockquote) OnCut(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDblClick(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDrag(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDragEnd(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDragEnter(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDragLeave(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDragOver(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDragStart(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlBlockquote) OnDrop(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlBlockquote) OnFocus(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlBlockquote) OnInput(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlBlockquote) OnInvalid(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlBlockquote) OnKeyDown(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlBlockquote) OnKeyPress(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlBlockquote) OnKeyUp(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlBlockquote) OnMouseDown(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlBlockquote) OnMouseEnter(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlBlockquote) OnMouseLeave(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlBlockquote) OnMouseMove(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlBlockquote) OnMouseOut(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlBlockquote) OnMouseOver(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlBlockquote) OnMouseUp(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlBlockquote) OnPaste(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlBlockquote) OnReset(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlBlockquote) OnScroll(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlBlockquote) OnSearch(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlBlockquote) OnSelect(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlBlockquote) OnSubmit(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlBlockquote) OnWheel(h EventHandler, scope ...any) HTMLBlockquote {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlBlockquote) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlBlockquote) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBlockquote) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlBlockquote) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlBlockquote) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlBlockquote) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "body" HTML element.
 type HTMLBody interface {
-	UI
+	HTML
 
 	privateBody(elems ...UI) HTMLBody
 
@@ -6310,8 +6229,7 @@ type htmlBody struct {
 }
 
 func (e *htmlBody) privateBody(v ...UI) HTMLBody {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlBody)
 }
 
 func (e *htmlBody) AccessKey(format string, v ...any) HTMLBody {
@@ -6419,253 +6337,234 @@ func (e *htmlBody) On(event string, h EventHandler, scope ...any) HTMLBody {
 }
 
 func (e *htmlBody) OnAfterPrint(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("afterprint", h, scope...)
-	return e
+	return e.On("afterprint", h, scope...)
 }
 
 func (e *htmlBody) OnBeforePrint(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("beforeprint", h, scope...)
-	return e
+	return e.On("beforeprint", h, scope...)
 }
 
 func (e *htmlBody) OnBeforeUnload(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("beforeunload", h, scope...)
-	return e
+	return e.On("beforeunload", h, scope...)
 }
 
 func (e *htmlBody) OnBlur(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlBody) OnChange(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlBody) OnClick(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlBody) OnContextMenu(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlBody) OnCopy(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlBody) OnCut(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlBody) OnDblClick(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlBody) OnDrag(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlBody) OnDragEnd(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlBody) OnDragEnter(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlBody) OnDragLeave(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlBody) OnDragOver(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlBody) OnDragStart(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlBody) OnDrop(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlBody) OnError(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("error", h, scope...)
-	return e
+	return e.On("error", h, scope...)
 }
 
 func (e *htmlBody) OnFocus(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlBody) OnHashChange(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("hashchange", h, scope...)
-	return e
+	return e.On("hashchange", h, scope...)
 }
 
 func (e *htmlBody) OnInput(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlBody) OnInvalid(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlBody) OnKeyDown(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlBody) OnKeyPress(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlBody) OnKeyUp(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlBody) OnLoad(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("load", h, scope...)
-	return e
+	return e.On("load", h, scope...)
 }
 
 func (e *htmlBody) OnMessage(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("message", h, scope...)
-	return e
+	return e.On("message", h, scope...)
 }
 
 func (e *htmlBody) OnMouseDown(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlBody) OnMouseEnter(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlBody) OnMouseLeave(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlBody) OnMouseMove(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlBody) OnMouseOut(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlBody) OnMouseOver(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlBody) OnMouseUp(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlBody) OnOffline(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("offline", h, scope...)
-	return e
+	return e.On("offline", h, scope...)
 }
 
 func (e *htmlBody) OnOnline(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("online", h, scope...)
-	return e
+	return e.On("online", h, scope...)
 }
 
 func (e *htmlBody) OnPageHide(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("pagehide", h, scope...)
-	return e
+	return e.On("pagehide", h, scope...)
 }
 
 func (e *htmlBody) OnPageShow(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("pageshow", h, scope...)
-	return e
+	return e.On("pageshow", h, scope...)
 }
 
 func (e *htmlBody) OnPaste(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlBody) OnPopState(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("popstate", h, scope...)
-	return e
+	return e.On("popstate", h, scope...)
 }
 
 func (e *htmlBody) OnReset(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlBody) OnResize(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("resize", h, scope...)
-	return e
+	return e.On("resize", h, scope...)
 }
 
 func (e *htmlBody) OnScroll(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlBody) OnSearch(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlBody) OnSelect(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlBody) OnStorage(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("storage", h, scope...)
-	return e
+	return e.On("storage", h, scope...)
 }
 
 func (e *htmlBody) OnSubmit(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlBody) OnUnload(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("unload", h, scope...)
-	return e
+	return e.On("unload", h, scope...)
 }
 
 func (e *htmlBody) OnWheel(h EventHandler, scope ...any) HTMLBody {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlBody) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlBody) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBody) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlBody) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlBody) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlBody) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "br" HTML element.
 type HTMLBr interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLBr
@@ -6948,178 +6847,174 @@ func (e *htmlBr) On(event string, h EventHandler, scope ...any) HTMLBr {
 }
 
 func (e *htmlBr) OnBlur(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlBr) OnChange(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlBr) OnClick(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlBr) OnContextMenu(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlBr) OnCopy(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlBr) OnCut(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlBr) OnDblClick(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlBr) OnDrag(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlBr) OnDragEnd(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlBr) OnDragEnter(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlBr) OnDragLeave(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlBr) OnDragOver(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlBr) OnDragStart(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlBr) OnDrop(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlBr) OnFocus(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlBr) OnInput(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlBr) OnInvalid(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlBr) OnKeyDown(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlBr) OnKeyPress(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlBr) OnKeyUp(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlBr) OnMouseDown(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlBr) OnMouseEnter(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlBr) OnMouseLeave(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlBr) OnMouseMove(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlBr) OnMouseOut(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlBr) OnMouseOver(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlBr) OnMouseUp(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlBr) OnPaste(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlBr) OnReset(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlBr) OnScroll(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlBr) OnSearch(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlBr) OnSelect(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlBr) OnSubmit(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlBr) OnWheel(h EventHandler, scope ...any) HTMLBr {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlBr) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlBr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlBr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlBr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlBr) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlBr) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "button" HTML element.
 type HTMLButton interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLButton
@@ -7340,8 +7235,7 @@ type htmlButton struct {
 }
 
 func (e *htmlButton) Body(v ...UI) HTMLButton {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlButton)
 }
 
 func (e *htmlButton) Text(v any) HTMLButton {
@@ -7512,178 +7406,174 @@ func (e *htmlButton) On(event string, h EventHandler, scope ...any) HTMLButton {
 }
 
 func (e *htmlButton) OnBlur(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlButton) OnChange(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlButton) OnClick(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlButton) OnContextMenu(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlButton) OnCopy(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlButton) OnCut(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlButton) OnDblClick(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlButton) OnDrag(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlButton) OnDragEnd(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlButton) OnDragEnter(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlButton) OnDragLeave(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlButton) OnDragOver(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlButton) OnDragStart(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlButton) OnDrop(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlButton) OnFocus(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlButton) OnInput(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlButton) OnInvalid(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlButton) OnKeyDown(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlButton) OnKeyPress(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlButton) OnKeyUp(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlButton) OnMouseDown(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlButton) OnMouseEnter(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlButton) OnMouseLeave(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlButton) OnMouseMove(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlButton) OnMouseOut(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlButton) OnMouseOver(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlButton) OnMouseUp(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlButton) OnPaste(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlButton) OnReset(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlButton) OnScroll(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlButton) OnSearch(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlButton) OnSelect(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlButton) OnSubmit(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlButton) OnWheel(h EventHandler, scope ...any) HTMLButton {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlButton) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlButton) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlButton) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlButton) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlButton) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlButton) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "canvas" HTML element.
 type HTMLCanvas interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCanvas
@@ -7877,8 +7767,7 @@ type htmlCanvas struct {
 }
 
 func (e *htmlCanvas) Body(v ...UI) HTMLCanvas {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCanvas)
 }
 
 func (e *htmlCanvas) Text(v any) HTMLCanvas {
@@ -8004,178 +7893,174 @@ func (e *htmlCanvas) On(event string, h EventHandler, scope ...any) HTMLCanvas {
 }
 
 func (e *htmlCanvas) OnBlur(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlCanvas) OnChange(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlCanvas) OnClick(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlCanvas) OnContextMenu(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlCanvas) OnCopy(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlCanvas) OnCut(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlCanvas) OnDblClick(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlCanvas) OnDrag(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlCanvas) OnDragEnd(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlCanvas) OnDragEnter(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlCanvas) OnDragLeave(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlCanvas) OnDragOver(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlCanvas) OnDragStart(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlCanvas) OnDrop(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlCanvas) OnFocus(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlCanvas) OnInput(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlCanvas) OnInvalid(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlCanvas) OnKeyDown(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlCanvas) OnKeyPress(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlCanvas) OnKeyUp(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlCanvas) OnMouseDown(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlCanvas) OnMouseEnter(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlCanvas) OnMouseLeave(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlCanvas) OnMouseMove(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlCanvas) OnMouseOut(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlCanvas) OnMouseOver(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlCanvas) OnMouseUp(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlCanvas) OnPaste(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlCanvas) OnReset(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlCanvas) OnScroll(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlCanvas) OnSearch(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlCanvas) OnSelect(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlCanvas) OnSubmit(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlCanvas) OnWheel(h EventHandler, scope ...any) HTMLCanvas {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlCanvas) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlCanvas) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCanvas) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlCanvas) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlCanvas) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlCanvas) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "caption" HTML element.
 type HTMLCaption interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCaption
@@ -8363,8 +8248,7 @@ type htmlCaption struct {
 }
 
 func (e *htmlCaption) Body(v ...UI) HTMLCaption {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCaption)
 }
 
 func (e *htmlCaption) Text(v any) HTMLCaption {
@@ -8480,178 +8364,174 @@ func (e *htmlCaption) On(event string, h EventHandler, scope ...any) HTMLCaption
 }
 
 func (e *htmlCaption) OnBlur(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlCaption) OnChange(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlCaption) OnClick(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlCaption) OnContextMenu(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlCaption) OnCopy(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlCaption) OnCut(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlCaption) OnDblClick(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlCaption) OnDrag(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlCaption) OnDragEnd(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlCaption) OnDragEnter(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlCaption) OnDragLeave(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlCaption) OnDragOver(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlCaption) OnDragStart(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlCaption) OnDrop(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlCaption) OnFocus(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlCaption) OnInput(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlCaption) OnInvalid(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlCaption) OnKeyDown(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlCaption) OnKeyPress(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlCaption) OnKeyUp(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlCaption) OnMouseDown(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlCaption) OnMouseEnter(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlCaption) OnMouseLeave(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlCaption) OnMouseMove(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlCaption) OnMouseOut(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlCaption) OnMouseOver(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlCaption) OnMouseUp(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlCaption) OnPaste(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlCaption) OnReset(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlCaption) OnScroll(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlCaption) OnSearch(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlCaption) OnSelect(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlCaption) OnSubmit(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlCaption) OnWheel(h EventHandler, scope ...any) HTMLCaption {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlCaption) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlCaption) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCaption) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlCaption) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlCaption) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlCaption) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "cite" HTML element.
 type HTMLCite interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCite
@@ -8839,8 +8719,7 @@ type htmlCite struct {
 }
 
 func (e *htmlCite) Body(v ...UI) HTMLCite {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCite)
 }
 
 func (e *htmlCite) Text(v any) HTMLCite {
@@ -8956,178 +8835,174 @@ func (e *htmlCite) On(event string, h EventHandler, scope ...any) HTMLCite {
 }
 
 func (e *htmlCite) OnBlur(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlCite) OnChange(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlCite) OnClick(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlCite) OnContextMenu(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlCite) OnCopy(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlCite) OnCut(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlCite) OnDblClick(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlCite) OnDrag(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlCite) OnDragEnd(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlCite) OnDragEnter(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlCite) OnDragLeave(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlCite) OnDragOver(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlCite) OnDragStart(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlCite) OnDrop(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlCite) OnFocus(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlCite) OnInput(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlCite) OnInvalid(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlCite) OnKeyDown(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlCite) OnKeyPress(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlCite) OnKeyUp(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlCite) OnMouseDown(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlCite) OnMouseEnter(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlCite) OnMouseLeave(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlCite) OnMouseMove(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlCite) OnMouseOut(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlCite) OnMouseOver(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlCite) OnMouseUp(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlCite) OnPaste(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlCite) OnReset(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlCite) OnScroll(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlCite) OnSearch(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlCite) OnSelect(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlCite) OnSubmit(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlCite) OnWheel(h EventHandler, scope ...any) HTMLCite {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlCite) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlCite) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCite) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlCite) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlCite) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlCite) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "code" HTML element.
 type HTMLCode interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLCode
@@ -9315,8 +9190,7 @@ type htmlCode struct {
 }
 
 func (e *htmlCode) Body(v ...UI) HTMLCode {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlCode)
 }
 
 func (e *htmlCode) Text(v any) HTMLCode {
@@ -9432,178 +9306,174 @@ func (e *htmlCode) On(event string, h EventHandler, scope ...any) HTMLCode {
 }
 
 func (e *htmlCode) OnBlur(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlCode) OnChange(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlCode) OnClick(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlCode) OnContextMenu(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlCode) OnCopy(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlCode) OnCut(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlCode) OnDblClick(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlCode) OnDrag(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlCode) OnDragEnd(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlCode) OnDragEnter(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlCode) OnDragLeave(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlCode) OnDragOver(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlCode) OnDragStart(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlCode) OnDrop(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlCode) OnFocus(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlCode) OnInput(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlCode) OnInvalid(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlCode) OnKeyDown(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlCode) OnKeyPress(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlCode) OnKeyUp(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlCode) OnMouseDown(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlCode) OnMouseEnter(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlCode) OnMouseLeave(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlCode) OnMouseMove(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlCode) OnMouseOut(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlCode) OnMouseOver(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlCode) OnMouseUp(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlCode) OnPaste(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlCode) OnReset(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlCode) OnScroll(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlCode) OnSearch(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlCode) OnSelect(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlCode) OnSubmit(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlCode) OnWheel(h EventHandler, scope ...any) HTMLCode {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlCode) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlCode) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCode) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlCode) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlCode) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlCode) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "col" HTML element.
 type HTMLCol interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLCol
@@ -9894,178 +9764,174 @@ func (e *htmlCol) On(event string, h EventHandler, scope ...any) HTMLCol {
 }
 
 func (e *htmlCol) OnBlur(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlCol) OnChange(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlCol) OnClick(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlCol) OnContextMenu(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlCol) OnCopy(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlCol) OnCut(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlCol) OnDblClick(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlCol) OnDrag(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlCol) OnDragEnd(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlCol) OnDragEnter(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlCol) OnDragLeave(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlCol) OnDragOver(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlCol) OnDragStart(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlCol) OnDrop(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlCol) OnFocus(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlCol) OnInput(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlCol) OnInvalid(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlCol) OnKeyDown(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlCol) OnKeyPress(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlCol) OnKeyUp(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlCol) OnMouseDown(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlCol) OnMouseEnter(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlCol) OnMouseLeave(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlCol) OnMouseMove(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlCol) OnMouseOut(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlCol) OnMouseOver(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlCol) OnMouseUp(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlCol) OnPaste(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlCol) OnReset(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlCol) OnScroll(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlCol) OnSearch(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlCol) OnSelect(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlCol) OnSubmit(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlCol) OnWheel(h EventHandler, scope ...any) HTMLCol {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlCol) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlCol) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlCol) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlCol) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlCol) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlCol) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "colgroup" HTML element.
 type HTMLColGroup interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLColGroup
@@ -10256,8 +10122,7 @@ type htmlColGroup struct {
 }
 
 func (e *htmlColGroup) Body(v ...UI) HTMLColGroup {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlColGroup)
 }
 
 func (e *htmlColGroup) Text(v any) HTMLColGroup {
@@ -10378,178 +10243,174 @@ func (e *htmlColGroup) On(event string, h EventHandler, scope ...any) HTMLColGro
 }
 
 func (e *htmlColGroup) OnBlur(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlColGroup) OnChange(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlColGroup) OnClick(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlColGroup) OnContextMenu(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlColGroup) OnCopy(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlColGroup) OnCut(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlColGroup) OnDblClick(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlColGroup) OnDrag(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlColGroup) OnDragEnd(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlColGroup) OnDragEnter(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlColGroup) OnDragLeave(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlColGroup) OnDragOver(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlColGroup) OnDragStart(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlColGroup) OnDrop(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlColGroup) OnFocus(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlColGroup) OnInput(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlColGroup) OnInvalid(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlColGroup) OnKeyDown(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlColGroup) OnKeyPress(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlColGroup) OnKeyUp(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlColGroup) OnMouseDown(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlColGroup) OnMouseEnter(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlColGroup) OnMouseLeave(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlColGroup) OnMouseMove(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlColGroup) OnMouseOut(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlColGroup) OnMouseOver(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlColGroup) OnMouseUp(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlColGroup) OnPaste(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlColGroup) OnReset(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlColGroup) OnScroll(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlColGroup) OnSearch(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlColGroup) OnSelect(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlColGroup) OnSubmit(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlColGroup) OnWheel(h EventHandler, scope ...any) HTMLColGroup {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlColGroup) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlColGroup) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlColGroup) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlColGroup) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlColGroup) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlColGroup) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "data" HTML element.
 type HTMLData interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLData
@@ -10638,8 +10499,7 @@ type htmlData struct {
 }
 
 func (e *htmlData) Body(v ...UI) HTMLData {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlData)
 }
 
 func (e *htmlData) Text(v any) HTMLData {
@@ -10759,9 +10619,39 @@ func (e *htmlData) On(event string, h EventHandler, scope ...any) HTMLData {
 	return e
 }
 
+func (e *htmlData) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlData) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlData) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlData) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlData) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlData) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "datalist" HTML element.
 type HTMLDataList interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDataList
@@ -10949,8 +10839,7 @@ type htmlDataList struct {
 }
 
 func (e *htmlDataList) Body(v ...UI) HTMLDataList {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDataList)
 }
 
 func (e *htmlDataList) Text(v any) HTMLDataList {
@@ -11066,178 +10955,174 @@ func (e *htmlDataList) On(event string, h EventHandler, scope ...any) HTMLDataLi
 }
 
 func (e *htmlDataList) OnBlur(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDataList) OnChange(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDataList) OnClick(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDataList) OnContextMenu(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDataList) OnCopy(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDataList) OnCut(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDataList) OnDblClick(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDataList) OnDrag(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDataList) OnDragEnd(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDataList) OnDragEnter(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDataList) OnDragLeave(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDataList) OnDragOver(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDataList) OnDragStart(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDataList) OnDrop(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDataList) OnFocus(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDataList) OnInput(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDataList) OnInvalid(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDataList) OnKeyDown(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDataList) OnKeyPress(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDataList) OnKeyUp(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDataList) OnMouseDown(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDataList) OnMouseEnter(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDataList) OnMouseLeave(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDataList) OnMouseMove(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDataList) OnMouseOut(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDataList) OnMouseOver(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDataList) OnMouseUp(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDataList) OnPaste(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDataList) OnReset(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDataList) OnScroll(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDataList) OnSearch(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDataList) OnSelect(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDataList) OnSubmit(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDataList) OnWheel(h EventHandler, scope ...any) HTMLDataList {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDataList) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDataList) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDataList) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDataList) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDataList) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDataList) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "dd" HTML element.
 type HTMLDd interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDd
@@ -11425,8 +11310,7 @@ type htmlDd struct {
 }
 
 func (e *htmlDd) Body(v ...UI) HTMLDd {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDd)
 }
 
 func (e *htmlDd) Text(v any) HTMLDd {
@@ -11542,178 +11426,174 @@ func (e *htmlDd) On(event string, h EventHandler, scope ...any) HTMLDd {
 }
 
 func (e *htmlDd) OnBlur(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDd) OnChange(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDd) OnClick(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDd) OnContextMenu(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDd) OnCopy(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDd) OnCut(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDd) OnDblClick(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDd) OnDrag(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDd) OnDragEnd(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDd) OnDragEnter(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDd) OnDragLeave(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDd) OnDragOver(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDd) OnDragStart(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDd) OnDrop(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDd) OnFocus(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDd) OnInput(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDd) OnInvalid(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDd) OnKeyDown(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDd) OnKeyPress(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDd) OnKeyUp(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDd) OnMouseDown(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDd) OnMouseEnter(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDd) OnMouseLeave(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDd) OnMouseMove(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDd) OnMouseOut(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDd) OnMouseOver(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDd) OnMouseUp(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDd) OnPaste(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDd) OnReset(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDd) OnScroll(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDd) OnSearch(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDd) OnSelect(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDd) OnSubmit(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDd) OnWheel(h EventHandler, scope ...any) HTMLDd {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDd) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDd) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDd) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDd) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDd) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDd) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "del" HTML element.
 type HTMLDel interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDel
@@ -11907,8 +11787,7 @@ type htmlDel struct {
 }
 
 func (e *htmlDel) Body(v ...UI) HTMLDel {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDel)
 }
 
 func (e *htmlDel) Text(v any) HTMLDel {
@@ -12034,178 +11913,174 @@ func (e *htmlDel) On(event string, h EventHandler, scope ...any) HTMLDel {
 }
 
 func (e *htmlDel) OnBlur(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDel) OnChange(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDel) OnClick(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDel) OnContextMenu(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDel) OnCopy(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDel) OnCut(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDel) OnDblClick(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDel) OnDrag(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDel) OnDragEnd(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDel) OnDragEnter(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDel) OnDragLeave(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDel) OnDragOver(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDel) OnDragStart(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDel) OnDrop(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDel) OnFocus(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDel) OnInput(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDel) OnInvalid(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDel) OnKeyDown(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDel) OnKeyPress(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDel) OnKeyUp(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDel) OnMouseDown(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDel) OnMouseEnter(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDel) OnMouseLeave(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDel) OnMouseMove(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDel) OnMouseOut(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDel) OnMouseOver(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDel) OnMouseUp(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDel) OnPaste(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDel) OnReset(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDel) OnScroll(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDel) OnSearch(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDel) OnSelect(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDel) OnSubmit(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDel) OnWheel(h EventHandler, scope ...any) HTMLDel {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDel) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDel) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDel) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDel) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDel) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDel) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "details" HTML element.
 type HTMLDetails interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDetails
@@ -12399,8 +12274,7 @@ type htmlDetails struct {
 }
 
 func (e *htmlDetails) Body(v ...UI) HTMLDetails {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDetails)
 }
 
 func (e *htmlDetails) Text(v any) HTMLDetails {
@@ -12521,183 +12395,178 @@ func (e *htmlDetails) On(event string, h EventHandler, scope ...any) HTMLDetails
 }
 
 func (e *htmlDetails) OnBlur(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDetails) OnChange(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDetails) OnClick(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDetails) OnContextMenu(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDetails) OnCopy(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDetails) OnCut(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDetails) OnDblClick(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDetails) OnDrag(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDetails) OnDragEnd(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDetails) OnDragEnter(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDetails) OnDragLeave(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDetails) OnDragOver(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDetails) OnDragStart(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDetails) OnDrop(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDetails) OnFocus(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDetails) OnInput(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDetails) OnInvalid(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDetails) OnKeyDown(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDetails) OnKeyPress(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDetails) OnKeyUp(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDetails) OnMouseDown(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDetails) OnMouseEnter(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDetails) OnMouseLeave(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDetails) OnMouseMove(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDetails) OnMouseOut(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDetails) OnMouseOver(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDetails) OnMouseUp(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDetails) OnPaste(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDetails) OnReset(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDetails) OnScroll(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDetails) OnSearch(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDetails) OnSelect(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDetails) OnSubmit(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDetails) OnToggle(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("toggle", h, scope...)
-	return e
+	return e.On("toggle", h, scope...)
 }
 
 func (e *htmlDetails) OnWheel(h EventHandler, scope ...any) HTMLDetails {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDetails) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDetails) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDetails) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDetails) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDetails) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDetails) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "dfn" HTML element.
 type HTMLDfn interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDfn
@@ -12885,8 +12754,7 @@ type htmlDfn struct {
 }
 
 func (e *htmlDfn) Body(v ...UI) HTMLDfn {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDfn)
 }
 
 func (e *htmlDfn) Text(v any) HTMLDfn {
@@ -13002,178 +12870,174 @@ func (e *htmlDfn) On(event string, h EventHandler, scope ...any) HTMLDfn {
 }
 
 func (e *htmlDfn) OnBlur(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDfn) OnChange(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDfn) OnClick(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDfn) OnContextMenu(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDfn) OnCopy(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDfn) OnCut(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDfn) OnDblClick(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDfn) OnDrag(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDfn) OnDragEnd(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDfn) OnDragEnter(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDfn) OnDragLeave(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDfn) OnDragOver(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDfn) OnDragStart(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDfn) OnDrop(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDfn) OnFocus(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDfn) OnInput(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDfn) OnInvalid(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDfn) OnKeyDown(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDfn) OnKeyPress(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDfn) OnKeyUp(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDfn) OnMouseDown(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDfn) OnMouseEnter(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDfn) OnMouseLeave(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDfn) OnMouseMove(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDfn) OnMouseOut(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDfn) OnMouseOver(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDfn) OnMouseUp(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDfn) OnPaste(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDfn) OnReset(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDfn) OnScroll(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDfn) OnSearch(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDfn) OnSelect(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDfn) OnSubmit(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDfn) OnWheel(h EventHandler, scope ...any) HTMLDfn {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDfn) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDfn) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDfn) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDfn) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDfn) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDfn) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "dialog" HTML element.
 type HTMLDialog interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDialog
@@ -13364,8 +13228,7 @@ type htmlDialog struct {
 }
 
 func (e *htmlDialog) Body(v ...UI) HTMLDialog {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDialog)
 }
 
 func (e *htmlDialog) Text(v any) HTMLDialog {
@@ -13486,178 +13349,174 @@ func (e *htmlDialog) On(event string, h EventHandler, scope ...any) HTMLDialog {
 }
 
 func (e *htmlDialog) OnBlur(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDialog) OnChange(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDialog) OnClick(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDialog) OnContextMenu(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDialog) OnCopy(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDialog) OnCut(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDialog) OnDblClick(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDialog) OnDrag(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDialog) OnDragEnd(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDialog) OnDragEnter(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDialog) OnDragLeave(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDialog) OnDragOver(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDialog) OnDragStart(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDialog) OnDrop(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDialog) OnFocus(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDialog) OnInput(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDialog) OnInvalid(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDialog) OnKeyDown(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDialog) OnKeyPress(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDialog) OnKeyUp(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDialog) OnMouseDown(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDialog) OnMouseEnter(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDialog) OnMouseLeave(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDialog) OnMouseMove(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDialog) OnMouseOut(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDialog) OnMouseOver(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDialog) OnMouseUp(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDialog) OnPaste(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDialog) OnReset(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDialog) OnScroll(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDialog) OnSearch(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDialog) OnSelect(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDialog) OnSubmit(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDialog) OnWheel(h EventHandler, scope ...any) HTMLDialog {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDialog) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDialog) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDialog) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDialog) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDialog) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDialog) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "div" HTML element.
 type HTMLDiv interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDiv
@@ -13845,8 +13704,7 @@ type htmlDiv struct {
 }
 
 func (e *htmlDiv) Body(v ...UI) HTMLDiv {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDiv)
 }
 
 func (e *htmlDiv) Text(v any) HTMLDiv {
@@ -13962,178 +13820,174 @@ func (e *htmlDiv) On(event string, h EventHandler, scope ...any) HTMLDiv {
 }
 
 func (e *htmlDiv) OnBlur(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDiv) OnChange(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDiv) OnClick(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDiv) OnContextMenu(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDiv) OnCopy(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDiv) OnCut(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDiv) OnDblClick(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDiv) OnDrag(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDiv) OnDragEnd(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDiv) OnDragEnter(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDiv) OnDragLeave(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDiv) OnDragOver(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDiv) OnDragStart(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDiv) OnDrop(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDiv) OnFocus(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDiv) OnInput(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDiv) OnInvalid(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDiv) OnKeyDown(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDiv) OnKeyPress(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDiv) OnKeyUp(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDiv) OnMouseDown(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDiv) OnMouseEnter(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDiv) OnMouseLeave(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDiv) OnMouseMove(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDiv) OnMouseOut(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDiv) OnMouseOver(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDiv) OnMouseUp(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDiv) OnPaste(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDiv) OnReset(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDiv) OnScroll(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDiv) OnSearch(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDiv) OnSelect(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDiv) OnSubmit(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDiv) OnWheel(h EventHandler, scope ...any) HTMLDiv {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDiv) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDiv) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDiv) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDiv) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDiv) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDiv) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "dl" HTML element.
 type HTMLDl interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDl
@@ -14321,8 +14175,7 @@ type htmlDl struct {
 }
 
 func (e *htmlDl) Body(v ...UI) HTMLDl {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDl)
 }
 
 func (e *htmlDl) Text(v any) HTMLDl {
@@ -14438,178 +14291,174 @@ func (e *htmlDl) On(event string, h EventHandler, scope ...any) HTMLDl {
 }
 
 func (e *htmlDl) OnBlur(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDl) OnChange(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDl) OnClick(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDl) OnContextMenu(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDl) OnCopy(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDl) OnCut(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDl) OnDblClick(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDl) OnDrag(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDl) OnDragEnd(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDl) OnDragEnter(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDl) OnDragLeave(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDl) OnDragOver(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDl) OnDragStart(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDl) OnDrop(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDl) OnFocus(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDl) OnInput(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDl) OnInvalid(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDl) OnKeyDown(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDl) OnKeyPress(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDl) OnKeyUp(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDl) OnMouseDown(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDl) OnMouseEnter(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDl) OnMouseLeave(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDl) OnMouseMove(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDl) OnMouseOut(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDl) OnMouseOver(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDl) OnMouseUp(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDl) OnPaste(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDl) OnReset(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDl) OnScroll(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDl) OnSearch(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDl) OnSelect(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDl) OnSubmit(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDl) OnWheel(h EventHandler, scope ...any) HTMLDl {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDl) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDl) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDl) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDl) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDl) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDl) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "dt" HTML element.
 type HTMLDt interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLDt
@@ -14797,8 +14646,7 @@ type htmlDt struct {
 }
 
 func (e *htmlDt) Body(v ...UI) HTMLDt {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlDt)
 }
 
 func (e *htmlDt) Text(v any) HTMLDt {
@@ -14914,178 +14762,174 @@ func (e *htmlDt) On(event string, h EventHandler, scope ...any) HTMLDt {
 }
 
 func (e *htmlDt) OnBlur(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlDt) OnChange(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlDt) OnClick(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlDt) OnContextMenu(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlDt) OnCopy(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlDt) OnCut(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlDt) OnDblClick(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlDt) OnDrag(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlDt) OnDragEnd(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlDt) OnDragEnter(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlDt) OnDragLeave(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlDt) OnDragOver(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlDt) OnDragStart(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlDt) OnDrop(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlDt) OnFocus(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlDt) OnInput(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlDt) OnInvalid(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlDt) OnKeyDown(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlDt) OnKeyPress(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlDt) OnKeyUp(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlDt) OnMouseDown(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlDt) OnMouseEnter(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlDt) OnMouseLeave(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlDt) OnMouseMove(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlDt) OnMouseOut(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlDt) OnMouseOver(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlDt) OnMouseUp(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlDt) OnPaste(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlDt) OnReset(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlDt) OnScroll(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlDt) OnSearch(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlDt) OnSelect(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlDt) OnSubmit(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlDt) OnWheel(h EventHandler, scope ...any) HTMLDt {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlDt) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlDt) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlDt) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlDt) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlDt) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlDt) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "elem" HTML element.
 type HTMLElem interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLElem
@@ -15276,8 +15120,7 @@ type htmlElem struct {
 }
 
 func (e *htmlElem) Body(v ...UI) HTMLElem {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlElem)
 }
 
 func (e *htmlElem) Text(v any) HTMLElem {
@@ -15398,178 +15241,174 @@ func (e *htmlElem) On(event string, h EventHandler, scope ...any) HTMLElem {
 }
 
 func (e *htmlElem) OnBlur(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlElem) OnChange(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlElem) OnClick(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlElem) OnContextMenu(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlElem) OnCopy(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlElem) OnCut(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlElem) OnDblClick(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlElem) OnDrag(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlElem) OnDragEnd(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlElem) OnDragEnter(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlElem) OnDragLeave(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlElem) OnDragOver(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlElem) OnDragStart(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlElem) OnDrop(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlElem) OnFocus(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlElem) OnInput(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlElem) OnInvalid(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlElem) OnKeyDown(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlElem) OnKeyPress(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlElem) OnKeyUp(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlElem) OnMouseDown(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlElem) OnMouseEnter(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlElem) OnMouseLeave(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlElem) OnMouseMove(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlElem) OnMouseOut(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlElem) OnMouseOver(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlElem) OnMouseUp(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlElem) OnPaste(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlElem) OnReset(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlElem) OnScroll(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlElem) OnSearch(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlElem) OnSelect(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlElem) OnSubmit(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlElem) OnWheel(h EventHandler, scope ...any) HTMLElem {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlElem) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlElem) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlElem) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlElem) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlElem) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlElem) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "elemselfclosing" HTML element.
 type HTMLElemSelfClosing interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLElemSelfClosing
@@ -15860,178 +15699,174 @@ func (e *htmlElemSelfClosing) On(event string, h EventHandler, scope ...any) HTM
 }
 
 func (e *htmlElemSelfClosing) OnBlur(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnChange(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnClick(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnContextMenu(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnCopy(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnCut(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDblClick(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDrag(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDragEnd(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDragEnter(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDragLeave(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDragOver(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDragStart(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnDrop(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnFocus(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnInput(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnInvalid(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnKeyDown(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnKeyPress(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnKeyUp(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnMouseDown(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnMouseEnter(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnMouseLeave(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnMouseMove(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnMouseOut(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnMouseOver(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnMouseUp(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnPaste(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnReset(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnScroll(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnSearch(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnSelect(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnSubmit(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlElemSelfClosing) OnWheel(h EventHandler, scope ...any) HTMLElemSelfClosing {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlElemSelfClosing) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlElemSelfClosing) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "em" HTML element.
 type HTMLEm interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLEm
@@ -16219,8 +16054,7 @@ type htmlEm struct {
 }
 
 func (e *htmlEm) Body(v ...UI) HTMLEm {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlEm)
 }
 
 func (e *htmlEm) Text(v any) HTMLEm {
@@ -16336,178 +16170,174 @@ func (e *htmlEm) On(event string, h EventHandler, scope ...any) HTMLEm {
 }
 
 func (e *htmlEm) OnBlur(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlEm) OnChange(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlEm) OnClick(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlEm) OnContextMenu(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlEm) OnCopy(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlEm) OnCut(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlEm) OnDblClick(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlEm) OnDrag(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlEm) OnDragEnd(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlEm) OnDragEnter(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlEm) OnDragLeave(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlEm) OnDragOver(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlEm) OnDragStart(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlEm) OnDrop(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlEm) OnFocus(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlEm) OnInput(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlEm) OnInvalid(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlEm) OnKeyDown(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlEm) OnKeyPress(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlEm) OnKeyUp(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlEm) OnMouseDown(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlEm) OnMouseEnter(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlEm) OnMouseLeave(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlEm) OnMouseMove(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlEm) OnMouseOut(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlEm) OnMouseOver(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlEm) OnMouseUp(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlEm) OnPaste(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlEm) OnReset(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlEm) OnScroll(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlEm) OnSearch(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlEm) OnSelect(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlEm) OnSubmit(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlEm) OnWheel(h EventHandler, scope ...any) HTMLEm {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlEm) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlEm) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlEm) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlEm) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlEm) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlEm) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "embed" HTML element.
 type HTMLEmbed interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLEmbed
@@ -16891,293 +16721,266 @@ func (e *htmlEmbed) On(event string, h EventHandler, scope ...any) HTMLEmbed {
 }
 
 func (e *htmlEmbed) OnAbort(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("abort", h, scope...)
-	return e
+	return e.On("abort", h, scope...)
 }
 
 func (e *htmlEmbed) OnBlur(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlEmbed) OnCanPlay(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("canplay", h, scope...)
-	return e
+	return e.On("canplay", h, scope...)
 }
 
 func (e *htmlEmbed) OnCanPlayThrough(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("canplaythrough", h, scope...)
-	return e
+	return e.On("canplaythrough", h, scope...)
 }
 
 func (e *htmlEmbed) OnChange(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlEmbed) OnClick(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlEmbed) OnContextMenu(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlEmbed) OnCopy(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlEmbed) OnCueChange(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("cuechange", h, scope...)
-	return e
+	return e.On("cuechange", h, scope...)
 }
 
 func (e *htmlEmbed) OnCut(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlEmbed) OnDblClick(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlEmbed) OnDrag(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlEmbed) OnDragEnd(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlEmbed) OnDragEnter(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlEmbed) OnDragLeave(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlEmbed) OnDragOver(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlEmbed) OnDragStart(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlEmbed) OnDrop(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlEmbed) OnDurationChange(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("durationchange", h, scope...)
-	return e
+	return e.On("durationchange", h, scope...)
 }
 
 func (e *htmlEmbed) OnEmptied(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("emptied", h, scope...)
-	return e
+	return e.On("emptied", h, scope...)
 }
 
 func (e *htmlEmbed) OnEnded(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("ended", h, scope...)
-	return e
+	return e.On("ended", h, scope...)
 }
 
 func (e *htmlEmbed) OnError(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("error", h, scope...)
-	return e
+	return e.On("error", h, scope...)
 }
 
 func (e *htmlEmbed) OnFocus(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlEmbed) OnInput(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlEmbed) OnInvalid(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlEmbed) OnKeyDown(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlEmbed) OnKeyPress(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlEmbed) OnKeyUp(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlEmbed) OnLoadStart(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("loadstart", h, scope...)
-	return e
+	return e.On("loadstart", h, scope...)
 }
 
 func (e *htmlEmbed) OnLoadedData(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("loadeddata", h, scope...)
-	return e
+	return e.On("loadeddata", h, scope...)
 }
 
 func (e *htmlEmbed) OnLoadedMetaData(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("loadedmetadata", h, scope...)
-	return e
+	return e.On("loadedmetadata", h, scope...)
 }
 
 func (e *htmlEmbed) OnMouseDown(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlEmbed) OnMouseEnter(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlEmbed) OnMouseLeave(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlEmbed) OnMouseMove(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlEmbed) OnMouseOut(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlEmbed) OnMouseOver(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlEmbed) OnMouseUp(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlEmbed) OnPaste(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlEmbed) OnPause(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("pause", h, scope...)
-	return e
+	return e.On("pause", h, scope...)
 }
 
 func (e *htmlEmbed) OnPlay(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("play", h, scope...)
-	return e
+	return e.On("play", h, scope...)
 }
 
 func (e *htmlEmbed) OnPlaying(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("playing", h, scope...)
-	return e
+	return e.On("playing", h, scope...)
 }
 
 func (e *htmlEmbed) OnProgress(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("progress", h, scope...)
-	return e
+	return e.On("progress", h, scope...)
 }
 
 func (e *htmlEmbed) OnRateChange(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("ratechange", h, scope...)
-	return e
+	return e.On("ratechange", h, scope...)
 }
 
 func (e *htmlEmbed) OnReset(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlEmbed) OnScroll(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlEmbed) OnSearch(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlEmbed) OnSeeked(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("seeked", h, scope...)
-	return e
+	return e.On("seeked", h, scope...)
 }
 
 func (e *htmlEmbed) OnSeeking(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("seeking", h, scope...)
-	return e
+	return e.On("seeking", h, scope...)
 }
 
 func (e *htmlEmbed) OnSelect(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlEmbed) OnStalled(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("stalled", h, scope...)
-	return e
+	return e.On("stalled", h, scope...)
 }
 
 func (e *htmlEmbed) OnSubmit(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlEmbed) OnSuspend(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("suspend", h, scope...)
-	return e
+	return e.On("suspend", h, scope...)
 }
 
 func (e *htmlEmbed) OnTimeUpdate(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("timeupdate", h, scope...)
-	return e
+	return e.On("timeupdate", h, scope...)
 }
 
 func (e *htmlEmbed) OnVolumeChange(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("volumechange", h, scope...)
-	return e
+	return e.On("volumechange", h, scope...)
 }
 
 func (e *htmlEmbed) OnWaiting(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("waiting", h, scope...)
-	return e
+	return e.On("waiting", h, scope...)
 }
 
 func (e *htmlEmbed) OnWheel(h EventHandler, scope ...any) HTMLEmbed {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlEmbed) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlEmbed) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlEmbed) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlEmbed) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlEmbed) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlEmbed) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "fieldset" HTML element.
 type HTMLFieldSet interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFieldSet
@@ -17374,8 +17177,7 @@ type htmlFieldSet struct {
 }
 
 func (e *htmlFieldSet) Body(v ...UI) HTMLFieldSet {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFieldSet)
 }
 
 func (e *htmlFieldSet) Text(v any) HTMLFieldSet {
@@ -17506,178 +17308,174 @@ func (e *htmlFieldSet) On(event string, h EventHandler, scope ...any) HTMLFieldS
 }
 
 func (e *htmlFieldSet) OnBlur(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlFieldSet) OnChange(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlFieldSet) OnClick(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlFieldSet) OnContextMenu(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlFieldSet) OnCopy(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlFieldSet) OnCut(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDblClick(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDrag(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDragEnd(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDragEnter(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDragLeave(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDragOver(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDragStart(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlFieldSet) OnDrop(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlFieldSet) OnFocus(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlFieldSet) OnInput(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlFieldSet) OnInvalid(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlFieldSet) OnKeyDown(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlFieldSet) OnKeyPress(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlFieldSet) OnKeyUp(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlFieldSet) OnMouseDown(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlFieldSet) OnMouseEnter(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlFieldSet) OnMouseLeave(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlFieldSet) OnMouseMove(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlFieldSet) OnMouseOut(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlFieldSet) OnMouseOver(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlFieldSet) OnMouseUp(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlFieldSet) OnPaste(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlFieldSet) OnReset(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlFieldSet) OnScroll(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlFieldSet) OnSearch(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlFieldSet) OnSelect(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlFieldSet) OnSubmit(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlFieldSet) OnWheel(h EventHandler, scope ...any) HTMLFieldSet {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlFieldSet) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlFieldSet) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFieldSet) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlFieldSet) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlFieldSet) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlFieldSet) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "figcaption" HTML element.
 type HTMLFigCaption interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFigCaption
@@ -17865,8 +17663,7 @@ type htmlFigCaption struct {
 }
 
 func (e *htmlFigCaption) Body(v ...UI) HTMLFigCaption {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFigCaption)
 }
 
 func (e *htmlFigCaption) Text(v any) HTMLFigCaption {
@@ -17982,178 +17779,174 @@ func (e *htmlFigCaption) On(event string, h EventHandler, scope ...any) HTMLFigC
 }
 
 func (e *htmlFigCaption) OnBlur(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlFigCaption) OnChange(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlFigCaption) OnClick(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlFigCaption) OnContextMenu(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlFigCaption) OnCopy(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlFigCaption) OnCut(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDblClick(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDrag(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDragEnd(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDragEnter(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDragLeave(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDragOver(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDragStart(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlFigCaption) OnDrop(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlFigCaption) OnFocus(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlFigCaption) OnInput(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlFigCaption) OnInvalid(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlFigCaption) OnKeyDown(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlFigCaption) OnKeyPress(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlFigCaption) OnKeyUp(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlFigCaption) OnMouseDown(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlFigCaption) OnMouseEnter(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlFigCaption) OnMouseLeave(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlFigCaption) OnMouseMove(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlFigCaption) OnMouseOut(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlFigCaption) OnMouseOver(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlFigCaption) OnMouseUp(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlFigCaption) OnPaste(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlFigCaption) OnReset(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlFigCaption) OnScroll(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlFigCaption) OnSearch(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlFigCaption) OnSelect(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlFigCaption) OnSubmit(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlFigCaption) OnWheel(h EventHandler, scope ...any) HTMLFigCaption {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlFigCaption) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlFigCaption) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFigCaption) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlFigCaption) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlFigCaption) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlFigCaption) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "figure" HTML element.
 type HTMLFigure interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFigure
@@ -18341,8 +18134,7 @@ type htmlFigure struct {
 }
 
 func (e *htmlFigure) Body(v ...UI) HTMLFigure {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFigure)
 }
 
 func (e *htmlFigure) Text(v any) HTMLFigure {
@@ -18458,178 +18250,174 @@ func (e *htmlFigure) On(event string, h EventHandler, scope ...any) HTMLFigure {
 }
 
 func (e *htmlFigure) OnBlur(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlFigure) OnChange(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlFigure) OnClick(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlFigure) OnContextMenu(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlFigure) OnCopy(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlFigure) OnCut(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlFigure) OnDblClick(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlFigure) OnDrag(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlFigure) OnDragEnd(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlFigure) OnDragEnter(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlFigure) OnDragLeave(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlFigure) OnDragOver(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlFigure) OnDragStart(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlFigure) OnDrop(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlFigure) OnFocus(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlFigure) OnInput(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlFigure) OnInvalid(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlFigure) OnKeyDown(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlFigure) OnKeyPress(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlFigure) OnKeyUp(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlFigure) OnMouseDown(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlFigure) OnMouseEnter(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlFigure) OnMouseLeave(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlFigure) OnMouseMove(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlFigure) OnMouseOut(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlFigure) OnMouseOver(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlFigure) OnMouseUp(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlFigure) OnPaste(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlFigure) OnReset(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlFigure) OnScroll(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlFigure) OnSearch(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlFigure) OnSelect(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlFigure) OnSubmit(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlFigure) OnWheel(h EventHandler, scope ...any) HTMLFigure {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlFigure) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlFigure) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFigure) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlFigure) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlFigure) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlFigure) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "footer" HTML element.
 type HTMLFooter interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLFooter
@@ -18817,8 +18605,7 @@ type htmlFooter struct {
 }
 
 func (e *htmlFooter) Body(v ...UI) HTMLFooter {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlFooter)
 }
 
 func (e *htmlFooter) Text(v any) HTMLFooter {
@@ -18934,178 +18721,174 @@ func (e *htmlFooter) On(event string, h EventHandler, scope ...any) HTMLFooter {
 }
 
 func (e *htmlFooter) OnBlur(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlFooter) OnChange(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlFooter) OnClick(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlFooter) OnContextMenu(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlFooter) OnCopy(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlFooter) OnCut(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlFooter) OnDblClick(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlFooter) OnDrag(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlFooter) OnDragEnd(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlFooter) OnDragEnter(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlFooter) OnDragLeave(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlFooter) OnDragOver(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlFooter) OnDragStart(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlFooter) OnDrop(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlFooter) OnFocus(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlFooter) OnInput(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlFooter) OnInvalid(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlFooter) OnKeyDown(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlFooter) OnKeyPress(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlFooter) OnKeyUp(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlFooter) OnMouseDown(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlFooter) OnMouseEnter(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlFooter) OnMouseLeave(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlFooter) OnMouseMove(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlFooter) OnMouseOut(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlFooter) OnMouseOver(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlFooter) OnMouseUp(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlFooter) OnPaste(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlFooter) OnReset(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlFooter) OnScroll(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlFooter) OnSearch(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlFooter) OnSelect(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlFooter) OnSubmit(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlFooter) OnWheel(h EventHandler, scope ...any) HTMLFooter {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlFooter) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlFooter) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlFooter) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlFooter) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlFooter) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlFooter) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "form" HTML element.
 type HTMLForm interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLForm
@@ -19317,8 +19100,7 @@ type htmlForm struct {
 }
 
 func (e *htmlForm) Body(v ...UI) HTMLForm {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlForm)
 }
 
 func (e *htmlForm) Text(v any) HTMLForm {
@@ -19479,178 +19261,174 @@ func (e *htmlForm) On(event string, h EventHandler, scope ...any) HTMLForm {
 }
 
 func (e *htmlForm) OnBlur(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlForm) OnChange(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlForm) OnClick(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlForm) OnContextMenu(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlForm) OnCopy(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlForm) OnCut(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlForm) OnDblClick(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlForm) OnDrag(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlForm) OnDragEnd(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlForm) OnDragEnter(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlForm) OnDragLeave(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlForm) OnDragOver(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlForm) OnDragStart(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlForm) OnDrop(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlForm) OnFocus(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlForm) OnInput(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlForm) OnInvalid(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlForm) OnKeyDown(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlForm) OnKeyPress(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlForm) OnKeyUp(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlForm) OnMouseDown(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlForm) OnMouseEnter(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlForm) OnMouseLeave(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlForm) OnMouseMove(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlForm) OnMouseOut(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlForm) OnMouseOver(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlForm) OnMouseUp(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlForm) OnPaste(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlForm) OnReset(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlForm) OnScroll(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlForm) OnSearch(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlForm) OnSelect(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlForm) OnSubmit(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlForm) OnWheel(h EventHandler, scope ...any) HTMLForm {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlForm) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlForm) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlForm) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlForm) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlForm) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlForm) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "h1" HTML element.
 type HTMLH1 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH1
@@ -19838,8 +19616,7 @@ type htmlH1 struct {
 }
 
 func (e *htmlH1) Body(v ...UI) HTMLH1 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH1)
 }
 
 func (e *htmlH1) Text(v any) HTMLH1 {
@@ -19955,178 +19732,174 @@ func (e *htmlH1) On(event string, h EventHandler, scope ...any) HTMLH1 {
 }
 
 func (e *htmlH1) OnBlur(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlH1) OnChange(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlH1) OnClick(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlH1) OnContextMenu(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlH1) OnCopy(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlH1) OnCut(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlH1) OnDblClick(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlH1) OnDrag(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlH1) OnDragEnd(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlH1) OnDragEnter(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlH1) OnDragLeave(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlH1) OnDragOver(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlH1) OnDragStart(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlH1) OnDrop(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlH1) OnFocus(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlH1) OnInput(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlH1) OnInvalid(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlH1) OnKeyDown(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlH1) OnKeyPress(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlH1) OnKeyUp(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlH1) OnMouseDown(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlH1) OnMouseEnter(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlH1) OnMouseLeave(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlH1) OnMouseMove(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlH1) OnMouseOut(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlH1) OnMouseOver(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlH1) OnMouseUp(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlH1) OnPaste(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlH1) OnReset(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlH1) OnScroll(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlH1) OnSearch(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlH1) OnSelect(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlH1) OnSubmit(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlH1) OnWheel(h EventHandler, scope ...any) HTMLH1 {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlH1) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlH1) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH1) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlH1) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlH1) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlH1) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "h2" HTML element.
 type HTMLH2 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH2
@@ -20314,8 +20087,7 @@ type htmlH2 struct {
 }
 
 func (e *htmlH2) Body(v ...UI) HTMLH2 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH2)
 }
 
 func (e *htmlH2) Text(v any) HTMLH2 {
@@ -20431,178 +20203,174 @@ func (e *htmlH2) On(event string, h EventHandler, scope ...any) HTMLH2 {
 }
 
 func (e *htmlH2) OnBlur(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlH2) OnChange(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlH2) OnClick(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlH2) OnContextMenu(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlH2) OnCopy(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlH2) OnCut(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlH2) OnDblClick(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlH2) OnDrag(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlH2) OnDragEnd(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlH2) OnDragEnter(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlH2) OnDragLeave(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlH2) OnDragOver(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlH2) OnDragStart(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlH2) OnDrop(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlH2) OnFocus(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlH2) OnInput(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlH2) OnInvalid(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlH2) OnKeyDown(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlH2) OnKeyPress(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlH2) OnKeyUp(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlH2) OnMouseDown(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlH2) OnMouseEnter(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlH2) OnMouseLeave(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlH2) OnMouseMove(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlH2) OnMouseOut(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlH2) OnMouseOver(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlH2) OnMouseUp(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlH2) OnPaste(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlH2) OnReset(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlH2) OnScroll(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlH2) OnSearch(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlH2) OnSelect(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlH2) OnSubmit(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlH2) OnWheel(h EventHandler, scope ...any) HTMLH2 {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlH2) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlH2) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH2) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlH2) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlH2) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlH2) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "h3" HTML element.
 type HTMLH3 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH3
@@ -20790,8 +20558,7 @@ type htmlH3 struct {
 }
 
 func (e *htmlH3) Body(v ...UI) HTMLH3 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH3)
 }
 
 func (e *htmlH3) Text(v any) HTMLH3 {
@@ -20907,178 +20674,174 @@ func (e *htmlH3) On(event string, h EventHandler, scope ...any) HTMLH3 {
 }
 
 func (e *htmlH3) OnBlur(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlH3) OnChange(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlH3) OnClick(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlH3) OnContextMenu(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlH3) OnCopy(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlH3) OnCut(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlH3) OnDblClick(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlH3) OnDrag(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlH3) OnDragEnd(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlH3) OnDragEnter(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlH3) OnDragLeave(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlH3) OnDragOver(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlH3) OnDragStart(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlH3) OnDrop(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlH3) OnFocus(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlH3) OnInput(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlH3) OnInvalid(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlH3) OnKeyDown(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlH3) OnKeyPress(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlH3) OnKeyUp(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlH3) OnMouseDown(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlH3) OnMouseEnter(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlH3) OnMouseLeave(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlH3) OnMouseMove(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlH3) OnMouseOut(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlH3) OnMouseOver(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlH3) OnMouseUp(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlH3) OnPaste(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlH3) OnReset(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlH3) OnScroll(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlH3) OnSearch(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlH3) OnSelect(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlH3) OnSubmit(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlH3) OnWheel(h EventHandler, scope ...any) HTMLH3 {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlH3) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlH3) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH3) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlH3) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlH3) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlH3) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "h4" HTML element.
 type HTMLH4 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH4
@@ -21266,8 +21029,7 @@ type htmlH4 struct {
 }
 
 func (e *htmlH4) Body(v ...UI) HTMLH4 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH4)
 }
 
 func (e *htmlH4) Text(v any) HTMLH4 {
@@ -21383,178 +21145,174 @@ func (e *htmlH4) On(event string, h EventHandler, scope ...any) HTMLH4 {
 }
 
 func (e *htmlH4) OnBlur(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlH4) OnChange(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlH4) OnClick(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlH4) OnContextMenu(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlH4) OnCopy(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlH4) OnCut(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlH4) OnDblClick(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlH4) OnDrag(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlH4) OnDragEnd(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlH4) OnDragEnter(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlH4) OnDragLeave(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlH4) OnDragOver(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlH4) OnDragStart(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlH4) OnDrop(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlH4) OnFocus(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlH4) OnInput(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlH4) OnInvalid(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlH4) OnKeyDown(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlH4) OnKeyPress(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlH4) OnKeyUp(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlH4) OnMouseDown(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlH4) OnMouseEnter(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlH4) OnMouseLeave(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlH4) OnMouseMove(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlH4) OnMouseOut(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlH4) OnMouseOver(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlH4) OnMouseUp(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlH4) OnPaste(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlH4) OnReset(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlH4) OnScroll(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlH4) OnSearch(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlH4) OnSelect(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlH4) OnSubmit(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlH4) OnWheel(h EventHandler, scope ...any) HTMLH4 {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlH4) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlH4) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH4) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlH4) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlH4) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlH4) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "h5" HTML element.
 type HTMLH5 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH5
@@ -21742,8 +21500,7 @@ type htmlH5 struct {
 }
 
 func (e *htmlH5) Body(v ...UI) HTMLH5 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH5)
 }
 
 func (e *htmlH5) Text(v any) HTMLH5 {
@@ -21859,178 +21616,174 @@ func (e *htmlH5) On(event string, h EventHandler, scope ...any) HTMLH5 {
 }
 
 func (e *htmlH5) OnBlur(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlH5) OnChange(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlH5) OnClick(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlH5) OnContextMenu(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlH5) OnCopy(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlH5) OnCut(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlH5) OnDblClick(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlH5) OnDrag(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlH5) OnDragEnd(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlH5) OnDragEnter(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlH5) OnDragLeave(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlH5) OnDragOver(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlH5) OnDragStart(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlH5) OnDrop(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlH5) OnFocus(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlH5) OnInput(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlH5) OnInvalid(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlH5) OnKeyDown(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlH5) OnKeyPress(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlH5) OnKeyUp(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlH5) OnMouseDown(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlH5) OnMouseEnter(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlH5) OnMouseLeave(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlH5) OnMouseMove(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlH5) OnMouseOut(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlH5) OnMouseOver(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlH5) OnMouseUp(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlH5) OnPaste(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlH5) OnReset(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlH5) OnScroll(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlH5) OnSearch(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlH5) OnSelect(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlH5) OnSubmit(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlH5) OnWheel(h EventHandler, scope ...any) HTMLH5 {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlH5) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlH5) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH5) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlH5) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlH5) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlH5) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "h6" HTML element.
 type HTMLH6 interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLH6
@@ -22218,8 +21971,7 @@ type htmlH6 struct {
 }
 
 func (e *htmlH6) Body(v ...UI) HTMLH6 {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlH6)
 }
 
 func (e *htmlH6) Text(v any) HTMLH6 {
@@ -22335,178 +22087,174 @@ func (e *htmlH6) On(event string, h EventHandler, scope ...any) HTMLH6 {
 }
 
 func (e *htmlH6) OnBlur(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlH6) OnChange(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlH6) OnClick(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlH6) OnContextMenu(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlH6) OnCopy(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlH6) OnCut(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlH6) OnDblClick(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlH6) OnDrag(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlH6) OnDragEnd(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlH6) OnDragEnter(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlH6) OnDragLeave(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlH6) OnDragOver(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlH6) OnDragStart(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlH6) OnDrop(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlH6) OnFocus(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlH6) OnInput(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlH6) OnInvalid(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlH6) OnKeyDown(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlH6) OnKeyPress(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlH6) OnKeyUp(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlH6) OnMouseDown(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlH6) OnMouseEnter(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlH6) OnMouseLeave(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlH6) OnMouseMove(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlH6) OnMouseOut(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlH6) OnMouseOver(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlH6) OnMouseUp(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlH6) OnPaste(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlH6) OnReset(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlH6) OnScroll(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlH6) OnSearch(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlH6) OnSelect(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlH6) OnSubmit(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlH6) OnWheel(h EventHandler, scope ...any) HTMLH6 {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlH6) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlH6) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlH6) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlH6) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlH6) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlH6) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "head" HTML element.
 type HTMLHead interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLHead
@@ -22592,8 +22340,7 @@ type htmlHead struct {
 }
 
 func (e *htmlHead) Body(v ...UI) HTMLHead {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlHead)
 }
 
 func (e *htmlHead) Text(v any) HTMLHead {
@@ -22708,9 +22455,39 @@ func (e *htmlHead) On(event string, h EventHandler, scope ...any) HTMLHead {
 	return e
 }
 
+func (e *htmlHead) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlHead) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHead) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlHead) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlHead) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlHead) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "header" HTML element.
 type HTMLHeader interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLHeader
@@ -22898,8 +22675,7 @@ type htmlHeader struct {
 }
 
 func (e *htmlHeader) Body(v ...UI) HTMLHeader {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlHeader)
 }
 
 func (e *htmlHeader) Text(v any) HTMLHeader {
@@ -23015,178 +22791,174 @@ func (e *htmlHeader) On(event string, h EventHandler, scope ...any) HTMLHeader {
 }
 
 func (e *htmlHeader) OnBlur(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlHeader) OnChange(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlHeader) OnClick(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlHeader) OnContextMenu(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlHeader) OnCopy(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlHeader) OnCut(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlHeader) OnDblClick(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlHeader) OnDrag(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlHeader) OnDragEnd(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlHeader) OnDragEnter(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlHeader) OnDragLeave(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlHeader) OnDragOver(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlHeader) OnDragStart(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlHeader) OnDrop(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlHeader) OnFocus(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlHeader) OnInput(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlHeader) OnInvalid(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlHeader) OnKeyDown(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlHeader) OnKeyPress(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlHeader) OnKeyUp(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlHeader) OnMouseDown(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlHeader) OnMouseEnter(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlHeader) OnMouseLeave(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlHeader) OnMouseMove(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlHeader) OnMouseOut(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlHeader) OnMouseOver(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlHeader) OnMouseUp(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlHeader) OnPaste(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlHeader) OnReset(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlHeader) OnScroll(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlHeader) OnSearch(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlHeader) OnSelect(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlHeader) OnSubmit(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlHeader) OnWheel(h EventHandler, scope ...any) HTMLHeader {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlHeader) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlHeader) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHeader) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlHeader) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlHeader) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlHeader) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "hr" HTML element.
 type HTMLHr interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLHr
@@ -23469,178 +23241,174 @@ func (e *htmlHr) On(event string, h EventHandler, scope ...any) HTMLHr {
 }
 
 func (e *htmlHr) OnBlur(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlHr) OnChange(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlHr) OnClick(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlHr) OnContextMenu(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlHr) OnCopy(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlHr) OnCut(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlHr) OnDblClick(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlHr) OnDrag(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlHr) OnDragEnd(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlHr) OnDragEnter(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlHr) OnDragLeave(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlHr) OnDragOver(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlHr) OnDragStart(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlHr) OnDrop(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlHr) OnFocus(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlHr) OnInput(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlHr) OnInvalid(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlHr) OnKeyDown(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlHr) OnKeyPress(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlHr) OnKeyUp(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlHr) OnMouseDown(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlHr) OnMouseEnter(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlHr) OnMouseLeave(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlHr) OnMouseMove(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlHr) OnMouseOut(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlHr) OnMouseOver(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlHr) OnMouseUp(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlHr) OnPaste(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlHr) OnReset(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlHr) OnScroll(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlHr) OnSearch(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlHr) OnSelect(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlHr) OnSubmit(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlHr) OnWheel(h EventHandler, scope ...any) HTMLHr {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlHr) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlHr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlHr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlHr) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlHr) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "html" HTML element.
 type HTMLHtml interface {
-	UI
+	HTML
 
 	privateBody(elems ...UI) HTMLHtml
 
@@ -23719,8 +23487,7 @@ type htmlHtml struct {
 }
 
 func (e *htmlHtml) privateBody(v ...UI) HTMLHtml {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlHtml)
 }
 
 func (e *htmlHtml) AccessKey(format string, v ...any) HTMLHtml {
@@ -23827,9 +23594,39 @@ func (e *htmlHtml) On(event string, h EventHandler, scope ...any) HTMLHtml {
 	return e
 }
 
+func (e *htmlHtml) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlHtml) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlHtml) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlHtml) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlHtml) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlHtml) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "i" HTML element.
 type HTMLI interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLI
@@ -24017,8 +23814,7 @@ type htmlI struct {
 }
 
 func (e *htmlI) Body(v ...UI) HTMLI {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlI)
 }
 
 func (e *htmlI) Text(v any) HTMLI {
@@ -24134,178 +23930,174 @@ func (e *htmlI) On(event string, h EventHandler, scope ...any) HTMLI {
 }
 
 func (e *htmlI) OnBlur(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlI) OnChange(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlI) OnClick(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlI) OnContextMenu(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlI) OnCopy(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlI) OnCut(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlI) OnDblClick(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlI) OnDrag(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlI) OnDragEnd(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlI) OnDragEnter(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlI) OnDragLeave(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlI) OnDragOver(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlI) OnDragStart(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlI) OnDrop(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlI) OnFocus(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlI) OnInput(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlI) OnInvalid(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlI) OnKeyDown(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlI) OnKeyPress(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlI) OnKeyUp(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlI) OnMouseDown(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlI) OnMouseEnter(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlI) OnMouseLeave(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlI) OnMouseMove(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlI) OnMouseOut(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlI) OnMouseOver(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlI) OnMouseUp(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlI) OnPaste(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlI) OnReset(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlI) OnScroll(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlI) OnSearch(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlI) OnSelect(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlI) OnSubmit(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlI) OnWheel(h EventHandler, scope ...any) HTMLI {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlI) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlI) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlI) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlI) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlI) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlI) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "iframe" HTML element.
 type HTMLIFrame interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLIFrame
@@ -24529,8 +24321,7 @@ type htmlIFrame struct {
 }
 
 func (e *htmlIFrame) Body(v ...UI) HTMLIFrame {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlIFrame)
 }
 
 func (e *htmlIFrame) Text(v any) HTMLIFrame {
@@ -24711,183 +24502,178 @@ func (e *htmlIFrame) On(event string, h EventHandler, scope ...any) HTMLIFrame {
 }
 
 func (e *htmlIFrame) OnBlur(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlIFrame) OnChange(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlIFrame) OnClick(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlIFrame) OnContextMenu(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlIFrame) OnCopy(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlIFrame) OnCut(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlIFrame) OnDblClick(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlIFrame) OnDrag(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlIFrame) OnDragEnd(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlIFrame) OnDragEnter(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlIFrame) OnDragLeave(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlIFrame) OnDragOver(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlIFrame) OnDragStart(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlIFrame) OnDrop(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlIFrame) OnFocus(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlIFrame) OnInput(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlIFrame) OnInvalid(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlIFrame) OnKeyDown(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlIFrame) OnKeyPress(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlIFrame) OnKeyUp(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlIFrame) OnLoad(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("load", h, scope...)
-	return e
+	return e.On("load", h, scope...)
 }
 
 func (e *htmlIFrame) OnMouseDown(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlIFrame) OnMouseEnter(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlIFrame) OnMouseLeave(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlIFrame) OnMouseMove(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlIFrame) OnMouseOut(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlIFrame) OnMouseOver(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlIFrame) OnMouseUp(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlIFrame) OnPaste(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlIFrame) OnReset(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlIFrame) OnScroll(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlIFrame) OnSearch(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlIFrame) OnSelect(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlIFrame) OnSubmit(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlIFrame) OnWheel(h EventHandler, scope ...any) HTMLIFrame {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlIFrame) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlIFrame) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlIFrame) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlIFrame) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlIFrame) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlIFrame) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "img" HTML element.
 type HTMLImg interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLImg
@@ -25322,298 +25108,270 @@ func (e *htmlImg) On(event string, h EventHandler, scope ...any) HTMLImg {
 }
 
 func (e *htmlImg) OnAbort(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("abort", h, scope...)
-	return e
+	return e.On("abort", h, scope...)
 }
 
 func (e *htmlImg) OnBlur(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlImg) OnCanPlay(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("canplay", h, scope...)
-	return e
+	return e.On("canplay", h, scope...)
 }
 
 func (e *htmlImg) OnCanPlayThrough(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("canplaythrough", h, scope...)
-	return e
+	return e.On("canplaythrough", h, scope...)
 }
 
 func (e *htmlImg) OnChange(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlImg) OnClick(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlImg) OnContextMenu(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlImg) OnCopy(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlImg) OnCueChange(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("cuechange", h, scope...)
-	return e
+	return e.On("cuechange", h, scope...)
 }
 
 func (e *htmlImg) OnCut(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlImg) OnDblClick(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlImg) OnDrag(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlImg) OnDragEnd(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlImg) OnDragEnter(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlImg) OnDragLeave(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlImg) OnDragOver(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlImg) OnDragStart(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlImg) OnDrop(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlImg) OnDurationChange(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("durationchange", h, scope...)
-	return e
+	return e.On("durationchange", h, scope...)
 }
 
 func (e *htmlImg) OnEmptied(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("emptied", h, scope...)
-	return e
+	return e.On("emptied", h, scope...)
 }
 
 func (e *htmlImg) OnEnded(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("ended", h, scope...)
-	return e
+	return e.On("ended", h, scope...)
 }
 
 func (e *htmlImg) OnError(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("error", h, scope...)
-	return e
+	return e.On("error", h, scope...)
 }
 
 func (e *htmlImg) OnFocus(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlImg) OnInput(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlImg) OnInvalid(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlImg) OnKeyDown(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlImg) OnKeyPress(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlImg) OnKeyUp(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlImg) OnLoad(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("load", h, scope...)
-	return e
+	return e.On("load", h, scope...)
 }
 
 func (e *htmlImg) OnLoadStart(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("loadstart", h, scope...)
-	return e
+	return e.On("loadstart", h, scope...)
 }
 
 func (e *htmlImg) OnLoadedData(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("loadeddata", h, scope...)
-	return e
+	return e.On("loadeddata", h, scope...)
 }
 
 func (e *htmlImg) OnLoadedMetaData(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("loadedmetadata", h, scope...)
-	return e
+	return e.On("loadedmetadata", h, scope...)
 }
 
 func (e *htmlImg) OnMouseDown(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlImg) OnMouseEnter(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlImg) OnMouseLeave(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlImg) OnMouseMove(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlImg) OnMouseOut(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlImg) OnMouseOver(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlImg) OnMouseUp(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlImg) OnPaste(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlImg) OnPause(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("pause", h, scope...)
-	return e
+	return e.On("pause", h, scope...)
 }
 
 func (e *htmlImg) OnPlay(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("play", h, scope...)
-	return e
+	return e.On("play", h, scope...)
 }
 
 func (e *htmlImg) OnPlaying(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("playing", h, scope...)
-	return e
+	return e.On("playing", h, scope...)
 }
 
 func (e *htmlImg) OnProgress(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("progress", h, scope...)
-	return e
+	return e.On("progress", h, scope...)
 }
 
 func (e *htmlImg) OnRateChange(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("ratechange", h, scope...)
-	return e
+	return e.On("ratechange", h, scope...)
 }
 
 func (e *htmlImg) OnReset(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlImg) OnScroll(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlImg) OnSearch(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlImg) OnSeeked(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("seeked", h, scope...)
-	return e
+	return e.On("seeked", h, scope...)
 }
 
 func (e *htmlImg) OnSeeking(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("seeking", h, scope...)
-	return e
+	return e.On("seeking", h, scope...)
 }
 
 func (e *htmlImg) OnSelect(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlImg) OnStalled(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("stalled", h, scope...)
-	return e
+	return e.On("stalled", h, scope...)
 }
 
 func (e *htmlImg) OnSubmit(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlImg) OnSuspend(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("suspend", h, scope...)
-	return e
+	return e.On("suspend", h, scope...)
 }
 
 func (e *htmlImg) OnTimeUpdate(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("timeupdate", h, scope...)
-	return e
+	return e.On("timeupdate", h, scope...)
 }
 
 func (e *htmlImg) OnVolumeChange(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("volumechange", h, scope...)
-	return e
+	return e.On("volumechange", h, scope...)
 }
 
 func (e *htmlImg) OnWaiting(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("waiting", h, scope...)
-	return e
+	return e.On("waiting", h, scope...)
 }
 
 func (e *htmlImg) OnWheel(h EventHandler, scope ...any) HTMLImg {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlImg) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlImg) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlImg) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlImg) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlImg) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlImg) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "input" HTML element.
 type HTMLInput interface {
-	UI
+	HTML
 
 	// Restricts file types the server accepts, especially used for file input elements.
 	Accept(format string, v ...any) HTMLInput
@@ -26152,183 +25910,178 @@ func (e *htmlInput) On(event string, h EventHandler, scope ...any) HTMLInput {
 }
 
 func (e *htmlInput) OnBlur(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlInput) OnChange(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlInput) OnClick(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlInput) OnContextMenu(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlInput) OnCopy(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlInput) OnCut(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlInput) OnDblClick(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlInput) OnDrag(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlInput) OnDragEnd(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlInput) OnDragEnter(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlInput) OnDragLeave(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlInput) OnDragOver(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlInput) OnDragStart(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlInput) OnDrop(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlInput) OnFocus(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlInput) OnInput(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlInput) OnInvalid(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlInput) OnKeyDown(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlInput) OnKeyPress(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlInput) OnKeyUp(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlInput) OnLoad(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("load", h, scope...)
-	return e
+	return e.On("load", h, scope...)
 }
 
 func (e *htmlInput) OnMouseDown(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlInput) OnMouseEnter(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlInput) OnMouseLeave(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlInput) OnMouseMove(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlInput) OnMouseOut(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlInput) OnMouseOver(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlInput) OnMouseUp(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlInput) OnPaste(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlInput) OnReset(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlInput) OnScroll(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlInput) OnSearch(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlInput) OnSelect(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlInput) OnSubmit(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlInput) OnWheel(h EventHandler, scope ...any) HTMLInput {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlInput) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlInput) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlInput) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlInput) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlInput) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlInput) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "ins" HTML element.
 type HTMLIns interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLIns
@@ -26516,8 +26269,7 @@ type htmlIns struct {
 }
 
 func (e *htmlIns) Body(v ...UI) HTMLIns {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlIns)
 }
 
 func (e *htmlIns) Text(v any) HTMLIns {
@@ -26633,178 +26385,174 @@ func (e *htmlIns) On(event string, h EventHandler, scope ...any) HTMLIns {
 }
 
 func (e *htmlIns) OnBlur(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlIns) OnChange(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlIns) OnClick(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlIns) OnContextMenu(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlIns) OnCopy(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlIns) OnCut(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlIns) OnDblClick(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlIns) OnDrag(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlIns) OnDragEnd(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlIns) OnDragEnter(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlIns) OnDragLeave(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlIns) OnDragOver(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlIns) OnDragStart(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlIns) OnDrop(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlIns) OnFocus(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlIns) OnInput(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlIns) OnInvalid(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlIns) OnKeyDown(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlIns) OnKeyPress(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlIns) OnKeyUp(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlIns) OnMouseDown(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlIns) OnMouseEnter(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlIns) OnMouseLeave(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlIns) OnMouseMove(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlIns) OnMouseOut(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlIns) OnMouseOver(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlIns) OnMouseUp(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlIns) OnPaste(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlIns) OnReset(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlIns) OnScroll(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlIns) OnSearch(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlIns) OnSelect(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlIns) OnSubmit(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlIns) OnWheel(h EventHandler, scope ...any) HTMLIns {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlIns) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlIns) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlIns) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlIns) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlIns) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlIns) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "kbd" HTML element.
 type HTMLKbd interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLKbd
@@ -26992,8 +26740,7 @@ type htmlKbd struct {
 }
 
 func (e *htmlKbd) Body(v ...UI) HTMLKbd {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlKbd)
 }
 
 func (e *htmlKbd) Text(v any) HTMLKbd {
@@ -27109,178 +26856,174 @@ func (e *htmlKbd) On(event string, h EventHandler, scope ...any) HTMLKbd {
 }
 
 func (e *htmlKbd) OnBlur(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlKbd) OnChange(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlKbd) OnClick(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlKbd) OnContextMenu(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlKbd) OnCopy(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlKbd) OnCut(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlKbd) OnDblClick(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlKbd) OnDrag(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlKbd) OnDragEnd(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlKbd) OnDragEnter(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlKbd) OnDragLeave(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlKbd) OnDragOver(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlKbd) OnDragStart(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlKbd) OnDrop(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlKbd) OnFocus(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlKbd) OnInput(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlKbd) OnInvalid(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlKbd) OnKeyDown(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlKbd) OnKeyPress(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlKbd) OnKeyUp(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlKbd) OnMouseDown(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlKbd) OnMouseEnter(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlKbd) OnMouseLeave(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlKbd) OnMouseMove(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlKbd) OnMouseOut(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlKbd) OnMouseOver(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlKbd) OnMouseUp(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlKbd) OnPaste(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlKbd) OnReset(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlKbd) OnScroll(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlKbd) OnSearch(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlKbd) OnSelect(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlKbd) OnSubmit(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlKbd) OnWheel(h EventHandler, scope ...any) HTMLKbd {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlKbd) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlKbd) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlKbd) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlKbd) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlKbd) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlKbd) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "label" HTML element.
 type HTMLLabel interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLLabel
@@ -27474,8 +27217,7 @@ type htmlLabel struct {
 }
 
 func (e *htmlLabel) Body(v ...UI) HTMLLabel {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlLabel)
 }
 
 func (e *htmlLabel) Text(v any) HTMLLabel {
@@ -27601,178 +27343,174 @@ func (e *htmlLabel) On(event string, h EventHandler, scope ...any) HTMLLabel {
 }
 
 func (e *htmlLabel) OnBlur(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlLabel) OnChange(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlLabel) OnClick(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlLabel) OnContextMenu(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlLabel) OnCopy(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlLabel) OnCut(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlLabel) OnDblClick(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlLabel) OnDrag(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlLabel) OnDragEnd(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlLabel) OnDragEnter(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlLabel) OnDragLeave(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlLabel) OnDragOver(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlLabel) OnDragStart(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlLabel) OnDrop(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlLabel) OnFocus(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlLabel) OnInput(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlLabel) OnInvalid(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlLabel) OnKeyDown(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlLabel) OnKeyPress(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlLabel) OnKeyUp(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlLabel) OnMouseDown(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlLabel) OnMouseEnter(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlLabel) OnMouseLeave(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlLabel) OnMouseMove(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlLabel) OnMouseOut(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlLabel) OnMouseOver(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlLabel) OnMouseUp(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlLabel) OnPaste(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlLabel) OnReset(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlLabel) OnScroll(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlLabel) OnSearch(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlLabel) OnSelect(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlLabel) OnSubmit(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlLabel) OnWheel(h EventHandler, scope ...any) HTMLLabel {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlLabel) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlLabel) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLabel) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlLabel) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlLabel) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlLabel) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "legend" HTML element.
 type HTMLLegend interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLLegend
@@ -27960,8 +27698,7 @@ type htmlLegend struct {
 }
 
 func (e *htmlLegend) Body(v ...UI) HTMLLegend {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlLegend)
 }
 
 func (e *htmlLegend) Text(v any) HTMLLegend {
@@ -28077,178 +27814,174 @@ func (e *htmlLegend) On(event string, h EventHandler, scope ...any) HTMLLegend {
 }
 
 func (e *htmlLegend) OnBlur(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlLegend) OnChange(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlLegend) OnClick(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlLegend) OnContextMenu(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlLegend) OnCopy(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlLegend) OnCut(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlLegend) OnDblClick(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlLegend) OnDrag(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlLegend) OnDragEnd(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlLegend) OnDragEnter(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlLegend) OnDragLeave(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlLegend) OnDragOver(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlLegend) OnDragStart(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlLegend) OnDrop(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlLegend) OnFocus(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlLegend) OnInput(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlLegend) OnInvalid(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlLegend) OnKeyDown(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlLegend) OnKeyPress(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlLegend) OnKeyUp(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlLegend) OnMouseDown(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlLegend) OnMouseEnter(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlLegend) OnMouseLeave(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlLegend) OnMouseMove(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlLegend) OnMouseOut(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlLegend) OnMouseOver(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlLegend) OnMouseUp(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlLegend) OnPaste(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlLegend) OnReset(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlLegend) OnScroll(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlLegend) OnSearch(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlLegend) OnSelect(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlLegend) OnSubmit(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlLegend) OnWheel(h EventHandler, scope ...any) HTMLLegend {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlLegend) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlLegend) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLegend) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlLegend) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlLegend) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlLegend) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "li" HTML element.
 type HTMLLi interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLLi
@@ -28439,8 +28172,7 @@ type htmlLi struct {
 }
 
 func (e *htmlLi) Body(v ...UI) HTMLLi {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlLi)
 }
 
 func (e *htmlLi) Text(v any) HTMLLi {
@@ -28561,178 +28293,174 @@ func (e *htmlLi) On(event string, h EventHandler, scope ...any) HTMLLi {
 }
 
 func (e *htmlLi) OnBlur(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlLi) OnChange(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlLi) OnClick(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlLi) OnContextMenu(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlLi) OnCopy(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlLi) OnCut(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlLi) OnDblClick(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlLi) OnDrag(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlLi) OnDragEnd(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlLi) OnDragEnter(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlLi) OnDragLeave(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlLi) OnDragOver(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlLi) OnDragStart(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlLi) OnDrop(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlLi) OnFocus(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlLi) OnInput(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlLi) OnInvalid(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlLi) OnKeyDown(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlLi) OnKeyPress(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlLi) OnKeyUp(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlLi) OnMouseDown(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlLi) OnMouseEnter(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlLi) OnMouseLeave(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlLi) OnMouseMove(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlLi) OnMouseOut(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlLi) OnMouseOver(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlLi) OnMouseUp(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlLi) OnPaste(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlLi) OnReset(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlLi) OnScroll(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlLi) OnSearch(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlLi) OnSelect(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlLi) OnSubmit(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlLi) OnWheel(h EventHandler, scope ...any) HTMLLi {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlLi) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlLi) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLi) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlLi) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlLi) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlLi) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "link" HTML element.
 type HTMLLink interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLLink
@@ -29090,183 +28818,178 @@ func (e *htmlLink) On(event string, h EventHandler, scope ...any) HTMLLink {
 }
 
 func (e *htmlLink) OnBlur(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlLink) OnChange(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlLink) OnClick(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlLink) OnContextMenu(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlLink) OnCopy(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlLink) OnCut(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlLink) OnDblClick(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlLink) OnDrag(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlLink) OnDragEnd(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlLink) OnDragEnter(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlLink) OnDragLeave(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlLink) OnDragOver(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlLink) OnDragStart(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlLink) OnDrop(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlLink) OnFocus(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlLink) OnInput(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlLink) OnInvalid(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlLink) OnKeyDown(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlLink) OnKeyPress(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlLink) OnKeyUp(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlLink) OnLoad(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("load", h, scope...)
-	return e
+	return e.On("load", h, scope...)
 }
 
 func (e *htmlLink) OnMouseDown(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlLink) OnMouseEnter(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlLink) OnMouseLeave(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlLink) OnMouseMove(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlLink) OnMouseOut(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlLink) OnMouseOver(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlLink) OnMouseUp(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlLink) OnPaste(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlLink) OnReset(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlLink) OnScroll(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlLink) OnSearch(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlLink) OnSelect(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlLink) OnSubmit(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlLink) OnWheel(h EventHandler, scope ...any) HTMLLink {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlLink) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlLink) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlLink) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlLink) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlLink) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlLink) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "main" HTML element.
 type HTMLMain interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMain
@@ -29454,8 +29177,7 @@ type htmlMain struct {
 }
 
 func (e *htmlMain) Body(v ...UI) HTMLMain {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMain)
 }
 
 func (e *htmlMain) Text(v any) HTMLMain {
@@ -29571,178 +29293,174 @@ func (e *htmlMain) On(event string, h EventHandler, scope ...any) HTMLMain {
 }
 
 func (e *htmlMain) OnBlur(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlMain) OnChange(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlMain) OnClick(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlMain) OnContextMenu(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlMain) OnCopy(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlMain) OnCut(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlMain) OnDblClick(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlMain) OnDrag(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlMain) OnDragEnd(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlMain) OnDragEnter(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlMain) OnDragLeave(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlMain) OnDragOver(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlMain) OnDragStart(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlMain) OnDrop(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlMain) OnFocus(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlMain) OnInput(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlMain) OnInvalid(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlMain) OnKeyDown(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlMain) OnKeyPress(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlMain) OnKeyUp(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlMain) OnMouseDown(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlMain) OnMouseEnter(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlMain) OnMouseLeave(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlMain) OnMouseMove(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlMain) OnMouseOut(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlMain) OnMouseOver(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlMain) OnMouseUp(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlMain) OnPaste(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlMain) OnReset(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlMain) OnScroll(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlMain) OnSearch(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlMain) OnSelect(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlMain) OnSubmit(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlMain) OnWheel(h EventHandler, scope ...any) HTMLMain {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlMain) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlMain) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMain) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlMain) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlMain) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlMain) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "map" HTML element.
 type HTMLMap interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMap
@@ -29933,8 +29651,7 @@ type htmlMap struct {
 }
 
 func (e *htmlMap) Body(v ...UI) HTMLMap {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMap)
 }
 
 func (e *htmlMap) Text(v any) HTMLMap {
@@ -30055,178 +29772,174 @@ func (e *htmlMap) On(event string, h EventHandler, scope ...any) HTMLMap {
 }
 
 func (e *htmlMap) OnBlur(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlMap) OnChange(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlMap) OnClick(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlMap) OnContextMenu(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlMap) OnCopy(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlMap) OnCut(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlMap) OnDblClick(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlMap) OnDrag(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlMap) OnDragEnd(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlMap) OnDragEnter(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlMap) OnDragLeave(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlMap) OnDragOver(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlMap) OnDragStart(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlMap) OnDrop(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlMap) OnFocus(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlMap) OnInput(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlMap) OnInvalid(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlMap) OnKeyDown(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlMap) OnKeyPress(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlMap) OnKeyUp(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlMap) OnMouseDown(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlMap) OnMouseEnter(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlMap) OnMouseLeave(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlMap) OnMouseMove(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlMap) OnMouseOut(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlMap) OnMouseOver(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlMap) OnMouseUp(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlMap) OnPaste(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlMap) OnReset(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlMap) OnScroll(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlMap) OnSearch(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlMap) OnSelect(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlMap) OnSubmit(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlMap) OnWheel(h EventHandler, scope ...any) HTMLMap {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlMap) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlMap) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMap) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlMap) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlMap) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlMap) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "mark" HTML element.
 type HTMLMark interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMark
@@ -30414,8 +30127,7 @@ type htmlMark struct {
 }
 
 func (e *htmlMark) Body(v ...UI) HTMLMark {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMark)
 }
 
 func (e *htmlMark) Text(v any) HTMLMark {
@@ -30531,178 +30243,174 @@ func (e *htmlMark) On(event string, h EventHandler, scope ...any) HTMLMark {
 }
 
 func (e *htmlMark) OnBlur(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlMark) OnChange(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlMark) OnClick(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlMark) OnContextMenu(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlMark) OnCopy(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlMark) OnCut(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlMark) OnDblClick(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlMark) OnDrag(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlMark) OnDragEnd(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlMark) OnDragEnter(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlMark) OnDragLeave(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlMark) OnDragOver(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlMark) OnDragStart(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlMark) OnDrop(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlMark) OnFocus(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlMark) OnInput(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlMark) OnInvalid(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlMark) OnKeyDown(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlMark) OnKeyPress(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlMark) OnKeyUp(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlMark) OnMouseDown(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlMark) OnMouseEnter(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlMark) OnMouseLeave(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlMark) OnMouseMove(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlMark) OnMouseOut(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlMark) OnMouseOver(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlMark) OnMouseUp(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlMark) OnPaste(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlMark) OnReset(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlMark) OnScroll(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlMark) OnSearch(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlMark) OnSelect(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlMark) OnSubmit(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlMark) OnWheel(h EventHandler, scope ...any) HTMLMark {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlMark) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlMark) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMark) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlMark) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlMark) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlMark) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "meta" HTML element.
 type HTMLMeta interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLMeta
@@ -30922,9 +30630,39 @@ func (e *htmlMeta) On(event string, h EventHandler, scope ...any) HTMLMeta {
 	return e
 }
 
+func (e *htmlMeta) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlMeta) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMeta) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlMeta) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlMeta) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlMeta) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "meter" HTML element.
 type HTMLMeter interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLMeter
@@ -31133,8 +30871,7 @@ type htmlMeter struct {
 }
 
 func (e *htmlMeter) Body(v ...UI) HTMLMeter {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlMeter)
 }
 
 func (e *htmlMeter) Text(v any) HTMLMeter {
@@ -31285,178 +31022,174 @@ func (e *htmlMeter) On(event string, h EventHandler, scope ...any) HTMLMeter {
 }
 
 func (e *htmlMeter) OnBlur(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlMeter) OnChange(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlMeter) OnClick(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlMeter) OnContextMenu(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlMeter) OnCopy(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlMeter) OnCut(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlMeter) OnDblClick(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlMeter) OnDrag(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlMeter) OnDragEnd(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlMeter) OnDragEnter(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlMeter) OnDragLeave(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlMeter) OnDragOver(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlMeter) OnDragStart(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlMeter) OnDrop(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlMeter) OnFocus(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlMeter) OnInput(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlMeter) OnInvalid(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlMeter) OnKeyDown(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlMeter) OnKeyPress(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlMeter) OnKeyUp(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlMeter) OnMouseDown(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlMeter) OnMouseEnter(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlMeter) OnMouseLeave(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlMeter) OnMouseMove(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlMeter) OnMouseOut(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlMeter) OnMouseOver(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlMeter) OnMouseUp(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlMeter) OnPaste(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlMeter) OnReset(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlMeter) OnScroll(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlMeter) OnSearch(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlMeter) OnSelect(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlMeter) OnSubmit(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlMeter) OnWheel(h EventHandler, scope ...any) HTMLMeter {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlMeter) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlMeter) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMeter) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlMeter) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlMeter) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlMeter) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "nav" HTML element.
 type HTMLNav interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLNav
@@ -31644,8 +31377,7 @@ type htmlNav struct {
 }
 
 func (e *htmlNav) Body(v ...UI) HTMLNav {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlNav)
 }
 
 func (e *htmlNav) Text(v any) HTMLNav {
@@ -31761,178 +31493,174 @@ func (e *htmlNav) On(event string, h EventHandler, scope ...any) HTMLNav {
 }
 
 func (e *htmlNav) OnBlur(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlNav) OnChange(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlNav) OnClick(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlNav) OnContextMenu(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlNav) OnCopy(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlNav) OnCut(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlNav) OnDblClick(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlNav) OnDrag(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlNav) OnDragEnd(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlNav) OnDragEnter(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlNav) OnDragLeave(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlNav) OnDragOver(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlNav) OnDragStart(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlNav) OnDrop(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlNav) OnFocus(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlNav) OnInput(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlNav) OnInvalid(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlNav) OnKeyDown(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlNav) OnKeyPress(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlNav) OnKeyUp(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlNav) OnMouseDown(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlNav) OnMouseEnter(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlNav) OnMouseLeave(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlNav) OnMouseMove(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlNav) OnMouseOut(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlNav) OnMouseOver(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlNav) OnMouseUp(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlNav) OnPaste(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlNav) OnReset(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlNav) OnScroll(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlNav) OnSearch(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlNav) OnSelect(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlNav) OnSubmit(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlNav) OnWheel(h EventHandler, scope ...any) HTMLNav {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlNav) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlNav) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlNav) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlNav) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlNav) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlNav) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "noscript" HTML element.
 type HTMLNoScript interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLNoScript
@@ -32018,8 +31746,7 @@ type htmlNoScript struct {
 }
 
 func (e *htmlNoScript) Body(v ...UI) HTMLNoScript {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlNoScript)
 }
 
 func (e *htmlNoScript) Text(v any) HTMLNoScript {
@@ -32134,9 +31861,39 @@ func (e *htmlNoScript) On(event string, h EventHandler, scope ...any) HTMLNoScri
 	return e
 }
 
+func (e *htmlNoScript) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlNoScript) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlNoScript) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlNoScript) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlNoScript) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlNoScript) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "object" HTML element.
 type HTMLObject interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLObject
@@ -32414,8 +32171,7 @@ type htmlObject struct {
 }
 
 func (e *htmlObject) Body(v ...UI) HTMLObject {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlObject)
 }
 
 func (e *htmlObject) Text(v any) HTMLObject {
@@ -32566,293 +32322,266 @@ func (e *htmlObject) On(event string, h EventHandler, scope ...any) HTMLObject {
 }
 
 func (e *htmlObject) OnAbort(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("abort", h, scope...)
-	return e
+	return e.On("abort", h, scope...)
 }
 
 func (e *htmlObject) OnBlur(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlObject) OnCanPlay(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("canplay", h, scope...)
-	return e
+	return e.On("canplay", h, scope...)
 }
 
 func (e *htmlObject) OnCanPlayThrough(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("canplaythrough", h, scope...)
-	return e
+	return e.On("canplaythrough", h, scope...)
 }
 
 func (e *htmlObject) OnChange(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlObject) OnClick(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlObject) OnContextMenu(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlObject) OnCopy(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlObject) OnCueChange(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("cuechange", h, scope...)
-	return e
+	return e.On("cuechange", h, scope...)
 }
 
 func (e *htmlObject) OnCut(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlObject) OnDblClick(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlObject) OnDrag(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlObject) OnDragEnd(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlObject) OnDragEnter(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlObject) OnDragLeave(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlObject) OnDragOver(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlObject) OnDragStart(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlObject) OnDrop(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlObject) OnDurationChange(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("durationchange", h, scope...)
-	return e
+	return e.On("durationchange", h, scope...)
 }
 
 func (e *htmlObject) OnEmptied(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("emptied", h, scope...)
-	return e
+	return e.On("emptied", h, scope...)
 }
 
 func (e *htmlObject) OnEnded(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("ended", h, scope...)
-	return e
+	return e.On("ended", h, scope...)
 }
 
 func (e *htmlObject) OnError(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("error", h, scope...)
-	return e
+	return e.On("error", h, scope...)
 }
 
 func (e *htmlObject) OnFocus(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlObject) OnInput(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlObject) OnInvalid(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlObject) OnKeyDown(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlObject) OnKeyPress(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlObject) OnKeyUp(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlObject) OnLoadStart(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("loadstart", h, scope...)
-	return e
+	return e.On("loadstart", h, scope...)
 }
 
 func (e *htmlObject) OnLoadedData(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("loadeddata", h, scope...)
-	return e
+	return e.On("loadeddata", h, scope...)
 }
 
 func (e *htmlObject) OnLoadedMetaData(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("loadedmetadata", h, scope...)
-	return e
+	return e.On("loadedmetadata", h, scope...)
 }
 
 func (e *htmlObject) OnMouseDown(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlObject) OnMouseEnter(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlObject) OnMouseLeave(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlObject) OnMouseMove(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlObject) OnMouseOut(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlObject) OnMouseOver(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlObject) OnMouseUp(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlObject) OnPaste(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlObject) OnPause(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("pause", h, scope...)
-	return e
+	return e.On("pause", h, scope...)
 }
 
 func (e *htmlObject) OnPlay(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("play", h, scope...)
-	return e
+	return e.On("play", h, scope...)
 }
 
 func (e *htmlObject) OnPlaying(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("playing", h, scope...)
-	return e
+	return e.On("playing", h, scope...)
 }
 
 func (e *htmlObject) OnProgress(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("progress", h, scope...)
-	return e
+	return e.On("progress", h, scope...)
 }
 
 func (e *htmlObject) OnRateChange(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("ratechange", h, scope...)
-	return e
+	return e.On("ratechange", h, scope...)
 }
 
 func (e *htmlObject) OnReset(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlObject) OnScroll(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlObject) OnSearch(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlObject) OnSeeked(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("seeked", h, scope...)
-	return e
+	return e.On("seeked", h, scope...)
 }
 
 func (e *htmlObject) OnSeeking(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("seeking", h, scope...)
-	return e
+	return e.On("seeking", h, scope...)
 }
 
 func (e *htmlObject) OnSelect(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlObject) OnStalled(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("stalled", h, scope...)
-	return e
+	return e.On("stalled", h, scope...)
 }
 
 func (e *htmlObject) OnSubmit(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlObject) OnSuspend(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("suspend", h, scope...)
-	return e
+	return e.On("suspend", h, scope...)
 }
 
 func (e *htmlObject) OnTimeUpdate(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("timeupdate", h, scope...)
-	return e
+	return e.On("timeupdate", h, scope...)
 }
 
 func (e *htmlObject) OnVolumeChange(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("volumechange", h, scope...)
-	return e
+	return e.On("volumechange", h, scope...)
 }
 
 func (e *htmlObject) OnWaiting(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("waiting", h, scope...)
-	return e
+	return e.On("waiting", h, scope...)
 }
 
 func (e *htmlObject) OnWheel(h EventHandler, scope ...any) HTMLObject {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlObject) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlObject) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlObject) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlObject) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlObject) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlObject) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "ol" HTML element.
 type HTMLOl interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOl
@@ -33049,8 +32778,7 @@ type htmlOl struct {
 }
 
 func (e *htmlOl) Body(v ...UI) HTMLOl {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOl)
 }
 
 func (e *htmlOl) Text(v any) HTMLOl {
@@ -33181,178 +32909,174 @@ func (e *htmlOl) On(event string, h EventHandler, scope ...any) HTMLOl {
 }
 
 func (e *htmlOl) OnBlur(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlOl) OnChange(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlOl) OnClick(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlOl) OnContextMenu(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlOl) OnCopy(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlOl) OnCut(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlOl) OnDblClick(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlOl) OnDrag(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlOl) OnDragEnd(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlOl) OnDragEnter(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlOl) OnDragLeave(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlOl) OnDragOver(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlOl) OnDragStart(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlOl) OnDrop(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlOl) OnFocus(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlOl) OnInput(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlOl) OnInvalid(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlOl) OnKeyDown(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlOl) OnKeyPress(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlOl) OnKeyUp(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlOl) OnMouseDown(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlOl) OnMouseEnter(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlOl) OnMouseLeave(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlOl) OnMouseMove(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlOl) OnMouseOut(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlOl) OnMouseOver(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlOl) OnMouseUp(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlOl) OnPaste(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlOl) OnReset(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlOl) OnScroll(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlOl) OnSearch(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlOl) OnSelect(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlOl) OnSubmit(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlOl) OnWheel(h EventHandler, scope ...any) HTMLOl {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlOl) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlOl) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOl) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlOl) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlOl) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlOl) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "optgroup" HTML element.
 type HTMLOptGroup interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOptGroup
@@ -33546,8 +33270,7 @@ type htmlOptGroup struct {
 }
 
 func (e *htmlOptGroup) Body(v ...UI) HTMLOptGroup {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOptGroup)
 }
 
 func (e *htmlOptGroup) Text(v any) HTMLOptGroup {
@@ -33673,178 +33396,174 @@ func (e *htmlOptGroup) On(event string, h EventHandler, scope ...any) HTMLOptGro
 }
 
 func (e *htmlOptGroup) OnBlur(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlOptGroup) OnChange(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlOptGroup) OnClick(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlOptGroup) OnContextMenu(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlOptGroup) OnCopy(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlOptGroup) OnCut(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDblClick(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDrag(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDragEnd(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDragEnter(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDragLeave(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDragOver(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDragStart(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlOptGroup) OnDrop(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlOptGroup) OnFocus(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlOptGroup) OnInput(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlOptGroup) OnInvalid(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlOptGroup) OnKeyDown(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlOptGroup) OnKeyPress(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlOptGroup) OnKeyUp(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlOptGroup) OnMouseDown(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlOptGroup) OnMouseEnter(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlOptGroup) OnMouseLeave(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlOptGroup) OnMouseMove(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlOptGroup) OnMouseOut(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlOptGroup) OnMouseOver(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlOptGroup) OnMouseUp(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlOptGroup) OnPaste(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlOptGroup) OnReset(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlOptGroup) OnScroll(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlOptGroup) OnSearch(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlOptGroup) OnSelect(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlOptGroup) OnSubmit(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlOptGroup) OnWheel(h EventHandler, scope ...any) HTMLOptGroup {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlOptGroup) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlOptGroup) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOptGroup) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlOptGroup) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlOptGroup) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlOptGroup) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "option" HTML element.
 type HTMLOption interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOption
@@ -34044,8 +33763,7 @@ type htmlOption struct {
 }
 
 func (e *htmlOption) Body(v ...UI) HTMLOption {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOption)
 }
 
 func (e *htmlOption) Text(v any) HTMLOption {
@@ -34181,178 +33899,174 @@ func (e *htmlOption) On(event string, h EventHandler, scope ...any) HTMLOption {
 }
 
 func (e *htmlOption) OnBlur(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlOption) OnChange(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlOption) OnClick(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlOption) OnContextMenu(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlOption) OnCopy(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlOption) OnCut(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlOption) OnDblClick(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlOption) OnDrag(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlOption) OnDragEnd(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlOption) OnDragEnter(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlOption) OnDragLeave(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlOption) OnDragOver(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlOption) OnDragStart(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlOption) OnDrop(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlOption) OnFocus(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlOption) OnInput(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlOption) OnInvalid(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlOption) OnKeyDown(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlOption) OnKeyPress(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlOption) OnKeyUp(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlOption) OnMouseDown(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlOption) OnMouseEnter(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlOption) OnMouseLeave(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlOption) OnMouseMove(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlOption) OnMouseOut(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlOption) OnMouseOver(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlOption) OnMouseUp(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlOption) OnPaste(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlOption) OnReset(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlOption) OnScroll(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlOption) OnSearch(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlOption) OnSelect(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlOption) OnSubmit(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlOption) OnWheel(h EventHandler, scope ...any) HTMLOption {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlOption) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlOption) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOption) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlOption) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlOption) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlOption) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "output" HTML element.
 type HTMLOutput interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLOutput
@@ -34549,8 +34263,7 @@ type htmlOutput struct {
 }
 
 func (e *htmlOutput) Body(v ...UI) HTMLOutput {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlOutput)
 }
 
 func (e *htmlOutput) Text(v any) HTMLOutput {
@@ -34681,178 +34394,174 @@ func (e *htmlOutput) On(event string, h EventHandler, scope ...any) HTMLOutput {
 }
 
 func (e *htmlOutput) OnBlur(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlOutput) OnChange(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlOutput) OnClick(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlOutput) OnContextMenu(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlOutput) OnCopy(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlOutput) OnCut(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlOutput) OnDblClick(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlOutput) OnDrag(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlOutput) OnDragEnd(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlOutput) OnDragEnter(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlOutput) OnDragLeave(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlOutput) OnDragOver(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlOutput) OnDragStart(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlOutput) OnDrop(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlOutput) OnFocus(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlOutput) OnInput(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlOutput) OnInvalid(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlOutput) OnKeyDown(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlOutput) OnKeyPress(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlOutput) OnKeyUp(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlOutput) OnMouseDown(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlOutput) OnMouseEnter(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlOutput) OnMouseLeave(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlOutput) OnMouseMove(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlOutput) OnMouseOut(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlOutput) OnMouseOver(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlOutput) OnMouseUp(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlOutput) OnPaste(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlOutput) OnReset(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlOutput) OnScroll(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlOutput) OnSearch(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlOutput) OnSelect(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlOutput) OnSubmit(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlOutput) OnWheel(h EventHandler, scope ...any) HTMLOutput {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlOutput) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlOutput) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlOutput) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlOutput) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlOutput) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlOutput) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "p" HTML element.
 type HTMLP interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLP
@@ -35040,8 +34749,7 @@ type htmlP struct {
 }
 
 func (e *htmlP) Body(v ...UI) HTMLP {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlP)
 }
 
 func (e *htmlP) Text(v any) HTMLP {
@@ -35157,178 +34865,174 @@ func (e *htmlP) On(event string, h EventHandler, scope ...any) HTMLP {
 }
 
 func (e *htmlP) OnBlur(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlP) OnChange(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlP) OnClick(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlP) OnContextMenu(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlP) OnCopy(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlP) OnCut(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlP) OnDblClick(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlP) OnDrag(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlP) OnDragEnd(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlP) OnDragEnter(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlP) OnDragLeave(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlP) OnDragOver(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlP) OnDragStart(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlP) OnDrop(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlP) OnFocus(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlP) OnInput(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlP) OnInvalid(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlP) OnKeyDown(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlP) OnKeyPress(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlP) OnKeyUp(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlP) OnMouseDown(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlP) OnMouseEnter(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlP) OnMouseLeave(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlP) OnMouseMove(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlP) OnMouseOut(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlP) OnMouseOver(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlP) OnMouseUp(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlP) OnPaste(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlP) OnReset(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlP) OnScroll(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlP) OnSearch(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlP) OnSelect(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlP) OnSubmit(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlP) OnWheel(h EventHandler, scope ...any) HTMLP {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlP) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlP) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlP) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlP) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlP) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlP) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "param" HTML element.
 type HTMLParam interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLParam
@@ -35627,178 +35331,174 @@ func (e *htmlParam) On(event string, h EventHandler, scope ...any) HTMLParam {
 }
 
 func (e *htmlParam) OnBlur(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlParam) OnChange(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlParam) OnClick(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlParam) OnContextMenu(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlParam) OnCopy(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlParam) OnCut(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlParam) OnDblClick(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlParam) OnDrag(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlParam) OnDragEnd(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlParam) OnDragEnter(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlParam) OnDragLeave(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlParam) OnDragOver(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlParam) OnDragStart(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlParam) OnDrop(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlParam) OnFocus(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlParam) OnInput(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlParam) OnInvalid(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlParam) OnKeyDown(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlParam) OnKeyPress(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlParam) OnKeyUp(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlParam) OnMouseDown(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlParam) OnMouseEnter(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlParam) OnMouseLeave(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlParam) OnMouseMove(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlParam) OnMouseOut(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlParam) OnMouseOver(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlParam) OnMouseUp(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlParam) OnPaste(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlParam) OnReset(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlParam) OnScroll(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlParam) OnSearch(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlParam) OnSelect(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlParam) OnSubmit(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlParam) OnWheel(h EventHandler, scope ...any) HTMLParam {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlParam) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlParam) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlParam) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlParam) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlParam) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlParam) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "picture" HTML element.
 type HTMLPicture interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLPicture
@@ -35986,8 +35686,7 @@ type htmlPicture struct {
 }
 
 func (e *htmlPicture) Body(v ...UI) HTMLPicture {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlPicture)
 }
 
 func (e *htmlPicture) Text(v any) HTMLPicture {
@@ -36103,178 +35802,174 @@ func (e *htmlPicture) On(event string, h EventHandler, scope ...any) HTMLPicture
 }
 
 func (e *htmlPicture) OnBlur(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlPicture) OnChange(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlPicture) OnClick(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlPicture) OnContextMenu(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlPicture) OnCopy(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlPicture) OnCut(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlPicture) OnDblClick(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlPicture) OnDrag(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlPicture) OnDragEnd(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlPicture) OnDragEnter(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlPicture) OnDragLeave(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlPicture) OnDragOver(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlPicture) OnDragStart(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlPicture) OnDrop(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlPicture) OnFocus(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlPicture) OnInput(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlPicture) OnInvalid(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlPicture) OnKeyDown(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlPicture) OnKeyPress(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlPicture) OnKeyUp(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlPicture) OnMouseDown(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlPicture) OnMouseEnter(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlPicture) OnMouseLeave(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlPicture) OnMouseMove(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlPicture) OnMouseOut(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlPicture) OnMouseOver(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlPicture) OnMouseUp(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlPicture) OnPaste(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlPicture) OnReset(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlPicture) OnScroll(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlPicture) OnSearch(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlPicture) OnSelect(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlPicture) OnSubmit(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlPicture) OnWheel(h EventHandler, scope ...any) HTMLPicture {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlPicture) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlPicture) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlPicture) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlPicture) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlPicture) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlPicture) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "pre" HTML element.
 type HTMLPre interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLPre
@@ -36462,8 +36157,7 @@ type htmlPre struct {
 }
 
 func (e *htmlPre) Body(v ...UI) HTMLPre {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlPre)
 }
 
 func (e *htmlPre) Text(v any) HTMLPre {
@@ -36579,178 +36273,174 @@ func (e *htmlPre) On(event string, h EventHandler, scope ...any) HTMLPre {
 }
 
 func (e *htmlPre) OnBlur(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlPre) OnChange(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlPre) OnClick(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlPre) OnContextMenu(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlPre) OnCopy(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlPre) OnCut(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlPre) OnDblClick(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlPre) OnDrag(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlPre) OnDragEnd(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlPre) OnDragEnter(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlPre) OnDragLeave(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlPre) OnDragOver(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlPre) OnDragStart(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlPre) OnDrop(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlPre) OnFocus(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlPre) OnInput(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlPre) OnInvalid(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlPre) OnKeyDown(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlPre) OnKeyPress(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlPre) OnKeyUp(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlPre) OnMouseDown(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlPre) OnMouseEnter(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlPre) OnMouseLeave(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlPre) OnMouseMove(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlPre) OnMouseOut(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlPre) OnMouseOver(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlPre) OnMouseUp(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlPre) OnPaste(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlPre) OnReset(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlPre) OnScroll(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlPre) OnSearch(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlPre) OnSelect(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlPre) OnSubmit(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlPre) OnWheel(h EventHandler, scope ...any) HTMLPre {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlPre) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlPre) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlPre) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlPre) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlPre) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlPre) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "progress" HTML element.
 type HTMLProgress interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLProgress
@@ -36944,8 +36634,7 @@ type htmlProgress struct {
 }
 
 func (e *htmlProgress) Body(v ...UI) HTMLProgress {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlProgress)
 }
 
 func (e *htmlProgress) Text(v any) HTMLProgress {
@@ -37071,178 +36760,174 @@ func (e *htmlProgress) On(event string, h EventHandler, scope ...any) HTMLProgre
 }
 
 func (e *htmlProgress) OnBlur(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlProgress) OnChange(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlProgress) OnClick(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlProgress) OnContextMenu(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlProgress) OnCopy(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlProgress) OnCut(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlProgress) OnDblClick(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlProgress) OnDrag(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlProgress) OnDragEnd(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlProgress) OnDragEnter(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlProgress) OnDragLeave(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlProgress) OnDragOver(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlProgress) OnDragStart(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlProgress) OnDrop(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlProgress) OnFocus(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlProgress) OnInput(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlProgress) OnInvalid(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlProgress) OnKeyDown(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlProgress) OnKeyPress(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlProgress) OnKeyUp(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlProgress) OnMouseDown(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlProgress) OnMouseEnter(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlProgress) OnMouseLeave(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlProgress) OnMouseMove(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlProgress) OnMouseOut(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlProgress) OnMouseOver(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlProgress) OnMouseUp(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlProgress) OnPaste(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlProgress) OnReset(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlProgress) OnScroll(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlProgress) OnSearch(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlProgress) OnSelect(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlProgress) OnSubmit(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlProgress) OnWheel(h EventHandler, scope ...any) HTMLProgress {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlProgress) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlProgress) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlProgress) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlProgress) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlProgress) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlProgress) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "q" HTML element.
 type HTMLQ interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLQ
@@ -37433,8 +37118,7 @@ type htmlQ struct {
 }
 
 func (e *htmlQ) Body(v ...UI) HTMLQ {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlQ)
 }
 
 func (e *htmlQ) Text(v any) HTMLQ {
@@ -37555,178 +37239,174 @@ func (e *htmlQ) On(event string, h EventHandler, scope ...any) HTMLQ {
 }
 
 func (e *htmlQ) OnBlur(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlQ) OnChange(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlQ) OnClick(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlQ) OnContextMenu(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlQ) OnCopy(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlQ) OnCut(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlQ) OnDblClick(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlQ) OnDrag(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlQ) OnDragEnd(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlQ) OnDragEnter(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlQ) OnDragLeave(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlQ) OnDragOver(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlQ) OnDragStart(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlQ) OnDrop(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlQ) OnFocus(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlQ) OnInput(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlQ) OnInvalid(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlQ) OnKeyDown(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlQ) OnKeyPress(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlQ) OnKeyUp(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlQ) OnMouseDown(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlQ) OnMouseEnter(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlQ) OnMouseLeave(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlQ) OnMouseMove(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlQ) OnMouseOut(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlQ) OnMouseOver(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlQ) OnMouseUp(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlQ) OnPaste(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlQ) OnReset(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlQ) OnScroll(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlQ) OnSearch(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlQ) OnSelect(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlQ) OnSubmit(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlQ) OnWheel(h EventHandler, scope ...any) HTMLQ {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlQ) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlQ) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlQ) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlQ) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlQ) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlQ) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "rp" HTML element.
 type HTMLRp interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLRp
@@ -37914,8 +37594,7 @@ type htmlRp struct {
 }
 
 func (e *htmlRp) Body(v ...UI) HTMLRp {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlRp)
 }
 
 func (e *htmlRp) Text(v any) HTMLRp {
@@ -38031,178 +37710,174 @@ func (e *htmlRp) On(event string, h EventHandler, scope ...any) HTMLRp {
 }
 
 func (e *htmlRp) OnBlur(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlRp) OnChange(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlRp) OnClick(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlRp) OnContextMenu(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlRp) OnCopy(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlRp) OnCut(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlRp) OnDblClick(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlRp) OnDrag(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlRp) OnDragEnd(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlRp) OnDragEnter(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlRp) OnDragLeave(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlRp) OnDragOver(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlRp) OnDragStart(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlRp) OnDrop(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlRp) OnFocus(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlRp) OnInput(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlRp) OnInvalid(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlRp) OnKeyDown(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlRp) OnKeyPress(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlRp) OnKeyUp(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlRp) OnMouseDown(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlRp) OnMouseEnter(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlRp) OnMouseLeave(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlRp) OnMouseMove(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlRp) OnMouseOut(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlRp) OnMouseOver(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlRp) OnMouseUp(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlRp) OnPaste(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlRp) OnReset(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlRp) OnScroll(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlRp) OnSearch(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlRp) OnSelect(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlRp) OnSubmit(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlRp) OnWheel(h EventHandler, scope ...any) HTMLRp {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlRp) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlRp) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlRp) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlRp) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlRp) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlRp) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "rt" HTML element.
 type HTMLRt interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLRt
@@ -38390,8 +38065,7 @@ type htmlRt struct {
 }
 
 func (e *htmlRt) Body(v ...UI) HTMLRt {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlRt)
 }
 
 func (e *htmlRt) Text(v any) HTMLRt {
@@ -38507,178 +38181,174 @@ func (e *htmlRt) On(event string, h EventHandler, scope ...any) HTMLRt {
 }
 
 func (e *htmlRt) OnBlur(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlRt) OnChange(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlRt) OnClick(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlRt) OnContextMenu(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlRt) OnCopy(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlRt) OnCut(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlRt) OnDblClick(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlRt) OnDrag(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlRt) OnDragEnd(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlRt) OnDragEnter(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlRt) OnDragLeave(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlRt) OnDragOver(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlRt) OnDragStart(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlRt) OnDrop(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlRt) OnFocus(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlRt) OnInput(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlRt) OnInvalid(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlRt) OnKeyDown(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlRt) OnKeyPress(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlRt) OnKeyUp(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlRt) OnMouseDown(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlRt) OnMouseEnter(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlRt) OnMouseLeave(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlRt) OnMouseMove(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlRt) OnMouseOut(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlRt) OnMouseOver(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlRt) OnMouseUp(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlRt) OnPaste(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlRt) OnReset(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlRt) OnScroll(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlRt) OnSearch(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlRt) OnSelect(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlRt) OnSubmit(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlRt) OnWheel(h EventHandler, scope ...any) HTMLRt {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlRt) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlRt) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlRt) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlRt) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlRt) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlRt) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "ruby" HTML element.
 type HTMLRuby interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLRuby
@@ -38866,8 +38536,7 @@ type htmlRuby struct {
 }
 
 func (e *htmlRuby) Body(v ...UI) HTMLRuby {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlRuby)
 }
 
 func (e *htmlRuby) Text(v any) HTMLRuby {
@@ -38983,178 +38652,174 @@ func (e *htmlRuby) On(event string, h EventHandler, scope ...any) HTMLRuby {
 }
 
 func (e *htmlRuby) OnBlur(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlRuby) OnChange(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlRuby) OnClick(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlRuby) OnContextMenu(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlRuby) OnCopy(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlRuby) OnCut(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlRuby) OnDblClick(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlRuby) OnDrag(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlRuby) OnDragEnd(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlRuby) OnDragEnter(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlRuby) OnDragLeave(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlRuby) OnDragOver(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlRuby) OnDragStart(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlRuby) OnDrop(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlRuby) OnFocus(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlRuby) OnInput(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlRuby) OnInvalid(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlRuby) OnKeyDown(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlRuby) OnKeyPress(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlRuby) OnKeyUp(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlRuby) OnMouseDown(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlRuby) OnMouseEnter(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlRuby) OnMouseLeave(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlRuby) OnMouseMove(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlRuby) OnMouseOut(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlRuby) OnMouseOver(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlRuby) OnMouseUp(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlRuby) OnPaste(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlRuby) OnReset(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlRuby) OnScroll(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlRuby) OnSearch(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlRuby) OnSelect(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlRuby) OnSubmit(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlRuby) OnWheel(h EventHandler, scope ...any) HTMLRuby {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlRuby) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlRuby) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlRuby) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlRuby) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlRuby) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlRuby) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "s" HTML element.
 type HTMLS interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLS
@@ -39342,8 +39007,7 @@ type htmlS struct {
 }
 
 func (e *htmlS) Body(v ...UI) HTMLS {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlS)
 }
 
 func (e *htmlS) Text(v any) HTMLS {
@@ -39459,178 +39123,174 @@ func (e *htmlS) On(event string, h EventHandler, scope ...any) HTMLS {
 }
 
 func (e *htmlS) OnBlur(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlS) OnChange(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlS) OnClick(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlS) OnContextMenu(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlS) OnCopy(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlS) OnCut(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlS) OnDblClick(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlS) OnDrag(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlS) OnDragEnd(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlS) OnDragEnter(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlS) OnDragLeave(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlS) OnDragOver(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlS) OnDragStart(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlS) OnDrop(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlS) OnFocus(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlS) OnInput(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlS) OnInvalid(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlS) OnKeyDown(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlS) OnKeyPress(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlS) OnKeyUp(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlS) OnMouseDown(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlS) OnMouseEnter(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlS) OnMouseLeave(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlS) OnMouseMove(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlS) OnMouseOut(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlS) OnMouseOver(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlS) OnMouseUp(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlS) OnPaste(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlS) OnReset(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlS) OnScroll(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlS) OnSearch(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlS) OnSelect(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlS) OnSubmit(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlS) OnWheel(h EventHandler, scope ...any) HTMLS {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlS) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlS) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlS) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlS) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlS) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlS) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "samp" HTML element.
 type HTMLSamp interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSamp
@@ -39818,8 +39478,7 @@ type htmlSamp struct {
 }
 
 func (e *htmlSamp) Body(v ...UI) HTMLSamp {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSamp)
 }
 
 func (e *htmlSamp) Text(v any) HTMLSamp {
@@ -39935,178 +39594,174 @@ func (e *htmlSamp) On(event string, h EventHandler, scope ...any) HTMLSamp {
 }
 
 func (e *htmlSamp) OnBlur(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSamp) OnChange(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSamp) OnClick(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSamp) OnContextMenu(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSamp) OnCopy(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSamp) OnCut(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSamp) OnDblClick(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSamp) OnDrag(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSamp) OnDragEnd(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSamp) OnDragEnter(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSamp) OnDragLeave(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSamp) OnDragOver(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSamp) OnDragStart(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSamp) OnDrop(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSamp) OnFocus(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSamp) OnInput(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSamp) OnInvalid(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSamp) OnKeyDown(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSamp) OnKeyPress(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSamp) OnKeyUp(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSamp) OnMouseDown(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSamp) OnMouseEnter(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSamp) OnMouseLeave(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSamp) OnMouseMove(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSamp) OnMouseOut(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSamp) OnMouseOver(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSamp) OnMouseUp(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSamp) OnPaste(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSamp) OnReset(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSamp) OnScroll(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSamp) OnSearch(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSamp) OnSelect(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSamp) OnSubmit(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSamp) OnWheel(h EventHandler, scope ...any) HTMLSamp {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSamp) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSamp) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSamp) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSamp) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSamp) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSamp) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "script" HTML element.
 type HTMLScript interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLScript
@@ -40213,8 +39868,7 @@ type htmlScript struct {
 }
 
 func (e *htmlScript) Body(v ...UI) HTMLScript {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlScript)
 }
 
 func (e *htmlScript) Text(v any) HTMLScript {
@@ -40360,13 +40014,42 @@ func (e *htmlScript) On(event string, h EventHandler, scope ...any) HTMLScript {
 }
 
 func (e *htmlScript) OnLoad(h EventHandler, scope ...any) HTMLScript {
-	e.setEventHandler("load", h, scope...)
+	return e.On("load", h, scope...)
+}
+
+func (e *htmlScript) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlScript) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlScript) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlScript) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlScript) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlScript) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "section" HTML element.
 type HTMLSection interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSection
@@ -40554,8 +40237,7 @@ type htmlSection struct {
 }
 
 func (e *htmlSection) Body(v ...UI) HTMLSection {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSection)
 }
 
 func (e *htmlSection) Text(v any) HTMLSection {
@@ -40671,178 +40353,174 @@ func (e *htmlSection) On(event string, h EventHandler, scope ...any) HTMLSection
 }
 
 func (e *htmlSection) OnBlur(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSection) OnChange(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSection) OnClick(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSection) OnContextMenu(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSection) OnCopy(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSection) OnCut(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSection) OnDblClick(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSection) OnDrag(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSection) OnDragEnd(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSection) OnDragEnter(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSection) OnDragLeave(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSection) OnDragOver(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSection) OnDragStart(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSection) OnDrop(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSection) OnFocus(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSection) OnInput(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSection) OnInvalid(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSection) OnKeyDown(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSection) OnKeyPress(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSection) OnKeyUp(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSection) OnMouseDown(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSection) OnMouseEnter(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSection) OnMouseLeave(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSection) OnMouseMove(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSection) OnMouseOut(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSection) OnMouseOver(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSection) OnMouseUp(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSection) OnPaste(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSection) OnReset(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSection) OnScroll(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSection) OnSearch(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSection) OnSelect(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSection) OnSubmit(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSection) OnWheel(h EventHandler, scope ...any) HTMLSection {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSection) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSection) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSection) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSection) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSection) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSection) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "select" HTML element.
 type HTMLSelect interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSelect
@@ -41051,8 +40729,7 @@ type htmlSelect struct {
 }
 
 func (e *htmlSelect) Body(v ...UI) HTMLSelect {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSelect)
 }
 
 func (e *htmlSelect) Text(v any) HTMLSelect {
@@ -41203,178 +40880,174 @@ func (e *htmlSelect) On(event string, h EventHandler, scope ...any) HTMLSelect {
 }
 
 func (e *htmlSelect) OnBlur(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSelect) OnChange(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSelect) OnClick(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSelect) OnContextMenu(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSelect) OnCopy(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSelect) OnCut(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSelect) OnDblClick(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSelect) OnDrag(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSelect) OnDragEnd(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSelect) OnDragEnter(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSelect) OnDragLeave(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSelect) OnDragOver(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSelect) OnDragStart(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSelect) OnDrop(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSelect) OnFocus(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSelect) OnInput(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSelect) OnInvalid(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSelect) OnKeyDown(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSelect) OnKeyPress(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSelect) OnKeyUp(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSelect) OnMouseDown(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSelect) OnMouseEnter(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSelect) OnMouseLeave(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSelect) OnMouseMove(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSelect) OnMouseOut(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSelect) OnMouseOver(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSelect) OnMouseUp(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSelect) OnPaste(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSelect) OnReset(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSelect) OnScroll(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSelect) OnSearch(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSelect) OnSelect(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSelect) OnSubmit(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSelect) OnWheel(h EventHandler, scope ...any) HTMLSelect {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSelect) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSelect) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSelect) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSelect) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSelect) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSelect) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "small" HTML element.
 type HTMLSmall interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSmall
@@ -41562,8 +41235,7 @@ type htmlSmall struct {
 }
 
 func (e *htmlSmall) Body(v ...UI) HTMLSmall {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSmall)
 }
 
 func (e *htmlSmall) Text(v any) HTMLSmall {
@@ -41679,178 +41351,174 @@ func (e *htmlSmall) On(event string, h EventHandler, scope ...any) HTMLSmall {
 }
 
 func (e *htmlSmall) OnBlur(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSmall) OnChange(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSmall) OnClick(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSmall) OnContextMenu(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSmall) OnCopy(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSmall) OnCut(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSmall) OnDblClick(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSmall) OnDrag(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSmall) OnDragEnd(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSmall) OnDragEnter(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSmall) OnDragLeave(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSmall) OnDragOver(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSmall) OnDragStart(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSmall) OnDrop(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSmall) OnFocus(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSmall) OnInput(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSmall) OnInvalid(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSmall) OnKeyDown(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSmall) OnKeyPress(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSmall) OnKeyUp(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSmall) OnMouseDown(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSmall) OnMouseEnter(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSmall) OnMouseLeave(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSmall) OnMouseMove(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSmall) OnMouseOut(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSmall) OnMouseOver(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSmall) OnMouseUp(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSmall) OnPaste(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSmall) OnReset(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSmall) OnScroll(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSmall) OnSearch(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSmall) OnSelect(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSmall) OnSubmit(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSmall) OnWheel(h EventHandler, scope ...any) HTMLSmall {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSmall) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSmall) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSmall) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSmall) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSmall) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSmall) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "source" HTML element.
 type HTMLSource interface {
-	UI
+	HTML
 
 	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
 	AccessKey(format string, v ...any) HTMLSource
@@ -42173,178 +41841,174 @@ func (e *htmlSource) On(event string, h EventHandler, scope ...any) HTMLSource {
 }
 
 func (e *htmlSource) OnBlur(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSource) OnChange(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSource) OnClick(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSource) OnContextMenu(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSource) OnCopy(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSource) OnCut(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSource) OnDblClick(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSource) OnDrag(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSource) OnDragEnd(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSource) OnDragEnter(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSource) OnDragLeave(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSource) OnDragOver(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSource) OnDragStart(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSource) OnDrop(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSource) OnFocus(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSource) OnInput(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSource) OnInvalid(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSource) OnKeyDown(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSource) OnKeyPress(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSource) OnKeyUp(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSource) OnMouseDown(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSource) OnMouseEnter(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSource) OnMouseLeave(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSource) OnMouseMove(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSource) OnMouseOut(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSource) OnMouseOver(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSource) OnMouseUp(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSource) OnPaste(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSource) OnReset(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSource) OnScroll(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSource) OnSearch(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSource) OnSelect(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSource) OnSubmit(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSource) OnWheel(h EventHandler, scope ...any) HTMLSource {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSource) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSource) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSource) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSource) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSource) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSource) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "span" HTML element.
 type HTMLSpan interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSpan
@@ -42532,8 +42196,7 @@ type htmlSpan struct {
 }
 
 func (e *htmlSpan) Body(v ...UI) HTMLSpan {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSpan)
 }
 
 func (e *htmlSpan) Text(v any) HTMLSpan {
@@ -42649,178 +42312,174 @@ func (e *htmlSpan) On(event string, h EventHandler, scope ...any) HTMLSpan {
 }
 
 func (e *htmlSpan) OnBlur(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSpan) OnChange(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSpan) OnClick(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSpan) OnContextMenu(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSpan) OnCopy(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSpan) OnCut(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSpan) OnDblClick(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSpan) OnDrag(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSpan) OnDragEnd(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSpan) OnDragEnter(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSpan) OnDragLeave(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSpan) OnDragOver(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSpan) OnDragStart(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSpan) OnDrop(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSpan) OnFocus(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSpan) OnInput(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSpan) OnInvalid(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSpan) OnKeyDown(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSpan) OnKeyPress(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSpan) OnKeyUp(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSpan) OnMouseDown(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSpan) OnMouseEnter(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSpan) OnMouseLeave(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSpan) OnMouseMove(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSpan) OnMouseOut(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSpan) OnMouseOver(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSpan) OnMouseUp(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSpan) OnPaste(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSpan) OnReset(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSpan) OnScroll(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSpan) OnSearch(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSpan) OnSelect(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSpan) OnSubmit(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSpan) OnWheel(h EventHandler, scope ...any) HTMLSpan {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSpan) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSpan) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSpan) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSpan) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSpan) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSpan) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "strong" HTML element.
 type HTMLStrong interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLStrong
@@ -43008,8 +42667,7 @@ type htmlStrong struct {
 }
 
 func (e *htmlStrong) Body(v ...UI) HTMLStrong {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlStrong)
 }
 
 func (e *htmlStrong) Text(v any) HTMLStrong {
@@ -43125,178 +42783,174 @@ func (e *htmlStrong) On(event string, h EventHandler, scope ...any) HTMLStrong {
 }
 
 func (e *htmlStrong) OnBlur(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlStrong) OnChange(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlStrong) OnClick(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlStrong) OnContextMenu(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlStrong) OnCopy(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlStrong) OnCut(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlStrong) OnDblClick(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlStrong) OnDrag(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlStrong) OnDragEnd(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlStrong) OnDragEnter(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlStrong) OnDragLeave(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlStrong) OnDragOver(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlStrong) OnDragStart(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlStrong) OnDrop(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlStrong) OnFocus(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlStrong) OnInput(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlStrong) OnInvalid(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlStrong) OnKeyDown(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlStrong) OnKeyPress(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlStrong) OnKeyUp(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlStrong) OnMouseDown(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlStrong) OnMouseEnter(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlStrong) OnMouseLeave(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlStrong) OnMouseMove(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlStrong) OnMouseOut(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlStrong) OnMouseOver(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlStrong) OnMouseUp(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlStrong) OnPaste(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlStrong) OnReset(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlStrong) OnScroll(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlStrong) OnSearch(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlStrong) OnSelect(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlStrong) OnSubmit(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlStrong) OnWheel(h EventHandler, scope ...any) HTMLStrong {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlStrong) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlStrong) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlStrong) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlStrong) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlStrong) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlStrong) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "style" HTML element.
 type HTMLStyle interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLStyle
@@ -43493,8 +43147,7 @@ type htmlStyle struct {
 }
 
 func (e *htmlStyle) Body(v ...UI) HTMLStyle {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlStyle)
 }
 
 func (e *htmlStyle) Text(v any) HTMLStyle {
@@ -43620,183 +43273,178 @@ func (e *htmlStyle) On(event string, h EventHandler, scope ...any) HTMLStyle {
 }
 
 func (e *htmlStyle) OnBlur(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlStyle) OnChange(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlStyle) OnClick(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlStyle) OnContextMenu(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlStyle) OnCopy(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlStyle) OnCut(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlStyle) OnDblClick(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlStyle) OnDrag(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlStyle) OnDragEnd(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlStyle) OnDragEnter(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlStyle) OnDragLeave(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlStyle) OnDragOver(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlStyle) OnDragStart(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlStyle) OnDrop(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlStyle) OnFocus(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlStyle) OnInput(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlStyle) OnInvalid(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlStyle) OnKeyDown(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlStyle) OnKeyPress(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlStyle) OnKeyUp(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlStyle) OnLoad(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("load", h, scope...)
-	return e
+	return e.On("load", h, scope...)
 }
 
 func (e *htmlStyle) OnMouseDown(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlStyle) OnMouseEnter(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlStyle) OnMouseLeave(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlStyle) OnMouseMove(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlStyle) OnMouseOut(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlStyle) OnMouseOver(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlStyle) OnMouseUp(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlStyle) OnPaste(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlStyle) OnReset(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlStyle) OnScroll(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlStyle) OnSearch(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlStyle) OnSelect(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlStyle) OnSubmit(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlStyle) OnWheel(h EventHandler, scope ...any) HTMLStyle {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlStyle) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlStyle) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlStyle) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlStyle) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlStyle) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlStyle) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "sub" HTML element.
 type HTMLSub interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSub
@@ -43984,8 +43632,7 @@ type htmlSub struct {
 }
 
 func (e *htmlSub) Body(v ...UI) HTMLSub {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSub)
 }
 
 func (e *htmlSub) Text(v any) HTMLSub {
@@ -44101,178 +43748,174 @@ func (e *htmlSub) On(event string, h EventHandler, scope ...any) HTMLSub {
 }
 
 func (e *htmlSub) OnBlur(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSub) OnChange(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSub) OnClick(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSub) OnContextMenu(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSub) OnCopy(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSub) OnCut(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSub) OnDblClick(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSub) OnDrag(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSub) OnDragEnd(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSub) OnDragEnter(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSub) OnDragLeave(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSub) OnDragOver(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSub) OnDragStart(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSub) OnDrop(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSub) OnFocus(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSub) OnInput(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSub) OnInvalid(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSub) OnKeyDown(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSub) OnKeyPress(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSub) OnKeyUp(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSub) OnMouseDown(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSub) OnMouseEnter(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSub) OnMouseLeave(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSub) OnMouseMove(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSub) OnMouseOut(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSub) OnMouseOver(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSub) OnMouseUp(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSub) OnPaste(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSub) OnReset(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSub) OnScroll(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSub) OnSearch(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSub) OnSelect(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSub) OnSubmit(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSub) OnWheel(h EventHandler, scope ...any) HTMLSub {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSub) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSub) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSub) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSub) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSub) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSub) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "summary" HTML element.
 type HTMLSummary interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSummary
@@ -44460,8 +44103,7 @@ type htmlSummary struct {
 }
 
 func (e *htmlSummary) Body(v ...UI) HTMLSummary {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSummary)
 }
 
 func (e *htmlSummary) Text(v any) HTMLSummary {
@@ -44577,178 +44219,174 @@ func (e *htmlSummary) On(event string, h EventHandler, scope ...any) HTMLSummary
 }
 
 func (e *htmlSummary) OnBlur(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSummary) OnChange(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSummary) OnClick(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSummary) OnContextMenu(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSummary) OnCopy(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSummary) OnCut(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSummary) OnDblClick(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSummary) OnDrag(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSummary) OnDragEnd(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSummary) OnDragEnter(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSummary) OnDragLeave(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSummary) OnDragOver(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSummary) OnDragStart(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSummary) OnDrop(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSummary) OnFocus(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSummary) OnInput(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSummary) OnInvalid(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSummary) OnKeyDown(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSummary) OnKeyPress(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSummary) OnKeyUp(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSummary) OnMouseDown(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSummary) OnMouseEnter(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSummary) OnMouseLeave(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSummary) OnMouseMove(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSummary) OnMouseOut(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSummary) OnMouseOver(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSummary) OnMouseUp(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSummary) OnPaste(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSummary) OnReset(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSummary) OnScroll(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSummary) OnSearch(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSummary) OnSelect(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSummary) OnSubmit(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSummary) OnWheel(h EventHandler, scope ...any) HTMLSummary {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSummary) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSummary) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSummary) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSummary) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSummary) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSummary) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "sup" HTML element.
 type HTMLSup interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLSup
@@ -44936,8 +44574,7 @@ type htmlSup struct {
 }
 
 func (e *htmlSup) Body(v ...UI) HTMLSup {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlSup)
 }
 
 func (e *htmlSup) Text(v any) HTMLSup {
@@ -45053,178 +44690,174 @@ func (e *htmlSup) On(event string, h EventHandler, scope ...any) HTMLSup {
 }
 
 func (e *htmlSup) OnBlur(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlSup) OnChange(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlSup) OnClick(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlSup) OnContextMenu(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlSup) OnCopy(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlSup) OnCut(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlSup) OnDblClick(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlSup) OnDrag(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlSup) OnDragEnd(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlSup) OnDragEnter(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlSup) OnDragLeave(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlSup) OnDragOver(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlSup) OnDragStart(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlSup) OnDrop(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlSup) OnFocus(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlSup) OnInput(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlSup) OnInvalid(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlSup) OnKeyDown(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlSup) OnKeyPress(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlSup) OnKeyUp(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlSup) OnMouseDown(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlSup) OnMouseEnter(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlSup) OnMouseLeave(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlSup) OnMouseMove(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlSup) OnMouseOut(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlSup) OnMouseOver(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlSup) OnMouseUp(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlSup) OnPaste(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlSup) OnReset(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlSup) OnScroll(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlSup) OnSearch(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlSup) OnSelect(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlSup) OnSubmit(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlSup) OnWheel(h EventHandler, scope ...any) HTMLSup {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlSup) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlSup) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlSup) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlSup) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlSup) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlSup) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "table" HTML element.
 type HTMLTable interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTable
@@ -45412,8 +45045,7 @@ type htmlTable struct {
 }
 
 func (e *htmlTable) Body(v ...UI) HTMLTable {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTable)
 }
 
 func (e *htmlTable) Text(v any) HTMLTable {
@@ -45529,178 +45161,174 @@ func (e *htmlTable) On(event string, h EventHandler, scope ...any) HTMLTable {
 }
 
 func (e *htmlTable) OnBlur(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTable) OnChange(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTable) OnClick(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTable) OnContextMenu(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTable) OnCopy(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTable) OnCut(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTable) OnDblClick(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTable) OnDrag(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTable) OnDragEnd(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTable) OnDragEnter(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTable) OnDragLeave(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTable) OnDragOver(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTable) OnDragStart(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTable) OnDrop(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTable) OnFocus(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTable) OnInput(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTable) OnInvalid(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTable) OnKeyDown(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTable) OnKeyPress(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTable) OnKeyUp(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTable) OnMouseDown(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTable) OnMouseEnter(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTable) OnMouseLeave(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTable) OnMouseMove(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTable) OnMouseOut(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTable) OnMouseOver(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTable) OnMouseUp(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTable) OnPaste(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTable) OnReset(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTable) OnScroll(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTable) OnSearch(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTable) OnSelect(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTable) OnSubmit(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTable) OnWheel(h EventHandler, scope ...any) HTMLTable {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTable) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTable) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTable) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTable) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTable) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTable) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "tbody" HTML element.
 type HTMLTBody interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTBody
@@ -45888,8 +45516,7 @@ type htmlTBody struct {
 }
 
 func (e *htmlTBody) Body(v ...UI) HTMLTBody {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTBody)
 }
 
 func (e *htmlTBody) Text(v any) HTMLTBody {
@@ -46005,178 +45632,174 @@ func (e *htmlTBody) On(event string, h EventHandler, scope ...any) HTMLTBody {
 }
 
 func (e *htmlTBody) OnBlur(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTBody) OnChange(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTBody) OnClick(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTBody) OnContextMenu(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTBody) OnCopy(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTBody) OnCut(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTBody) OnDblClick(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTBody) OnDrag(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTBody) OnDragEnd(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTBody) OnDragEnter(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTBody) OnDragLeave(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTBody) OnDragOver(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTBody) OnDragStart(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTBody) OnDrop(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTBody) OnFocus(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTBody) OnInput(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTBody) OnInvalid(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTBody) OnKeyDown(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTBody) OnKeyPress(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTBody) OnKeyUp(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTBody) OnMouseDown(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTBody) OnMouseEnter(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTBody) OnMouseLeave(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTBody) OnMouseMove(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTBody) OnMouseOut(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTBody) OnMouseOver(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTBody) OnMouseUp(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTBody) OnPaste(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTBody) OnReset(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTBody) OnScroll(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTBody) OnSearch(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTBody) OnSelect(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTBody) OnSubmit(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTBody) OnWheel(h EventHandler, scope ...any) HTMLTBody {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTBody) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTBody) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTBody) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTBody) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTBody) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTBody) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "td" HTML element.
 type HTMLTd interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTd
@@ -46373,8 +45996,7 @@ type htmlTd struct {
 }
 
 func (e *htmlTd) Body(v ...UI) HTMLTd {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTd)
 }
 
 func (e *htmlTd) Text(v any) HTMLTd {
@@ -46505,178 +46127,174 @@ func (e *htmlTd) On(event string, h EventHandler, scope ...any) HTMLTd {
 }
 
 func (e *htmlTd) OnBlur(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTd) OnChange(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTd) OnClick(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTd) OnContextMenu(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTd) OnCopy(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTd) OnCut(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTd) OnDblClick(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTd) OnDrag(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTd) OnDragEnd(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTd) OnDragEnter(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTd) OnDragLeave(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTd) OnDragOver(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTd) OnDragStart(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTd) OnDrop(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTd) OnFocus(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTd) OnInput(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTd) OnInvalid(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTd) OnKeyDown(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTd) OnKeyPress(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTd) OnKeyUp(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTd) OnMouseDown(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTd) OnMouseEnter(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTd) OnMouseLeave(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTd) OnMouseMove(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTd) OnMouseOut(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTd) OnMouseOver(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTd) OnMouseUp(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTd) OnPaste(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTd) OnReset(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTd) OnScroll(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTd) OnSearch(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTd) OnSelect(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTd) OnSubmit(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTd) OnWheel(h EventHandler, scope ...any) HTMLTd {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTd) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTd) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTd) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTd) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTd) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTd) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "template" HTML element.
 type HTMLTemplate interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTemplate
@@ -46762,8 +46380,7 @@ type htmlTemplate struct {
 }
 
 func (e *htmlTemplate) Body(v ...UI) HTMLTemplate {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTemplate)
 }
 
 func (e *htmlTemplate) Text(v any) HTMLTemplate {
@@ -46878,9 +46495,39 @@ func (e *htmlTemplate) On(event string, h EventHandler, scope ...any) HTMLTempla
 	return e
 }
 
+func (e *htmlTemplate) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTemplate) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTemplate) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTemplate) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTemplate) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTemplate) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "textarea" HTML element.
 type HTMLTextarea interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTextarea
@@ -47104,8 +46751,7 @@ type htmlTextarea struct {
 }
 
 func (e *htmlTextarea) Body(v ...UI) HTMLTextarea {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTextarea)
 }
 
 func (e *htmlTextarea) Text(v any) HTMLTextarea {
@@ -47283,178 +46929,174 @@ func (e *htmlTextarea) On(event string, h EventHandler, scope ...any) HTMLTextar
 }
 
 func (e *htmlTextarea) OnBlur(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTextarea) OnChange(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTextarea) OnClick(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTextarea) OnContextMenu(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTextarea) OnCopy(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTextarea) OnCut(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTextarea) OnDblClick(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTextarea) OnDrag(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTextarea) OnDragEnd(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTextarea) OnDragEnter(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTextarea) OnDragLeave(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTextarea) OnDragOver(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTextarea) OnDragStart(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTextarea) OnDrop(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTextarea) OnFocus(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTextarea) OnInput(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTextarea) OnInvalid(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTextarea) OnKeyDown(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTextarea) OnKeyPress(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTextarea) OnKeyUp(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTextarea) OnMouseDown(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTextarea) OnMouseEnter(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTextarea) OnMouseLeave(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTextarea) OnMouseMove(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTextarea) OnMouseOut(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTextarea) OnMouseOver(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTextarea) OnMouseUp(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTextarea) OnPaste(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTextarea) OnReset(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTextarea) OnScroll(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTextarea) OnSearch(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTextarea) OnSelect(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTextarea) OnSubmit(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTextarea) OnWheel(h EventHandler, scope ...any) HTMLTextarea {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTextarea) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTextarea) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTextarea) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTextarea) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTextarea) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTextarea) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "tfoot" HTML element.
 type HTMLTFoot interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTFoot
@@ -47642,8 +47284,7 @@ type htmlTFoot struct {
 }
 
 func (e *htmlTFoot) Body(v ...UI) HTMLTFoot {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTFoot)
 }
 
 func (e *htmlTFoot) Text(v any) HTMLTFoot {
@@ -47759,178 +47400,174 @@ func (e *htmlTFoot) On(event string, h EventHandler, scope ...any) HTMLTFoot {
 }
 
 func (e *htmlTFoot) OnBlur(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTFoot) OnChange(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTFoot) OnClick(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTFoot) OnContextMenu(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTFoot) OnCopy(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTFoot) OnCut(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTFoot) OnDblClick(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTFoot) OnDrag(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTFoot) OnDragEnd(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTFoot) OnDragEnter(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTFoot) OnDragLeave(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTFoot) OnDragOver(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTFoot) OnDragStart(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTFoot) OnDrop(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTFoot) OnFocus(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTFoot) OnInput(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTFoot) OnInvalid(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTFoot) OnKeyDown(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTFoot) OnKeyPress(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTFoot) OnKeyUp(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTFoot) OnMouseDown(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTFoot) OnMouseEnter(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTFoot) OnMouseLeave(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTFoot) OnMouseMove(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTFoot) OnMouseOut(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTFoot) OnMouseOver(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTFoot) OnMouseUp(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTFoot) OnPaste(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTFoot) OnReset(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTFoot) OnScroll(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTFoot) OnSearch(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTFoot) OnSelect(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTFoot) OnSubmit(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTFoot) OnWheel(h EventHandler, scope ...any) HTMLTFoot {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTFoot) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTFoot) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTFoot) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTFoot) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTFoot) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTFoot) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "th" HTML element.
 type HTMLTh interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTh
@@ -48133,8 +47770,7 @@ type htmlTh struct {
 }
 
 func (e *htmlTh) Body(v ...UI) HTMLTh {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTh)
 }
 
 func (e *htmlTh) Text(v any) HTMLTh {
@@ -48275,178 +47911,174 @@ func (e *htmlTh) On(event string, h EventHandler, scope ...any) HTMLTh {
 }
 
 func (e *htmlTh) OnBlur(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTh) OnChange(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTh) OnClick(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTh) OnContextMenu(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTh) OnCopy(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTh) OnCut(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTh) OnDblClick(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTh) OnDrag(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTh) OnDragEnd(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTh) OnDragEnter(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTh) OnDragLeave(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTh) OnDragOver(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTh) OnDragStart(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTh) OnDrop(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTh) OnFocus(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTh) OnInput(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTh) OnInvalid(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTh) OnKeyDown(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTh) OnKeyPress(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTh) OnKeyUp(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTh) OnMouseDown(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTh) OnMouseEnter(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTh) OnMouseLeave(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTh) OnMouseMove(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTh) OnMouseOut(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTh) OnMouseOver(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTh) OnMouseUp(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTh) OnPaste(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTh) OnReset(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTh) OnScroll(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTh) OnSearch(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTh) OnSelect(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTh) OnSubmit(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTh) OnWheel(h EventHandler, scope ...any) HTMLTh {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTh) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTh) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTh) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTh) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTh) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTh) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "thead" HTML element.
 type HTMLTHead interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTHead
@@ -48634,8 +48266,7 @@ type htmlTHead struct {
 }
 
 func (e *htmlTHead) Body(v ...UI) HTMLTHead {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTHead)
 }
 
 func (e *htmlTHead) Text(v any) HTMLTHead {
@@ -48751,178 +48382,174 @@ func (e *htmlTHead) On(event string, h EventHandler, scope ...any) HTMLTHead {
 }
 
 func (e *htmlTHead) OnBlur(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTHead) OnChange(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTHead) OnClick(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTHead) OnContextMenu(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTHead) OnCopy(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTHead) OnCut(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTHead) OnDblClick(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTHead) OnDrag(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTHead) OnDragEnd(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTHead) OnDragEnter(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTHead) OnDragLeave(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTHead) OnDragOver(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTHead) OnDragStart(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTHead) OnDrop(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTHead) OnFocus(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTHead) OnInput(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTHead) OnInvalid(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTHead) OnKeyDown(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTHead) OnKeyPress(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTHead) OnKeyUp(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTHead) OnMouseDown(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTHead) OnMouseEnter(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTHead) OnMouseLeave(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTHead) OnMouseMove(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTHead) OnMouseOut(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTHead) OnMouseOver(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTHead) OnMouseUp(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTHead) OnPaste(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTHead) OnReset(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTHead) OnScroll(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTHead) OnSearch(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTHead) OnSelect(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTHead) OnSubmit(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTHead) OnWheel(h EventHandler, scope ...any) HTMLTHead {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTHead) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTHead) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTHead) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTHead) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTHead) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTHead) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "time" HTML element.
 type HTMLTime interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTime
@@ -49113,8 +48740,7 @@ type htmlTime struct {
 }
 
 func (e *htmlTime) Body(v ...UI) HTMLTime {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTime)
 }
 
 func (e *htmlTime) Text(v any) HTMLTime {
@@ -49235,178 +48861,174 @@ func (e *htmlTime) On(event string, h EventHandler, scope ...any) HTMLTime {
 }
 
 func (e *htmlTime) OnBlur(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTime) OnChange(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTime) OnClick(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTime) OnContextMenu(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTime) OnCopy(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTime) OnCut(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTime) OnDblClick(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTime) OnDrag(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTime) OnDragEnd(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTime) OnDragEnter(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTime) OnDragLeave(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTime) OnDragOver(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTime) OnDragStart(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTime) OnDrop(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTime) OnFocus(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTime) OnInput(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTime) OnInvalid(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTime) OnKeyDown(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTime) OnKeyPress(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTime) OnKeyUp(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTime) OnMouseDown(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTime) OnMouseEnter(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTime) OnMouseLeave(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTime) OnMouseMove(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTime) OnMouseOut(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTime) OnMouseOver(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTime) OnMouseUp(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTime) OnPaste(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTime) OnReset(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTime) OnScroll(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTime) OnSearch(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTime) OnSelect(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTime) OnSubmit(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTime) OnWheel(h EventHandler, scope ...any) HTMLTime {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTime) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTime) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTime) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTime) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTime) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTime) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "title" HTML element.
 type HTMLTitle interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTitle
@@ -49492,8 +49114,7 @@ type htmlTitle struct {
 }
 
 func (e *htmlTitle) Body(v ...UI) HTMLTitle {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTitle)
 }
 
 func (e *htmlTitle) Text(v any) HTMLTitle {
@@ -49608,9 +49229,39 @@ func (e *htmlTitle) On(event string, h EventHandler, scope ...any) HTMLTitle {
 	return e
 }
 
+func (e *htmlTitle) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTitle) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTitle) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTitle) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTitle) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTitle) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "tr" HTML element.
 type HTMLTr interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLTr
@@ -49798,8 +49449,7 @@ type htmlTr struct {
 }
 
 func (e *htmlTr) Body(v ...UI) HTMLTr {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlTr)
 }
 
 func (e *htmlTr) Text(v any) HTMLTr {
@@ -49915,178 +49565,174 @@ func (e *htmlTr) On(event string, h EventHandler, scope ...any) HTMLTr {
 }
 
 func (e *htmlTr) OnBlur(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlTr) OnChange(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlTr) OnClick(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlTr) OnContextMenu(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlTr) OnCopy(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlTr) OnCut(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlTr) OnDblClick(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlTr) OnDrag(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlTr) OnDragEnd(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlTr) OnDragEnter(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlTr) OnDragLeave(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlTr) OnDragOver(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlTr) OnDragStart(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlTr) OnDrop(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlTr) OnFocus(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlTr) OnInput(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlTr) OnInvalid(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlTr) OnKeyDown(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlTr) OnKeyPress(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlTr) OnKeyUp(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlTr) OnMouseDown(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlTr) OnMouseEnter(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlTr) OnMouseLeave(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlTr) OnMouseMove(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlTr) OnMouseOut(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlTr) OnMouseOver(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlTr) OnMouseUp(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlTr) OnPaste(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlTr) OnReset(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlTr) OnScroll(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlTr) OnSearch(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlTr) OnSelect(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlTr) OnSubmit(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlTr) OnWheel(h EventHandler, scope ...any) HTMLTr {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlTr) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlTr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlTr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlTr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlTr) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlTr) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "u" HTML element.
 type HTMLU interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLU
@@ -50274,8 +49920,7 @@ type htmlU struct {
 }
 
 func (e *htmlU) Body(v ...UI) HTMLU {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlU)
 }
 
 func (e *htmlU) Text(v any) HTMLU {
@@ -50391,178 +50036,174 @@ func (e *htmlU) On(event string, h EventHandler, scope ...any) HTMLU {
 }
 
 func (e *htmlU) OnBlur(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlU) OnChange(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlU) OnClick(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlU) OnContextMenu(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlU) OnCopy(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlU) OnCut(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlU) OnDblClick(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlU) OnDrag(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlU) OnDragEnd(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlU) OnDragEnter(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlU) OnDragLeave(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlU) OnDragOver(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlU) OnDragStart(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlU) OnDrop(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlU) OnFocus(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlU) OnInput(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlU) OnInvalid(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlU) OnKeyDown(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlU) OnKeyPress(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlU) OnKeyUp(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlU) OnMouseDown(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlU) OnMouseEnter(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlU) OnMouseLeave(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlU) OnMouseMove(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlU) OnMouseOut(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlU) OnMouseOver(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlU) OnMouseUp(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlU) OnPaste(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlU) OnReset(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlU) OnScroll(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlU) OnSearch(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlU) OnSelect(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlU) OnSubmit(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlU) OnWheel(h EventHandler, scope ...any) HTMLU {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlU) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlU) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlU) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlU) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlU) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlU) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "ul" HTML element.
 type HTMLUl interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLUl
@@ -50750,8 +50391,7 @@ type htmlUl struct {
 }
 
 func (e *htmlUl) Body(v ...UI) HTMLUl {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlUl)
 }
 
 func (e *htmlUl) Text(v any) HTMLUl {
@@ -50867,178 +50507,174 @@ func (e *htmlUl) On(event string, h EventHandler, scope ...any) HTMLUl {
 }
 
 func (e *htmlUl) OnBlur(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlUl) OnChange(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlUl) OnClick(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlUl) OnContextMenu(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlUl) OnCopy(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlUl) OnCut(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlUl) OnDblClick(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlUl) OnDrag(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlUl) OnDragEnd(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlUl) OnDragEnter(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlUl) OnDragLeave(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlUl) OnDragOver(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlUl) OnDragStart(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlUl) OnDrop(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlUl) OnFocus(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlUl) OnInput(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlUl) OnInvalid(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlUl) OnKeyDown(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlUl) OnKeyPress(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlUl) OnKeyUp(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlUl) OnMouseDown(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlUl) OnMouseEnter(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlUl) OnMouseLeave(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlUl) OnMouseMove(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlUl) OnMouseOut(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlUl) OnMouseOver(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlUl) OnMouseUp(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlUl) OnPaste(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlUl) OnReset(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlUl) OnScroll(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlUl) OnSearch(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlUl) OnSelect(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlUl) OnSubmit(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlUl) OnWheel(h EventHandler, scope ...any) HTMLUl {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlUl) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlUl) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlUl) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlUl) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlUl) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlUl) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "var" HTML element.
 type HTMLVar interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLVar
@@ -51226,8 +50862,7 @@ type htmlVar struct {
 }
 
 func (e *htmlVar) Body(v ...UI) HTMLVar {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlVar)
 }
 
 func (e *htmlVar) Text(v any) HTMLVar {
@@ -51343,178 +50978,174 @@ func (e *htmlVar) On(event string, h EventHandler, scope ...any) HTMLVar {
 }
 
 func (e *htmlVar) OnBlur(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlVar) OnChange(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlVar) OnClick(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlVar) OnContextMenu(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlVar) OnCopy(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlVar) OnCut(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlVar) OnDblClick(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlVar) OnDrag(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlVar) OnDragEnd(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlVar) OnDragEnter(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlVar) OnDragLeave(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlVar) OnDragOver(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlVar) OnDragStart(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlVar) OnDrop(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlVar) OnFocus(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlVar) OnInput(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlVar) OnInvalid(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlVar) OnKeyDown(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlVar) OnKeyPress(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlVar) OnKeyUp(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlVar) OnMouseDown(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlVar) OnMouseEnter(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlVar) OnMouseLeave(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlVar) OnMouseMove(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlVar) OnMouseOut(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlVar) OnMouseOver(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlVar) OnMouseUp(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlVar) OnPaste(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlVar) OnReset(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlVar) OnScroll(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlVar) OnSearch(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlVar) OnSelect(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlVar) OnSubmit(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlVar) OnWheel(h EventHandler, scope ...any) HTMLVar {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlVar) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlVar) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlVar) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlVar) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlVar) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlVar) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "video" HTML element.
 type HTMLVideo interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLVideo
@@ -51801,8 +51432,7 @@ type htmlVideo struct {
 }
 
 func (e *htmlVideo) Body(v ...UI) HTMLVideo {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlVideo)
 }
 
 func (e *htmlVideo) Text(v any) HTMLVideo {
@@ -51968,293 +51598,266 @@ func (e *htmlVideo) On(event string, h EventHandler, scope ...any) HTMLVideo {
 }
 
 func (e *htmlVideo) OnAbort(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("abort", h, scope...)
-	return e
+	return e.On("abort", h, scope...)
 }
 
 func (e *htmlVideo) OnBlur(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlVideo) OnCanPlay(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("canplay", h, scope...)
-	return e
+	return e.On("canplay", h, scope...)
 }
 
 func (e *htmlVideo) OnCanPlayThrough(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("canplaythrough", h, scope...)
-	return e
+	return e.On("canplaythrough", h, scope...)
 }
 
 func (e *htmlVideo) OnChange(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlVideo) OnClick(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlVideo) OnContextMenu(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlVideo) OnCopy(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlVideo) OnCueChange(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("cuechange", h, scope...)
-	return e
+	return e.On("cuechange", h, scope...)
 }
 
 func (e *htmlVideo) OnCut(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlVideo) OnDblClick(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlVideo) OnDrag(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlVideo) OnDragEnd(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlVideo) OnDragEnter(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlVideo) OnDragLeave(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlVideo) OnDragOver(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlVideo) OnDragStart(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlVideo) OnDrop(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlVideo) OnDurationChange(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("durationchange", h, scope...)
-	return e
+	return e.On("durationchange", h, scope...)
 }
 
 func (e *htmlVideo) OnEmptied(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("emptied", h, scope...)
-	return e
+	return e.On("emptied", h, scope...)
 }
 
 func (e *htmlVideo) OnEnded(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("ended", h, scope...)
-	return e
+	return e.On("ended", h, scope...)
 }
 
 func (e *htmlVideo) OnError(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("error", h, scope...)
-	return e
+	return e.On("error", h, scope...)
 }
 
 func (e *htmlVideo) OnFocus(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlVideo) OnInput(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlVideo) OnInvalid(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlVideo) OnKeyDown(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlVideo) OnKeyPress(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlVideo) OnKeyUp(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlVideo) OnLoadStart(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("loadstart", h, scope...)
-	return e
+	return e.On("loadstart", h, scope...)
 }
 
 func (e *htmlVideo) OnLoadedData(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("loadeddata", h, scope...)
-	return e
+	return e.On("loadeddata", h, scope...)
 }
 
 func (e *htmlVideo) OnLoadedMetaData(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("loadedmetadata", h, scope...)
-	return e
+	return e.On("loadedmetadata", h, scope...)
 }
 
 func (e *htmlVideo) OnMouseDown(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlVideo) OnMouseEnter(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlVideo) OnMouseLeave(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlVideo) OnMouseMove(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlVideo) OnMouseOut(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlVideo) OnMouseOver(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlVideo) OnMouseUp(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlVideo) OnPaste(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlVideo) OnPause(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("pause", h, scope...)
-	return e
+	return e.On("pause", h, scope...)
 }
 
 func (e *htmlVideo) OnPlay(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("play", h, scope...)
-	return e
+	return e.On("play", h, scope...)
 }
 
 func (e *htmlVideo) OnPlaying(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("playing", h, scope...)
-	return e
+	return e.On("playing", h, scope...)
 }
 
 func (e *htmlVideo) OnProgress(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("progress", h, scope...)
-	return e
+	return e.On("progress", h, scope...)
 }
 
 func (e *htmlVideo) OnRateChange(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("ratechange", h, scope...)
-	return e
+	return e.On("ratechange", h, scope...)
 }
 
 func (e *htmlVideo) OnReset(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlVideo) OnScroll(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlVideo) OnSearch(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlVideo) OnSeeked(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("seeked", h, scope...)
-	return e
+	return e.On("seeked", h, scope...)
 }
 
 func (e *htmlVideo) OnSeeking(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("seeking", h, scope...)
-	return e
+	return e.On("seeking", h, scope...)
 }
 
 func (e *htmlVideo) OnSelect(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlVideo) OnStalled(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("stalled", h, scope...)
-	return e
+	return e.On("stalled", h, scope...)
 }
 
 func (e *htmlVideo) OnSubmit(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlVideo) OnSuspend(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("suspend", h, scope...)
-	return e
+	return e.On("suspend", h, scope...)
 }
 
 func (e *htmlVideo) OnTimeUpdate(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("timeupdate", h, scope...)
-	return e
+	return e.On("timeupdate", h, scope...)
 }
 
 func (e *htmlVideo) OnVolumeChange(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("volumechange", h, scope...)
-	return e
+	return e.On("volumechange", h, scope...)
 }
 
 func (e *htmlVideo) OnWaiting(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("waiting", h, scope...)
-	return e
+	return e.On("waiting", h, scope...)
 }
 
 func (e *htmlVideo) OnWheel(h EventHandler, scope ...any) HTMLVideo {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlVideo) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlVideo) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlVideo) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlVideo) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlVideo) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlVideo) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
 
 // The interface that represents a "wbr" HTML element.
 type HTMLWbr interface {
-	UI
+	HTML
 
 	// Sets the content of the element.
 	Body(elems ...UI) HTMLWbr
@@ -52442,8 +52045,7 @@ type htmlWbr struct {
 }
 
 func (e *htmlWbr) Body(v ...UI) HTMLWbr {
-	e.setChildren(v...)
-	return e
+	return e.setBody(FilterUIElems(v...)).(*htmlWbr)
 }
 
 func (e *htmlWbr) Text(v any) HTMLWbr {
@@ -52559,171 +52161,167 @@ func (e *htmlWbr) On(event string, h EventHandler, scope ...any) HTMLWbr {
 }
 
 func (e *htmlWbr) OnBlur(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("blur", h, scope...)
-	return e
+	return e.On("blur", h, scope...)
 }
 
 func (e *htmlWbr) OnChange(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("change", h, scope...)
-	return e
+	return e.On("change", h, scope...)
 }
 
 func (e *htmlWbr) OnClick(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("click", h, scope...)
-	return e
+	return e.On("click", h, scope...)
 }
 
 func (e *htmlWbr) OnContextMenu(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("contextmenu", h, scope...)
-	return e
+	return e.On("contextmenu", h, scope...)
 }
 
 func (e *htmlWbr) OnCopy(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("copy", h, scope...)
-	return e
+	return e.On("copy", h, scope...)
 }
 
 func (e *htmlWbr) OnCut(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("cut", h, scope...)
-	return e
+	return e.On("cut", h, scope...)
 }
 
 func (e *htmlWbr) OnDblClick(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("dblclick", h, scope...)
-	return e
+	return e.On("dblclick", h, scope...)
 }
 
 func (e *htmlWbr) OnDrag(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("drag", h, scope...)
-	return e
+	return e.On("drag", h, scope...)
 }
 
 func (e *htmlWbr) OnDragEnd(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("dragend", h, scope...)
-	return e
+	return e.On("dragend", h, scope...)
 }
 
 func (e *htmlWbr) OnDragEnter(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("dragenter", h, scope...)
-	return e
+	return e.On("dragenter", h, scope...)
 }
 
 func (e *htmlWbr) OnDragLeave(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("dragleave", h, scope...)
-	return e
+	return e.On("dragleave", h, scope...)
 }
 
 func (e *htmlWbr) OnDragOver(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("dragover", h, scope...)
-	return e
+	return e.On("dragover", h, scope...)
 }
 
 func (e *htmlWbr) OnDragStart(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("dragstart", h, scope...)
-	return e
+	return e.On("dragstart", h, scope...)
 }
 
 func (e *htmlWbr) OnDrop(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("drop", h, scope...)
-	return e
+	return e.On("drop", h, scope...)
 }
 
 func (e *htmlWbr) OnFocus(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("focus", h, scope...)
-	return e
+	return e.On("focus", h, scope...)
 }
 
 func (e *htmlWbr) OnInput(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("input", h, scope...)
-	return e
+	return e.On("input", h, scope...)
 }
 
 func (e *htmlWbr) OnInvalid(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("invalid", h, scope...)
-	return e
+	return e.On("invalid", h, scope...)
 }
 
 func (e *htmlWbr) OnKeyDown(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("keydown", h, scope...)
-	return e
+	return e.On("keydown", h, scope...)
 }
 
 func (e *htmlWbr) OnKeyPress(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("keypress", h, scope...)
-	return e
+	return e.On("keypress", h, scope...)
 }
 
 func (e *htmlWbr) OnKeyUp(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("keyup", h, scope...)
-	return e
+	return e.On("keyup", h, scope...)
 }
 
 func (e *htmlWbr) OnMouseDown(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("mousedown", h, scope...)
-	return e
+	return e.On("mousedown", h, scope...)
 }
 
 func (e *htmlWbr) OnMouseEnter(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("mouseenter", h, scope...)
-	return e
+	return e.On("mouseenter", h, scope...)
 }
 
 func (e *htmlWbr) OnMouseLeave(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("mouseleave", h, scope...)
-	return e
+	return e.On("mouseleave", h, scope...)
 }
 
 func (e *htmlWbr) OnMouseMove(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("mousemove", h, scope...)
-	return e
+	return e.On("mousemove", h, scope...)
 }
 
 func (e *htmlWbr) OnMouseOut(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("mouseout", h, scope...)
-	return e
+	return e.On("mouseout", h, scope...)
 }
 
 func (e *htmlWbr) OnMouseOver(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("mouseover", h, scope...)
-	return e
+	return e.On("mouseover", h, scope...)
 }
 
 func (e *htmlWbr) OnMouseUp(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("mouseup", h, scope...)
-	return e
+	return e.On("mouseup", h, scope...)
 }
 
 func (e *htmlWbr) OnPaste(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("paste", h, scope...)
-	return e
+	return e.On("paste", h, scope...)
 }
 
 func (e *htmlWbr) OnReset(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("reset", h, scope...)
-	return e
+	return e.On("reset", h, scope...)
 }
 
 func (e *htmlWbr) OnScroll(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("scroll", h, scope...)
-	return e
+	return e.On("scroll", h, scope...)
 }
 
 func (e *htmlWbr) OnSearch(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("search", h, scope...)
-	return e
+	return e.On("search", h, scope...)
 }
 
 func (e *htmlWbr) OnSelect(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("select", h, scope...)
-	return e
+	return e.On("select", h, scope...)
 }
 
 func (e *htmlWbr) OnSubmit(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("submit", h, scope...)
-	return e
+	return e.On("submit", h, scope...)
 }
 
 func (e *htmlWbr) OnWheel(h EventHandler, scope ...any) HTMLWbr {
-	e.setEventHandler("wheel", h, scope...)
+	return e.On("wheel", h, scope...)
+}
+
+func (e *htmlWbr) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlWbr) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlWbr) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlWbr) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlWbr) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlWbr) setBody(v []UI) HTML {
+	e.children = v
 	return e
 }
