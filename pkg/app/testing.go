@@ -1,273 +1,243 @@
 package app
 
-// import (
-// 	"fmt"
-// 	"reflect"
+import (
+	"reflect"
 
-// 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-// )
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+)
 
-// // TestUIDescriptor represents a descriptor that describes a UI element and its
-// // location from its parents.
-// type TestUIDescriptor struct {
-// 	// The location of the node. It is used by the TestMatch to find the
-// 	// element to test.
-// 	//
-// 	// If empty, the expected UI element is compared with the root of the tree.
-// 	//
-// 	// Otherwise, each integer represents the index of the element to traverse,
-// 	// from the root's children to the element to compare
-// 	Path []int
+// Match compares the expected UI element with another UI element at a specified
+// location in a UI tree. It is the preferred function for matching UI elements
+// in tests due to its simplified usage.
+//
+// Example usage adapted for Match function:
+//
+//	tree := app.Div().Body(
+//	    app.H2().Body(app.Text("foo")),
+//	    app.P().Body(app.Text("bar")),
+//	)
+//
+//	err := app.Match(app.Div(), tree)
+//	// err == nil if the root matches a Div element
+//
+//	err := app.Match(app.H3(), tree, 0)
+//	// err != nil because the first child is not an H3 element but a H2.
+//
+//	err = app.Match(app.Text("bar"), tree, 1, 0)
+//	// err == nil if the text of the first child of the second element is "bar"
+func Match(expected UI, root UI, path ...int) error {
+	return TestMatch(root, TestUIDescriptor{
+		Path:     TestPath(path...),
+		Expected: expected,
+	})
+}
 
-// 	// The element to compare with the element targeted by Path. Compare
-// 	// behavior varies depending on the element kind.
-// 	//
-// 	// Simple text elements only have their text value compared.
-// 	//
-// 	// HTML elements have their attribute compared and check if their event
-// 	// handlers are set.
-// 	//
-// 	// Components have their exported field values compared.
-// 	Expected UI
-// }
+// TestUIDescriptor describes a UI element and its hierarchical location
+// relative to parent elements for the purpose of testing.
+type TestUIDescriptor struct {
+	// Path represents the sequence of child indices to navigate through the UI
+	// tree to reach the element to be tested. An empty path implies the root.
+	Path []int
 
-// // TestPath is a helper function that returns a path to use in a
-// // TestUIDescriptor.
-// func TestPath(p ...int) []int {
-// 	return p
-// }
+	// Expected is the UI element that is expected to be found at the location
+	// specified by Path. The comparison behavior varies depending on the type
+	// of element; simple text elements are compared by text value, HTML
+	// elements by attributes and event handlers, and components by the values
+	// of their exported fields.
+	Expected UI
+}
 
-// // TestMatch looks for the element targeted by the descriptor in the given tree
-// // and reports whether it matches with the expected element.
-// //
-// // Eg:
-// //
-// //	tree := app.Div().Body(
-// //	    app.H2().Body(
-// //	        app.Text("foo"),
-// //	    ),
-// //	    app.P().Body(
-// //	        app.Text("bar"),
-// //	    ),
-// //	)
-// //
-// //	// Testing root:
-// //	err := app.TestMatch(tree, app.TestUIDescriptor{
-// //	    Path:     TestPath(),
-// //	    Expected: app.Div(),
-// //	})
-// //	// OK => err == nil
-// //
-// //	// Testing h2:
-// //	err := app.TestMatch(tree, app.TestUIDescriptor{
-// //	    Path:     TestPath(0),
-// //	    Expected: app.H3(),
-// //	})
-// //	// KO => err != nil because we ask h2 to match with h3
-// //
-// //	// Testing text from p:
-// //	err = app.TestMatch(tree, app.TestUIDescriptor{
-// //	    Path:     TestPath(1, 0),
-// //	    Expected: app.Text("bar"),
-// //	})
-// //	// OK => err == nil
-// func TestMatch(tree UI, d TestUIDescriptor) error {
-// 	if d.Expected != nil {
-// 		d.Expected.setSelf(d.Expected)
-// 	}
+// TestPath is a utility function that constructs a path, represented as a slice
+// of integers, for use in a TestUIDescriptor.
+func TestPath(p ...int) []int {
+	return p
+}
 
-// 	if len(d.Path) != 0 {
-// 		idx := d.Path[0]
+// TestMatch searches for a UI element within a tree as described by a
+// TestUIDescriptor and verifies if it matches the Expected element. It returns
+// an error if the match is unsuccessful or if the path is invalid. Prefer using
+// the Match function for a simpler API.
+func TestMatch(root UI, d TestUIDescriptor) error {
+	if len(d.Path) != 0 {
+		index := d.Path[0]
 
-// 		if idx < 0 || idx >= len(tree.getChildren()) {
-// 			// Check that the element does not exists.
-// 			if d.Expected == nil {
-// 				return nil
-// 			}
+		switch root := root.(type) {
+		case HTML:
+			children := root.body()
+			if index < 0 || index >= len(children) {
+				return errors.New("element to match is out of range").
+					WithTag("type", reflect.TypeOf(d.Expected)).
+					WithTag("parent-type", reflect.TypeOf(root)).
+					WithTag("parent-children-count", len(children)).
+					WithTag("index", index)
+			}
+			d.Path = d.Path[1:]
+			return TestMatch(children[index], d)
 
-// 			return errors.New("ui element to match is out of range").
-// 				WithTag("name", d.Expected.name()).
-// 				WithTag("parent-name", tree.name()).
-// 				WithTag("parent-children-count", len(tree.getChildren())).
-// 				WithTag("index", idx)
-// 		}
+		case Composer:
+			if index != 0 {
+				return errors.New("element to match is out of range").
+					WithTag("type", reflect.TypeOf(d.Expected)).
+					WithTag("parent-type", reflect.TypeOf(root)).
+					WithTag("parent-children-count", 1).
+					WithTag("index", index)
+			}
+			d.Path = d.Path[1:]
+			return TestMatch(root.root(), d)
+		}
+	}
 
-// 		c := tree.getChildren()[idx]
-// 		p := c.getParent()
+	return match(root, d)
+}
 
-// 		if p != tree {
-// 			return errors.New("unexpected ui element parent").
-// 				WithTag("name", d.Expected.name()).
-// 				WithTag("parent-name", p.name()).
-// 				WithTag("parent-addr", fmt.Sprintf("%p", p)).
-// 				WithTag("expected-parent-name", tree.name()).
-// 				WithTag("expected-parent-addr", fmt.Sprintf("%p", tree))
-// 		}
+func match(n UI, d TestUIDescriptor) error {
+	if a, b := reflect.TypeOf(d.Expected), reflect.TypeOf(n); a != b {
+		return errors.New("types are not matching").
+			WithTag("type", a).
+			WithTag("expected-type", b)
+	}
 
-// 		d.Path = d.Path[1:]
-// 		return TestMatch(c, d)
-// 	}
+	switch d.Expected.(type) {
+	case *text:
+		return matchText(n.(*text), d)
 
-// 	if a, b := reflect.TypeOf(d.Expected), reflect.TypeOf(tree); a != b {
-// 		return errors.New("the UI element is not matching the descriptor type").
-// 			WithTag("expected-type", a).
-// 			WithTag("current-type", b)
-// 	}
+	case HTML:
+		return matchHTML(n.(HTML), d)
 
-// 	switch d.Expected.(type) {
-// 	case *text:
-// 		return matchText(tree, d)
+	case Composer:
+		return matchComponent(n.(Composer), d)
 
-// 	case Composer:
-// 		return matchComponent(tree, d)
+	case *raw:
+		return matchRaw(n.(*raw), d)
 
-// 	case *raw:
-// 		return matchRaw(tree, d)
+	default:
+		return errors.New("unsupported element").
+			WithTag("type", reflect.TypeOf(n))
+	}
+}
 
-// 	default:
-// 		if err := matchHTMLElemAttrs(tree, d); err != nil {
-// 			return err
-// 		}
-// 		return matchHTMLElemEventHandlers(tree, d)
-// 	}
-// }
+func matchText(n *text, d TestUIDescriptor) error {
+	a := n
+	b := d.Expected.(*text)
 
-// func matchText(n UI, d TestUIDescriptor) error {
-// 	a := n.(*text)
-// 	b := d.Expected.(*text)
+	if a.value != b.value {
+		return errors.New("text does not match").
+			WithTag("type", reflect.TypeOf(a)).
+			WithTag("expected-value", b.value).
+			WithTag("current-value", a.value)
+	}
+	return nil
+}
 
-// 	if a.value != b.value {
-// 		return errors.New("the text element is not matching the descriptor").
-// 			WithTag("name", a.name()).
-// 			WithTag("reason", "unexpected text value").
-// 			WithTag("expected-value", b.value).
-// 			WithTag("current-value", a.value)
-// 	}
-// 	return nil
-// }
+func matchHTML(n HTML, d TestUIDescriptor) error {
+	a := n
+	b := d.Expected.(HTML)
 
-// func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
-// 	aAttrs := n.getAttributes()
-// 	bAttrs := d.Expected.getAttributes()
+	if typeA, typeB := reflect.TypeOf(a), reflect.TypeOf(b); typeA != typeB || a.Tag() != b.Tag() {
+		return errors.New("types are not matching").
+			WithTag("type", typeA).
+			WithTag("expected-type", typeB)
+	}
 
-// 	if len(aAttrs) != len(bAttrs) {
-// 		return errors.New("the html element is not matching the descriptor").
-// 			WithTag("name", n.name()).
-// 			WithTag("reason", "unexpected attributes length").
-// 			WithTag("expected-attributes-length", len(bAttrs)).
-// 			WithTag("current-attributes-length", len(aAttrs))
-// 	}
+	if err := matchHTMLAttributes(a.attrs(), b.attrs()); err != nil {
+		return errors.New("attributes does not match").
+			WithTag("type", reflect.TypeOf(a)).
+			Wrap(err)
+	}
 
-// 	for k, b := range bAttrs {
-// 		a, exists := aAttrs[k]
-// 		if !exists {
-// 			return errors.New("the html element is not matching the descriptor").
-// 				WithTag("name", n.name()).
-// 				WithTag("reason", "an attribute is missing").
-// 				WithTag("attribute", k)
-// 		}
+	if err := matchHTMLEventHandlers(a.events(), b.events()); err != nil {
+		return errors.New("event handlers does not match").
+			WithTag("type", reflect.TypeOf(a)).
+			Wrap(err)
+	}
 
-// 		if a != b {
-// 			return errors.New("the html element is not matching the descriptor").
-// 				WithTag("name", n.name()).
-// 				WithTag("reason", "unexpected attribute value").
-// 				WithTag("attribute", k).
-// 				WithTag("expected-value", b).
-// 				WithTag("current-value", a)
-// 		}
-// 	}
+	return nil
+}
 
-// 	for k := range bAttrs {
-// 		_, exists := bAttrs[k]
-// 		if !exists {
-// 			return errors.New("the html element is not matching the descriptor").
-// 				WithTag("name", n.name()).
-// 				WithTag("reason", "an unexpected attribute is present").
-// 				WithTag("attribute", k)
-// 		}
-// 	}
+func matchHTMLAttributes(a, b attributes) error {
+	for key, expectedValue := range b {
+		value, exists := a[key]
+		if !exists {
+			return errors.New("expected attribute not found").
+				WithTag("name", key)
+		}
 
-// 	return nil
-// }
+		if value != expectedValue {
+			return errors.New("value does not match").
+				WithTag("name", key).
+				WithTag("value", value).
+				WithTag("expected-value", expectedValue)
+		}
+	}
 
-// func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
-// 	aevents := n.getEventHandlers()
-// 	bevents := d.Expected.getEventHandlers()
+	for key, value := range a {
+		if _, exists := b[key]; !exists {
+			return errors.New("attribute is not expected").
+				WithTag("name", key).
+				WithTag("value", value)
+		}
+	}
 
-// 	if len(aevents) != len(bevents) {
-// 		return errors.New("the html element is not matching the descriptor").
-// 			WithTag("name", n.name()).
-// 			WithTag("reason", "unexpected event handlers length").
-// 			WithTag("expected-event-handlers-length", len(bevents)).
-// 			WithTag("current-event-handlers-length", len(aevents))
-// 	}
+	return nil
+}
 
-// 	for k := range bevents {
-// 		_, exists := aevents[k]
-// 		if !exists {
-// 			return errors.New("the html element is not matching the descriptor").
-// 				WithTag("name", n.name()).
-// 				WithTag("reason", "an event handler is missing").
-// 				WithTag("event-handler", k)
-// 		}
-// 	}
+func matchHTMLEventHandlers(a, b eventHandlers) error {
+	for key := range b {
+		if _, exists := a[key]; !exists {
+			return errors.New("expected event handler not found").
+				WithTag("event", key)
+		}
+	}
 
-// 	for k := range bevents {
-// 		_, exists := aevents[k]
-// 		if !exists {
-// 			return errors.New("the html element is not matching the descriptor").
-// 				WithTag("name", n.name()).
-// 				WithTag("reason", "an unexpected event handler is present").
-// 				WithTag("event-handler", k)
-// 		}
-// 	}
+	for key := range a {
+		if _, exists := b[key]; !exists {
+			return errors.New("event handler is not expected").
+				WithTag("event", key)
+		}
+	}
 
-// 	return nil
+	return nil
+}
 
-// }
+func matchComponent(n Composer, d TestUIDescriptor) error {
+	a := reflect.Indirect(reflect.ValueOf(n))
+	b := reflect.Indirect(reflect.ValueOf(d.Expected))
 
-// func matchComponent(n UI, d TestUIDescriptor) error {
-// 	aval := reflect.ValueOf(n).Elem()
-// 	bval := reflect.ValueOf(d.Expected).Elem()
+	for i := 0; i < b.NumField(); i++ {
+		fieldA := a.Field(i)
+		fieldB := b.Field(i)
 
-// 	compotype := reflect.TypeOf(Compo{})
+		if !fieldA.CanSet() {
+			continue
+		}
 
-// 	for i := 0; i < bval.NumField(); i++ {
-// 		a := aval.Field(i)
-// 		b := bval.Field(i)
+		if _, ok := fieldA.Interface().(Compo); ok {
+			continue
+		}
 
-// 		if a.Type() == compotype {
-// 			continue
-// 		}
+		if !reflect.DeepEqual(fieldA.Interface(), fieldB.Interface()) {
+			return errors.New("field are not matching").
+				WithTag("type", reflect.TypeOf(n)).
+				WithTag("field", a.Type().Field(i).Name).
+				WithTag("value", fieldA.Interface()).
+				WithTag("expected-value", fieldB.Interface())
+		}
+	}
 
-// 		if !a.CanSet() {
-// 			continue
-// 		}
+	return nil
+}
 
-// 		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
-// 			return errors.New("the component is not matching with the descriptor").
-// 				WithTag("name", n.name()).
-// 				WithTag("reason", "unexpected field value").
-// 				WithTag("field", bval.Type().Field(i).Name).
-// 				WithTag("expected-value", b.Interface()).
-// 				WithTag("current-value", a.Interface())
-// 		}
-// 	}
+func matchRaw(n *raw, d TestUIDescriptor) error {
+	a := n
+	b := d.Expected.(*raw)
 
-// 	return nil
-// }
+	if a.value != b.value {
+		return errors.New("the raw html element is not matching with the descriptor").
+			WithTag("type", reflect.TypeOf(n)).
+			WithTag("reason", "unexpected value").
+			WithTag("expected-value", b.value).
+			WithTag("current-value", a.value)
+	}
 
-// func matchRaw(n UI, d TestUIDescriptor) error {
-// 	a := n.(*raw)
-// 	b := d.Expected.(*raw)
-
-// 	if a.value != b.value {
-// 		return errors.New("the raw html element is not matching with the descriptor").
-// 			WithTag("name", n.name()).
-// 			WithTag("reason", "unexpected value").
-// 			WithTag("expected-value", b.value).
-// 			WithTag("current-value", a.value)
-// 	}
-
-// 	return nil
-// }
+	return nil
+}
