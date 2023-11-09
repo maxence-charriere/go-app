@@ -37,30 +37,30 @@ func TestEngineXBaseContext(t *testing.T) {
 func TestEngineXLoad(t *testing.T) {
 	t.Run("load loads a new body", func(t *testing.T) {
 		e := newTestEngine()
-		e.load(&hello{})
+		e.Load(&hello{})
 		require.IsType(t, &hello{}, e.body.body()[0])
 	})
 
 	t.Run("loading a non mountable component panics", func(t *testing.T) {
 		e := newTestEngine()
-		require.Panics(t, func() {
-			e.load(&compoWithNilRendering{})
-		})
+		err := e.Load(&compoWithNilRendering{})
+		require.Error(t, err)
+		t.Log(err)
 	})
 
 	t.Run("load updates body", func(t *testing.T) {
 		e := newTestEngine()
-		e.load(&hello{})
-		e.load(&bar{})
+		e.Load(&hello{})
+		e.Load(&bar{})
 		require.IsType(t, &bar{}, e.body.body()[0])
 	})
 
 	t.Run("load body update with a non mountable component panics", func(t *testing.T) {
 		e := newTestEngine()
-		e.load(&hello{})
-		require.Panics(t, func() {
-			e.load(&compoWithNilRendering{})
-		})
+		e.Load(&hello{})
+		err := e.Load(&compoWithNilRendering{})
+		require.Error(t, err)
+		t.Log(err)
 	})
 }
 
@@ -246,7 +246,7 @@ func TestEngineXEncode(t *testing.T) {
 	t.Run("encoding a document without body returns an error", func(t *testing.T) {
 		e := newTestEngine()
 		compo := &hello{}
-		e.load(compo)
+		e.Load(compo)
 
 		var b bytes.Buffer
 		err := e.Encode(&b, Html())
@@ -257,7 +257,7 @@ func TestEngineXEncode(t *testing.T) {
 	t.Run("encoding document succed", func(t *testing.T) {
 		e := newTestEngine()
 		compo := &compoWithCustomRoot{Root: Span()}
-		e.load(compo)
+		e.Load(compo)
 
 		var b bytes.Buffer
 		err := e.Encode(&b, Html().privateBody(
@@ -271,16 +271,5 @@ func TestEngineXEncode(t *testing.T) {
 }
 
 func newTestEngine() *engineX {
-	origin, _ := url.Parse("/")
-	originPage := makeRequestPage(origin, nil)
-
-	routes := makeRouter()
-	return newEngineX(context.Background(),
-		&routes,
-		nil,
-		&originPage,
-		map[string]ActionHandler{
-			"/test": func(ctx Context, a Action) {},
-		},
-	)
+	return NewTestEngine().(*engineX)
 }

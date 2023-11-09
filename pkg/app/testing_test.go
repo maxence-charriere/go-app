@@ -120,7 +120,7 @@ func TestTestMatch(t *testing.T) {
 
 	t.Run("match path by mounted component returns an error", func(t *testing.T) {
 		compo := &compoWithCustomRoot{Root: Text("hello")}
-		e.load(compo)
+		e.Load(compo)
 
 		err := Match(Text("hello"), compo, 0)
 		require.NoError(t, err)
@@ -128,7 +128,7 @@ func TestTestMatch(t *testing.T) {
 
 	t.Run("match path by mounted component and bad path returns an error", func(t *testing.T) {
 		compo := &compoWithCustomRoot{Root: Text("hello")}
-		e.load(compo)
+		e.Load(compo)
 
 		err := Match(Text("hello"), compo, 1)
 		require.Error(t, err)

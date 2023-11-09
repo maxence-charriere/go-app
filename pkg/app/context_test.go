@@ -37,7 +37,7 @@ func TestContextBehavior(t *testing.T) {
 func TestContextSrc(t *testing.T) {
 	e := newTestEngine()
 	hello := &hello{}
-	e.load(hello)
+	e.Load(hello)
 
 	ctx := e.nodes.context(e.baseContext(), hello)
 	require.NotZero(t, ctx.Src())
@@ -177,7 +177,7 @@ func TestContextDispatch(t *testing.T) {
 		e := newTestEngine()
 
 		hello := &hello{}
-		e.load(hello)
+		e.Load(hello)
 		called := false
 
 		ctx := e.nodes.context(e.baseContext(), hello)
@@ -210,7 +210,7 @@ func TestContextDefer(t *testing.T) {
 		e := newTestEngine()
 
 		hello := &hello{}
-		e.load(hello)
+		e.Load(hello)
 		called := false
 
 		ctx := e.nodes.context(e.baseContext(), hello)
@@ -242,7 +242,7 @@ func TestContextAfter(t *testing.T) {
 	e := newTestEngine()
 
 	hello := &hello{}
-	e.load(hello)
+	e.Load(hello)
 	ctx := e.nodes.context(e.baseContext(), hello)
 
 	var wg sync.WaitGroup
@@ -259,7 +259,7 @@ func TestContextPreventUpdate(t *testing.T) {
 	e := newTestEngine()
 
 	hello := &hello{}
-	e.load(hello)
+	e.Load(hello)
 	ctx := e.nodes.context(e.baseContext(), hello)
 
 	ctx.Dispatch(func(ctx Context) {
@@ -278,7 +278,7 @@ func TestContextHandle(t *testing.T) {
 	action := Action{}
 
 	hello := &hello{}
-	e.load(hello)
+	e.Load(hello)
 	ctx := e.nodes.context(e.baseContext(), hello)
 
 	ctx.Handle(actionName, func(ctx Context, a Action) {
@@ -303,7 +303,7 @@ func TestContextStates(t *testing.T) {
 	e := newTestEngine()
 
 	hello := &hello{}
-	e.load(hello)
+	e.Load(hello)
 	ctx := e.nodes.context(e.baseContext(), hello)
 
 	state := "/test/context/states"
@@ -326,7 +326,7 @@ func TestContextStates(t *testing.T) {
 func TestContextResizeContent(t *testing.T) {
 	e := newTestEngine()
 	hello := &hello{}
-	e.load(hello)
+	e.Load(hello)
 	ctx := e.nodes.context(e.baseContext(), hello)
 	ctx.ResizeContent()
 	e.ConsumeAll()

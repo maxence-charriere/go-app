@@ -1,10 +1,50 @@
 package app
 
 import (
+	"context"
+	"net/url"
 	"reflect"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
+
+// TestEngine encapsulates the methods required to load components and manage
+// asynchronous events within a unit test environment. It simulates the UI engine's
+// behavior, enabling comprehensive unit testing of UI components.
+type TestEngine interface {
+	// Load initializes the test engine with the specified component, preparing it
+	// for unit testing. It returns an error if the component cannot be
+	// integrated or if the engine fails to initialize properly.
+	Load(Composer) error
+
+	// ConsumeNext advances the test engine's state by processing the next
+	// operation in the dispatch queue. It allows for fine-grained control over
+	// the sequence of operations during unit testing.
+	ConsumeNext()
+
+	// ConsumeAll advances the test engine's state by executing all pending
+	// dispatched, deferred, and asynchronous operations. This ensures that the
+	// component's state is fully updated, allowing for accurate assertions and
+	// verifications in test scenarios.
+	ConsumeAll()
+}
+
+// NewTestEngine creates and returns a new instance of test engine configured
+// for unit testing.
+func NewTestEngine() TestEngine {
+	origin, _ := url.Parse("/")
+	originPage := makeRequestPage(origin, nil)
+
+	routes := makeRouter()
+	return newEngineX(context.Background(),
+		&routes,
+		nil,
+		&originPage,
+		map[string]ActionHandler{
+			"/test": func(ctx Context, a Action) {},
+		},
+	)
+}
 
 // Match compares the expected UI element with another UI element at a specified
 // location in a UI tree. It is the preferred function for matching UI elements

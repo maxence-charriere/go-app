@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/url"
+	"reflect"
 	"strings"
 	"sync"
 	"time"
@@ -149,7 +150,12 @@ func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 	if !ok {
 		root = &notFound{}
 	}
-	e.load(root)
+
+	if err := e.Load(root); err != nil {
+		panic(errors.New("loading component failed").
+			WithTag("component-type", reflect.TypeOf(root)).
+			Wrap(err))
+	}
 }
 
 func (e *engineX) initBrowser() {
@@ -193,7 +199,7 @@ func (e *engineX) page() Page {
 	return &e.originPage
 }
 
-func (e *engineX) load(v Composer) {
+func (e *engineX) Load(v Composer) error {
 	if e.body == nil {
 		body := Body()
 		body = body.setJSElement(Window().Get("document").Get("body")).(HTMLBody)
@@ -212,9 +218,10 @@ func (e *engineX) load(v Composer) {
 
 	body, err := e.nodes.Update(e.baseContext(), e.body, Body().privateBody(v))
 	if err != nil {
-		panic(errors.New("updating root failed").Wrap(err))
+		return errors.New("updating root failed").Wrap(err)
 	}
 	e.body = body.(HTMLBody)
+	return nil
 }
 
 // Start initiates the main event loop of the engine at the specified framerate.
