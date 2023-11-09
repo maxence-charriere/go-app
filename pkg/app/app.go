@@ -95,7 +95,7 @@ func RunWhenOnBrowser() {
 	resolveURL := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 	originPage := makeRequestPage(Window().URL(), resolveURL)
 
-	engine := newEngineX(context.Background(),
+	engine := newEngine(context.Background(),
 		&routes,
 		resolveURL,
 		&originPage,

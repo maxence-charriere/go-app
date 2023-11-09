@@ -29,9 +29,9 @@ type Context struct {
 	removeComponentUpdate func(Composer)
 	handleAction          func(string, UI, bool, ActionHandler)
 	postAction            func(Context, Action)
-	observeState          func(Context, string, any) ObserverX
+	observeState          func(Context, string, any) Observer
 	getState              func(Context, string, any)
-	setState              func(Context, string, any) StateX
+	setState              func(Context, string, any) State
 	delState              func(Context, string)
 
 	sourceElement        UI
@@ -264,7 +264,7 @@ func (ctx Context) NewActionWithValue(action string, v any, tags ...Tagger) {
 }
 
 // ObserveState establishes an observer for a state, tracking its changes.
-func (ctx Context) ObserveState(state string, recv any) ObserverX {
+func (ctx Context) ObserveState(state string, recv any) Observer {
 	return ctx.observeState(ctx, state, recv)
 }
 
@@ -274,7 +274,7 @@ func (ctx Context) GetState(state string, recv any) {
 }
 
 // SetState modifies a state with the provided value.
-func (ctx Context) SetState(state string, v any) StateX {
+func (ctx Context) SetState(state string, v any) State {
 	return ctx.setState(ctx, state, v)
 }
 

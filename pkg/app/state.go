@@ -10,44 +10,44 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// StateX represents a state with additional features such as expiration,
+// State represents a state with additional features such as expiration,
 // persistence, and broadcasting capabilities.
-type StateX struct {
+type State struct {
 	value     any
 	expiresAt time.Time
 
 	ctx       Context
 	name      string
-	expire    func(StateX, time.Time) StateX
-	persist   func(StateX, bool) StateX
-	broadcast func(StateX) StateX
+	expire    func(State, time.Time) State
+	persist   func(State, bool) State
+	broadcast func(State) State
 }
 
 // ExpiresIn sets the expiration time for the state by specifying a duration
 // from the current time.
-func (s StateX) ExpiresIn(v time.Duration) StateX {
+func (s State) ExpiresIn(v time.Duration) State {
 	return s.expire(s, time.Now().Add(v))
 }
 
 // ExpiresAt sets the exact expiration time for the state.
-func (s StateX) ExpiresAt(v time.Time) StateX {
+func (s State) ExpiresAt(v time.Time) State {
 	return s.expire(s, v)
 }
 
 // Persist ensures the state is persisted into the local storage.
-func (s StateX) Persist() StateX {
+func (s State) Persist() State {
 	return s.persist(s, false)
 }
 
 // PersistWithEncryption ensures the state is persisted into the local storage
 // with encryption.
-func (s StateX) PersistWithEncryption() StateX {
+func (s State) PersistWithEncryption() State {
 	return s.persist(s, true)
 }
 
 // Broadcast signals that changes to the state will be broadcasted to other
 // browser tabs and windows sharing the same origin when it is supported.
-func (s StateX) Broadcast() StateX {
+func (s State) Broadcast() State {
 	return s.broadcast(s)
 }
 
@@ -57,33 +57,33 @@ type storableState struct {
 	ExpiresAt      time.Time       `json:",omitempty"`
 }
 
-// ObserverX represents a mechanism to monitor and react to changes in a state.
-type ObserverX struct {
+// Observer represents a mechanism to monitor and react to changes in a state.
+type Observer struct {
 	source        UI
 	receiver      any
 	condition     func() bool
 	changeHandler func()
 
 	state       string
-	setObserver func(ObserverX) ObserverX
+	setObserver func(Observer) Observer
 }
 
 // While sets a condition for the observer, determining whether it observes
 // a state. The condition is periodically checked. Observation stops when the
 // condition returns false.
-func (o ObserverX) While(condition func() bool) ObserverX {
+func (o Observer) While(condition func() bool) Observer {
 	o.condition = condition
 	return o.setObserver(o)
 }
 
 // OnChange sets a callback function to be executed each time the observer
 // detects a change in the associated state value.
-func (o ObserverX) OnChange(h func()) ObserverX {
+func (o Observer) OnChange(h func()) Observer {
 	o.changeHandler = h
 	return o.setObserver(o)
 }
 
-func (o ObserverX) observing() bool {
+func (o Observer) observing() bool {
 	if o.source == nil || !o.source.Mounted() {
 		return false
 	}
@@ -98,8 +98,8 @@ func (o ObserverX) observing() bool {
 // functionality to observe state changes.
 type stateManager struct {
 	mutex            sync.RWMutex
-	states           map[string]StateX
-	observers        map[string]map[UI]ObserverX
+	states           map[string]State
+	observers        map[string]map[UI]Observer
 	broadcastStoreID string
 	broadcastChannel Value
 }
@@ -107,9 +107,9 @@ type stateManager struct {
 // Observe initiates observation for a specified state, ensuring the state
 // is fetched and set into the given receiver. The returned observer object
 // offers methods for advanced observation configurations.
-func (m *stateManager) Observe(ctx Context, state string, receiver any) ObserverX {
+func (m *stateManager) Observe(ctx Context, state string, receiver any) Observer {
 	m.Get(ctx, state, receiver)
-	return m.setObserver(ObserverX{
+	return m.setObserver(Observer{
 		source:      ctx.Src(),
 		receiver:    receiver,
 		state:       state,
@@ -117,20 +117,20 @@ func (m *stateManager) Observe(ctx Context, state string, receiver any) Observer
 	})
 }
 
-func (m *stateManager) setObserver(v ObserverX) ObserverX {
+func (m *stateManager) setObserver(v Observer) Observer {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
 	if m.observers == nil {
-		m.observers = make(map[string]map[UI]ObserverX)
+		m.observers = make(map[string]map[UI]Observer)
 	}
 
 	observers := m.observers[v.state]
 	if observers == nil {
-		observers = map[UI]ObserverX{}
+		observers = map[UI]Observer{}
 		m.observers[v.state] = observers
 	}
-	observers[v.source] = ObserverX{
+	observers[v.source] = Observer{
 		source:        v.source,
 		receiver:      v.receiver,
 		condition:     v.condition,
@@ -188,15 +188,15 @@ func (m *stateManager) getStoredState(ctx Context, state string, receiver any) e
 	return nil
 }
 
-func (m *stateManager) Set(ctx Context, state string, v any) StateX {
+func (m *stateManager) Set(ctx Context, state string, v any) State {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
 	if m.states == nil {
-		m.states = make(map[string]StateX)
+		m.states = make(map[string]State)
 	}
 
-	value := StateX{value: v}
+	value := State{value: v}
 	m.states[state] = value
 
 	for _, observer := range m.observers[state] {
@@ -233,7 +233,7 @@ func (m *stateManager) Set(ctx Context, state string, v any) StateX {
 		})
 	}
 
-	return StateX{
+	return State{
 		value:     v,
 		ctx:       ctx,
 		name:      state,
@@ -245,7 +245,7 @@ func (m *stateManager) Set(ctx Context, state string, v any) StateX {
 
 // Set updates a specified state with a new value and notifies its observers.
 // It returns a state object, offering methods for advanced state manipulations.
-func (m *stateManager) setExpiration(s StateX, v time.Time) StateX {
+func (m *stateManager) setExpiration(s State, v time.Time) State {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -258,7 +258,7 @@ func (m *stateManager) setExpiration(s StateX, v time.Time) StateX {
 	return s
 }
 
-func (m *stateManager) persist(s StateX, encrypt bool) StateX {
+func (m *stateManager) persist(s State, encrypt bool) State {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
@@ -291,7 +291,7 @@ func (m *stateManager) persist(s StateX, encrypt bool) StateX {
 	return s
 }
 
-func (m *stateManager) broadcast(s StateX) StateX {
+func (m *stateManager) broadcast(s State) State {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 

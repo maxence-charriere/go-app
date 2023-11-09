@@ -41,7 +41,7 @@ type engineX struct {
 	states                     stateManager
 }
 
-func newEngineX(ctx context.Context, routes *router, resolveURL func(string) string, originPage *requestPage, actionHandlers map[string]ActionHandler) *engineX {
+func newEngine(ctx context.Context, routes *router, resolveURL func(string) string, originPage *requestPage, actionHandlers map[string]ActionHandler) *engineX {
 	var localStorage BrowserStorage
 	var sessionStorage BrowserStorage
 	if IsServer {

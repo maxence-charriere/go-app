@@ -713,7 +713,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
 
-	engine := newEngineX(ctx,
+	engine := newEngine(ctx,
 		&routes,
 		h.resolveStaticPath,
 		&page,

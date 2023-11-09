@@ -36,7 +36,7 @@ func NewTestEngine() TestEngine {
 	originPage := makeRequestPage(origin, nil)
 
 	routes := makeRouter()
-	return newEngineX(context.Background(),
+	return newEngine(context.Background(),
 		&routes,
 		nil,
 		&originPage,

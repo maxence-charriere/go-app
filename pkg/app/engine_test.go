@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestEngineXBaseContext(t *testing.T) {
+func TestEngineBaseContext(t *testing.T) {
 	e := newTestEngine()
 	ctx := e.baseContext()
 	require.NotNil(t, ctx.Context)
@@ -34,7 +34,7 @@ func TestEngineXBaseContext(t *testing.T) {
 	require.NotNil(t, ctx.notifyComponentEvent)
 }
 
-func TestEngineXLoad(t *testing.T) {
+func TestEngineLoad(t *testing.T) {
 	t.Run("load loads a new body", func(t *testing.T) {
 		e := newTestEngine()
 		e.Load(&hello{})
@@ -64,7 +64,7 @@ func TestEngineXLoad(t *testing.T) {
 	})
 }
 
-func TestEngineXNavigate(t *testing.T) {
+func TestEngineNavigate(t *testing.T) {
 	t.Run("url is loaded and history is updated", func(t *testing.T) {
 		e := newTestEngine()
 		e.routes.route("/hello", NewZeroComponentFactory(&hello{}))
@@ -150,7 +150,7 @@ func TestEngineXNavigate(t *testing.T) {
 	})
 }
 
-func TestEngineXInternalURL(t *testing.T) {
+func TestEngineInternalURL(t *testing.T) {
 	t.Run("destination is internal URL", func(t *testing.T) {
 		os.Setenv("GOAPP_INTERNAL_URLS", `["https://murlok.io"]`)
 		defer os.Unsetenv("GOAPP_INTERNAL_URLS")
@@ -167,7 +167,7 @@ func TestEngineXInternalURL(t *testing.T) {
 	})
 }
 
-func TestEngineXMailTo(t *testing.T) {
+func TestEngineMailTo(t *testing.T) {
 	t.Run("destination is mailto", func(t *testing.T) {
 		e := newTestEngine()
 		destination, _ := url.Parse("mailto:maxence@goapp.dev")
@@ -181,7 +181,7 @@ func TestEngineXMailTo(t *testing.T) {
 	})
 }
 
-func TestEngineXExternalNavigation(t *testing.T) {
+func TestEngineExternalNavigation(t *testing.T) {
 	t.Run("destination is external navigation", func(t *testing.T) {
 		e := newTestEngine()
 		destination, _ := url.Parse("https://murlok.io")
@@ -195,7 +195,7 @@ func TestEngineXExternalNavigation(t *testing.T) {
 	})
 }
 
-func TestEngineXAsync(t *testing.T) {
+func TestEngineAsync(t *testing.T) {
 	e := newTestEngine()
 
 	called := false
@@ -207,7 +207,7 @@ func TestEngineXAsync(t *testing.T) {
 	require.True(t, called)
 }
 
-func TestEngineXStart(t *testing.T) {
+func TestEngineStart(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -233,7 +233,7 @@ func TestEngineXStart(t *testing.T) {
 	e.Start(0)
 }
 
-func TestEngineXEncode(t *testing.T) {
+func TestEngineEncode(t *testing.T) {
 	t.Run("encoding when engine did not load a component returns an error", func(t *testing.T) {
 		e := newTestEngine()
 

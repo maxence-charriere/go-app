@@ -15,17 +15,17 @@ func TestObserverObserving(t *testing.T) {
 		div, err := m.Mount(makeTestContext(), 1, Div())
 		require.NoError(t, err)
 
-		o := ObserverX{source: div}
+		o := Observer{source: div}
 		require.True(t, o.observing())
 	})
 
 	t.Run("not observing when source is nil", func(t *testing.T) {
-		o := ObserverX{}
+		o := Observer{}
 		require.False(t, o.observing())
 	})
 
 	t.Run("not observing when source is not mounted", func(t *testing.T) {
-		o := ObserverX{source: Div()}
+		o := Observer{source: Div()}
 		require.False(t, o.observing())
 	})
 
@@ -34,7 +34,7 @@ func TestObserverObserving(t *testing.T) {
 		div, err := m.Mount(makeTestContext(), 1, Div())
 		require.NoError(t, err)
 
-		o := ObserverX{
+		o := Observer{
 			source:    div,
 			condition: func() bool { return true },
 		}
@@ -46,7 +46,7 @@ func TestObserverObserving(t *testing.T) {
 		div, err := m.Mount(makeTestContext(), 1, Div())
 		require.NoError(t, err)
 
-		o := ObserverX{
+		o := Observer{
 			source:    div,
 			condition: func() bool { return false },
 		}
