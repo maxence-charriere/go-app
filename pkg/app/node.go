@@ -6,7 +6,6 @@ import (
 	"io"
 	"reflect"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -75,21 +74,19 @@ func FilterUIElems(v ...UI) []UI {
 	return v
 }
 
-// HTMLString return an HTML string representation of the given UI element.
+// HTMLString returns a string that represents the HTML markup for the provided
+// UI element.
 func HTMLString(ui UI) string {
-	var w strings.Builder
-	PrintHTML(&w, ui)
-	return w.String()
+	engine := NewTestEngine().(*engineX)
+	var b bytes.Buffer
+	engine.nodes.Encode(engine.baseContext(), &b, ui)
+	return b.String()
 }
 
-// PrintHTML writes an HTML representation of the UI element into the given
-// writer.
+// PrintHTML writes the HTML representation of the given UI element into the
+// specified writer.
 func PrintHTML(w io.Writer, ui UI) {
-	panic("not implemented")
-	// if !ui.Mounted() {
-	// 	ui.setSelf(ui)
-	// }
-	// ui.html(w)
+	w.Write([]byte(HTMLString(ui)))
 }
 
 // Component events.

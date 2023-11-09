@@ -118,40 +118,45 @@ func BenchmarkFilterUIElems(b *testing.B) {
 	}
 }
 
-// func TestHTMLString(t *testing.T) {
-// 	utests := []struct {
-// 		scenario string
-// 		root     UI
-// 	}{
-// 		{
-// 			scenario: "hmtl element",
-// 			root:     Div().ID("test"),
-// 		},
-// 		{
-// 			scenario: "text",
-// 			root:     Text("hello"),
-// 		},
-// 		{
-// 			scenario: "component",
-// 			root:     &hello{},
-// 		},
-// 		{
-// 			scenario: "nested component",
-// 			root:     Div().Body(&hello{}),
-// 		},
-// 		{
-// 			scenario: "nested nested component",
-// 			root:     Div().Body(&foo{Bar: "bar"}),
-// 		},
-// 	}
+func TestHTMLString(t *testing.T) {
+	utests := []struct {
+		scenario string
+		root     UI
+	}{
+		{
+			scenario: "hmtl element",
+			root:     Div().ID("test"),
+		},
+		{
+			scenario: "text",
+			root:     Text("hello"),
+		},
+		{
+			scenario: "component",
+			root:     &hello{},
+		},
+		{
+			scenario: "nested component",
+			root:     Div().Body(&hello{}),
+		},
+		{
+			scenario: "nested nested component",
+			root:     Div().Body(&foo{Bar: "bar"}),
+		},
+	}
 
-// 	for _, u := range utests {
-// 		t.Run(u.scenario, func(t *testing.T) {
-// 			t.Log(HTMLString(u.root))
-// 			t.Log(HTMLStringWithIndent(u.root))
-// 		})
-// 	}
-// }
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			t.Log(HTMLString(u.root))
+		})
+	}
+}
+
+func TestPrintHTML(t *testing.T) {
+	var b bytes.Buffer
+	PrintHTML(&b, Div())
+	require.Equal(t, "<div></div>", b.String())
+}
 
 func TestNodeManagerMount(t *testing.T) {
 	ctx := makeTestContext()

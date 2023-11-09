@@ -84,6 +84,8 @@ func (b *bar) OnPreRender(ctx Context) {
 	ctx.Page().SetTitle("bar")
 }
 
+func (b *bar) OnMount(ctx Context) {}
+
 func (b *bar) OnNav(ctx Context) {
 	b.onNavURL = ctx.Page().URL().String()
 }
