@@ -156,7 +156,7 @@ func (m *stateManager) Get(ctx Context, state string, receiver any) {
 		return
 	}
 
-	if !value.expiresAt.IsZero() && value.expiresAt.Before(time.Now()) {
+	if expiredTime(value.expiresAt) {
 		delete(m.states, state)
 		ctx.LocalStorage().Del(state)
 		return
@@ -175,7 +175,7 @@ func (m *stateManager) getStoredState(ctx Context, state string, receiver any) e
 		return err
 	}
 
-	if !value.ExpiresAt.IsZero() && value.ExpiresAt.Before(time.Now()) {
+	if expiredTime(value.ExpiresAt) {
 		ctx.LocalStorage().Del(state)
 		return nil
 	}
@@ -207,7 +207,8 @@ func (m *stateManager) Set(ctx Context, state string, v any) State {
 			m.mutex.RLock()
 			value := m.states[state]
 			m.mutex.RUnlock()
-			if !value.expiresAt.IsZero() && value.expiresAt.Before(time.Now()) {
+
+			if expiredTime(value.expiresAt) {
 				return
 			}
 
@@ -401,6 +402,28 @@ func (m *stateManager) Cleanup() {
 	}
 }
 
+// CleanupExpiredPersistedStates traverses the local storage to identify and
+// remove any persisted states that have expired. This method ensures that the
+// local storage is kept clean by eliminating outdated or irrelevant state data.
+func (m *stateManager) CleanupExpiredPersistedStates(ctx Context) {
+	object := Window().Get("Object")
+	if !object.Truthy() {
+		return
+	}
+
+	keys := object.Call("keys", Window().Get("localStorage"))
+	for i, l := 0, keys.Get("length").Int(); i < l; i++ {
+		key := keys.Index(i).String()
+
+		var state storableState
+		ctx.LocalStorage().Get(key, &state)
+
+		if (len(state.Value) != 0 || len(state.EncryptedValue) != 0) && expiredTime(state.ExpiresAt) {
+			ctx.LocalStorage().Del(key)
+		}
+	}
+}
+
 func storeValue(recv, v any) error {
 	dst := reflect.ValueOf(recv)
 	if dst.Kind() != reflect.Ptr {
@@ -427,49 +450,12 @@ func storeValue(recv, v any) error {
 	return nil
 }
 
+func expiredTime(v time.Time) bool {
+	return !v.IsZero() && v.Before(time.Now())
+}
+
 // TODO:
-// - expire all expired values from local storage
 // - test broadcast
-
-// func TestExpireExpriredPersistentValues(t *testing.T) {
-// 	if IsServer {
-// 		t.Skip()
-// 	}
-
-// 	d := NewClientTester(&foo{})
-// 	defer d.Close()
-// 	localStorage := d.getLocalStorage()
-
-// 	s := newStore(d)
-// 	defer s.Close()
-
-// 	t.Run("non expired state is not removed", func(t *testing.T) {
-// 		localStorage.Clear()
-// 		s.setPersistent("/hello", false, time.Now().Add(time.Minute), "hello")
-// 		require.Equal(t, 1, localStorage.Len())
-
-// 		s.expireExpriredPersistentValues()
-// 		require.Equal(t, 1, localStorage.Len())
-// 	})
-
-// 	t.Run("expired state is removed", func(t *testing.T) {
-// 		localStorage.Clear()
-// 		s.setPersistent("/bye", false, time.Now().Add(-time.Minute), "bye")
-// 		require.Equal(t, 1, localStorage.Len())
-
-// 		s.expireExpriredPersistentValues()
-// 		require.Equal(t, 0, localStorage.Len())
-// 	})
-
-// 	t.Run("non state value is not removed", func(t *testing.T) {
-// 		localStorage.Clear()
-// 		localStorage.Set("/hi", "hi")
-// 		require.Equal(t, 1, localStorage.Len())
-
-// 		s.expireExpriredPersistentValues()
-// 		require.Equal(t, 1, localStorage.Len())
-// 	})
-// }
 
 // func TestStoreBroadcast(t *testing.T) {
 // 	d1 := NewClientTester(&foo{})

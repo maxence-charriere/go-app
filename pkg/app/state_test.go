@@ -673,6 +673,66 @@ func TestStateManagerCleanup(t *testing.T) {
 	})
 }
 
+func TestStateManagerCleanupExpiredPersistedStates(t *testing.T) {
+	if IsServer {
+		t.Skip()
+	}
+
+	t.Run("expired states are removed", func(t *testing.T) {
+		stateName := uuid.NewString()
+		ctx := makeTestContext()
+
+		var sm stateManager
+		sm.Set(ctx, stateName, 42).
+			ExpiresIn(-time.Second).
+			Persist()
+
+		var state storableState
+		ctx.LocalStorage().Get(stateName, &state)
+		require.NotZero(t, state)
+
+		sm.CleanupExpiredPersistedStates(ctx)
+
+		var expiredState storableState
+		ctx.LocalStorage().Get(stateName, &expiredState)
+		require.Zero(t, expiredState)
+	})
+
+	t.Run("non expired states are not removed", func(t *testing.T) {
+		stateName := uuid.NewString()
+		ctx := makeTestContext()
+
+		var sm stateManager
+		sm.Set(ctx, stateName, 42).
+			ExpiresIn(time.Minute).
+			Persist()
+
+		var state storableState
+		ctx.LocalStorage().Get(stateName, &state)
+		require.NotZero(t, state)
+
+		sm.CleanupExpiredPersistedStates(ctx)
+
+		var nonExpiredState storableState
+		ctx.LocalStorage().Get(stateName, &nonExpiredState)
+		require.NotZero(t, nonExpiredState)
+	})
+
+	t.Run("non state are not removed", func(t *testing.T) {
+		stateName := uuid.NewString()
+		ctx := makeTestContext()
+
+		ctx.LocalStorage().Set(stateName, 42)
+
+		var sm stateManager
+		sm.CleanupExpiredPersistedStates(ctx)
+
+		var nonStateValue int
+		ctx.LocalStorage().Get(stateName, &nonStateValue)
+		require.Equal(t, 42, nonStateValue)
+	})
+}
+
 func TestStoreValue(t *testing.T) {
 	nb := 42
 	c := copyTester{pointer: &nb}
