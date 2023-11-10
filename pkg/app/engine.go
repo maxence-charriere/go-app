@@ -238,6 +238,8 @@ func (e *engineX) Start(framerate int) {
 	frames := time.NewTicker(currentFrameDuration)
 	defer frames.Stop()
 
+	e.states.CleanupExpiredPersistedStates(e.baseContext())
+
 	for {
 		select {
 		case dispatch := <-e.dispatches:
