@@ -297,15 +297,14 @@ func (m *stateManager) broadcast(s State) State {
 	defer m.mutex.Unlock()
 
 	if m.broadcastChannel == nil {
-		Log(errors.New("persisting state failed").
-			WithTag("state", s.name).
-			Wrap(errors.New("broadcast is not supported")))
+		Log(errors.New("broadcast not supported").
+			WithTag("state", s.name))
 		return s
 	}
 
 	b, err := json.Marshal(s.value)
 	if err != nil {
-		Log(errors.New("persisting state failed").
+		Log(errors.New("encoding broadcast state failed").
 			WithTag("state", s.name).
 			Wrap(err))
 		return s
@@ -338,7 +337,7 @@ func (m *stateManager) InitBroadcast(ctx Context) {
 }
 
 func (m *stateManager) handleBroadcast(ctx Context, data Value) {
-	if storeID := data.Get("StoreID").String(); storeID != m.broadcastStoreID {
+	if storeID := data.Get("StoreID").String(); storeID == "" || storeID == m.broadcastStoreID {
 		return
 	}
 
@@ -350,7 +349,9 @@ func (m *stateManager) handleBroadcast(ctx Context, data Value) {
 
 	for _, observer := range m.observers[state] {
 		o := observer
-		ctx.dispatch(func() {
+
+		ctx.sourceElement = o.source
+		ctx.Dispatch(func(ctx Context) {
 			if !o.observing() {
 				m.mutex.Lock()
 				delete(m.observers[state], o.source)
@@ -453,61 +454,3 @@ func storeValue(recv, v any) error {
 func expiredTime(v time.Time) bool {
 	return !v.IsZero() && v.Before(time.Now())
 }
-
-// TODO:
-// - test broadcast
-
-// func TestStoreBroadcast(t *testing.T) {
-// 	d1 := NewClientTester(&foo{})
-// 	s1 := newStore(d1)
-// 	defer d1.Close()
-// 	defer s1.Close()
-
-// 	bar := &bar{}
-// 	d2 := NewClientTester(bar)
-// 	s2 := newStore(d2)
-// 	defer d2.Close()
-// 	defer s2.Close()
-
-// 	require.NotEqual(t, s1.id, s2.id)
-
-// 	key := "/test/store/broadcast"
-// 	t.Run("state is not broadcasted", func(t *testing.T) {
-// 		var v int
-// 		s2.Observe(key, bar).Value(&v)
-
-// 		s1.Set(key, func() {}, Broadcast)
-// 		d2.Consume()
-// 		require.Zero(t, v)
-// 	})
-
-// 	t.Run("state is broadcasted", func(t *testing.T) {
-// 		if IsServer {
-// 			t.Skip()
-// 		}
-
-// 		var v int
-
-// 		s2.Observe(key, bar).Value(&v)
-// 		s1.Set(key, 42, Broadcast)
-
-// 		time.Sleep(time.Millisecond * 100)
-// 		d2.Consume()
-// 		require.Equal(t, 42, v)
-// 	})
-
-// 	t.Run("broadcasted state is not observed", func(t *testing.T) {
-// 		if IsServer {
-// 			t.Skip()
-// 		}
-
-// 		var v func()
-
-// 		s2.Observe(key, bar).Value(&v)
-// 		s1.Set(key, 42, Broadcast)
-
-// 		time.Sleep(time.Millisecond * 50)
-// 		d2.Consume()
-// 		require.Zero(t, v)
-// 	})
-// }

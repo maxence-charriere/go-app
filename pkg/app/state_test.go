@@ -589,7 +589,7 @@ func TestStateManagerSet(t *testing.T) {
 
 	t.Run("set state broadcasts not supported", func(t *testing.T) {
 		if IsClient {
-			return
+			t.Skip()
 		}
 
 		stateName := uuid.NewString()
@@ -615,6 +615,42 @@ func TestStateManagerSet(t *testing.T) {
 		require.Nil(t, state.expire)
 		require.Nil(t, state.persist)
 		require.Nil(t, state.broadcast)
+	})
+
+	t.Run("set state broadcast a value", func(t *testing.T) {
+		stateName := uuid.NewString()
+
+		if IsServer {
+			t.Skip()
+		}
+
+		m1 := newTestEngine()
+		m2 := newTestEngine()
+
+		compo2 := &hello{}
+		err := m2.Load(compo2)
+		require.NoError(t, err)
+		ctx2 := m2.nodes.context(m2.baseContext(), compo2)
+		var value2 int
+
+		broadcasted := false
+		ctx2.ObserveState(stateName, &value2).OnChange(func() {
+			broadcasted = true
+		})
+
+		compo1 := &hello{}
+		err = m1.Load(compo1)
+		require.NoError(t, err)
+		ctx1 := m1.nodes.context(m1.baseContext(), compo1)
+		ctx1.SetState(stateName, 42).Broadcast()
+		m1.ConsumeAll()
+
+		for !broadcasted {
+			m2.ConsumeAll()
+			time.Sleep(time.Millisecond * 5)
+		}
+
+		require.Equal(t, 42, value2)
 	})
 }
 

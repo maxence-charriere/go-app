@@ -18,9 +18,7 @@ type engineX struct {
 
 	localStorage   BrowserStorage
 	sessionStorage BrowserStorage
-
-	initBrowserOnce sync.Once
-	browser         browser
+	browser        browser
 
 	routes         *router
 	internalURLs   []string
@@ -57,7 +55,7 @@ func newEngine(ctx context.Context, routes *router, resolveURL func(string) stri
 	}
 	originPage.resolveURL = resolveURL
 
-	return &engineX{
+	engine := &engineX{
 		ctx:                        ctx,
 		routes:                     routes,
 		resolveURL:                 resolveURL,
@@ -70,6 +68,9 @@ func newEngine(ctx context.Context, routes *router, resolveURL func(string) stri
 		defers:                     make(chan func(), 4096),
 		asynchronousActionHandlers: actionHandlers,
 	}
+
+	engine.initBrowser()
+	return engine
 }
 
 func (e *engineX) baseContext() Context {
@@ -102,8 +103,6 @@ func (e *engineX) baseContext() Context {
 // mailto link. If the 'updateHistory' flag is true, the destination is added to
 // the browser's history.
 func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
-	e.initBrowserOnce.Do(e.initBrowser)
-
 	if destination.Host == "" {
 		destination.Host = e.originPage.URL().Host
 	}
@@ -311,7 +310,6 @@ func (e *engineX) ConsumeAll() {
 		default:
 			e.processFrame()
 			e.goroutines.Wait()
-
 			if len(e.dispatches) == 0 {
 				return
 			}
