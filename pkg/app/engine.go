@@ -23,7 +23,7 @@ type engineX struct {
 	routes         *router
 	internalURLs   []string
 	resolveURL     func(string) string
-	originPage     requestPage
+	originPage     *requestPage
 	lastVisitedURL *url.URL
 
 	nodes   nodeManager
@@ -59,7 +59,7 @@ func newEngine(ctx context.Context, routes *router, resolveURL func(string) stri
 		ctx:                        ctx,
 		routes:                     routes,
 		resolveURL:                 resolveURL,
-		originPage:                 *originPage,
+		originPage:                 originPage,
 		localStorage:               localStorage,
 		lastVisitedURL:             &url.URL{},
 		sessionStorage:             sessionStorage,
@@ -195,7 +195,7 @@ func (e *engineX) page() Page {
 	if IsClient {
 		return makeBrowserPage(e.resolveURL)
 	}
-	return &e.originPage
+	return e.originPage
 }
 
 func (e *engineX) Load(v Composer) error {
