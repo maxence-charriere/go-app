@@ -325,7 +325,6 @@ func copyBytesToJS(dst Value, src []byte) int {
 
 func cleanArgs(args ...any) []any {
 	for i, a := range args {
-
 		args[i] = cleanArg(a)
 	}
 
@@ -344,8 +343,11 @@ func cleanArg(v any) any {
 	case []any:
 		s := make([]any, len(v))
 		for i, val := range v {
-			s[i] = cleanArgs(val)
+			s[i] = cleanArg(val)
 		}
+
+	case function:
+		return v.fn
 
 	case Wrapper:
 		return jsval(v.JSValue())
