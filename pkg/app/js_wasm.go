@@ -26,7 +26,7 @@ func (v value) Delete(p string) {
 }
 
 func (v value) Equal(w Value) bool {
-	return v.Value.Equal(jsval(w))
+	return v.Value.Equal(JSValue(w))
 }
 
 func (v value) Get(p string) Value {
@@ -35,7 +35,7 @@ func (v value) Get(p string) Value {
 
 func (v value) Set(p string, x any) {
 	if wrapper, ok := x.(Wrapper); ok {
-		x = jsval(wrapper.JSValue())
+		x = JSValue(wrapper.JSValue())
 	}
 	v.Value.Set(p, x)
 }
@@ -45,7 +45,7 @@ func (v value) Index(i int) Value {
 }
 
 func (v value) InstanceOf(t Value) bool {
-	return v.Value.InstanceOf(jsval(t))
+	return v.Value.InstanceOf(JSValue(t))
 }
 
 func (v value) Invoke(args ...any) Value {
@@ -287,7 +287,9 @@ func val(v js.Value) Value {
 	return value{Value: v}
 }
 
-func jsval(v Value) js.Value {
+// JSValue returns the underlying syscall/js value of the given Javascript
+// value.
+func JSValue(v Value) js.Value {
 	switch v := v.(type) {
 	case value:
 		return v.Value
@@ -299,7 +301,7 @@ func jsval(v Value) js.Value {
 		return v.Value
 
 	case Event:
-		return jsval(v.Value)
+		return JSValue(v.Value)
 
 	default:
 		Log("%s", errors.New("syscall/js value conversion failed").
@@ -309,18 +311,12 @@ func jsval(v Value) js.Value {
 	}
 }
 
-// JSValue returns the underlying syscall/js value of the given Javascript
-// value.
-func JSValue(v Value) js.Value {
-	return jsval(v)
-}
-
 func copyBytesToGo(dst []byte, src Value) int {
-	return js.CopyBytesToGo(dst, jsval(src))
+	return js.CopyBytesToGo(dst, JSValue(src))
 }
 
 func copyBytesToJS(dst Value, src []byte) int {
-	return js.CopyBytesToJS(jsval(dst), src)
+	return js.CopyBytesToJS(JSValue(dst), src)
 }
 
 func cleanArgs(args ...any) []any {
@@ -350,7 +346,7 @@ func cleanArg(v any) any {
 		return v.fn
 
 	case Wrapper:
-		return jsval(v.JSValue())
+		return JSValue(v.JSValue())
 	}
 
 	return v
