@@ -16,9 +16,10 @@ import (
 func TestLocalDir(t *testing.T) {
 	testSkipWasm(t)
 
-	h, _ := LocalDir("test").(localDir)
-	require.Equal(t, "test", h.Static())
-	require.Equal(t, "test/web/app.wasm", h.AppWASM())
+	h, _ := LocalDir("test").(localResourceResolver)
+	require.Equal(t, "/", h.Resolve(""))
+	require.Equal(t, "/", h.Resolve("/"))
+	require.Equal(t, "test/web/app.wasm", h.Resolve("/web/app.wasm"))
 
 	close := testCreateDir(t, "test/web")
 	defer close()
@@ -45,22 +46,23 @@ func TestLocalDir(t *testing.T) {
 func TestRemoteBucket(t *testing.T) {
 	utests := []struct {
 		scenario string
-		provider ResourceProvider
+		provider ResourceResolver
 	}{
 		{
 			scenario: "remote bucket",
 			provider: RemoteBucket("https://storage.googleapis.com/test"),
 		},
 		{
-			scenario: "remote bucket with web suffix",
-			provider: RemoteBucket("https://storage.googleapis.com/test/web/"),
+			scenario: "remote bucket with / suffix",
+			provider: RemoteBucket("https://storage.googleapis.com/test/"),
 		},
 	}
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			require.Equal(t, "https://storage.googleapis.com/test", u.provider.Static())
-			require.Equal(t, "https://storage.googleapis.com/test/web/app.wasm", u.provider.AppWASM())
+			require.Equal(t, "/", u.provider.Resolve(""))
+			require.Equal(t, "/", u.provider.Resolve("/"))
+			require.Equal(t, "https://storage.googleapis.com/test/web/app.wasm", u.provider.Resolve("/web/app.wasm"))
 		})
 	}
 }

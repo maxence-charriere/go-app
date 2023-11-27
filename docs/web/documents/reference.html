@@ -158,6 +158,9 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#Logf">func Logf(format string, v ...any)</a></dd>
 			
 				
+				<dd><a href="#Match">func Match(expected UI, root UI, path ...int) error</a></dd>
+			
+				
 				<dd><a href="#NewZeroComponentFactory">func NewZeroComponentFactory(c Composer) func() Composer</a></dd>
 			
 				
@@ -171,6 +174,12 @@ resources to run Go-based progressive web apps.
 			
 				
 				<dd><a href="#RunWhenOnBrowser">func RunWhenOnBrowser()</a></dd>
+			
+				
+				<dd><a href="#TestMatch">func TestMatch(root UI, d TestUIDescriptor) error</a></dd>
+			
+				
+				<dd><a href="#TestPath">func TestPath(p ...int) []int</a></dd>
 			
 			
 				
@@ -203,11 +212,6 @@ resources to run Go-based progressive web apps.
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Window">func Window() BrowserWindow</a></dd>
-				
-				
-			
-				
-				<dd><a href="#ClientDispatcher">type ClientDispatcher</a></dd>
 				
 				
 			
@@ -273,9 +277,6 @@ resources to run Go-based progressive web apps.
 					<dd>&nbsp; &nbsp; <a href="#Context.Dispatch">func (ctx Context) Dispatch(v func(Context))</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Context.Emit">func (ctx Context) Emit(v func(Context))</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#Context.Encrypt">func (ctx Context) Encrypt(v any) ([]byte, error)</a></dd>
 				
 					
@@ -309,7 +310,7 @@ resources to run Go-based progressive web apps.
 					<dd>&nbsp; &nbsp; <a href="#Context.Notifications">func (ctx Context) Notifications() NotificationService</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Context.ObserveState">func (ctx Context) ObserveState(state string, recv any) ObserverX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Context.ObserveState">func (ctx Context) ObserveState(state string, recv any) Observer</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Context.Page">func (ctx Context) Page() Page</a></dd>
@@ -333,7 +334,7 @@ resources to run Go-based progressive web apps.
 					<dd>&nbsp; &nbsp; <a href="#Context.SessionStorage">func (ctx Context) SessionStorage() BrowserStorage</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Context.SetState">func (ctx Context) SetState(state string, v any) StateX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Context.SetState">func (ctx Context) SetState(state string, v any) State</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Context.ShowAppInstallPrompt">func (ctx Context) ShowAppInstallPrompt()</a></dd>
@@ -341,22 +342,9 @@ resources to run Go-based progressive web apps.
 					
 					<dd>&nbsp; &nbsp; <a href="#Context.Src">func (ctx Context) Src() UI</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#Context.Update">func (ctx Context) Update()</a></dd>
-				
 			
 				
 				<dd><a href="#Dismounter">type Dismounter</a></dd>
-				
-				
-			
-				
-				<dd><a href="#DispatchMode">type DispatchMode</a></dd>
-				
-				
-			
-				
-				<dd><a href="#Dispatcher">type Dispatcher</a></dd>
 				
 				
 			
@@ -1303,11 +1291,6 @@ resources to run Go-based progressive web apps.
 				
 			
 				
-				<dd><a href="#MsgHandler">type MsgHandler</a></dd>
-				
-				
-			
-				
 				<dd><a href="#Navigator">type Navigator</a></dd>
 				
 				
@@ -1350,14 +1333,14 @@ resources to run Go-based progressive web apps.
 				
 			
 				
-				<dd><a href="#ObserverX">type ObserverX</a></dd>
+				<dd><a href="#Observer">type Observer</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#ObserverX.OnChange">func (o ObserverX) OnChange(h func()) ObserverX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Observer.OnChange">func (o Observer) OnChange(h func()) Observer</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#ObserverX.While">func (o ObserverX) While(condition func() bool) ObserverX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Observer.While">func (o Observer) While(condition func() bool) Observer</a></dd>
 				
 			
 				
@@ -1402,40 +1385,37 @@ resources to run Go-based progressive web apps.
 					
 					<dd>&nbsp; &nbsp; <a href="#GitHubPages">func GitHubPages(repoName string) ResourceProvider</a></dd>
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#LocalDir">func LocalDir(root string) ResourceProvider</a></dd>
+				
+			
+				
+				<dd><a href="#ResourceResolver">type ResourceResolver</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RemoteBucket">func RemoteBucket(url string) ResourceProvider</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#LocalDir">func LocalDir(directory string) ResourceResolver</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#RemoteBucket">func RemoteBucket(url string) ResourceResolver</a></dd>
 				
 				
 			
 				
-				<dd><a href="#ServerDispatcher">type ServerDispatcher</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#NewServerTester">func NewServerTester(n UI) ServerDispatcher</a></dd>
-				
-				
-			
-				
-				<dd><a href="#StateX">type StateX</a></dd>
+				<dd><a href="#State">type State</a></dd>
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#StateX.Broadcast">func (s StateX) Broadcast() StateX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#State.Broadcast">func (s State) Broadcast() State</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#StateX.ExpiresAt">func (s StateX) ExpiresAt(v time.Time) StateX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#State.ExpiresAt">func (s State) ExpiresAt(v time.Time) State</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#StateX.ExpiresIn">func (s StateX) ExpiresIn(v time.Duration) StateX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#State.ExpiresIn">func (s State) ExpiresIn(v time.Duration) State</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#StateX.Persist">func (s StateX) Persist() StateX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#State.Persist">func (s State) Persist() State</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#StateX.PersistWithEncryption">func (s StateX) PersistWithEncryption() StateX</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#State.PersistWithEncryption">func (s State) PersistWithEncryption() State</a></dd>
 				
 			
 				
@@ -1466,6 +1446,19 @@ resources to run Go-based progressive web apps.
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Tags.Tags">func (t Tags) Tags() Tags</a></dd>
+				
+			
+				
+				<dd><a href="#TestEngine">type TestEngine</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewTestEngine">func NewTestEngine() TestEngine</a></dd>
+				
+				
+			
+				
+				<dd><a href="#TestUIDescriptor">type TestUIDescriptor</a></dd>
+				
 				
 			
 				
@@ -1551,13 +1544,9 @@ resources to run Go-based progressive web apps.
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go">context.go</a>
 			
-				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/contextmenu.go">contextmenu.go</a>
-			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/crypto.go">crypto.go</a>
 			
-				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go">dispatcher.go</a>
-			
-				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/enginex.go">enginex.go</a>
+				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/engine.go">engine.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/event.go">event.go</a>
 			
@@ -1595,7 +1584,7 @@ resources to run Go-based progressive web apps.
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/social.go">social.go</a>
 			
-				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go">statex.go</a>
+				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go">state.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/static.go">static.go</a>
 			
@@ -1752,13 +1741,14 @@ returns the value, which will be empty if the variable is not present.
 		
 			
 			
-			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=1728:1757#L69">HTMLString</a>
+			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=1736:1765#L69">HTMLString</a>
 				<a class="permalink" href="#HTMLString">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func HTMLString(ui <a href="#UI">UI</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			<p>HTMLString return an HTML string representation of the given UI element.
+			<p>HTMLString returns a string that represents the HTML markup for the provided
+UI element.
 
 			
 			
@@ -1825,6 +1815,37 @@ between operands.
 		
 			
 			
+			<h2 id="Match">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=2185:2236#L58">Match</a>
+				<a class="permalink" href="#Match">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func Match(expected <a href="#UI">UI</a>, root <a href="#UI">UI</a>, path ...<a href="/pkg/builtin/#int">int</a>) <a href="/pkg/builtin/#error">error</a></pre>
+			<p>Match compares the expected UI element with another UI element at a specified
+location in a UI tree. It is the preferred function for matching UI elements
+in tests due to its simplified usage.
+<p>Example usage adapted for Match function:
+<pre>tree := app.Div().Body(
+    app.H2().Body(app.Text(&quot;foo&quot;)),
+    app.P().Body(app.Text(&quot;bar&quot;)),
+)
+
+err := app.Match(app.Div(), tree)
+// err == nil if the root matches a Div element
+
+err := app.Match(app.H3(), tree, 0)
+// err != nil because the first child is not an H3 element but a H2.
+
+err = app.Match(app.Text(&quot;bar&quot;), tree, 1, 0)
+// err == nil if the text of the first child of the second element is &quot;bar&quot;
+</pre>
+
+			
+			
+
+		
+			
+			
 			<h2 id="NewZeroComponentFactory">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go?s=1472:1528#L41">NewZeroComponentFactory</a>
 				<a class="permalink" href="#NewZeroComponentFactory">&#xb6;</a>
 				
@@ -1847,14 +1868,14 @@ newComponent := componentFunc()
 		
 			
 			
-			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=1911:1945#L77">PrintHTML</a>
+			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=1997:2031#L78">PrintHTML</a>
 				<a class="permalink" href="#PrintHTML">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func PrintHTML(w <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Writer">Writer</a>, ui <a href="#UI">UI</a>)</pre>
-			<p>PrintHTML writes an HTML representation of the UI element into the given
-writer.
+			<p>PrintHTML writes the HTML representation of the given UI element into the
+specified writer.
 
 			
 			
@@ -1930,6 +1951,38 @@ pre-compilation flags.
 		http.ListenAndServe(&quot;:8080&quot;, nil)
  }
 </pre>
+
+			
+			
+
+		
+			
+			
+			<h2 id="TestMatch">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=3460:3509#L90">TestMatch</a>
+				<a class="permalink" href="#TestMatch">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func TestMatch(root <a href="#UI">UI</a>, d <a href="#TestUIDescriptor">TestUIDescriptor</a>) <a href="/pkg/builtin/#error">error</a></pre>
+			<p>TestMatch searches for a UI element within a tree as described by a
+TestUIDescriptor and verifies if it matches the Expected element. It returns
+an error if the match is unsuccessful or if the path is invalid. Prefer using
+the Match function for a simpler API.
+
+			
+			
+
+		
+			
+			
+			<h2 id="TestPath">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=3142:3171#L82">TestPath</a>
+				<a class="permalink" href="#TestPath">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func TestPath(p ...<a href="/pkg/builtin/#int">int</a>) []<a href="/pkg/builtin/#int">int</a></pre>
+			<p>TestPath is a utility function that constructs a path, represented as a slice
+of integers, for use in a TestUIDescriptor.
 
 			
 			
@@ -2163,57 +2216,6 @@ with the most up-to-date version of the application.
 		
 			
 			
-			<h2 id="ClientDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=929:1537#L27">ClientDispatcher</a>
-				<a class="permalink" href="#ClientDispatcher">&#xb6;</a>
-				
-				
-			</h2>
-			<p>ClientDispatcher is the interface that describes a dispatcher that emulates a
-client environment.
-
-			<pre>type ClientDispatcher interface {
-    <a href="#Dispatcher">Dispatcher</a>
-
-    <span class="comment">// Consume executes all the remaining UI instructions.</span>
-    Consume()
-
-    <span class="comment">// ConsumeNext executes the next UI instructions.</span>
-    ConsumeNext()
-
-    <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
-    <span class="comment">// resources.</span>
-    Close()
-
-    <span class="comment">// Mounts the given component as root element.</span>
-    Mount(<a href="#UI">UI</a>)
-
-    <span class="comment">// Triggers OnNav from the root component.</span>
-    Nav(*<a href="/pkg/net/url/">url</a>.<a href="/pkg/net/url/#URL">URL</a>)
-
-    <span class="comment">// Triggers OnAppUpdate from the root component.</span>
-    AppUpdate()
-
-    <span class="comment">// Triggers OnAppInstallChange from the root component.</span>
-    AppInstallChange()
-
-    <span class="comment">// Triggers OnAppResize from the root component.</span>
-    AppResize()
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
-		
-			
-			
 			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6496:6597#L154">Compo</a>
 				<a class="permalink" href="#Compo">&#xb6;</a>
 				
@@ -2425,7 +2427,7 @@ based on the evaluation of the provided boolean expression.
 		
 			
 			
-			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=323:1163#L6">Context</a>
+			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=323:1161#L6">Context</a>
 				<a class="permalink" href="#Context">&#xb6;</a>
 				
 				
@@ -2451,7 +2453,7 @@ with the browser, page navigation, concurrency, and component communication.
 
 			
 				
-				<h3 id="Context.After">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6226:6284#L229">After</a>
+				<h3 id="Context.After">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5705:5763#L209">After</a>
 					<a class="permalink" href="#Context.After">&#xb6;</a>
 					
 					
@@ -2464,7 +2466,7 @@ with the browser, page navigation, concurrency, and component communication.
 				
 			
 				
-				<h3 id="Context.AppUpdateAvailable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1492:1536#L42">AppUpdateAvailable</a>
+				<h3 id="Context.AppUpdateAvailable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1490:1534#L42">AppUpdateAvailable</a>
 					<a class="permalink" href="#Context.AppUpdateAvailable">&#xb6;</a>
 					
 					
@@ -2477,7 +2479,7 @@ with the browser, page navigation, concurrency, and component communication.
 				
 			
 				
-				<h3 id="Context.Async">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6097:6131#L224">Async</a>
+				<h3 id="Context.Async">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5576:5610#L204">Async</a>
 					<a class="permalink" href="#Context.Async">&#xb6;</a>
 					
 					
@@ -2491,7 +2493,7 @@ goroutines, ensuring they conclude when rendering server-side.
 				
 			
 				
-				<h3 id="Context.Decrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4191:4246#L148">Decrypt</a>
+				<h3 id="Context.Decrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4189:4244#L148">Decrypt</a>
 					<a class="permalink" href="#Context.Decrypt">&#xb6;</a>
 					
 					
@@ -2504,7 +2506,7 @@ goroutines, ensuring they conclude when rendering server-side.
 				
 			
 				
-				<h3 id="Context.Defer">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5803:5844#L210">Defer</a>
+				<h3 id="Context.Defer">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5282:5323#L190">Defer</a>
 					<a class="permalink" href="#Context.Defer">&#xb6;</a>
 					
 					
@@ -2518,7 +2520,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.DelState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=8096:8137#L299">DelState</a>
+				<h3 id="Context.DelState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7398:7439#L272">DelState</a>
 					<a class="permalink" href="#Context.DelState">&#xb6;</a>
 					
 					
@@ -2531,7 +2533,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.DeviceID">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2072:2108#L62">DeviceID</a>
+				<h3 id="Context.DeviceID">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2070:2106#L62">DeviceID</a>
 					<a class="permalink" href="#Context.DeviceID">&#xb6;</a>
 					
 					
@@ -2544,7 +2546,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.Dispatch">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4904:4948#L172">Dispatch</a>
+				<h3 id="Context.Dispatch">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4902:4946#L172">Dispatch</a>
 					<a class="permalink" href="#Context.Dispatch">&#xb6;</a>
 					
 					
@@ -2559,23 +2561,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.Emit">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5427:5467#L192">Emit</a>
-					<a class="permalink" href="#Context.Emit">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context">Context</a>) Emit(v func(<a href="#Context">Context</a>))</pre>
-				<p>Emit executes the specified function and requests that parent components
-update their state accordingly. This method is typically used to initiate
-custom HTML event handlers, ensuring that state changes propagate upwards
-through the component hierarchy.
-
-				
-				
-				
-			
-				
-				<h3 id="Context.Encrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3827:3876#L134">Encrypt</a>
+				<h3 id="Context.Encrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3825:3874#L134">Encrypt</a>
 					<a class="permalink" href="#Context.Encrypt">&#xb6;</a>
 					
 					
@@ -2588,7 +2574,7 @@ through the component hierarchy.
 				
 			
 				
-				<h3 id="Context.GetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7791:7842#L289">GetState</a>
+				<h3 id="Context.GetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7094:7145#L262">GetState</a>
 					<a class="permalink" href="#Context.GetState">&#xb6;</a>
 					
 					
@@ -2601,7 +2587,7 @@ through the component hierarchy.
 				
 			
 				
-				<h3 id="Context.Handle">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6883:6940#L253">Handle</a>
+				<h3 id="Context.Handle">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6187:6244#L226">Handle</a>
 					<a class="permalink" href="#Context.Handle">&#xb6;</a>
 					
 					
@@ -2615,7 +2601,7 @@ goroutine.
 				
 			
 				
-				<h3 id="Context.IsAppInstallable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1637:1679#L47">IsAppInstallable</a>
+				<h3 id="Context.IsAppInstallable">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1635:1677#L47">IsAppInstallable</a>
 					<a class="permalink" href="#Context.IsAppInstallable">&#xb6;</a>
 					
 					
@@ -2628,7 +2614,7 @@ goroutine.
 				
 			
 				
-				<h3 id="Context.JSSrc">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1356:1388#L37">JSSrc</a>
+				<h3 id="Context.JSSrc">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1354:1386#L37">JSSrc</a>
 					<a class="permalink" href="#Context.JSSrc">&#xb6;</a>
 					
 					
@@ -2641,7 +2627,7 @@ goroutine.
 				
 			
 				
-				<h3 id="Context.LocalStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3525:3573#L123">LocalStorage</a>
+				<h3 id="Context.LocalStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3523:3571#L123">LocalStorage</a>
 					<a class="permalink" href="#Context.LocalStorage">&#xb6;</a>
 					
 					
@@ -2655,7 +2641,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Navigate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2747:2789#L92">Navigate</a>
+				<h3 id="Context.Navigate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2745:2787#L92">Navigate</a>
 					<a class="permalink" href="#Context.Navigate">&#xb6;</a>
 					
 					
@@ -2668,7 +2654,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NavigateTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3006:3047#L104">NavigateTo</a>
+				<h3 id="Context.NavigateTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3004:3045#L104">NavigateTo</a>
 					<a class="permalink" href="#Context.NavigateTo">&#xb6;</a>
 					
 					
@@ -2681,7 +2667,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NewAction">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7051:7110#L258">NewAction</a>
+				<h3 id="Context.NewAction">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6355:6414#L231">NewAction</a>
 					<a class="permalink" href="#Context.NewAction">&#xb6;</a>
 					
 					
@@ -2694,7 +2680,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NewActionWithValue">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7237:7312#L264">NewActionWithValue</a>
+				<h3 id="Context.NewActionWithValue">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6541:6616#L237">NewActionWithValue</a>
 					<a class="permalink" href="#Context.NewActionWithValue">&#xb6;</a>
 					
 					
@@ -2707,7 +2693,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Notifications">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4639:4693#L165">Notifications</a>
+				<h3 id="Context.Notifications">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=4637:4691#L165">Notifications</a>
 					<a class="permalink" href="#Context.Notifications">&#xb6;</a>
 					
 					
@@ -2720,12 +2706,12 @@ origin.
 				
 			
 				
-				<h3 id="Context.ObserveState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7624:7689#L284">ObserveState</a>
+				<h3 id="Context.ObserveState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6928:6992#L257">ObserveState</a>
 					<a class="permalink" href="#Context.ObserveState">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (ctx <a href="#Context">Context</a>) ObserveState(state <a href="/pkg/builtin/#string">string</a>, recv <a href="/pkg/builtin/#any">any</a>) <a href="#ObserverX">ObserverX</a></pre>
+				<pre>func (ctx <a href="#Context">Context</a>) ObserveState(state <a href="/pkg/builtin/#string">string</a>, recv <a href="/pkg/builtin/#any">any</a>) <a href="#Observer">Observer</a></pre>
 				<p>ObserveState establishes an observer for a state, tracking its changes.
 
 				
@@ -2733,7 +2719,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Page">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2504:2534#L79">Page</a>
+				<h3 id="Context.Page">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2502:2532#L79">Page</a>
 					<a class="permalink" href="#Context.Page">&#xb6;</a>
 					
 					
@@ -2746,7 +2732,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.PreventUpdate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6621:6655#L244">PreventUpdate</a>
+				<h3 id="Context.PreventUpdate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=5942:5976#L218">PreventUpdate</a>
 					<a class="permalink" href="#Context.PreventUpdate">&#xb6;</a>
 					
 					
@@ -2760,7 +2746,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.Reload">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2597:2624#L84">Reload</a>
+				<h3 id="Context.Reload">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=2595:2622#L84">Reload</a>
 					<a class="permalink" href="#Context.Reload">&#xb6;</a>
 					
 					
@@ -2773,7 +2759,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.ResizeContent">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=8203:8237#L304">ResizeContent</a>
+				<h3 id="Context.ResizeContent">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7505:7539#L277">ResizeContent</a>
 					<a class="permalink" href="#Context.ResizeContent">&#xb6;</a>
 					
 					
@@ -2786,7 +2772,7 @@ implemented UpdateNotifier behavior.
 				
 			
 				
-				<h3 id="Context.ResolveStaticResource">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3175:3232#L110">ResolveStaticResource</a>
+				<h3 id="Context.ResolveStaticResource">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3173:3230#L110">ResolveStaticResource</a>
 					<a class="permalink" href="#Context.ResolveStaticResource">&#xb6;</a>
 					
 					
@@ -2800,7 +2786,7 @@ resource location.
 				
 			
 				
-				<h3 id="Context.ScrollTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3335:3373#L115">ScrollTo</a>
+				<h3 id="Context.ScrollTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3333:3371#L115">ScrollTo</a>
 					<a class="permalink" href="#Context.ScrollTo">&#xb6;</a>
 					
 					
@@ -2813,7 +2799,7 @@ resource location.
 				
 			
 				
-				<h3 id="Context.SessionStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3693:3743#L129">SessionStorage</a>
+				<h3 id="Context.SessionStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=3691:3741#L129">SessionStorage</a>
 					<a class="permalink" href="#Context.SessionStorage">&#xb6;</a>
 					
 					
@@ -2827,12 +2813,12 @@ document origin.
 				
 			
 				
-				<h3 id="Context.SetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7934:7989#L294">SetState</a>
+				<h3 id="Context.SetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=7237:7291#L267">SetState</a>
 					<a class="permalink" href="#Context.SetState">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (ctx <a href="#Context">Context</a>) SetState(state <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#StateX">StateX</a></pre>
+				<pre>func (ctx <a href="#Context">Context</a>) SetState(state <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>) <a href="#State">State</a></pre>
 				<p>SetState modifies a state with the provided value.
 
 				
@@ -2840,7 +2826,7 @@ document origin.
 				
 			
 				
-				<h3 id="Context.ShowAppInstallPrompt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1874:1915#L55">ShowAppInstallPrompt</a>
+				<h3 id="Context.ShowAppInstallPrompt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1872:1913#L55">ShowAppInstallPrompt</a>
 					<a class="permalink" href="#Context.ShowAppInstallPrompt">&#xb6;</a>
 					
 					
@@ -2853,27 +2839,13 @@ document origin.
 				
 			
 				
-				<h3 id="Context.Src">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1220:1247#L32">Src</a>
+				<h3 id="Context.Src">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=1218:1245#L32">Src</a>
 					<a class="permalink" href="#Context.Src">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (ctx <a href="#Context">Context</a>) Src() <a href="#UI">UI</a></pre>
 				<p>Src retrieves the linked UI element of the context.
-
-				
-				
-				
-			
-				
-				<h3 id="Context.Update">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=6454:6481#L238">Update</a>
-					<a class="permalink" href="#Context.Update">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context">Context</a>) Update()</pre>
-				<p>Update signals the component associated with the context to refresh its state
-and re-render its UI.
 
 				
 				
@@ -2914,82 +2886,7 @@ after their removal from the DOM structure.
 		
 			
 			
-			<h2 id="DispatchMode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2776:2797#L108">DispatchMode</a>
-				<a class="permalink" href="#DispatchMode">&#xb6;</a>
-				
-				
-			</h2>
-			<p>DispatchMode represents how a dispatch is processed.
-
-			<pre>type DispatchMode <a href="/pkg/builtin/#int">int</a></pre>
-
-			
-				
-				<pre>const (
-    <span class="comment">// A dispatch mode where the dispatched operation is enqueued to be executed</span>
-    <span class="comment">// as soon as possible and its associated UI element is updated at the end</span>
-    <span class="comment">// of the current update cycle.</span>
-    <span id="Update">Update</span> <a href="#DispatchMode">DispatchMode</a> = <a href="/pkg/builtin/#iota">iota</a>
-
-    <span class="comment">// A dispatch mode that schedules the dispatched operation to be executed</span>
-    <span class="comment">// after the current update frame.</span>
-    <span id="Defer">Defer</span>
-
-    <span class="comment">// A dispatch mode where the dispatched operation is enqueued to be executed</span>
-    <span class="comment">// as soon as possible.</span>
-    <span id="Next">Next</span>
-)</pre>
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="Dispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=206:823#L4">Dispatcher</a>
-				<a class="permalink" href="#Dispatcher">&#xb6;</a>
-				
-				
-			</h2>
-			<p>Dispatcher is the interface that describes an environment that synchronizes
-UI instructions and UI elements lifecycle.
-
-			<pre>type Dispatcher interface {
-    <span class="comment">// Context returns the context associated with the root element.</span>
-    Context() <a href="#Context">Context</a>
-
-    <span class="comment">// Handle registers the handler for the given action name. When an action</span>
-    <span class="comment">// occurs, the handler is executed on the UI goroutine.</span>
-    Handle(actionName <a href="/pkg/builtin/#string">string</a>, src <a href="#UI">UI</a>, h <a href="#ActionHandler">ActionHandler</a>)
-
-    <span class="comment">// Wait waits for the asynchronous operations launched with Async() to</span>
-    <span class="comment">// complete.</span>
-    Wait()
-    <span class="comment">// contains filtered or unexported methods</span>
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=24188:24222#L997">Environment</a>
+			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=23539:23573#L958">Environment</a>
 				<a class="permalink" href="#Environment">&#xb6;</a>
 				
 				
@@ -3416,7 +3313,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLAbbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=16148:23354#L569">HTMLAbbr</a>
+			<h2 id="HTMLAbbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=15604:22810#L535">HTMLAbbr</a>
 				<a class="permalink" href="#HTMLAbbr">&#xb6;</a>
 				
 				
@@ -3605,7 +3502,7 @@ application.
 
 			
 				
-				<h3 id="Abbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=23488:23508#L742">Abbr</a>
+				<h3 id="Abbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=22944:22964#L708">Abbr</a>
 					<a class="permalink" href="#Abbr">&#xb6;</a>
 					
 					
@@ -3621,7 +3518,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLAddress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=30829:38206#L1074">HTMLAddress</a>
+			<h2 id="HTMLAddress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=29741:37118#L1006">HTMLAddress</a>
 				<a class="permalink" href="#HTMLAddress">&#xb6;</a>
 				
 				
@@ -3810,7 +3707,7 @@ application.
 
 			
 				
-				<h3 id="Address">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=38322:38348#L1247">Address</a>
+				<h3 id="Address">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=37234:37260#L1179">Address</a>
 					<a class="permalink" href="#Address">&#xb6;</a>
 					
 					
@@ -3826,7 +3723,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLArea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=46032:54251#L1579">HTMLArea</a>
+			<h2 id="HTMLArea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=44400:52619#L1477">HTMLArea</a>
 				<a class="permalink" href="#HTMLArea">&#xb6;</a>
 				
 				
@@ -4036,7 +3933,7 @@ application.
 
 			
 				
-				<h3 id="Area">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=54370:54390#L1773">Area</a>
+				<h3 id="Area">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=52738:52758#L1671">Area</a>
 					<a class="permalink" href="#Area">&#xb6;</a>
 					
 					
@@ -4052,7 +3949,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLArticle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=62667:70044#L2143">HTMLArticle</a>
+			<h2 id="HTMLArticle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=60491:67868#L2007">HTMLArticle</a>
 				<a class="permalink" href="#HTMLArticle">&#xb6;</a>
 				
 				
@@ -4241,7 +4138,7 @@ application.
 
 			
 				
-				<h3 id="Article">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=70160:70186#L2316">Article</a>
+				<h3 id="Article">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=67984:68010#L2180">Article</a>
 					<a class="permalink" href="#Article">&#xb6;</a>
 					
 					
@@ -4257,7 +4154,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLAside">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=77871:85134#L2648">HTMLAside</a>
+			<h2 id="HTMLAside">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=75151:82414#L2478">HTMLAside</a>
 				<a class="permalink" href="#HTMLAside">&#xb6;</a>
 				
 				
@@ -4446,7 +4343,7 @@ application.
 
 			
 				
-				<h3 id="Aside">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=85261:85283#L2821">Aside</a>
+				<h3 id="Aside">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=82541:82563#L2651">Aside</a>
 					<a class="permalink" href="#Aside">&#xb6;</a>
 					
 					
@@ -4462,7 +4359,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLAudio">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=92724:103604#L3153">HTMLAudio</a>
+			<h2 id="HTMLAudio">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=89460:100340#L2949">HTMLAudio</a>
 				<a class="permalink" href="#HTMLAudio">&#xb6;</a>
 				
 				
@@ -4741,7 +4638,7 @@ application.
 
 			
 				
-				<h3 id="Audio">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=103697:103719#L3416">Audio</a>
+				<h3 id="Audio">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=100433:100455#L3212">Audio</a>
 					<a class="permalink" href="#Audio">&#xb6;</a>
 					
 					
@@ -4757,7 +4654,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLB">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=114878:121913#L3898">HTMLB</a>
+			<h2 id="HTMLB">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=110702:117737#L3637">HTMLB</a>
 				<a class="permalink" href="#HTMLB">&#xb6;</a>
 				
 				
@@ -4946,7 +4843,7 @@ application.
 
 			
 				
-				<h3 id="B">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=121984:121998#L4071">B</a>
+				<h3 id="B">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=117808:117822#L3810">B</a>
 					<a class="permalink" href="#B">&#xb6;</a>
 					
 					
@@ -4962,7 +4859,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLBase">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=128950:136108#L4403">HTMLBase</a>
+			<h2 id="HTMLBase">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=124230:131388#L4108">HTMLBase</a>
 				<a class="permalink" href="#HTMLBase">&#xb6;</a>
 				
 				
@@ -5148,7 +5045,7 @@ application.
 
 			
 				
-				<h3 id="Base">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=136215:136235#L4573">Base</a>
+				<h3 id="Base">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=131495:131515#L4278">Base</a>
 					<a class="permalink" href="#Base">&#xb6;</a>
 					
 					
@@ -5164,7 +5061,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLBdi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=143528:150677#L4903">HTMLBdi</a>
+			<h2 id="HTMLBdi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=138264:145413#L4574">HTMLBdi</a>
 				<a class="permalink" href="#HTMLBdi">&#xb6;</a>
 				
 				
@@ -5353,7 +5250,7 @@ application.
 
 			
 				
-				<h3 id="Bdi">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=150822:150840#L5076">Bdi</a>
+				<h3 id="Bdi">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=145558:145576#L4747">Bdi</a>
 					<a class="permalink" href="#Bdi">&#xb6;</a>
 					
 					
@@ -5369,7 +5266,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLBdo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=158035:165184#L5408">HTMLBdo</a>
+			<h2 id="HTMLBdo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=152227:159376#L5045">HTMLBdo</a>
 				<a class="permalink" href="#HTMLBdo">&#xb6;</a>
 				
 				
@@ -5558,7 +5455,7 @@ application.
 
 			
 				
-				<h3 id="Bdo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=165301:165319#L5581">Bdo</a>
+				<h3 id="Bdo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=159493:159511#L5218">Bdo</a>
 					<a class="permalink" href="#Bdo">&#xb6;</a>
 					
 					
@@ -5574,7 +5471,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLBlockquote">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=172521:180215#L5913">HTMLBlockquote</a>
+			<h2 id="HTMLBlockquote">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=166169:173863#L5516">HTMLBlockquote</a>
 				<a class="permalink" href="#HTMLBlockquote">&#xb6;</a>
 				
 				
@@ -5766,7 +5663,7 @@ application.
 
 			
 				
-				<h3 id="Blockquote">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=180306:180338#L6089">Blockquote</a>
+				<h3 id="Blockquote">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=173954:173986#L5692">Blockquote</a>
 					<a class="permalink" href="#Blockquote">&#xb6;</a>
 					
 					
@@ -5782,7 +5679,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=188520:197339#L6426">HTMLBody</a>
+			<h2 id="HTMLBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=181624:190443#L5995">HTMLBody</a>
 				<a class="permalink" href="#HTMLBody">&#xb6;</a>
 				
 				
@@ -6008,7 +5905,7 @@ application.
 
 			
 				
-				<h3 id="Body">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=197421:197441#L6637">Body</a>
+				<h3 id="Body">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=190525:190545#L6206">Body</a>
 					<a class="permalink" href="#Body">&#xb6;</a>
 					
 					
@@ -6024,7 +5921,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLBr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=206505:213283#L7036">HTMLBr</a>
+			<h2 id="HTMLBr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=198825:205603#L6556">HTMLBr</a>
 				<a class="permalink" href="#HTMLBr">&#xb6;</a>
 				
 				
@@ -6204,7 +6101,7 @@ application.
 
 			
 				
-				<h3 id="Br">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=213361:213377#L7200">Br</a>
+				<h3 id="Br">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=205681:205697#L6720">Br</a>
 					<a class="permalink" href="#Br">&#xb6;</a>
 					
 					
@@ -6220,7 +6117,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLButton">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=220199:228928#L7520">HTMLButton</a>
+			<h2 id="HTMLButton">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=211975:220704#L7006">HTMLButton</a>
 				<a class="permalink" href="#HTMLButton">&#xb6;</a>
 				
 				
@@ -6442,7 +6339,7 @@ application.
 
 			
 				
-				<h3 id="Button">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=229053:229077#L7726">Button</a>
+				<h3 id="Button">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=220829:220853#L7212">Button</a>
 					<a class="permalink" href="#Button">&#xb6;</a>
 					
 					
@@ -6458,7 +6355,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLCanvas">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=237926:245390#L8113">HTMLCanvas</a>
+			<h2 id="HTMLCanvas">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=229158:236622#L7565">HTMLCanvas</a>
 				<a class="permalink" href="#HTMLCanvas">&#xb6;</a>
 				
 				
@@ -6653,7 +6550,7 @@ application.
 
 			
 				
-				<h3 id="Canvas">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=245527:245551#L8292">Canvas</a>
+				<h3 id="Canvas">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=236759:236783#L7744">Canvas</a>
 					<a class="permalink" href="#Canvas">&#xb6;</a>
 					
 					
@@ -6669,7 +6566,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=253284:260661#L8634">HTMLCaption</a>
+			<h2 id="HTMLCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=243972:251349#L8052">HTMLCaption</a>
 				<a class="permalink" href="#HTMLCaption">&#xb6;</a>
 				
 				
@@ -6858,7 +6755,7 @@ application.
 
 			
 				
-				<h3 id="Caption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=260787:260813#L8807">Caption</a>
+				<h3 id="Caption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=251475:251501#L8225">Caption</a>
 					<a class="permalink" href="#Caption">&#xb6;</a>
 					
 					
@@ -6874,7 +6771,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLCite">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=268497:275703#L9139">HTMLCite</a>
+			<h2 id="HTMLCite">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=258641:265847#L8523">HTMLCite</a>
 				<a class="permalink" href="#HTMLCite">&#xb6;</a>
 				
 				
@@ -7063,7 +6960,7 @@ application.
 
 			
 				
-				<h3 id="Cite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=275831:275851#L9312">Cite</a>
+				<h3 id="Cite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=265975:265995#L8696">Cite</a>
 					<a class="permalink" href="#Cite">&#xb6;</a>
 					
 					
@@ -7079,7 +6976,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLCode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=283169:290375#L9644">HTMLCode</a>
+			<h2 id="HTMLCode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=272769:279975#L8994">HTMLCode</a>
 				<a class="permalink" href="#HTMLCode">&#xb6;</a>
 				
 				
@@ -7268,7 +7165,7 @@ application.
 
 			
 				
-				<h3 id="Code">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=290486:290506#L9817">Code</a>
+				<h3 id="Code">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=280086:280106#L9167">Code</a>
 					<a class="permalink" href="#Code">&#xb6;</a>
 					
 					
@@ -7284,7 +7181,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLCol">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=297823:304734#L10149">HTMLCol</a>
+			<h2 id="HTMLCol">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=286879:293790#L9465">HTMLCol</a>
 				<a class="permalink" href="#HTMLCol">&#xb6;</a>
 				
 				
@@ -7467,7 +7364,7 @@ application.
 
 			
 				
-				<h3 id="Col">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=304892:304910#L10316">Col</a>
+				<h3 id="Col">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=293948:293966#L9632">Col</a>
 					<a class="permalink" href="#Col">&#xb6;</a>
 					
 					
@@ -7483,7 +7380,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLColGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=311924:319442#L10641">HTMLColGroup</a>
+			<h2 id="HTMLColGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=300436:307954#L9923">HTMLColGroup</a>
 				<a class="permalink" href="#HTMLColGroup">&#xb6;</a>
 				
 				
@@ -7675,7 +7572,7 @@ application.
 
 			
 				
-				<h3 id="ColGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=319596:319624#L10817">ColGroup</a>
+				<h3 id="ColGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=308108:308136#L10099">ColGroup</a>
 					<a class="permalink" href="#ColGroup">&#xb6;</a>
 					
 					
@@ -7691,7 +7588,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLData">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=327515:330567#L11154">HTMLData</a>
+			<h2 id="HTMLData">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=315483:318535#L10402">HTMLData</a>
 				<a class="permalink" href="#HTMLData">&#xb6;</a>
 				
 				
@@ -7781,7 +7678,7 @@ application.
 
 			
 				
-				<h3 id="Data">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=330663:330683#L11228">Data</a>
+				<h3 id="Data">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=318631:318651#L10476">Data</a>
 					<a class="permalink" href="#Data">&#xb6;</a>
 					
 					
@@ -7797,7 +7694,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDataList">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=333818:341252#L11395">HTMLDataList</a>
+			<h2 id="HTMLDataList">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=321786:329220#L10643">HTMLDataList</a>
 				<a class="permalink" href="#HTMLDataList">&#xb6;</a>
 				
 				
@@ -7986,7 +7883,7 @@ application.
 
 			
 				
-				<h3 id="DataList">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=341341:341369#L11568">DataList</a>
+				<h3 id="DataList">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=329309:329337#L10816">DataList</a>
 					<a class="permalink" href="#DataList">&#xb6;</a>
 					
 					
@@ -8002,7 +7899,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=349173:356265#L11900">HTMLDd</a>
+			<h2 id="HTMLDd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=336597:343689#L11114">HTMLDd</a>
 				<a class="permalink" href="#HTMLDd">&#xb6;</a>
 				
 				
@@ -8191,7 +8088,7 @@ application.
 
 			
 				
-				<h3 id="Dd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=356367:356383#L12073">Dd</a>
+				<h3 id="Dd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=343791:343807#L11287">Dd</a>
 					<a class="permalink" href="#Dd">&#xb6;</a>
 					
 					
@@ -8207,7 +8104,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=363456:370903#L12405">HTMLDel</a>
+			<h2 id="HTMLDel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=350336:357783#L11585">HTMLDel</a>
 				<a class="permalink" href="#HTMLDel">&#xb6;</a>
 				
 				
@@ -8402,7 +8299,7 @@ application.
 
 			
 				
-				<h3 id="Del">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=371010:371028#L12584">Del</a>
+				<h3 id="Del">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=357890:357908#L11764">Del</a>
 					<a class="permalink" href="#Del">&#xb6;</a>
 					
 					
@@ -8418,7 +8315,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDetails">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=378471:386078#L12926">HTMLDetails</a>
+			<h2 id="HTMLDetails">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=364807:372414#L12072">HTMLDetails</a>
 				<a class="permalink" href="#HTMLDetails">&#xb6;</a>
 				
 				
@@ -8613,7 +8510,7 @@ application.
 
 			
 				
-				<h3 id="Details">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=386209:386235#L13105">Details</a>
+				<h3 id="Details">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=372545:372571#L12251">Details</a>
 					<a class="permalink" href="#Details">&#xb6;</a>
 					
 					
@@ -8629,7 +8526,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDfn">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=394132:401281#L13447">HTMLDfn</a>
+			<h2 id="HTMLDfn">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=379908:387057#L12558">HTMLDfn</a>
 				<a class="permalink" href="#HTMLDfn">&#xb6;</a>
 				
 				
@@ -8818,7 +8715,7 @@ application.
 
 			
 				
-				<h3 id="Dfn">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=401383:401401#L13620">Dfn</a>
+				<h3 id="Dfn">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=387159:387177#L12731">Dfn</a>
 					<a class="permalink" href="#Dfn">&#xb6;</a>
 					
 					
@@ -8834,7 +8731,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDialog">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=408599:416021#L13952">HTMLDialog</a>
+			<h2 id="HTMLDialog">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=393831:401253#L13029">HTMLDialog</a>
 				<a class="permalink" href="#HTMLDialog">&#xb6;</a>
 				
 				
@@ -9026,7 +8923,7 @@ application.
 
 			
 				
-				<h3 id="Dialog">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=416119:416143#L14128">Dialog</a>
+				<h3 id="Dialog">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=401351:401375#L13205">Dialog</a>
 					<a class="permalink" href="#Dialog">&#xb6;</a>
 					
 					
@@ -9042,7 +8939,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDiv">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=423786:430935#L14465">HTMLDiv</a>
+			<h2 id="HTMLDiv">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=408474:415623#L13508">HTMLDiv</a>
 				<a class="permalink" href="#HTMLDiv">&#xb6;</a>
 				
 				
@@ -9231,7 +9128,7 @@ application.
 
 			
 				
-				<h3 id="Div">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=431056:431074#L14638">Div</a>
+				<h3 id="Div">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=415744:415762#L13681">Div</a>
 					<a class="permalink" href="#Div">&#xb6;</a>
 					
 					
@@ -9247,7 +9144,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=438268:445360#L14970">HTMLDl</a>
+			<h2 id="HTMLDl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=422412:429504#L13979">HTMLDl</a>
 				<a class="permalink" href="#HTMLDl">&#xb6;</a>
 				
 				
@@ -9436,7 +9333,7 @@ application.
 
 			
 				
-				<h3 id="Dl">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=445462:445478#L15143">Dl</a>
+				<h3 id="Dl">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=429606:429622#L14152">Dl</a>
 					<a class="permalink" href="#Dl">&#xb6;</a>
 					
 					
@@ -9452,7 +9349,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLDt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=452550:459642#L15475">HTMLDt</a>
+			<h2 id="HTMLDt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=436150:443242#L14450">HTMLDt</a>
 				<a class="permalink" href="#HTMLDt">&#xb6;</a>
 				
 				
@@ -9641,7 +9538,7 @@ application.
 
 			
 				
-				<h3 id="Dt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=459728:459744#L15648">Dt</a>
+				<h3 id="Dt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=443328:443344#L14623">Dt</a>
 					<a class="permalink" href="#Dt">&#xb6;</a>
 					
 					
@@ -9657,7 +9554,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLElem">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=466818:474098#L15980">HTMLElem</a>
+			<h2 id="HTMLElem">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=449874:457154#L14921">HTMLElem</a>
 				<a class="permalink" href="#HTMLElem">&#xb6;</a>
 				
 				
@@ -9849,7 +9746,7 @@ application.
 
 			
 				
-				<h3 id="Elem">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=474149:474179#L16156">Elem</a>
+				<h3 id="Elem">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=457205:457235#L15097">Elem</a>
 					<a class="permalink" href="#Elem">&#xb6;</a>
 					
 					
@@ -9865,7 +9762,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLElemSelfClosing">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=481577:489142#L16493">HTMLElemSelfClosing</a>
+			<h2 id="HTMLElemSelfClosing">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=464089:471654#L15400">HTMLElemSelfClosing</a>
 				<a class="permalink" href="#HTMLElemSelfClosing">&#xb6;</a>
 				
 				
@@ -10048,7 +9945,7 @@ application.
 
 			
 				
-				<h3 id="ElemSelfClosing">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=489210:489262#L16660">ElemSelfClosing</a>
+				<h3 id="ElemSelfClosing">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=471722:471774#L15567">ElemSelfClosing</a>
 					<a class="permalink" href="#ElemSelfClosing">&#xb6;</a>
 					
 					
@@ -10064,7 +9961,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLEm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=497655:504747#L16985">HTMLEm</a>
+			<h2 id="HTMLEm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=479623:486715#L15858">HTMLEm</a>
 				<a class="permalink" href="#HTMLEm">&#xb6;</a>
 				
 				
@@ -10253,7 +10150,7 @@ application.
 
 			
 				
-				<h3 id="Em">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=504845:504861#L17158">Em</a>
+				<h3 id="Em">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=486813:486829#L16031">Em</a>
 					<a class="permalink" href="#Em">&#xb6;</a>
 					
 					
@@ -10269,7 +10166,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLEmbed">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=511936:522009#L17490">HTMLEmbed</a>
+			<h2 id="HTMLEmbed">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=493360:503433#L16329">HTMLEmbed</a>
 				<a class="permalink" href="#HTMLEmbed">&#xb6;</a>
 				
 				
@@ -10530,7 +10427,7 @@ application.
 
 			
 				
-				<h3 id="Embed">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=522112:522134#L17735">Embed</a>
+				<h3 id="Embed">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=503536:503558#L16574">Embed</a>
 					<a class="permalink" href="#Embed">&#xb6;</a>
 					
 					
@@ -10546,7 +10443,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLFieldSet">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=532709:540432#L18190">HTMLFieldSet</a>
+			<h2 id="HTMLFieldSet">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=513221:520944#L16972">HTMLFieldSet</a>
 				<a class="permalink" href="#HTMLFieldSet">&#xb6;</a>
 				
 				
@@ -10744,7 +10641,7 @@ application.
 
 			
 				
-				<h3 id="FieldSet">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=540524:540552#L18372">FieldSet</a>
+				<h3 id="FieldSet">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=521036:521064#L17154">FieldSet</a>
 					<a class="permalink" href="#FieldSet">&#xb6;</a>
 					
 					
@@ -10760,7 +10657,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLFigCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=548714:556262#L18719">HTMLFigCaption</a>
+			<h2 id="HTMLFigCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=528682:536230#L17467">HTMLFigCaption</a>
 				<a class="permalink" href="#HTMLFigCaption">&#xb6;</a>
 				
 				
@@ -10949,7 +10846,7 @@ application.
 
 			
 				
-				<h3 id="FigCaption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=556371:556403#L18892">FigCaption</a>
+				<h3 id="FigCaption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=536339:536371#L17640">FigCaption</a>
 					<a class="permalink" href="#FigCaption">&#xb6;</a>
 					
 					
@@ -10965,7 +10862,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLFigure">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=564455:571775#L19224">HTMLFigure</a>
+			<h2 id="HTMLFigure">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=543879:551199#L17938">HTMLFigure</a>
 				<a class="permalink" href="#HTMLFigure">&#xb6;</a>
 				
 				
@@ -11154,7 +11051,7 @@ application.
 
 			
 				
-				<h3 id="Figure">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=571879:571903#L19397">Figure</a>
+				<h3 id="Figure">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=551303:551327#L18111">Figure</a>
 					<a class="permalink" href="#Figure">&#xb6;</a>
 					
 					
@@ -11170,7 +11067,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLFooter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=579467:586787#L19729">HTMLFooter</a>
+			<h2 id="HTMLFooter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=558347:565667#L18409">HTMLFooter</a>
 				<a class="permalink" href="#HTMLFooter">&#xb6;</a>
 				
 				
@@ -11359,7 +11256,7 @@ application.
 
 			
 				
-				<h3 id="Footer">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=586918:586942#L19902">Footer</a>
+				<h3 id="Footer">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=565798:565822#L18582">Footer</a>
 					<a class="permalink" href="#Footer">&#xb6;</a>
 					
 					
@@ -11375,7 +11272,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLForm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=594504:602698#L20234">HTMLForm</a>
+			<h2 id="HTMLForm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=572840:581034#L18880">HTMLForm</a>
 				<a class="permalink" href="#HTMLForm">&#xb6;</a>
 				
 				
@@ -11588,7 +11485,7 @@ application.
 
 			
 				
-				<h3 id="Form">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=602824:602844#L20431">Form</a>
+				<h3 id="Form">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=581160:581180#L19077">Form</a>
 					<a class="permalink" href="#Form">&#xb6;</a>
 					
 					
@@ -11604,7 +11501,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLH1">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=611136:618228#L20808">HTMLH1</a>
+			<h2 id="HTMLH1">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=588928:596020#L19420">HTMLH1</a>
 				<a class="permalink" href="#HTMLH1">&#xb6;</a>
 				
 				
@@ -11793,7 +11690,7 @@ application.
 
 			
 				
-				<h3 id="H1">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=618342:618358#L20981">H1</a>
+				<h3 id="H1">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=596134:596150#L19593">H1</a>
 					<a class="permalink" href="#H1">&#xb6;</a>
 					
 					
@@ -11809,7 +11706,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLH2">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=625430:632522#L21313">HTMLH2</a>
+			<h2 id="HTMLH2">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=602678:609770#L19891">HTMLH2</a>
 				<a class="permalink" href="#HTMLH2">&#xb6;</a>
 				
 				
@@ -11998,7 +11895,7 @@ application.
 
 			
 				
-				<h3 id="H2">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=632627:632643#L21486">H2</a>
+				<h3 id="H2">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=609875:609891#L20064">H2</a>
 					<a class="permalink" href="#H2">&#xb6;</a>
 					
 					
@@ -12014,7 +11911,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLH3">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=639715:646807#L21818">HTMLH3</a>
+			<h2 id="HTMLH3">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=616419:623511#L20362">HTMLH3</a>
 				<a class="permalink" href="#HTMLH3">&#xb6;</a>
 				
 				
@@ -12203,7 +12100,7 @@ application.
 
 			
 				
-				<h3 id="H3">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=646907:646923#L21991">H3</a>
+				<h3 id="H3">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=623611:623627#L20535">H3</a>
 					<a class="permalink" href="#H3">&#xb6;</a>
 					
 					
@@ -12219,7 +12116,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLH4">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=653995:661087#L22323">HTMLH4</a>
+			<h2 id="HTMLH4">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=630155:637247#L20833">HTMLH4</a>
 				<a class="permalink" href="#HTMLH4">&#xb6;</a>
 				
 				
@@ -12408,7 +12305,7 @@ application.
 
 			
 				
-				<h3 id="H4">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=661203:661219#L22496">H4</a>
+				<h3 id="H4">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=637363:637379#L21006">H4</a>
 					<a class="permalink" href="#H4">&#xb6;</a>
 					
 					
@@ -12424,7 +12321,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLH5">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=668291:675383#L22828">HTMLH5</a>
+			<h2 id="HTMLH5">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=643907:650999#L21304">HTMLH5</a>
 				<a class="permalink" href="#HTMLH5">&#xb6;</a>
 				
 				
@@ -12613,7 +12510,7 @@ application.
 
 			
 				
-				<h3 id="H5">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=675503:675519#L23001">H5</a>
+				<h3 id="H5">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=651119:651135#L21477">H5</a>
 					<a class="permalink" href="#H5">&#xb6;</a>
 					
 					
@@ -12629,7 +12526,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLH6">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=682591:689683#L23333">HTMLH6</a>
+			<h2 id="HTMLH6">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=657663:664755#L21775">HTMLH6</a>
 				<a class="permalink" href="#HTMLH6">&#xb6;</a>
 				
 				
@@ -12818,7 +12715,7 @@ application.
 
 			
 				
-				<h3 id="H6">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=689805:689821#L23506">H6</a>
+				<h3 id="H6">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=664877:664893#L21948">H6</a>
 					<a class="permalink" href="#H6">&#xb6;</a>
 					
 					
@@ -12834,7 +12731,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=696895:699887#L23838">HTMLHead</a>
+			<h2 id="HTMLHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=671423:674415#L22246">HTMLHead</a>
 				<a class="permalink" href="#HTMLHead">&#xb6;</a>
 				
 				
@@ -12921,7 +12818,7 @@ application.
 
 			
 				
-				<h3 id="Head">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=699961:699981#L23909">Head</a>
+				<h3 id="Head">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=674489:674509#L22317">Head</a>
 					<a class="permalink" href="#Head">&#xb6;</a>
 					
 					
@@ -12937,7 +12834,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLHeader">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=703035:710355#L24071">HTMLHeader</a>
+			<h2 id="HTMLHeader">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=677563:684883#L22479">HTMLHeader</a>
 				<a class="permalink" href="#HTMLHeader">&#xb6;</a>
 				
 				
@@ -13126,7 +13023,7 @@ application.
 
 			
 				
-				<h3 id="Header">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=710433:710457#L24244">Header</a>
+				<h3 id="Header">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=684961:684985#L22652">Header</a>
 					<a class="permalink" href="#Header">&#xb6;</a>
 					
 					
@@ -13142,7 +13039,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLHr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=718017:724795#L24576">HTMLHr</a>
+			<h2 id="HTMLHr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=692001:698779#L22950">HTMLHr</a>
 				<a class="permalink" href="#HTMLHr">&#xb6;</a>
 				
 				
@@ -13322,7 +13219,7 @@ application.
 
 			
 				
-				<h3 id="Hr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=724871:724887#L24740">Hr</a>
+				<h3 id="Hr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=698855:698871#L23114">Hr</a>
 					<a class="permalink" href="#Hr">&#xb6;</a>
 					
 					
@@ -13338,7 +13235,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLHtml">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=731707:734415#L25060">HTMLHtml</a>
+			<h2 id="HTMLHtml">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=705147:707855#L23400">HTMLHtml</a>
 				<a class="permalink" href="#HTMLHtml">&#xb6;</a>
 				
 				
@@ -13417,7 +13314,7 @@ application.
 
 			
 				
-				<h3 id="Html">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=734487:734507#L25124">Html</a>
+				<h3 id="Html">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=707927:707947#L23464">Html</a>
 					<a class="permalink" href="#Html">&#xb6;</a>
 					
 					
@@ -13433,7 +13330,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=737394:744429#L25278">HTMLI</a>
+			<h2 id="HTMLI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=710834:717869#L23618">HTMLI</a>
 				<a class="permalink" href="#HTMLI">&#xb6;</a>
 				
 				
@@ -13622,7 +13519,7 @@ application.
 
 			
 				
-				<h3 id="I">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=744517:744531#L25451">I</a>
+				<h3 id="I">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=717957:717971#L23791">I</a>
 					<a class="permalink" href="#I">&#xb6;</a>
 					
 					
@@ -13638,7 +13535,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLIFrame">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=751485:760214#L25783">HTMLIFrame</a>
+			<h2 id="HTMLIFrame">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=724381:733110#L24089">HTMLIFrame</a>
 				<a class="permalink" href="#HTMLIFrame">&#xb6;</a>
 				
 				
@@ -13863,7 +13760,7 @@ application.
 
 			
 				
-				<h3 id="IFrame">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=760273:760297#L25992">IFrame</a>
+				<h3 id="IFrame">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=733169:733193#L24298">IFrame</a>
 					<a class="permalink" href="#IFrame">&#xb6;</a>
 					
 					
@@ -13879,7 +13776,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLImg">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=769348:780284#L26394">HTMLImg</a>
+			<h2 id="HTMLImg">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=741684:752620#L24665">HTMLImg</a>
 				<a class="permalink" href="#HTMLImg">&#xb6;</a>
 				
 				
@@ -14161,7 +14058,7 @@ application.
 
 			
 				
-				<h3 id="Img">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=780336:780354#L26660">Img</a>
+				<h3 id="Img">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=752672:752690#L24931">Img</a>
 					<a class="permalink" href="#Img">&#xb6;</a>
 					
 					
@@ -14177,7 +14074,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLInput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=791414:802114#L27150">HTMLInput</a>
+			<h2 id="HTMLInput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=762822:773522#L25363">HTMLInput</a>
 				<a class="permalink" href="#HTMLInput">&#xb6;</a>
 				
 				
@@ -14453,7 +14350,7 @@ application.
 
 			
 				
-				<h3 id="Input">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=802174:802196#L27410">Input</a>
+				<h3 id="Input">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=773582:773604#L25623">Input</a>
 					<a class="permalink" href="#Input">&#xb6;</a>
 					
 					
@@ -14469,7 +14366,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLIns">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=812803:819952#L27895">HTMLIns</a>
+			<h2 id="HTMLIns">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=783651:790800#L26073">HTMLIns</a>
 				<a class="permalink" href="#HTMLIns">&#xb6;</a>
 				
 				
@@ -14658,7 +14555,7 @@ application.
 
 			
 				
-				<h3 id="Ins">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=820039:820057#L28068">Ins</a>
+				<h3 id="Ins">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=790887:790905#L26246">Ins</a>
 					<a class="permalink" href="#Ins">&#xb6;</a>
 					
 					
@@ -14674,7 +14571,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLKbd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=827252:834401#L28400">HTMLKbd</a>
+			<h2 id="HTMLKbd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=797556:804705#L26544">HTMLKbd</a>
 				<a class="permalink" href="#HTMLKbd">&#xb6;</a>
 				
 				
@@ -14863,7 +14760,7 @@ application.
 
 			
 				
-				<h3 id="Kbd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=834462:834480#L28573">Kbd</a>
+				<h3 id="Kbd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=804766:804784#L26717">Kbd</a>
 					<a class="permalink" href="#Kbd">&#xb6;</a>
 					
 					
@@ -14879,7 +14776,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLLabel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=841677:849146#L28905">HTMLLabel</a>
+			<h2 id="HTMLLabel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=811437:818906#L27015">HTMLLabel</a>
 				<a class="permalink" href="#HTMLLabel">&#xb6;</a>
 				
 				
@@ -15074,7 +14971,7 @@ application.
 
 			
 				
-				<h3 id="Label">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=849221:849243#L29084">Label</a>
+				<h3 id="Label">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=818981:819003#L27194">Label</a>
 					<a class="permalink" href="#Label">&#xb6;</a>
 					
 					
@@ -15090,7 +14987,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLLegend">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=856927:864247#L29426">HTMLLegend</a>
+			<h2 id="HTMLLegend">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=826143:833463#L27502">HTMLLegend</a>
 				<a class="permalink" href="#HTMLLegend">&#xb6;</a>
 				
 				
@@ -15279,7 +15176,7 @@ application.
 
 			
 				
-				<h3 id="Legend">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=864326:864350#L29599">Legend</a>
+				<h3 id="Legend">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=833542:833566#L27675">Legend</a>
 					<a class="permalink" href="#Legend">&#xb6;</a>
 					
 					
@@ -15295,7 +15192,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLLi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=871910:879060#L29931">HTMLLi</a>
+			<h2 id="HTMLLi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=840582:847732#L27973">HTMLLi</a>
 				<a class="permalink" href="#HTMLLi">&#xb6;</a>
 				
 				
@@ -15487,7 +15384,7 @@ application.
 
 			
 				
-				<h3 id="Li">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=879118:879134#L30107">Li</a>
+				<h3 id="Li">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=847790:847806#L28149">Li</a>
 					<a class="permalink" href="#Li">&#xb6;</a>
 					
 					
@@ -15503,7 +15400,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLLink">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=886283:894496#L30444">HTMLLink</a>
+			<h2 id="HTMLLink">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=854411:862624#L28452">HTMLLink</a>
 				<a class="permalink" href="#HTMLLink">&#xb6;</a>
 				
 				
@@ -15713,7 +15610,7 @@ application.
 
 			
 				
-				<h3 id="Link">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=894647:894667#L30638">Link</a>
+				<h3 id="Link">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=862775:862795#L28646">Link</a>
 					<a class="permalink" href="#Link">&#xb6;</a>
 					
 					
@@ -15729,7 +15626,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLMain">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=902955:910161#L31008">HTMLMain</a>
+			<h2 id="HTMLMain">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=870523:877729#L28981">HTMLMain</a>
 				<a class="permalink" href="#HTMLMain">&#xb6;</a>
 				
 				
@@ -15918,7 +15815,7 @@ application.
 
 			
 				
-				<h3 id="Main">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=910237:910257#L31181">Main</a>
+				<h3 id="Main">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=877805:877825#L29154">Main</a>
 					<a class="permalink" href="#Main">&#xb6;</a>
 					
 					
@@ -15934,7 +15831,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLMap">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=917574:924798#L31513">HTMLMap</a>
+			<h2 id="HTMLMap">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=884598:891822#L29452">HTMLMap</a>
 				<a class="permalink" href="#HTMLMap">&#xb6;</a>
 				
 				
@@ -16126,7 +16023,7 @@ application.
 
 			
 				
-				<h3 id="Map">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=924868:924886#L31689">Map</a>
+				<h3 id="Map">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=891892:891910#L29628">Map</a>
 					<a class="permalink" href="#Map">&#xb6;</a>
 					
 					
@@ -16142,7 +16039,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLMark">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=932200:939406#L32026">HTMLMark</a>
+			<h2 id="HTMLMark">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=898680:905886#L29931">HTMLMark</a>
 				<a class="permalink" href="#HTMLMark">&#xb6;</a>
 				
 				
@@ -16331,7 +16228,7 @@ application.
 
 			
 				
-				<h3 id="Mark">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=939476:939496#L32199">Mark</a>
+				<h3 id="Mark">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=905956:905976#L30104">Mark</a>
 					<a class="permalink" href="#Mark">&#xb6;</a>
 					
 					
@@ -16347,7 +16244,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLMeta">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=946814:950083#L32531">HTMLMeta</a>
+			<h2 id="HTMLMeta">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=912750:916019#L30402">HTMLMeta</a>
 				<a class="permalink" href="#HTMLMeta">&#xb6;</a>
 				
 				
@@ -16440,7 +16337,7 @@ application.
 
 			
 				
-				<h3 id="Meta">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=950160:950180#L32608">Meta</a>
+				<h3 id="Meta">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=916096:916116#L30479">Meta</a>
 					<a class="permalink" href="#Meta">&#xb6;</a>
 					
 					
@@ -16456,7 +16353,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLMeter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=953596:961438#L32783">HTMLMeter</a>
+			<h2 id="HTMLMeter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=919532:927374#L30654">HTMLMeter</a>
 				<a class="permalink" href="#HTMLMeter">&#xb6;</a>
 				
 				
@@ -16666,7 +16563,7 @@ application.
 
 			
 				
-				<h3 id="Meter">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=961541:961563#L32977">Meter</a>
+				<h3 id="Meter">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=927477:927499#L30848">Meter</a>
 					<a class="permalink" href="#Meter">&#xb6;</a>
 					
 					
@@ -16682,7 +16579,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLNav">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=969612:976761#L33344">HTMLNav</a>
+			<h2 id="HTMLNav">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=935004:942153#L31181">HTMLNav</a>
 				<a class="permalink" href="#HTMLNav">&#xb6;</a>
 				
 				
@@ -16871,7 +16768,7 @@ application.
 
 			
 				
-				<h3 id="Nav">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=976824:976842#L33517">Nav</a>
+				<h3 id="Nav">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=942216:942234#L31354">Nav</a>
 					<a class="permalink" href="#Nav">&#xb6;</a>
 					
 					
@@ -16887,7 +16784,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLNoScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=984042:987126#L33849">HTMLNoScript</a>
+			<h2 id="HTMLNoScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=948890:951974#L31652">HTMLNoScript</a>
 				<a class="permalink" href="#HTMLNoScript">&#xb6;</a>
 				
 				
@@ -16974,7 +16871,7 @@ application.
 
 			
 				
-				<h3 id="NoScript">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=987237:987265#L33920">NoScript</a>
+				<h3 id="NoScript">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=952085:952113#L31723">NoScript</a>
 					<a class="permalink" href="#NoScript">&#xb6;</a>
 					
 					
@@ -16990,7 +16887,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLObject">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=990535:1001349#L34082">HTMLObject</a>
+			<h2 id="HTMLObject">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=955383:966197#L31885">HTMLObject</a>
 				<a class="permalink" href="#HTMLObject">&#xb6;</a>
 				
 				
@@ -17269,7 +17166,7 @@ application.
 
 			
 				
-				<h3 id="Object">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1001421:1001445#L34345">Object</a>
+				<h3 id="Object">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=966269:966293#L32148">Object</a>
 					<a class="permalink" href="#Object">&#xb6;</a>
 					
 					
@@ -17285,7 +17182,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLOl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1012843:1020252#L34827">HTMLOl</a>
+			<h2 id="HTMLOl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=976779:984188#L32573">HTMLOl</a>
 				<a class="permalink" href="#HTMLOl">&#xb6;</a>
 				
 				
@@ -17483,7 +17380,7 @@ application.
 
 			
 				
-				<h3 id="Ol">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1020314:1020330#L35009">Ol</a>
+				<h3 id="Ol">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=984250:984266#L32755">Ol</a>
 					<a class="permalink" href="#Ol">&#xb6;</a>
 					
 					
@@ -17499,7 +17396,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLOptGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1027681:1035323#L35356">HTMLOptGroup</a>
+			<h2 id="HTMLOptGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=991073:998715#L33068">HTMLOptGroup</a>
 				<a class="permalink" href="#HTMLOptGroup">&#xb6;</a>
 				
 				
@@ -17694,7 +17591,7 @@ application.
 
 			
 				
-				<h3 id="OptGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1035401:1035429#L35535">OptGroup</a>
+				<h3 id="OptGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=998793:998821#L33247">OptGroup</a>
 					<a class="permalink" href="#OptGroup">&#xb6;</a>
 					
 					
@@ -17710,7 +17607,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLOption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1043461:1051150#L35877">HTMLOption</a>
+			<h2 id="HTMLOption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1006309:1013998#L33555">HTMLOption</a>
 				<a class="permalink" href="#HTMLOption">&#xb6;</a>
 				
 				
@@ -17911,7 +17808,7 @@ application.
 
 			
 				
-				<h3 id="Option">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1051226:1051250#L36062">Option</a>
+				<h3 id="Option">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1014074:1014098#L33740">Option</a>
 					<a class="permalink" href="#Option">&#xb6;</a>
 					
 					
@@ -17927,7 +17824,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLOutput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1059203:1066809#L36414">HTMLOutput</a>
+			<h2 id="HTMLOutput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1021507:1029113#L34058">HTMLOutput</a>
 				<a class="permalink" href="#HTMLOutput">&#xb6;</a>
 				
 				
@@ -18125,7 +18022,7 @@ application.
 
 			
 				
-				<h3 id="Output">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1066896:1066920#L36596">Output</a>
+				<h3 id="Output">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1029200:1029224#L34240">Output</a>
 					<a class="permalink" href="#Output">&#xb6;</a>
 					
 					
@@ -18141,7 +18038,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLP">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1074849:1081884#L36943">HTMLP</a>
+			<h2 id="HTMLP">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1036609:1043644#L34553">HTMLP</a>
 				<a class="permalink" href="#HTMLP">&#xb6;</a>
 				
 				
@@ -18330,7 +18227,7 @@ application.
 
 			
 				
-				<h3 id="P">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1081942:1081956#L37116">P</a>
+				<h3 id="P">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1043702:1043716#L34726">P</a>
 					<a class="permalink" href="#P">&#xb6;</a>
 					
 					
@@ -18346,7 +18243,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLParam">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1088909:1095987#L37448">HTMLParam</a>
+			<h2 id="HTMLParam">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1050125:1057203#L35024">HTMLParam</a>
 				<a class="permalink" href="#HTMLParam">&#xb6;</a>
 				
 				
@@ -18532,7 +18429,7 @@ application.
 
 			
 				
-				<h3 id="Param">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1096065:1096087#L37618">Param</a>
+				<h3 id="Param">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1057281:1057303#L35194">Param</a>
 					<a class="permalink" href="#Param">&#xb6;</a>
 					
 					
@@ -18548,7 +18445,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLPicture">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1103458:1110835#L37948">HTMLPicture</a>
+			<h2 id="HTMLPicture">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1064130:1071507#L35490">HTMLPicture</a>
 				<a class="permalink" href="#HTMLPicture">&#xb6;</a>
 				
 				
@@ -18737,7 +18634,7 @@ application.
 
 			
 				
-				<h3 id="Picture">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1110918:1110944#L38121">Picture</a>
+				<h3 id="Picture">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1071590:1071616#L35663">Picture</a>
 					<a class="permalink" href="#Picture">&#xb6;</a>
 					
 					
@@ -18753,7 +18650,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLPre">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1118627:1125776#L38453">HTMLPre</a>
+			<h2 id="HTMLPre">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1078755:1085904#L35961">HTMLPre</a>
 				<a class="permalink" href="#HTMLPre">&#xb6;</a>
 				
 				
@@ -18942,7 +18839,7 @@ application.
 
 			
 				
-				<h3 id="Pre">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1125838:1125856#L38626">Pre</a>
+				<h3 id="Pre">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1085966:1085984#L36134">Pre</a>
 					<a class="permalink" href="#Pre">&#xb6;</a>
 					
 					
@@ -18958,7 +18855,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLProgress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1133056:1140627#L38958">HTMLProgress</a>
+			<h2 id="HTMLProgress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1092640:1100211#L36432">HTMLProgress</a>
 				<a class="permalink" href="#HTMLProgress">&#xb6;</a>
 				
 				
@@ -19153,7 +19050,7 @@ application.
 
 			
 				
-				<h3 id="Progress">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1140696:1140724#L39137">Progress</a>
+				<h3 id="Progress">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1100280:1100308#L36611">Progress</a>
 					<a class="permalink" href="#Progress">&#xb6;</a>
 					
 					
@@ -19169,7 +19066,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLQ">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1148697:1155869#L39479">HTMLQ</a>
+			<h2 id="HTMLQ">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1107737:1114909#L36919">HTMLQ</a>
 				<a class="permalink" href="#HTMLQ">&#xb6;</a>
 				
 				
@@ -19361,7 +19258,7 @@ application.
 
 			
 				
-				<h3 id="Q">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1155933:1155947#L39655">Q</a>
+				<h3 id="Q">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1114973:1114987#L37095">Q</a>
 					<a class="permalink" href="#Q">&#xb6;</a>
 					
 					
@@ -19377,7 +19274,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLRp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1163011:1170103#L39992">HTMLRp</a>
+			<h2 id="HTMLRp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1121507:1128599#L37398">HTMLRp</a>
 				<a class="permalink" href="#HTMLRp">&#xb6;</a>
 				
 				
@@ -19566,7 +19463,7 @@ application.
 
 			
 				
-				<h3 id="Rp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1170198:1170214#L40165">Rp</a>
+				<h3 id="Rp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1128694:1128710#L37571">Rp</a>
 					<a class="permalink" href="#Rp">&#xb6;</a>
 					
 					
@@ -19582,7 +19479,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLRt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1177286:1184378#L40497">HTMLRt</a>
+			<h2 id="HTMLRt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1135238:1142330#L37869">HTMLRt</a>
 				<a class="permalink" href="#HTMLRt">&#xb6;</a>
 				
 				
@@ -19771,7 +19668,7 @@ application.
 
 			
 				
-				<h3 id="Rt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1184497:1184513#L40670">Rt</a>
+				<h3 id="Rt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1142449:1142465#L38042">Rt</a>
 					<a class="permalink" href="#Rt">&#xb6;</a>
 					
 					
@@ -19787,7 +19684,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLRuby">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1191587:1198793#L41002">HTMLRuby</a>
+			<h2 id="HTMLRuby">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1148995:1156201#L38340">HTMLRuby</a>
 				<a class="permalink" href="#HTMLRuby">&#xb6;</a>
 				
 				
@@ -19976,7 +19873,7 @@ application.
 
 			
 				
-				<h3 id="Ruby">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1198885:1198905#L41175">Ruby</a>
+				<h3 id="Ruby">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1156293:1156313#L38513">Ruby</a>
 					<a class="permalink" href="#Ruby">&#xb6;</a>
 					
 					
@@ -19992,7 +19889,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLS">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1206220:1213255#L41507">HTMLS</a>
+			<h2 id="HTMLS">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1163084:1170119#L38811">HTMLS</a>
 				<a class="permalink" href="#HTMLS">&#xb6;</a>
 				
 				
@@ -20181,7 +20078,7 @@ application.
 
 			
 				
-				<h3 id="S">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1213345:1213359#L41680">S</a>
+				<h3 id="S">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1170209:1170223#L38984">S</a>
 					<a class="permalink" href="#S">&#xb6;</a>
 					
 					
@@ -20197,7 +20094,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSamp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1220311:1227517#L42012">HTMLSamp</a>
+			<h2 id="HTMLSamp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1176631:1183837#L39282">HTMLSamp</a>
 				<a class="permalink" href="#HTMLSamp">&#xb6;</a>
 				
 				
@@ -20386,7 +20283,7 @@ application.
 
 			
 				
-				<h3 id="Samp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1227599:1227619#L42185">Samp</a>
+				<h3 id="Samp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1183919:1183939#L39455">Samp</a>
 					<a class="permalink" href="#Samp">&#xb6;</a>
 					
 					
@@ -20402,7 +20299,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1234939:1238960#L42517">HTMLScript</a>
+			<h2 id="HTMLScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1190715:1194736#L39753">HTMLScript</a>
 				<a class="permalink" href="#HTMLScript">&#xb6;</a>
 				
 				
@@ -20510,7 +20407,7 @@ application.
 
 			
 				
-				<h3 id="Script">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1239037:1239061#L42609">Script</a>
+				<h3 id="Script">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1194813:1194837#L39845">Script</a>
 					<a class="permalink" href="#Script">&#xb6;</a>
 					
 					
@@ -20526,7 +20423,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSection">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1243030:1250407#L42806">HTMLSection</a>
+			<h2 id="HTMLSection">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1198790:1206167#L40041">HTMLSection</a>
 				<a class="permalink" href="#HTMLSection">&#xb6;</a>
 				
 				
@@ -20715,7 +20612,7 @@ application.
 
 			
 				
-				<h3 id="Section">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1250488:1250514#L42979">Section</a>
+				<h3 id="Section">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1206248:1206274#L40214">Section</a>
 					<a class="permalink" href="#Section">&#xb6;</a>
 					
 					
@@ -20731,7 +20628,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSelect">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1258200:1266203#L43311">HTMLSelect</a>
+			<h2 id="HTMLSelect">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1213416:1221419#L40512">HTMLSelect</a>
 				<a class="permalink" href="#HTMLSelect">&#xb6;</a>
 				
 				
@@ -20941,7 +20838,7 @@ application.
 
 			
 				
-				<h3 id="Select">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1266290:1266314#L43505">Select</a>
+				<h3 id="Select">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1221506:1221530#L40706">Select</a>
 					<a class="permalink" href="#Select">&#xb6;</a>
 					
 					
@@ -20957,7 +20854,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSmall">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1274568:1281831#L43872">HTMLSmall</a>
+			<h2 id="HTMLSmall">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1229240:1236503#L41039">HTMLSmall</a>
 				<a class="permalink" href="#HTMLSmall">&#xb6;</a>
 				
 				
@@ -21146,7 +21043,7 @@ application.
 
 			
 				
-				<h3 id="Small">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1281948:1281970#L44045">Small</a>
+				<h3 id="Small">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1236620:1236642#L41212">Small</a>
 					<a class="permalink" href="#Small">&#xb6;</a>
 					
 					
@@ -21162,7 +21059,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1289412:1297119#L44377">HTMLSource</a>
+			<h2 id="HTMLSource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1243540:1251247#L41510">HTMLSource</a>
 				<a class="permalink" href="#HTMLSource">&#xb6;</a>
 				
 				
@@ -21357,7 +21254,7 @@ application.
 
 			
 				
-				<h3 id="Source">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1297239:1297263#L44556">Source</a>
+				<h3 id="Source">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1251367:1251391#L41689">Source</a>
 					<a class="permalink" href="#Source">&#xb6;</a>
 					
 					
@@ -21373,7 +21270,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSpan">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1305169:1312375#L44901">HTMLSpan</a>
+			<h2 id="HTMLSpan">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1258753:1265959#L42000">HTMLSpan</a>
 				<a class="permalink" href="#HTMLSpan">&#xb6;</a>
 				
 				
@@ -21562,7 +21459,7 @@ application.
 
 			
 				
-				<h3 id="Span">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1312490:1312510#L45074">Span</a>
+				<h3 id="Span">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1266074:1266094#L42173">Span</a>
 					<a class="permalink" href="#Span">&#xb6;</a>
 					
 					
@@ -21578,7 +21475,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLStrong">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1319830:1327150#L45406">HTMLStrong</a>
+			<h2 id="HTMLStrong">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1272870:1280190#L42471">HTMLStrong</a>
 				<a class="permalink" href="#HTMLStrong">&#xb6;</a>
 				
 				
@@ -21767,7 +21664,7 @@ application.
 
 			
 				
-				<h3 id="Strong">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1327243:1327267#L45579">Strong</a>
+				<h3 id="Strong">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1280283:1280307#L42644">Strong</a>
 					<a class="permalink" href="#Strong">&#xb6;</a>
 					
 					
@@ -21783,7 +21680,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLStyle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1334830:1342472#L45911">HTMLStyle</a>
+			<h2 id="HTMLStyle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1287326:1294968#L42942">HTMLStyle</a>
 				<a class="permalink" href="#HTMLStyle">&#xb6;</a>
 				
 				
@@ -21981,7 +21878,7 @@ application.
 
 			
 				
-				<h3 id="Style">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1342563:1342585#L46093">Style</a>
+				<h3 id="Style">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1295059:1295081#L43124">Style</a>
 					<a class="permalink" href="#Style">&#xb6;</a>
 					
 					
@@ -21997,7 +21894,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSub">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1350392:1357541#L46440">HTMLSub</a>
+			<h2 id="HTMLSub">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1302328:1309477#L43436">HTMLSub</a>
 				<a class="permalink" href="#HTMLSub">&#xb6;</a>
 				
 				
@@ -22186,7 +22083,7 @@ application.
 
 			
 				
-				<h3 id="Sub">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1357662:1357680#L46613">Sub</a>
+				<h3 id="Sub">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1309598:1309616#L43609">Sub</a>
 					<a class="permalink" href="#Sub">&#xb6;</a>
 					
 					
@@ -22202,7 +22099,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSummary">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1364879:1372256#L46945">HTMLSummary</a>
+			<h2 id="HTMLSummary">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1316271:1323648#L43907">HTMLSummary</a>
 				<a class="permalink" href="#HTMLSummary">&#xb6;</a>
 				
 				
@@ -22391,7 +22288,7 @@ application.
 
 			
 				
-				<h3 id="Summary">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1372361:1372387#L47118">Summary</a>
+				<h3 id="Summary">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1323753:1323779#L44080">Summary</a>
 					<a class="permalink" href="#Summary">&#xb6;</a>
 					
 					
@@ -22407,7 +22304,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLSup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1380070:1387219#L47450">HTMLSup</a>
+			<h2 id="HTMLSup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1330918:1338067#L44378">HTMLSup</a>
 				<a class="permalink" href="#HTMLSup">&#xb6;</a>
 				
 				
@@ -22596,7 +22493,7 @@ application.
 
 			
 				
-				<h3 id="Sup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1387343:1387361#L47623">Sup</a>
+				<h3 id="Sup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1338191:1338209#L44551">Sup</a>
 					<a class="permalink" href="#Sup">&#xb6;</a>
 					
 					
@@ -22612,7 +22509,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1409348:1416611#L48460">HTMLTBody</a>
+			<h2 id="HTMLTBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1359108:1366371#L45320">HTMLTBody</a>
 				<a class="permalink" href="#HTMLTBody">&#xb6;</a>
 				
 				
@@ -22801,7 +22698,7 @@ application.
 
 			
 				
-				<h3 id="TBody">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1416686:1416708#L48633">TBody</a>
+				<h3 id="TBody">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1366446:1366468#L45493">TBody</a>
 					<a class="permalink" href="#TBody">&#xb6;</a>
 					
 					
@@ -22817,7 +22714,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTFoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1463538:1470801#L50330">HTMLTFoot</a>
+			<h2 id="HTMLTFoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1411666:1418929#L47088">HTMLTFoot</a>
 				<a class="permalink" href="#HTMLTFoot">&#xb6;</a>
 				
 				
@@ -23006,7 +22903,7 @@ application.
 
 			
 				
-				<h3 id="TFoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1470870:1470892#L50503">TFoot</a>
+				<h3 id="TFoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1418998:1419020#L47261">TFoot</a>
 					<a class="permalink" href="#TFoot">&#xb6;</a>
 					
 					
@@ -23022,7 +22919,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1493717:1500980#L51380">HTMLTHead</a>
+			<h2 id="HTMLTHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1440757:1448020#L48070">HTMLTHead</a>
 				<a class="permalink" href="#HTMLTHead">&#xb6;</a>
 				
 				
@@ -23211,7 +23108,7 @@ application.
 
 			
 				
-				<h3 id="THead">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1501049:1501071#L51553">THead</a>
+				<h3 id="THead">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1448089:1448111#L48243">THead</a>
 					<a class="permalink" href="#THead">&#xb6;</a>
 					
 					
@@ -23227,7 +23124,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTable">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1394558:1401821#L47955">HTMLTable</a>
+			<h2 id="HTMLTable">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1344862:1352125#L44849">HTMLTable</a>
 				<a class="permalink" href="#HTMLTable">&#xb6;</a>
 				
 				
@@ -23416,7 +23313,7 @@ application.
 
 			
 				
-				<h3 id="Table">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1401885:1401907#L48128">Table</a>
+				<h3 id="Table">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1352189:1352211#L45022">Table</a>
 					<a class="permalink" href="#Table">&#xb6;</a>
 					
 					
@@ -23432,7 +23329,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1424146:1431580#L48965">HTMLTd</a>
+			<h2 id="HTMLTd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1373362:1380796#L45791">HTMLTd</a>
 				<a class="permalink" href="#HTMLTd">&#xb6;</a>
 				
 				
@@ -23630,7 +23527,7 @@ application.
 
 			
 				
-				<h3 id="Td">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1431649:1431665#L49147">Td</a>
+				<h3 id="Td">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1380865:1380881#L45973">Td</a>
 					<a class="permalink" href="#Td">&#xb6;</a>
 					
 					
@@ -23646,7 +23543,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTemplate">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1439023:1442107#L49494">HTMLTemplate</a>
+			<h2 id="HTMLTemplate">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1387695:1390779#L46286">HTMLTemplate</a>
 				<a class="permalink" href="#HTMLTemplate">&#xb6;</a>
 				
 				
@@ -23733,7 +23630,7 @@ application.
 
 			
 				
-				<h3 id="Template">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1442200:1442228#L49565">Template</a>
+				<h3 id="Template">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1390872:1390900#L46357">Template</a>
 					<a class="permalink" href="#Template">&#xb6;</a>
 					
 					
@@ -23749,7 +23646,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTextarea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1445500:1454294#L49727">HTMLTextarea</a>
+			<h2 id="HTMLTextarea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1394172:1402966#L46519">HTMLTextarea</a>
 				<a class="permalink" href="#HTMLTextarea">&#xb6;</a>
 				
 				
@@ -23974,7 +23871,7 @@ application.
 
 			
 				
-				<h3 id="Textarea">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1454369:1454397#L49936">Textarea</a>
+				<h3 id="Textarea">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1403041:1403069#L46728">Textarea</a>
 					<a class="permalink" href="#Textarea">&#xb6;</a>
 					
 					
@@ -23990,7 +23887,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTh">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1478330:1486041#L50835">HTMLTh</a>
+			<h2 id="HTMLTh">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1425914:1433625#L47559">HTMLTh</a>
 				<a class="permalink" href="#HTMLTh">&#xb6;</a>
 				
 				
@@ -24194,7 +24091,7 @@ application.
 
 			
 				
-				<h3 id="Th">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1486112:1486128#L51023">Th</a>
+				<h3 id="Th">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1433696:1433712#L47747">Th</a>
 					<a class="permalink" href="#Th">&#xb6;</a>
 					
 					
@@ -24210,7 +24107,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTime">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1508511:1515877#L51885">HTMLTime</a>
+			<h2 id="HTMLTime">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1455007:1462373#L48541">HTMLTime</a>
 				<a class="permalink" href="#HTMLTime">&#xb6;</a>
 				
 				
@@ -24402,7 +24299,7 @@ application.
 
 			
 				
-				<h3 id="Time">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1515967:1515987#L52061">Time</a>
+				<h3 id="Time">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1462463:1462483#L48717">Time</a>
 					<a class="permalink" href="#Time">&#xb6;</a>
 					
 					
@@ -24418,7 +24315,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTitle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1523434:1526449#L52398">HTMLTitle</a>
+			<h2 id="HTMLTitle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1469386:1472401#L49020">HTMLTitle</a>
 				<a class="permalink" href="#HTMLTitle">&#xb6;</a>
 				
 				
@@ -24505,7 +24402,7 @@ application.
 
 			
 				
-				<h3 id="Title">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1526561:1526583#L52469">Title</a>
+				<h3 id="Title">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1472513:1472535#L49091">Title</a>
 					<a class="permalink" href="#Title">&#xb6;</a>
 					
 					
@@ -24521,7 +24418,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLTr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1529687:1536779#L52631">HTMLTr</a>
+			<h2 id="HTMLTr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1475639:1482731#L49253">HTMLTr</a>
 				<a class="permalink" href="#HTMLTr">&#xb6;</a>
 				
 				
@@ -24710,7 +24607,7 @@ application.
 
 			
 				
-				<h3 id="Tr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1536851:1536867#L52804">Tr</a>
+				<h3 id="Tr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1482803:1482819#L49426">Tr</a>
 					<a class="permalink" href="#Tr">&#xb6;</a>
 					
 					
@@ -24726,7 +24623,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLU">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1543938:1550973#L53136">HTMLU</a>
+			<h2 id="HTMLU">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1489346:1496381#L49724">HTMLU</a>
 				<a class="permalink" href="#HTMLU">&#xb6;</a>
 				
 				
@@ -24915,7 +24812,7 @@ application.
 
 			
 				
-				<h3 id="U">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1551109:1551123#L53309">U</a>
+				<h3 id="U">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1496517:1496531#L49897">U</a>
 					<a class="permalink" href="#U">&#xb6;</a>
 					
 					
@@ -24931,7 +24828,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLUl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1558073:1565165#L53641">HTMLUl</a>
+			<h2 id="HTMLUl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1502937:1510029#L50195">HTMLUl</a>
 				<a class="permalink" href="#HTMLUl">&#xb6;</a>
 				
 				
@@ -25120,7 +25017,7 @@ application.
 
 			
 				
-				<h3 id="Ul">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1565238:1565254#L53814">Ul</a>
+				<h3 id="Ul">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1510102:1510118#L50368">Ul</a>
 					<a class="permalink" href="#Ul">&#xb6;</a>
 					
 					
@@ -25136,7 +25033,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLVar">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1572327:1579476#L54146">HTMLVar</a>
+			<h2 id="HTMLVar">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1516647:1523796#L50666">HTMLVar</a>
 				<a class="permalink" href="#HTMLVar">&#xb6;</a>
 				
 				
@@ -25325,7 +25222,7 @@ application.
 
 			
 				
-				<h3 id="Var">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1579580:1579598#L54319">Var</a>
+				<h3 id="Var">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1523900:1523918#L50839">Var</a>
 					<a class="permalink" href="#Var">&#xb6;</a>
 					
 					
@@ -25341,7 +25238,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLVideo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1586795:1597942#L54651">HTMLVideo</a>
+			<h2 id="HTMLVideo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1530571:1541718#L51137">HTMLVideo</a>
 				<a class="permalink" href="#HTMLVideo">&#xb6;</a>
 				
 				
@@ -25629,7 +25526,7 @@ application.
 
 			
 				
-				<h3 id="Video">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1598047:1598069#L54923">Video</a>
+				<h3 id="Video">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1541823:1541845#L51409">Video</a>
 					<a class="permalink" href="#Video">&#xb6;</a>
 					
 					
@@ -25645,7 +25542,7 @@ application.
 		
 			
 			
-			<h2 id="HTMLWbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1609520:1616669#L55420">HTMLWbr</a>
+			<h2 id="HTMLWbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1552384:1559533#L51849">HTMLWbr</a>
 				<a class="permalink" href="#HTMLWbr">&#xb6;</a>
 				
 				
@@ -25834,7 +25731,7 @@ application.
 
 			
 				
-				<h3 id="Wbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1616762:1616780#L55593">Wbr</a>
+				<h3 id="Wbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html_gen.go?s=1559626:1559644#L52022">Wbr</a>
 					<a class="permalink" href="#Wbr">&#xb6;</a>
 					
 					
@@ -25850,7 +25747,7 @@ application.
 		
 			
 			
-			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=386:5593#L19">Handler</a>
+			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=386:5809#L19">Handler</a>
 				<a class="permalink" href="#Handler">&#xb6;</a>
 				
 				
@@ -26000,14 +25897,16 @@ and its resources.
     <span class="comment">// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.</span>
 <span id="Handler.ProxyResources"></span>    ProxyResources []<a href="#ProxyResource">ProxyResource</a>
 
-    <span class="comment">// The resource provider that provides static resources. Static resources</span>
-    <span class="comment">// are always accessed from a path that starts with &#34;/web/&#34;.</span>
+<span id="Handler.Resources"></span>    <span class="comment">// Resources is a ResourceResolver responsible for resolving static resource</span>
+    <span class="comment">// paths. It specifically handles paths that begin with &#34;/web/&#34;, ensuring that</span>
+    <span class="comment">// static resources such as stylesheets, scripts, and images are correctly</span>
+    <span class="comment">// located and served.</span>
     <span class="comment">//</span>
-    <span class="comment">// eg:</span>
-    <span class="comment">//  &#34;/web/main.css&#34;</span>
+    <span class="comment">// For example, a resource path like &#34;/web/main.css&#34; will be resolved to its</span>
+    <span class="comment">// full path or URL by the ResourceResolver.</span>
     <span class="comment">//</span>
     <span class="comment">// Default: LocalDir(&#34;&#34;)</span>
-<span id="Handler.Resources"></span>    Resources <a href="#ResourceProvider">ResourceProvider</a>
+    Resources <a href="#ResourceResolver">ResourceResolver</a>
 
     <span class="comment">// The version number. This is used in order to update the PWA application</span>
     <span class="comment">// in the browser. It must be set when deployed on a live system in order to</span>
@@ -26046,7 +25945,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=14185:14252#L557">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=14261:14328#L549">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -26060,7 +25959,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=23511:24096#L971">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=22862:23447#L932">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -26178,29 +26077,6 @@ after they are visually rendered or integrated into the DOM hierarchy.
     <span class="comment">// This method operates within the UI goroutine.</span>
     OnMount(<a href="#Context">Context</a>)
 }</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="MsgHandler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3335:3369#L126">MsgHandler</a>
-				<a class="permalink" href="#MsgHandler">&#xb6;</a>
-				
-				
-			</h2>
-			<p>MsgHandler represents a handler to listen to messages sent with Context.Post.
-
-			<pre>type MsgHandler func(<a href="#Context">Context</a>, <a href="/pkg/builtin/#any">any</a>)</pre>
 
 			
 
@@ -26513,14 +26389,14 @@ error is returned.
 		
 			
 			
-			<h2 id="ObserverX">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=1598:1769#L51">ObserverX</a>
-				<a class="permalink" href="#ObserverX">&#xb6;</a>
+			<h2 id="Observer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=1579:1747#L51">Observer</a>
+				<a class="permalink" href="#Observer">&#xb6;</a>
 				
 				
 			</h2>
-			<p>ObserverX represents a mechanism to monitor and react to changes in a state.
+			<p>Observer represents a mechanism to monitor and react to changes in a state.
 
-			<pre>type ObserverX struct {
+			<pre>type Observer struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }
 </pre>
@@ -26537,12 +26413,12 @@ error is returned.
 
 			
 				
-				<h3 id="ObserverX.OnChange">func (ObserverX) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=2192:2239#L71">OnChange</a>
-					<a class="permalink" href="#ObserverX.OnChange">&#xb6;</a>
+				<h3 id="Observer.OnChange">func (Observer) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=2168:2213#L71">OnChange</a>
+					<a class="permalink" href="#Observer.OnChange">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (o <a href="#ObserverX">ObserverX</a>) OnChange(h func()) <a href="#ObserverX">ObserverX</a></pre>
+				<pre>func (o <a href="#Observer">Observer</a>) OnChange(h func()) <a href="#Observer">Observer</a></pre>
 				<p>OnChange sets a callback function to be executed each time the observer
 detects a change in the associated state value.
 
@@ -26551,12 +26427,12 @@ detects a change in the associated state value.
 				
 			
 				
-				<h3 id="ObserverX.While">func (ObserverX) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=1953:2010#L64">While</a>
-					<a class="permalink" href="#ObserverX.While">&#xb6;</a>
+				<h3 id="Observer.While">func (Observer) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=1931:1986#L64">While</a>
+					<a class="permalink" href="#Observer.While">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (o <a href="#ObserverX">ObserverX</a>) While(condition func() <a href="/pkg/builtin/#bool">bool</a>) <a href="#ObserverX">ObserverX</a></pre>
+				<pre>func (o <a href="#Observer">Observer</a>) While(condition func() <a href="/pkg/builtin/#bool">bool</a>) <a href="#Observer">Observer</a></pre>
 				<p>While sets a condition for the observer, determining whether it observes
 a state. The condition is periodically checked. Observation stops when the
 condition returns false.
@@ -26708,7 +26584,7 @@ server-side preparations for rendering.
 		
 			
 			
-			<h2 id="ProxyResource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=2691:2901#L100">ProxyResource</a>
+			<h2 id="ProxyResource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=2033:2243#L77">ProxyResource</a>
 				<a class="permalink" href="#ProxyResource">&#xb6;</a>
 				
 				
@@ -26858,7 +26734,7 @@ http.Handler interface.
 
 			
 				
-				<h3 id="CustomProvider">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=2346:2403#L87">CustomProvider</a>
+				<h3 id="CustomProvider">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=1688:1745#L64">CustomProvider</a>
 					<a class="permalink" href="#CustomProvider">&#xb6;</a>
 					
 					
@@ -26872,7 +26748,7 @@ given prefix.
 				
 			
 				
-				<h3 id="GitHubPages">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=2077:2127#L80">GitHubPages</a>
+				<h3 id="GitHubPages">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=1419:1469#L57">GitHubPages</a>
 					<a class="permalink" href="#GitHubPages">&#xb6;</a>
 					
 					
@@ -26885,56 +26761,22 @@ GenerateStaticWebsite function.
 				
 				
 			
-				
-				<h3 id="LocalDir">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=872:915#L21">LocalDir</a>
-					<a class="permalink" href="#LocalDir">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func LocalDir(root <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceProvider">ResourceProvider</a></pre>
-				<p>LocalDir returns a resource provider that serves static resources from a
-local directory located at the given path.
-
-				
-				
-			
-				
-				<h3 id="RemoteBucket">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=1444:1490#L50">RemoteBucket</a>
-					<a class="permalink" href="#RemoteBucket">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func RemoteBucket(url <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceProvider">ResourceProvider</a></pre>
-				<p>RemoteBucket returns a resource provider that provides resources from a
-remote bucket such as Amazon S3 or Google Cloud Storage.
-
-				
-				
-			
 
 			
 		
 			
 			
-			<h2 id="ServerDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2154:2436#L79">ServerDispatcher</a>
-				<a class="permalink" href="#ServerDispatcher">&#xb6;</a>
+			<h2 id="ResourceResolver">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=2379:2515#L88">ResourceResolver</a>
+				<a class="permalink" href="#ResourceResolver">&#xb6;</a>
 				
 				
 			</h2>
-			<p>ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
+			<p>ResourceResolver is an interface that defines the method to resolve
+resources from /web/ path to its full URL or file location.
 
-			<pre>type ServerDispatcher interface {
-    <a href="#Dispatcher">Dispatcher</a>
-
-    <span class="comment">// Consume executes all the remaining UI instructions.</span>
-    Consume()
-
-    <span class="comment">// ConsumeNext executes the next UI instructions.</span>
-    ConsumeNext()
-
-    <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
-    <span class="comment">// resources.</span>
-    Close()
+			<pre>type ResourceResolver interface {
+    <span class="comment">// Resolve takes a resource path and returns its resolved URL or file path.</span>
+    Resolve(<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a>
 }</pre>
 
 			
@@ -26947,14 +26789,30 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 
 			
 				
-				<h3 id="NewServerTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2526:2569#L95">NewServerTester</a>
-					<a class="permalink" href="#NewServerTester">&#xb6;</a>
+				<h3 id="LocalDir">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=2766:2814#L96">LocalDir</a>
+					<a class="permalink" href="#LocalDir">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func NewServerTester(n <a href="#UI">UI</a>) <a href="#ServerDispatcher">ServerDispatcher</a></pre>
-				<p>NewServerTester creates a testing dispatcher that simulates a
-client environment.
+				<pre>func LocalDir(directory <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceResolver">ResourceResolver</a></pre>
+				<p>LocalDir returns a ResourceResolver for local resources. It resolves paths
+starting with /web/ to their full file path based on the specified local directory.
+This resolver is suitable for handling resources stored in the local filesystem.
+
+				
+				
+			
+				
+				<h3 id="RemoteBucket">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/resource.go?s=3556:3602#L123">RemoteBucket</a>
+					<a class="permalink" href="#RemoteBucket">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func RemoteBucket(url <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceResolver">ResourceResolver</a></pre>
+				<p>RemoteBucket returns a ResourceResolver for remote resources. It resolves
+paths starting with /web/ to their full URL based on the specified remote URL,
+such as a cloud storage bucket. This resolver is ideal for resources hosted
+remotely.
 
 				
 				
@@ -26964,15 +26822,15 @@ client environment.
 		
 			
 			
-			<h2 id="StateX">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=270:476#L5">StateX</a>
-				<a class="permalink" href="#StateX">&#xb6;</a>
+			<h2 id="State">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=269:468#L5">State</a>
+				<a class="permalink" href="#State">&#xb6;</a>
 				
 				
 			</h2>
-			<p>StateX represents a state with additional features such as expiration,
+			<p>State represents a state with additional features such as expiration,
 persistence, and broadcasting capabilities.
 
-			<pre>type StateX struct {
+			<pre>type State struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }
 </pre>
@@ -26989,12 +26847,12 @@ persistence, and broadcasting capabilities.
 
 			
 				
-				<h3 id="StateX.Broadcast">func (StateX) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=1268:1302#L40">Broadcast</a>
-					<a class="permalink" href="#StateX.Broadcast">&#xb6;</a>
+				<h3 id="State.Broadcast">func (State) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=1252:1284#L40">Broadcast</a>
+					<a class="permalink" href="#State.Broadcast">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (s <a href="#StateX">StateX</a>) Broadcast() <a href="#StateX">StateX</a></pre>
+				<pre>func (s <a href="#State">State</a>) Broadcast() <a href="#State">State</a></pre>
 				<p>Broadcast signals that changes to the state will be broadcasted to other
 browser tabs and windows sharing the same origin when it is supported.
 
@@ -27003,12 +26861,12 @@ browser tabs and windows sharing the same origin when it is supported.
 				
 			
 				
-				<h3 id="StateX.ExpiresAt">func (StateX) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=734:779#L23">ExpiresAt</a>
-					<a class="permalink" href="#StateX.ExpiresAt">&#xb6;</a>
+				<h3 id="State.ExpiresAt">func (State) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=724:767#L23">ExpiresAt</a>
+					<a class="permalink" href="#State.ExpiresAt">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (s <a href="#StateX">StateX</a>) ExpiresAt(v <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a>) <a href="#StateX">StateX</a></pre>
+				<pre>func (s <a href="#State">State</a>) ExpiresAt(v <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a>) <a href="#State">State</a></pre>
 				<p>ExpiresAt sets the exact expiration time for the state.
 
 				
@@ -27016,12 +26874,12 @@ browser tabs and windows sharing the same origin when it is supported.
 				
 			
 				
-				<h3 id="StateX.ExpiresIn">func (StateX) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=581:630#L18">ExpiresIn</a>
-					<a class="permalink" href="#StateX.ExpiresIn">&#xb6;</a>
+				<h3 id="State.ExpiresIn">func (State) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=573:620#L18">ExpiresIn</a>
+					<a class="permalink" href="#State.ExpiresIn">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (s <a href="#StateX">StateX</a>) ExpiresIn(v <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>) <a href="#StateX">StateX</a></pre>
+				<pre>func (s <a href="#State">State</a>) ExpiresIn(v <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>) <a href="#State">State</a></pre>
 				<p>ExpiresIn sets the expiration time for the state by specifying a duration
 from the current time.
 
@@ -27030,12 +26888,12 @@ from the current time.
 				
 			
 				
-				<h3 id="StateX.Persist">func (StateX) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=874:906#L28">Persist</a>
-					<a class="permalink" href="#StateX.Persist">&#xb6;</a>
+				<h3 id="State.Persist">func (State) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=862:892#L28">Persist</a>
+					<a class="permalink" href="#State.Persist">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (s <a href="#StateX">StateX</a>) Persist() <a href="#StateX">StateX</a></pre>
+				<pre>func (s <a href="#State">State</a>) Persist() <a href="#State">State</a></pre>
 				<p>Persist ensures the state is persisted into the local storage.
 
 				
@@ -27043,12 +26901,12 @@ from the current time.
 				
 			
 				
-				<h3 id="StateX.PersistWithEncryption">func (StateX) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/statex.go?s=1039:1085#L34">PersistWithEncryption</a>
-					<a class="permalink" href="#StateX.PersistWithEncryption">&#xb6;</a>
+				<h3 id="State.PersistWithEncryption">func (State) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/state.go?s=1025:1069#L34">PersistWithEncryption</a>
+					<a class="permalink" href="#State.PersistWithEncryption">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (s <a href="#StateX">StateX</a>) PersistWithEncryption() <a href="#StateX">StateX</a></pre>
+				<pre>func (s <a href="#State">State</a>) PersistWithEncryption() <a href="#State">State</a></pre>
 				<p>PersistWithEncryption ensures the state is persisted into the local storage
 with encryption.
 
@@ -27200,6 +27058,96 @@ string.
 		
 			
 			
+			<h2 id="TestEngine">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=341:1099#L4">TestEngine</a>
+				<a class="permalink" href="#TestEngine">&#xb6;</a>
+				
+				
+			</h2>
+			<p>TestEngine encapsulates the methods required to load components and manage
+asynchronous events within a unit test environment. It simulates the UI engine&apos;s
+behavior, enabling comprehensive unit testing of UI components.
+
+			<pre>type TestEngine interface {
+    <span class="comment">// Load initializes the test engine with the specified component, preparing it</span>
+    <span class="comment">// for unit testing. It returns an error if the component cannot be</span>
+    <span class="comment">// integrated or if the engine fails to initialize properly.</span>
+    Load(<a href="#Composer">Composer</a>) <a href="/pkg/builtin/#error">error</a>
+
+    <span class="comment">// ConsumeNext advances the test engine&#39;s state by processing the next</span>
+    <span class="comment">// operation in the dispatch queue. It allows for fine-grained control over</span>
+    <span class="comment">// the sequence of operations during unit testing.</span>
+    ConsumeNext()
+
+    <span class="comment">// ConsumeAll advances the test engine&#39;s state by executing all pending</span>
+    <span class="comment">// dispatched, deferred, and asynchronous operations. This ensures that the</span>
+    <span class="comment">// component&#39;s state is fully updated, allowing for accurate assertions and</span>
+    <span class="comment">// verifications in test scenarios.</span>
+    ConsumeAll()
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewTestEngine">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=1200:1231#L24">NewTestEngine</a>
+					<a class="permalink" href="#NewTestEngine">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func NewTestEngine() <a href="#TestEngine">TestEngine</a></pre>
+				<p>NewTestEngine creates and returns a new instance of test engine configured
+for unit testing.
+
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="TestUIDescriptor">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=2473:3012#L67">TestUIDescriptor</a>
+				<a class="permalink" href="#TestUIDescriptor">&#xb6;</a>
+				
+				
+			</h2>
+			<p>TestUIDescriptor describes a UI element and its hierarchical location
+relative to parent elements for the purpose of testing.
+
+			<pre>type TestUIDescriptor struct {
+<span id="TestUIDescriptor.Path"></span>    <span class="comment">// Path represents the sequence of child indices to navigate through the UI</span>
+    <span class="comment">// tree to reach the element to be tested. An empty path implies the root.</span>
+    Path []<a href="/pkg/builtin/#int">int</a>
+
+<span id="TestUIDescriptor.Expected"></span>    <span class="comment">// Expected is the UI element that is expected to be found at the location</span>
+    <span class="comment">// specified by Path. The comparison behavior varies depending on the type</span>
+    <span class="comment">// of element; simple text elements are compared by text value, HTML</span>
+    <span class="comment">// elements by attributes and event handlers, and components by the values</span>
+    <span class="comment">// of their exported fields.</span>
+    Expected <a href="#UI">UI</a>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="TwitterCard">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/social.go?s=115:832#L1">TwitterCard</a>
 				<a class="permalink" href="#TwitterCard">&#xb6;</a>
 				
@@ -27284,7 +27232,7 @@ string.
 		
 			
 			
-			<h2 id="UI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=247:442#L7">UI</a>
+			<h2 id="UI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=236:431#L6">UI</a>
 				<a class="permalink" href="#UI">&#xb6;</a>
 				
 				
@@ -27318,7 +27266,7 @@ components and HTML elements.
 
 			
 				
-				<h3 id="FilterUIElems">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=912:944#L28">FilterUIElems</a>
+				<h3 id="FilterUIElems">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=901:933#L27">FilterUIElems</a>
 					<a class="permalink" href="#FilterUIElems">&#xb6;</a>
 					
 					

@@ -61,13 +61,6 @@ func (b remoteBucket) AppWASM() string {
 	return b.appWASM
 }
 
-// GitHubPages returns a resource provider that provides resources from GitHub
-// pages. This provider must only be used to generate static websites with the
-// GenerateStaticWebsite function.
-func GitHubPages(repoName string) ResourceProvider {
-	return CustomProvider("", repoName)
-}
-
 // CustomProvider returns a resource provider that serves static resources from
 // a local directory located at the given path and prefixes URL paths with the
 // given prefix.
@@ -160,4 +153,49 @@ func webLocation(location string) bool {
 		location == "/web" ||
 		strings.HasPrefix(location, "web/") ||
 		location == "web"
+}
+
+// PrefixedLocation returns a ResourceResolver that resolves resources with
+// a specified prefix. This resolver prepends the given prefix to resource paths,
+// which is particularly useful when serving resources from a specific directory
+// or URL path.
+//
+// The prefix is added to the beginning of the resource path, effectively
+// modifying the path from which the resources are served.
+//
+// For example, if the prefix is "/assets", a resource path like "/web/main.css"
+// will be resolved as "/assets/web/main.css".
+func PrefixedLocation(prefix string) ResourceResolver {
+	return prefixedResourceResolver{
+		prefix: prefix,
+	}
+}
+
+type prefixedResourceResolver struct {
+	localResourceResolver
+	prefix string
+}
+
+func (r prefixedResourceResolver) Resolve(location string) string {
+	if remoteLocation(location) {
+		return location
+	}
+	location = r.localResourceResolver.Resolve(location)
+	if location == "/" {
+		return strings.TrimRight(r.prefix, "/")
+	}
+
+	return strings.TrimRight(r.prefix, "/") + location
+}
+
+// GitHubPages returns a ResourceResolver tailored for serving resources
+// from a GitHub Pages site. It creates a resolver with a prefix matching
+// the given repository name. This is particularly useful when hosting
+// a go-app project on GitHub Pages, where resources need to be served
+// from a repository-specific subpath.
+//
+// For example, if the repository name is "myapp", the resources will be
+// served from paths starting with "/myapp/web/".
+func GitHubPages(repositoryName string) ResourceResolver {
+	return PrefixedLocation("/" + strings.Trim(repositoryName, "/"))
 }

@@ -478,6 +478,11 @@ func (h *Handler) makeAppWorkerJS() []byte {
 }
 
 func (h *Handler) makeManifestJSON() []byte {
+	scope := h.Resources.Resolve("/")
+	if scope != "/" && !strings.HasSuffix(scope, "/") {
+		scope += "/"
+	}
+
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
@@ -501,7 +506,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			SVGIcon:         h.Icon.SVG,
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
-			Scope:           h.Resources.Resolve("/"),
+			Scope:           scope,
 			StartURL:        h.Resources.Resolve("/"),
 		}); err != nil {
 		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))

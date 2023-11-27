@@ -126,7 +126,7 @@ func TestHandlerServePageWithGitHubPages(t *testing.T) {
 			"http://boo.com/bar.js",
 		},
 		Styles: []string{
-			"web/foo.css",
+			"/web/foo.css",
 			"/web/bar.css",
 			"http://boo.com/bar.css",
 		},
@@ -181,8 +181,8 @@ func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `"/app-worker.js"`)
 	require.Contains(t, body, `fetchWithProgress("/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
-	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
-	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":""`)
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"/web"`)
+	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":"/"`)
 	require.Contains(t, body, `"GOAPP_INTERNAL_URLS":"[\"https://redirect.me\"]"`)
 }
 
@@ -201,8 +201,8 @@ func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `"/app-worker.js"`)
 	require.Contains(t, body, `fetchWithProgress("https://storage.googleapis.com/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
-	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"https://storage.googleapis.com/go-app"`)
-	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":""`)
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"https://storage.googleapis.com/go-app/web"`)
+	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":"/"`)
 }
 
 func TestHandlerServeAppJSWithGitHubPages(t *testing.T) {
@@ -220,7 +220,7 @@ func TestHandlerServeAppJSWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `"/go-app/app-worker.js"`)
 	require.Contains(t, body, `fetchWithProgress("/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
-	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"/go-app"`)
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"/go-app/web"`)
 	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":"/go-app"`)
 }
 
@@ -242,8 +242,8 @@ func TestHandlerServeAppJSWithEnv(t *testing.T) {
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"FOO":"foo"`)
 	require.Contains(t, body, `"BAR":"bar"`)
-	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
-	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":""`)
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"/web"`)
+	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":"/"`)
 }
 
 func TestHandlerServeAppWorkerJSWithLocalDir(t *testing.T) {
@@ -411,11 +411,10 @@ func TestHandlerServeManifestJSONWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `"short_name": "foo"`)
 	require.Contains(t, body, `"name": "foobar"`)
 	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
-	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
 	require.Contains(t, body, `"background_color": "#0000f0"`)
 	require.Contains(t, body, `"theme_color": "#0000ff"`)
 	require.Contains(t, body, `"scope": "/go-app/"`)
-	require.Contains(t, body, `"start_url": "/go-app/"`)
+	require.Contains(t, body, `"start_url": "/go-app"`)
 }
 
 func TestHandlerServeAppCSS(t *testing.T) {
@@ -444,7 +443,7 @@ func TestHandlerServeAppWasm(t *testing.T) {
 	}{
 		{
 			scenario: "from resource provider path",
-			path:     h.Resources.AppWASM(),
+			path:     h.Resources.Resolve("/web/app.wasm"),
 		},
 		{
 			scenario: "from legacy v6 path",
