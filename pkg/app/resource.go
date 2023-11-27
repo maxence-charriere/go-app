@@ -26,17 +26,6 @@ type ResourceProvider interface {
 	AppWASM() string
 }
 
-// LocalDir returns a resource provider that serves static resources from a
-// local directory located at the given path.
-func LocalDir(root string) ResourceProvider {
-	root = strings.Trim(root, "/")
-	return localDir{
-		Handler: http.FileServer(http.Dir(root)),
-		root:    root,
-		appWASM: root + "/web/app.wasm",
-	}
-}
-
 type localDir struct {
 	http.Handler
 	root    string
@@ -53,18 +42,6 @@ func (d localDir) Static() string {
 
 func (d localDir) AppWASM() string {
 	return d.appWASM
-}
-
-// RemoteBucket returns a resource provider that provides resources from a
-// remote bucket such as Amazon S3 or Google Cloud Storage.
-func RemoteBucket(url string) ResourceProvider {
-	url = strings.TrimSuffix(url, "/")
-	url = strings.TrimSuffix(url, "/web")
-
-	return remoteBucket{
-		root:    url,
-		appWASM: url + "/web/app.wasm",
-	}
 }
 
 type remoteBucket struct {
@@ -114,4 +91,73 @@ type ProxyResource struct {
 	// The path of the static resource that is proxied. It must start with
 	// "/web/".
 	ResourcePath string
+}
+
+// ResourceResolver is an interface that defines the method to resolve
+// resources from /web/ path to its full URL or file location.
+type ResourceResolver interface {
+	// Resolve takes a resource path and returns its resolved URL or file path.
+	Resolve(string) string
+}
+
+// LocalDir returns a ResourceResolver for local resources. It resolves paths
+// starting with /web/ to their full file path based on the specified local directory.
+// This resolver is suitable for handling resources stored in the local filesystem.
+func LocalDir(directory string) ResourceResolver {
+	directory = strings.TrimRight(directory, "/")
+	return localResourceResolver{
+		Handler:   http.FileServer(http.Dir(directory)),
+		directory: directory,
+	}
+}
+
+type localResourceResolver struct {
+	http.Handler
+	directory string
+}
+
+func (r localResourceResolver) Resolve(location string) string {
+	if location == "/" || location == "" {
+		return "/"
+	}
+	if remoteLocation(location) || !webLocation(location) {
+		return location
+	}
+	return r.directory + "/" + strings.Trim(location, "/")
+}
+
+// RemoteBucket returns a ResourceResolver for remote resources. It resolves
+// paths starting with /web/ to their full URL based on the specified remote URL,
+// such as a cloud storage bucket. This resolver is ideal for resources hosted
+// remotely.
+func RemoteBucket(url string) ResourceResolver {
+	return remoteResourceResolver{
+		url: strings.Trim(url, "/"),
+	}
+}
+
+type remoteResourceResolver struct {
+	url string
+}
+
+func (r remoteResourceResolver) Resolve(location string) string {
+	if location == "/" || location == "" {
+		return "/"
+	}
+	if remoteLocation(location) || !webLocation(location) {
+		return location
+	}
+	return r.url + "/" + strings.Trim(location, "/")
+}
+
+func remoteLocation(location string) bool {
+	return strings.HasPrefix(location, "https://") ||
+		strings.HasPrefix(location, "http://")
+}
+
+func webLocation(location string) bool {
+	return strings.HasPrefix(location, "/web/") ||
+		location == "/web" ||
+		strings.HasPrefix(location, "web/") ||
+		location == "web"
 }

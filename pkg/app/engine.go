@@ -142,8 +142,8 @@ func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 	}
 
 	path := strings.TrimPrefix(destination.Path, Getenv("GOAPP_ROOT_PREFIX"))
-	if path == "" {
-		path = "/"
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
 	}
 	root, ok := e.routes.createComponent(path)
 	if !ok {

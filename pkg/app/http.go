@@ -168,14 +168,16 @@ type Handler struct {
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
 	ProxyResources []ProxyResource
 
-	// The resource provider that provides static resources. Static resources
-	// are always accessed from a path that starts with "/web/".
+	// Resources is a ResourceResolver responsible for resolving static resource
+	// paths. It specifically handles paths that begin with "/web/", ensuring that
+	// static resources such as stylesheets, scripts, and images are correctly
+	// located and served.
 	//
-	// eg:
-	//  "/web/main.css"
+	// For example, a resource path like "/web/main.css" will be resolved to its
+	// full path or URL by the ResourceResolver.
 	//
 	// Default: LocalDir("")
-	Resources ResourceProvider
+	Resources ResourceResolver
 
 	// The version number. This is used in order to update the PWA application
 	// in the browser. It must be set when deployed on a live system in order to
@@ -239,7 +241,7 @@ func (h *Handler) initStaticResources() {
 
 func (h *Handler) initImage() {
 	if h.Image != "" {
-		h.Image = h.resolveStaticPath(h.Image)
+		h.Image = h.Resources.Resolve(h.Image)
 	}
 }
 
@@ -257,26 +259,26 @@ func (h *Handler) initLibraries() {
 
 func (h *Handler) initLinks() {
 	for i, path := range h.Preconnect {
-		h.Preconnect[i] = h.resolveStaticPath(path)
+		h.Preconnect[i] = h.Resources.Resolve(path)
 	}
 
-	styles := []string{h.resolvePackagePath("/app.css")}
+	styles := []string{h.Resources.Resolve("/app.css")}
 	for path := range h.libraries {
-		styles = append(styles, h.resolvePackagePath(path))
+		styles = append(styles, h.Resources.Resolve(path))
 	}
 	for _, path := range h.Styles {
-		styles = append(styles, h.resolveStaticPath(path))
+		styles = append(styles, h.Resources.Resolve(path))
 	}
 	h.Styles = styles
 
 	for i, path := range h.Fonts {
-		h.Fonts[i] = h.resolveStaticPath(path)
+		h.Fonts[i] = h.Resources.Resolve(path)
 	}
 }
 
 func (h *Handler) initScripts() {
 	for i, path := range h.Scripts {
-		h.Scripts[i] = h.resolveStaticPath(path)
+		h.Scripts[i] = h.Resources.Resolve(path)
 	}
 }
 
@@ -288,7 +290,7 @@ func (h *Handler) initServiceWorker() {
 
 func (h *Handler) initCacheableResources() {
 	for i, path := range h.CacheableResources {
-		h.CacheableResources[i] = h.resolveStaticPath(path)
+		h.CacheableResources[i] = h.Resources.Resolve(path)
 	}
 }
 
@@ -306,10 +308,10 @@ func (h *Handler) initIcon() {
 		h.Icon.SVG = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.svg"
 	}
 
-	h.Icon.Default = h.resolveStaticPath(h.Icon.Default)
-	h.Icon.Large = h.resolveStaticPath(h.Icon.Large)
-	h.Icon.SVG = h.resolveStaticPath(h.Icon.SVG)
-	h.Icon.AppleTouch = h.resolveStaticPath(h.Icon.AppleTouch)
+	h.Icon.Default = h.Resources.Resolve(h.Icon.Default)
+	h.Icon.Large = h.Resources.Resolve(h.Icon.Large)
+	h.Icon.SVG = h.Resources.Resolve(h.Icon.SVG)
+	h.Icon.AppleTouch = h.Resources.Resolve(h.Icon.AppleTouch)
 }
 
 func (h *Handler) initPWA() {
@@ -391,8 +393,8 @@ func (h *Handler) makeAppJS() []byte {
 	internalURLs, _ := json.Marshal(h.InternalURLs)
 	h.Env["GOAPP_INTERNAL_URLS"] = string(internalURLs)
 	h.Env["GOAPP_VERSION"] = h.Version
-	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Static()
-	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Package()
+	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Resolve("/web")
+	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Resolve("/")
 
 	for k, v := range h.Env {
 		if err := os.Setenv(k, v); err != nil {
@@ -416,9 +418,9 @@ func (h *Handler) makeAppJS() []byte {
 		}{
 			Env:                     jsonString(h.Env),
 			LoadingLabel:            h.LoadingLabel,
-			Wasm:                    h.Resources.AppWASM(),
+			Wasm:                    h.Resources.Resolve("/web/app.wasm"),
 			WasmContentLengthHeader: h.WasmContentLengthHeader,
-			WorkerJS:                h.resolvePackagePath("/app-worker.js"),
+			WorkerJS:                h.Resources.Resolve("/app-worker.js"),
 			AutoUpdateInterval:      h.AutoUpdateInterval.Milliseconds(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
@@ -439,12 +441,12 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		}
 	}
 	setResources(
-		h.resolvePackagePath("/app.css"),
-		h.resolvePackagePath("/app.js"),
-		h.resolvePackagePath("/manifest.webmanifest"),
-		h.resolvePackagePath("/wasm_exec.js"),
-		h.resolvePackagePath("/"),
-		h.Resources.AppWASM(),
+		h.Resources.Resolve("/app.css"),
+		h.Resources.Resolve("/app.js"),
+		h.Resources.Resolve("/manifest.webmanifest"),
+		h.Resources.Resolve("/wasm_exec.js"),
+		h.Resources.Resolve("/"),
+		h.Resources.Resolve("/web/app.wasm"),
 	)
 	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
 	setResources(h.Styles...)
@@ -476,16 +478,6 @@ func (h *Handler) makeAppWorkerJS() []byte {
 }
 
 func (h *Handler) makeManifestJSON() []byte {
-	normalize := func(s string) string {
-		if !strings.HasPrefix(s, "/") {
-			s = "/" + s
-		}
-		if !strings.HasSuffix(s, "/") {
-			s += "/"
-		}
-		return s
-	}
-
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
@@ -509,8 +501,8 @@ func (h *Handler) makeManifestJSON() []byte {
 			SVGIcon:         h.Icon.SVG,
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
-			Scope:           normalize(h.Resources.Package()),
-			StartURL:        normalize(h.Resources.Package()),
+			Scope:           h.Resources.Resolve("/"),
+			StartURL:        h.Resources.Resolve("/"),
 		}); err != nil {
 		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))
 	}
@@ -594,11 +586,10 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/app.wasm", "/goapp.wasm":
 		if isServingStaticResources {
 			r2 := *r
-			r2.URL.Path = h.Resources.AppWASM()
+			r2.URL.Path = h.Resources.Resolve("/web/app.wasm")
 			fileHandler.ServeHTTP(w, &r2)
 			return
 		}
-
 		w.WriteHeader(http.StatusNotFound)
 		return
 
@@ -645,7 +636,7 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		}
 		u = protocol + r.Host + resource.ResourcePath
 	} else {
-		u = h.Resources.Static() + resource.ResourcePath
+		u = h.Resources.Resolve(resource.ResourcePath)
 	}
 
 	if i, ok := h.cachedProxyResources.Get(resource.Path); ok {
@@ -704,7 +695,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	origin := *r.URL
 	origin.Scheme = "http"
 
-	page := makeRequestPage(&origin, h.resolveStaticPath)
+	page := makeRequestPage(&origin, h.Resources.Resolve)
 	page.SetTitle(h.Title)
 	page.SetLang(h.Lang)
 	page.SetDescription(h.Description)
@@ -715,7 +706,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	engine := newEngine(ctx,
 		&routes,
-		h.resolveStaticPath,
+		h.Resources.Resolve,
 		&page,
 		actionHandlers,
 	)
@@ -863,7 +854,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Href(h.Icon.AppleTouch),
 				Link().
 					Rel("manifest").
-					Href(h.resolvePackagePath("/manifest.webmanifest")),
+					Href("/manifest.webmanifest"),
 				Range(h.Styles).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Styles[i])
 					if url == "" {
@@ -883,10 +874,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				}),
 				Script().
 					Defer(true).
-					Src(h.resolvePackagePath("/wasm_exec.js")),
+					Src("/wasm_exec.js"),
 				Script().
 					Defer(true).
-					Src(h.resolvePackagePath("/app.js")),
+					Src("/app.js"),
 				Range(h.Scripts).Slice(func(i int) UI {
 					url, crossOrigin, loading := parseSrc(h.Scripts[i])
 					if url == "" {
@@ -944,36 +935,6 @@ func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library [
 	w.Header().Set("Content-Length", strconv.Itoa(len(library)))
 	w.Header().Set("Content-Type", "text/css")
 	w.Write(library)
-}
-
-func (h *Handler) resolvePackagePath(path string) string {
-	var b strings.Builder
-
-	b.WriteByte('/')
-	appResources := strings.Trim(h.Resources.Package(), "/")
-	b.WriteString(appResources)
-
-	path = strings.Trim(path, "/")
-	if b.Len() != 1 && path != "" {
-		b.WriteByte('/')
-	}
-	b.WriteString(path)
-
-	return b.String()
-}
-
-func (h *Handler) resolveStaticPath(path string) string {
-	if isRemoteLocation(path) || !isStaticResourcePath(path) {
-		return path
-	}
-
-	var b strings.Builder
-	staticResources := strings.TrimSuffix(h.Resources.Static(), "/")
-	b.WriteString(staticResources)
-	path = strings.Trim(path, "/")
-	b.WriteByte('/')
-	b.WriteString(path)
-	return b.String()
 }
 
 // Icon describes a square image that is used in various places such as
