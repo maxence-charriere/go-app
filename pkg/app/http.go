@@ -212,7 +212,6 @@ type Handler struct {
 func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
-	h.initImage()
 	h.initLibraries()
 	h.initLinks()
 	h.initServiceWorker()
@@ -234,12 +233,6 @@ func (h *Handler) initVersion() {
 func (h *Handler) initStaticResources() {
 	if h.Resources == nil {
 		h.Resources = LocalDir("")
-	}
-}
-
-func (h *Handler) initImage() {
-	if h.Image != "" {
-		h.Image = h.Image
 	}
 }
 
@@ -289,11 +282,6 @@ func (h *Handler) initIcon() {
 	if h.Icon.SVG == "" {
 		h.Icon.SVG = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.svg"
 	}
-
-	h.Icon.Default = h.Icon.Default
-	h.Icon.Large = h.Icon.Large
-	h.Icon.SVG = h.Icon.SVG
-	h.Icon.AppleTouch = h.Icon.AppleTouch
 }
 
 func (h *Handler) initPWA() {
