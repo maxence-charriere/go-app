@@ -249,10 +249,6 @@ func (h *Handler) initLibraries() {
 }
 
 func (h *Handler) initLinks() {
-	for i, path := range h.Preconnect {
-		h.Preconnect[i] = path
-	}
-
 	styles := []string{"/app.css"}
 	for path := range h.libraries {
 		styles = append(styles, path)
