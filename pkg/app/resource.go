@@ -5,87 +5,6 @@ import (
 	"strings"
 )
 
-// ResourceProvider is the interface that describes a resource provider that
-// tells the Handler how to locate and get the package and static resources.
-//
-// Package resources are the resource required to operate go-app.
-//
-// Static resources are resources such as app.wasm, CSS files, images.
-//
-// The resource provider is used to serve static resources when it satisfies the
-// http.Handler interface.
-type ResourceProvider interface {
-	// Package returns the path where the package resources are located.
-	Package() string
-
-	// Static returns the path where the static resources directory (/web) is
-	// located.
-	Static() string
-
-	// AppWASM returns the app.wasm file path.
-	AppWASM() string
-}
-
-type localDir struct {
-	http.Handler
-	root    string
-	appWASM string
-}
-
-func (d localDir) Package() string {
-	return d.root
-}
-
-func (d localDir) Static() string {
-	return d.root
-}
-
-func (d localDir) AppWASM() string {
-	return d.appWASM
-}
-
-type remoteBucket struct {
-	root    string
-	appWASM string
-}
-
-func (b remoteBucket) Package() string {
-	return ""
-}
-
-func (b remoteBucket) Static() string {
-	return b.root
-}
-
-func (b remoteBucket) AppWASM() string {
-	return b.appWASM
-}
-
-// CustomProvider returns a resource provider that serves static resources from
-// a local directory located at the given path and prefixes URL paths with the
-// given prefix.
-func CustomProvider(path, prefix string) ResourceProvider {
-	root := strings.Trim(path, "/")
-	prefix = "/" + strings.Trim(prefix, "/")
-
-	return localDir{
-		Handler: http.FileServer(http.Dir(root)),
-		root:    prefix,
-		appWASM: prefix + "/web/app.wasm",
-	}
-}
-
-// ProxyResource is a proxy descriptor that maps a given resource to an URL
-// path.
-type ProxyResource struct {
-	// The URL path from where a static resource is accessible.
-	Path string
-
-	// The path of the static resource that is proxied. It must start with
-	// "/web/".
-	ResourcePath string
-}
-
 // ResourceResolver is an interface that defines the method to resolve
 // resources from /web/ path to its full URL or file location.
 type ResourceResolver interface {
@@ -143,18 +62,6 @@ func (r remoteResourceResolver) Resolve(location string) string {
 	return r.url + "/" + strings.Trim(location, "/")
 }
 
-func remoteLocation(location string) bool {
-	return strings.HasPrefix(location, "https://") ||
-		strings.HasPrefix(location, "http://")
-}
-
-func webLocation(location string) bool {
-	return strings.HasPrefix(location, "/web/") ||
-		location == "/web" ||
-		strings.HasPrefix(location, "web/") ||
-		location == "web"
-}
-
 // PrefixedLocation returns a ResourceResolver that resolves resources with
 // a specified prefix. This resolver prepends the given prefix to resource paths,
 // which is particularly useful when serving resources from a specific directory
@@ -184,7 +91,6 @@ func (r prefixedResourceResolver) Resolve(location string) string {
 	if location == "/" {
 		return strings.TrimRight(r.prefix, "/")
 	}
-
 	return strings.TrimRight(r.prefix, "/") + location
 }
 
@@ -198,4 +104,37 @@ func (r prefixedResourceResolver) Resolve(location string) string {
 // served from paths starting with "/myapp/web/".
 func GitHubPages(repositoryName string) ResourceResolver {
 	return PrefixedLocation("/" + strings.Trim(repositoryName, "/"))
+}
+
+func clientResourceResolver(resourcesLocation string) func(string) string {
+	return func(location string) string {
+		if remoteLocation(location) || !webLocation(location) {
+			return location
+		}
+		location = strings.Trim(location, "/")
+		return resourcesLocation + "/" + strings.TrimPrefix(location, "web/")
+	}
+}
+
+func remoteLocation(location string) bool {
+	return strings.HasPrefix(location, "https://") ||
+		strings.HasPrefix(location, "http://")
+}
+
+func webLocation(location string) bool {
+	return strings.HasPrefix(location, "/web/") ||
+		location == "/web" ||
+		strings.HasPrefix(location, "web/") ||
+		location == "web"
+}
+
+// ProxyResource is a proxy descriptor that maps a given resource to an URL
+// path.
+type ProxyResource struct {
+	// The URL path from where a static resource is accessible.
+	Path string
+
+	// The path of the static resource that is proxied. It must start with
+	// "/web/".
+	ResourcePath string
 }

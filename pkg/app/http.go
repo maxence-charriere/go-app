@@ -215,9 +215,7 @@ func (h *Handler) init() {
 	h.initImage()
 	h.initLibraries()
 	h.initLinks()
-	h.initScripts()
 	h.initServiceWorker()
-	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
 	h.initPageContent()
@@ -241,7 +239,7 @@ func (h *Handler) initStaticResources() {
 
 func (h *Handler) initImage() {
 	if h.Image != "" {
-		h.Image = h.Resources.Resolve(h.Image)
+		h.Image = h.Image
 	}
 }
 
@@ -259,38 +257,22 @@ func (h *Handler) initLibraries() {
 
 func (h *Handler) initLinks() {
 	for i, path := range h.Preconnect {
-		h.Preconnect[i] = h.Resources.Resolve(path)
+		h.Preconnect[i] = path
 	}
 
-	styles := []string{h.Resources.Resolve("/app.css")}
+	styles := []string{"/app.css"}
 	for path := range h.libraries {
-		styles = append(styles, h.Resources.Resolve(path))
+		styles = append(styles, path)
 	}
 	for _, path := range h.Styles {
-		styles = append(styles, h.Resources.Resolve(path))
+		styles = append(styles, path)
 	}
 	h.Styles = styles
-
-	for i, path := range h.Fonts {
-		h.Fonts[i] = h.Resources.Resolve(path)
-	}
-}
-
-func (h *Handler) initScripts() {
-	for i, path := range h.Scripts {
-		h.Scripts[i] = h.Resources.Resolve(path)
-	}
 }
 
 func (h *Handler) initServiceWorker() {
 	if h.ServiceWorkerTemplate == "" {
 		h.ServiceWorkerTemplate = DefaultAppWorkerJS
-	}
-}
-
-func (h *Handler) initCacheableResources() {
-	for i, path := range h.CacheableResources {
-		h.CacheableResources[i] = h.Resources.Resolve(path)
 	}
 }
 
@@ -308,10 +290,10 @@ func (h *Handler) initIcon() {
 		h.Icon.SVG = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.svg"
 	}
 
-	h.Icon.Default = h.Resources.Resolve(h.Icon.Default)
-	h.Icon.Large = h.Resources.Resolve(h.Icon.Large)
-	h.Icon.SVG = h.Resources.Resolve(h.Icon.SVG)
-	h.Icon.AppleTouch = h.Resources.Resolve(h.Icon.AppleTouch)
+	h.Icon.Default = h.Icon.Default
+	h.Icon.Large = h.Icon.Large
+	h.Icon.SVG = h.Icon.SVG
+	h.Icon.AppleTouch = h.Icon.AppleTouch
 }
 
 func (h *Handler) initPWA() {
@@ -441,12 +423,12 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		}
 	}
 	setResources(
-		h.Resources.Resolve("/app.css"),
-		h.Resources.Resolve("/app.js"),
-		h.Resources.Resolve("/manifest.webmanifest"),
-		h.Resources.Resolve("/wasm_exec.js"),
-		h.Resources.Resolve("/"),
-		h.Resources.Resolve("/web/app.wasm"),
+		"/app.css",
+		"/app.js",
+		"/manifest.webmanifest",
+		"/wasm_exec.js",
+		"/",
+		"/web/app.wasm",
 	)
 	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
 	setResources(h.Styles...)
@@ -456,7 +438,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 
 	resourcesTocache := make([]string, 0, len(resources))
 	for k := range resources {
-		resourcesTocache = append(resourcesTocache, k)
+		resourcesTocache = append(resourcesTocache, h.Resources.Resolve(k))
 	}
 	sort.Slice(resourcesTocache, func(a, b int) bool {
 		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) < 0
@@ -717,12 +699,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	)
 	engine.Navigate(page.URL(), false)
 	engine.ConsumeAll()
-
-	// TODO: remove this:
-	// for len(disp.dispatches) != 0 {
-	// 	disp.Consume()
-	// 	disp.Wait()
-	// }
 
 	icon := h.Icon.SVG
 	if icon == "" {
