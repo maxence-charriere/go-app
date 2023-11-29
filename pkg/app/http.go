@@ -732,6 +732,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					if v == "" {
 						return nil
 					}
+					if k == "twitter:image" {
+						v = resolveOGResource(h.Domain, v)
+					}
 					return Meta().
 						Name(k).
 						Content(v)
