@@ -140,3 +140,53 @@ func TestClientResourceResolver(t *testing.T) {
 		})
 	}
 }
+
+func TestResoveOGResource(t *testing.T) {
+	utests := []struct {
+		scenario string
+		in       string
+		out      string
+	}{
+		{
+			scenario: "remote url",
+			in:       "https://murlok.io/warrior",
+			out:      "https://murlok.io/warrior",
+		},
+		{
+			scenario: "empty path",
+			in:       "",
+			out:      "https://test.io",
+		},
+		{
+			scenario: "root path",
+			in:       "/",
+			out:      "https://test.io",
+		},
+		{
+			scenario: "path",
+			in:       "/warrior",
+			out:      "https://test.io/warrior",
+		},
+		{
+			scenario: "path with slash suffix",
+			in:       "/warrior/",
+			out:      "https://test.io/warrior",
+		},
+		{
+			scenario: "static resource",
+			in:       "/web/warrior.png",
+			out:      "https://test.io/web/warrior.png",
+		},
+		{
+			scenario: "static resource without slash prefix",
+			in:       "web/warrior.png",
+			out:      "https://test.io/web/warrior.png",
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			require.Equal(t, u.out, resolveOGResource("test.io", u.in))
+		})
+	}
+}

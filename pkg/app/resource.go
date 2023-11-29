@@ -116,6 +116,13 @@ func clientResourceResolver(resourcesLocation string) func(string) string {
 	}
 }
 
+func resolveOGResource(domain string, location string) string {
+	if remoteLocation(location) {
+		return location
+	}
+	return "https://" + domain + strings.TrimRight("/"+strings.Trim(location, "/"), "/")
+}
+
 func remoteLocation(location string) bool {
 	return strings.HasPrefix(location, "https://") ||
 		strings.HasPrefix(location, "http://")

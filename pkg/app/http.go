@@ -714,7 +714,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
 				Meta().
 					Property("og:url").
-					Content("https://"+h.Domain+h.Resources.Resolve(page.URL().Path)),
+					Content(resolveOGResource(h.Domain, h.Resources.Resolve(page.URL().Path))),
 				Meta().
 					Property("og:title").
 					Content(page.Title()),
@@ -726,7 +726,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Content("website"),
 				Meta().
 					Property("og:image").
-					Content(page.Image()),
+					Content(resolveOGResource(h.Domain, page.Image())),
 				Range(page.twitterCardMap).Map(func(k string) UI {
 					v := page.twitterCardMap[k]
 					if v == "" {
