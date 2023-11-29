@@ -70,6 +70,11 @@ type Handler struct {
 	// The page description.
 	Description string
 
+	// Domain specifies the domain name of the server. It is primarily used
+	// to resolve page metadata such as 'go:url', ensuring accurate reference
+	// and representation of URLs within the application.
+	Domain string
+
 	// The page authors.
 	Author string
 
@@ -709,7 +714,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
 				Meta().
 					Property("og:url").
-					Content(page.URL().String()),
+					Content(h.Domain+h.Resources.Resolve(page.URL().Path)),
 				Meta().
 					Property("og:title").
 					Content(page.Title()),
