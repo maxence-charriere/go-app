@@ -253,10 +253,7 @@ func (h *Handler) initLinks() {
 	for path := range h.libraries {
 		styles = append(styles, path)
 	}
-	for _, path := range h.Styles {
-		styles = append(styles, path)
-	}
-	h.Styles = styles
+	h.Styles = append(styles, h.Styles...)
 }
 
 func (h *Handler) initServiceWorker() {
