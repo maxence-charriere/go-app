@@ -714,7 +714,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
 				Meta().
 					Property("og:url").
-					Content(h.Domain+h.Resources.Resolve(page.URL().Path)),
+					Content("https://"+h.Domain+h.Resources.Resolve(page.URL().Path)),
 				Meta().
 					Property("og:title").
 					Content(page.Title()),
