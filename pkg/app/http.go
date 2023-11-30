@@ -198,7 +198,7 @@ type Handler struct {
 	//
 	// If this field is not set, the handler will attempt to use the
 	// WasmContentLengthHeader to determine the content length.
-	WasmContentLength int
+	WasmContentLength string
 
 	// WasmContentLengthHeader defines the HTTP header used to obtain the content
 	// length of the WebAssembly file. This is used as a fallback mechanism to
@@ -389,7 +389,7 @@ func (h *Handler) makeAppJS() []byte {
 			Env                     string
 			LoadingLabel            string
 			Wasm                    string
-			WasmContentLength       int
+			WasmContentLength       string
 			WasmContentLengthHeader string
 			WorkerJS                string
 			AutoUpdateInterval      int64
