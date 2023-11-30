@@ -192,10 +192,19 @@ type Handler struct {
 	// development system.
 	Version string
 
-	// The HTTP header to retrieve the WebAssembly file content length.
+	// WasmContentLength specifies the length, in bytes, of the WebAssembly (WASM)
+	// file. This length is used to calculate the loading progress when serving the
+	// WASM binary.
 	//
-	// Content length finding falls back to the Content-Length HTTP header when
-	// no content length is found with the defined header.
+	// If this field is not set, the handler will attempt to use the
+	// WasmContentLengthHeader to determine the content length.
+	WasmContentLength int
+
+	// WasmContentLengthHeader defines the HTTP header used to obtain the content
+	// length of the WebAssembly file. This is used as a fallback mechanism to
+	// determine the loading progress if WasmContentLength is not set.
+	//
+	// The default fallback HTTP header is "Content-Length".
 	WasmContentLengthHeader string
 
 	// The template used to generate app-worker.js. The template follows the
@@ -380,6 +389,7 @@ func (h *Handler) makeAppJS() []byte {
 			Env                     string
 			LoadingLabel            string
 			Wasm                    string
+			WasmContentLength       int
 			WasmContentLengthHeader string
 			WorkerJS                string
 			AutoUpdateInterval      int64
@@ -387,6 +397,7 @@ func (h *Handler) makeAppJS() []byte {
 			Env:                     jsonString(h.Env),
 			LoadingLabel:            h.LoadingLabel,
 			Wasm:                    h.Resources.Resolve("/web/app.wasm"),
+			WasmContentLength:       h.WasmContentLength,
 			WasmContentLengthHeader: h.WasmContentLengthHeader,
 			WorkerJS:                h.Resources.Resolve("/app-worker.js"),
 			AutoUpdateInterval:      h.AutoUpdateInterval.Milliseconds(),
