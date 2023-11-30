@@ -66,7 +66,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 	require.Contains(t, body, `<div id="pre-render-ok">`)
-	require.Contains(t, body, `content="/web/test.png"`)
+	require.Contains(t, body, `content="https:///web/test.png"`)
 	require.Contains(t, body, `<img src="/web/resolve-static-resource-test.jpg">`)
 
 	t.Log(body)

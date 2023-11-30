@@ -541,7 +541,10 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	path := strings.TrimPrefix(r.URL.Path, "/"+h.Version)
+	path := r.URL.Path
+	if strings.HasPrefix(path, "/"+h.Version+"/") {
+		path = strings.TrimPrefix(path, "/"+h.Version)
+	}
 
 	fileHandler, isServingStaticResources := h.Resources.(http.Handler)
 	if isServingStaticResources && strings.HasPrefix(path, "/web/") {
