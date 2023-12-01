@@ -15,7 +15,6 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"strings"
 )
 
 const (
@@ -92,7 +91,7 @@ func RunWhenOnBrowser() {
 		panic(err)
 	}()
 
-	resolveURL := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
+	resolveURL := clientResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 	originPage := makeRequestPage(Window().URL(), resolveURL)
 
 	engine := newEngine(context.Background(),
@@ -114,18 +113,4 @@ func displayLoadError(err any) {
 		return
 	}
 	loadingLabel.setInnerText(fmt.Sprint(err))
-}
-
-func newClientStaticResourceResolver(staticResourceURL string) func(string) string {
-	return func(path string) string {
-		if isRemoteLocation(path) || !isStaticResourcePath(path) {
-			return path
-		}
-
-		var b strings.Builder
-		b.WriteString(staticResourceURL)
-		b.WriteByte('/')
-		b.WriteString(strings.TrimPrefix(path, "/"))
-		return b.String()
-	}
 }

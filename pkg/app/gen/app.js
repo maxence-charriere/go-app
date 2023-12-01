@@ -7,6 +7,7 @@ var goappOnAppInstallChange = function () {};
 
 const goappEnv = {{.Env}};
 const goappLoadingLabel = "{{.LoadingLabel}}";
+const goappWasmContentLength = "{{.WasmContentLength}}";
 const goappWasmContentLengthHeader = "{{.WasmContentLengthHeader}}";
 
 let goappServiceWorkerRegistration;
@@ -240,12 +241,14 @@ function goappCanLoadWebAssembly() {
 async function fetchWithProgress(url, progess) {
   const response = await fetch(url);
 
-  let contentLength;
-  try {
-    contentLength = response.headers.get(goappWasmContentLengthHeader);
-  } catch {}
-  if (!goappWasmContentLengthHeader || !contentLength) {
-    contentLength = response.headers.get("Content-Length");
+  let contentLength = goappWasmContentLength;
+  if (contentLength <= 0) {
+    try {
+      contentLength = response.headers.get(goappWasmContentLengthHeader);
+    } catch {}
+    if (!goappWasmContentLengthHeader || !contentLength) {
+      contentLength = response.headers.get("Content-Length");
+    }
   }
 
   const total = parseInt(contentLength, 10);

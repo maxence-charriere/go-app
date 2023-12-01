@@ -151,7 +151,9 @@ func (p *requestPage) Image() string {
 }
 
 func (p *requestPage) SetImage(v string) {
-	p.image = p.resolveURL(v)
+	if v != "" {
+		p.image = p.resolveURL(v)
+	}
 }
 
 func (p *requestPage) URL() *url.URL {
@@ -246,7 +248,9 @@ func (p browserPage) Image() string {
 }
 
 func (p browserPage) SetImage(v string) {
-	p.metaByProperty("og:image").setAttr("content", p.resolveURL(v))
+	if v != "" {
+		p.metaByProperty("og:image").setAttr("content", p.resolveURL(v))
+	}
 }
 
 func (p browserPage) URL() *url.URL {
