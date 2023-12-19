@@ -717,9 +717,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Meta().
 					Name("description").
 					Content(page.Description()),
-				Meta().
-					Name("keywords").
-					Content(page.Keywords()),
+				If(page.Keywords() != "", func() UI {
+					return Meta().
+						Name("keywords").
+						Content(page.Keywords())
+				}),
 				Meta().
 					Name("theme-color").
 					Content(h.ThemeColor),
