@@ -733,8 +733,11 @@ func (m nodeManager) encodeHTML(ctx Context, w *bytes.Buffer, depth int, v HTML)
 }
 
 func (m nodeManager) encodeHTMLAttribute(ctx Context, w *bytes.Buffer, name, value string) {
-	if (name == "id" || name == "class") && value == "" {
-		return
+	if value == "" {
+		switch name {
+		case "id", "class", "title":
+			return
+		}
 	}
 
 	w.WriteString(" ")
