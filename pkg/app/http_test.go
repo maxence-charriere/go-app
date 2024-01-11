@@ -792,3 +792,86 @@ func TestParseSrc(t *testing.T) {
 		})
 	}
 }
+
+func TestParseHTTPResource(t *testing.T) {
+	utests := []struct {
+		scenario string
+		in       string
+		resource httpResource
+	}{
+		{
+			scenario: "empty",
+			in:       "",
+		},
+		{
+			scenario: "url is parsed",
+			in:       "https://hello.world",
+			resource: httpResource{URL: "https://hello.world"},
+		},
+		{
+			scenario: "url and simple crossorigin is parsed",
+			in:       "https://hello.world crossorigin",
+			resource: httpResource{
+				URL:         "https://hello.world",
+				CrossOrigin: "true",
+			},
+		},
+		{
+			scenario: "url and defined crossorigin is parsed",
+			in:       "https://hello.world crossorigin=use-credentials",
+			resource: httpResource{
+				URL:         "https://hello.world",
+				CrossOrigin: "use-credentials",
+			},
+		},
+		{
+			scenario: "simple crossorigin is parsed",
+			in:       "crossorigin",
+			resource: httpResource{CrossOrigin: "true"},
+		},
+		{
+			scenario: "defined crossorigin is parsed",
+			in:       "crossorigin=anonymous",
+			resource: httpResource{CrossOrigin: "anonymous"},
+		},
+		{
+			scenario: "out of order url and simple crossorigin is parsed",
+			in:       "    crossorigin    https://hello.world ",
+			resource: httpResource{
+				URL:         "https://hello.world",
+				CrossOrigin: "true",
+			},
+		},
+		{
+			scenario: "url and async loading is parsed",
+			in:       "https://hello.world async",
+			resource: httpResource{
+				URL:         "https://hello.world",
+				LoadingMode: "async",
+			},
+		},
+		{
+			scenario: "url and defer loading is parsed",
+			in:       "https://hello.world defer",
+			resource: httpResource{
+				URL:         "https://hello.world",
+				LoadingMode: "defer",
+			},
+		},
+		{
+			scenario: "url with crossorigin and loading is parsed",
+			in:       "https://hello.world defer crossorigin",
+			resource: httpResource{
+				URL:         "https://hello.world",
+				CrossOrigin: "true",
+				LoadingMode: "defer",
+			},
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			require.Equal(t, u.resource, parseHTTPResource(u.in))
+		})
+	}
+}

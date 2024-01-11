@@ -963,30 +963,76 @@ func isStaticResourcePath(path string) bool {
 		strings.HasPrefix(path, "web/")
 }
 
-func parseSrc(link string) (url, crossOrigin, loading string) {
-	for _, p := range strings.Split(link, " ") {
-		p = strings.TrimSpace(p)
-		if p == "" {
+// func parseSrc(link string) (url, crossOrigin, loading string) {
+// 	for _, p := range strings.Split(link, " ") {
+// 		p = strings.TrimSpace(p)
+// 		if p == "" {
+// 			continue
+// 		}
+
+// 		switch {
+// 		case p == "crossorigin":
+// 			crossOrigin = "true"
+
+// 		case strings.HasPrefix(p, "crossorigin="):
+// 			crossOrigin = strings.TrimPrefix(p, "crossorigin=")
+
+// 		case p == "defer":
+// 			loading = "defer"
+
+// 		case p == "async":
+// 			loading = "async"
+
+// 		default:
+// 			url = p
+// 		}
+// 	}
+
+// 	return url, crossOrigin, loading
+// }
+
+// ResourceString represents a string that encapsulates a resource URL along with attributes
+// specifying how to load it. This includes attributes like 'async', 'defer', and 'crossorigin'.
+// The type is used to configure resource loading behavior in HTTP Handlers.
+//
+// Examples of ResourceString values include:
+//   - "https://hello.world async"
+//   - "https://hello.world defer"
+//   - "https://hello.world crossorigin"
+//   - "https://hello.world crossorigin=anonymous"
+//   - "https://hello.world async crossorigin"
+type ResourceString string
+
+type httpResource struct {
+	URL         string
+	LoadingMode string
+	CrossOrigin string
+}
+
+func parseHTTPResource(v string) httpResource {
+	var res httpResource
+	for _, elem := range strings.Split(v, " ") {
+		if elem = strings.TrimSpace(elem); elem == "" {
 			continue
 		}
+		elem = strings.ToLower(elem)
 
 		switch {
-		case p == "crossorigin":
-			crossOrigin = "true"
+		case elem == "crossorigin":
+			res.CrossOrigin = "true"
 
-		case strings.HasPrefix(p, "crossorigin="):
-			crossOrigin = strings.TrimPrefix(p, "crossorigin=")
+		case strings.HasPrefix(elem, "crossorigin="):
+			res.CrossOrigin = strings.TrimPrefix(elem, "crossorigin=")
 
-		case p == "defer":
-			loading = "defer"
+		case elem == "defer":
+			res.LoadingMode = "defer"
 
-		case p == "async":
-			loading = "async"
+		case elem == "async":
+			res.LoadingMode = "async"
 
 		default:
-			url = p
+			res.URL = elem
 		}
 	}
-
-	return url, crossOrigin, loading
+	return res
 }
