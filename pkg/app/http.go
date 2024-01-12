@@ -411,12 +411,9 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	resources := make(map[string]struct{})
 	setResources := func(res ...string) {
 		for _, r := range res {
-			if r == "" {
-				continue
+			if resource := parseHTTPResource(r); resource.URL != "" {
+				resources[resource.URL] = struct{}{}
 			}
-
-			r, _, _ = parseSrc(r)
-			resources[r] = struct{}{}
 		}
 	}
 	setResources(
@@ -757,38 +754,19 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				}),
 				Title().Text(page.Title()),
 				Range(h.Preconnect).Slice(func(i int) UI {
-					url, crossOrigin, _ := parseSrc(h.Preconnect[i])
-					if url == "" {
-						return nil
+					if resource := parseHTTPResource(h.Preconnect[i]); resource.URL != "" {
+						return resource.toLink().Rel("preconnect")
 					}
-
-					link := Link().
-						Rel("preconnect").
-						Href(url)
-
-					if crossOrigin != "" {
-						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					return link
+					return nil
 				}),
 				Range(h.Fonts).Slice(func(i int) UI {
-					url, crossOrigin, _ := parseSrc(h.Fonts[i])
-					if url == "" {
-						return nil
+					if resource := parseHTTPResource(h.Fonts[i]); resource.URL != "" {
+						return resource.toLink().
+							Type("font/" + strings.TrimPrefix(filepath.Ext(resource.URL), ".")).
+							Rel("preload").
+							As("font")
 					}
-
-					link := Link().
-						Type("font/" + strings.TrimPrefix(filepath.Ext(url), ".")).
-						Rel("preload").
-						Href(url).
-						As("font")
-
-					if crossOrigin != "" {
-						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					return link
+					return nil
 				}),
 				Range(page.Preloads()).Slice(func(i int) UI {
 					p := page.Preloads()[i]
@@ -796,41 +774,23 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						return nil
 					}
 
-					url, crossOrigin, _ := parseSrc(p.Href)
-					if url == "" {
-						return nil
+					if resource := parseHTTPResource(p.Href); resource.URL != "" {
+						return resource.toLink().
+							Type(p.Type).
+							Rel("preload").
+							As(p.As).
+							FetchPriority(p.FetchPriority)
 					}
-
-					link := Link().
-						Type(p.Type).
-						Rel("preload").
-						Href(url).
-						As(p.As).
-						FetchPriority(p.FetchPriority)
-
-					if crossOrigin != "" {
-						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					return link
+					return nil
 				}),
 				Range(h.Styles).Slice(func(i int) UI {
-					url, crossOrigin, _ := parseSrc(h.Styles[i])
-					if url == "" {
-						return nil
+					if resource := parseHTTPResource(h.Styles[i]); resource.URL != "" {
+						return resource.toLink().
+							Type("text/css").
+							Rel("preload").
+							As("style")
 					}
-
-					link := Link().
-						Type("text/css").
-						Rel("preload").
-						Href(url).
-						As("style")
-
-					if crossOrigin != "" {
-						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					return link
+					return nil
 				}),
 				Link().
 					Rel("icon").
@@ -842,21 +802,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Rel("manifest").
 					Href("/manifest.webmanifest"),
 				Range(h.Styles).Slice(func(i int) UI {
-					url, crossOrigin, _ := parseSrc(h.Styles[i])
-					if url == "" {
-						return nil
+					if resource := parseHTTPResource(h.Styles[i]); resource.URL != "" {
+						return resource.toLink().
+							Type("text/css").
+							Rel("stylesheet")
 					}
-
-					link := Link().
-						Rel("stylesheet").
-						Type("text/css").
-						Href(url)
-
-					if crossOrigin != "" {
-						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					return link
+					return nil
 				}),
 				Script().
 					Defer(true).
@@ -865,26 +816,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Defer(true).
 					Src("/app.js"),
 				Range(h.Scripts).Slice(func(i int) UI {
-					url, crossOrigin, loading := parseSrc(h.Scripts[i])
-					if url == "" {
-						return nil
+					if resource := parseHTTPResource(h.Scripts[i]); resource.URL != "" {
+						return resource.toScript()
 					}
+					return nil
 
-					script := Script().Src(url)
-
-					if crossOrigin != "" {
-						script = script.CrossOrigin(strings.Trim(crossOrigin, "true"))
-					}
-
-					switch loading {
-					case "defer":
-						script = script.Defer(true)
-
-					case "async":
-						script.Async(true)
-					}
-
-					return script
 				}),
 				Range(h.RawHeaders).Slice(func(i int) UI {
 					return Raw(h.RawHeaders[i])
@@ -963,30 +899,100 @@ func isStaticResourcePath(path string) bool {
 		strings.HasPrefix(path, "web/")
 }
 
-func parseSrc(link string) (url, crossOrigin, loading string) {
-	for _, p := range strings.Split(link, " ") {
-		p = strings.TrimSpace(p)
-		if p == "" {
-			continue
-		}
+// func parseSrc(link string) (url, crossOrigin, loading string) {
+// 	for _, p := range strings.Split(link, " ") {
+// 		p = strings.TrimSpace(p)
+// 		if p == "" {
+// 			continue
+// 		}
 
-		switch {
-		case p == "crossorigin":
-			crossOrigin = "true"
+// 		switch {
+// 		case p == "crossorigin":
+// 			crossOrigin = "true"
 
-		case strings.HasPrefix(p, "crossorigin="):
-			crossOrigin = strings.TrimPrefix(p, "crossorigin=")
+// 		case strings.HasPrefix(p, "crossorigin="):
+// 			crossOrigin = strings.TrimPrefix(p, "crossorigin=")
 
-		case p == "defer":
-			loading = "defer"
+// 		case p == "defer":
+// 			loading = "defer"
 
-		case p == "async":
-			loading = "async"
+// 		case p == "async":
+// 			loading = "async"
 
-		default:
-			url = p
-		}
+// 		default:
+// 			url = p
+// 		}
+// 	}
+
+// 	return url, crossOrigin, loading
+// }
+
+// ResourceString represents a string that encapsulates a resource URL along with attributes
+// specifying how to load it. This includes attributes like 'async', 'defer', and 'crossorigin'.
+// The type is used to configure resource loading behavior in HTTP Handlers.
+//
+// Examples of ResourceString values include:
+//   - "https://hello.world async"
+//   - "https://hello.world defer"
+//   - "https://hello.world crossorigin"
+//   - "https://hello.world crossorigin=anonymous"
+//   - "https://hello.world async crossorigin"
+type ResourceString string
+
+type httpResource struct {
+	URL         string
+	LoadingMode string
+	CrossOrigin string
+}
+
+func (r httpResource) toLink() HTMLLink {
+	link := Link().Href(r.URL)
+	if r.CrossOrigin != "" {
+		link = link.CrossOrigin(strings.Trim(r.CrossOrigin, "true"))
+	}
+	return link
+}
+
+func (r httpResource) toScript() HTMLScript {
+	script := Script().Src(r.URL)
+	if r.CrossOrigin != "" {
+		script = script.CrossOrigin(strings.Trim(r.CrossOrigin, "true"))
 	}
 
-	return url, crossOrigin, loading
+	switch r.LoadingMode {
+	case "defer":
+		script = script.Defer(true)
+
+	case "async":
+		script = script.Async(true)
+	}
+	return script
+}
+
+func parseHTTPResource(v string) httpResource {
+	var res httpResource
+	for _, elem := range strings.Split(v, " ") {
+		if elem = strings.TrimSpace(elem); elem == "" {
+			continue
+		}
+		elem = strings.ToLower(elem)
+
+		switch {
+		case elem == "crossorigin":
+			res.CrossOrigin = "true"
+
+		case strings.HasPrefix(elem, "crossorigin="):
+			res.CrossOrigin = strings.TrimPrefix(elem, "crossorigin=")
+
+		case elem == "defer":
+			res.LoadingMode = "defer"
+
+		case elem == "async":
+			res.LoadingMode = "async"
+
+		default:
+			res.URL = elem
+		}
+	}
+	return res
 }
