@@ -792,14 +792,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					}
 					return nil
 				}),
-				Range(h.Styles).Slice(func(i int) UI {
-					if resource := parseHTTPResource(h.Styles[i]); resource.URL != "" {
-						return resource.toLink().
-							Type("text/css").
-							Rel("stylesheet")
-					}
-					return nil
-				}),
 				Link().
 					Rel("icon").
 					Href(icon),
@@ -809,7 +801,14 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Link().
 					Rel("manifest").
 					Href("/manifest.webmanifest"),
-
+				Range(h.Styles).Slice(func(i int) UI {
+					if resource := parseHTTPResource(h.Styles[i]); resource.URL != "" {
+						return resource.toLink().
+							Type("text/css").
+							Rel("stylesheet")
+					}
+					return nil
+				}),
 				Script().
 					Defer(true).
 					Src("/wasm_exec.js"),
