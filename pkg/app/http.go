@@ -411,8 +411,8 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	resources := make(map[string]struct{})
 	setResources := func(res ...string) {
 		for _, r := range res {
-			if r := parseHTTPResource(r); r.URL != "" {
-				resources[r.URL] = struct{}{}
+			if resource := parseHTTPResource(r); resource.URL != "" {
+				resources[resource.URL] = struct{}{}
 			}
 		}
 	}
