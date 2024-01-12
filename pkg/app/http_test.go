@@ -703,96 +703,6 @@ func TestIsStaticResourcePath(t *testing.T) {
 	}
 }
 
-func TestParseSrc(t *testing.T) {
-	utests := []struct {
-		scenario    string
-		in          string
-		url         string
-		crossOrigin string
-		loading     string
-	}{
-		{
-			scenario:    "empty",
-			in:          "",
-			url:         "",
-			crossOrigin: "",
-			loading:     "",
-		},
-		{
-			scenario:    "url is parsed",
-			in:          "https://hello.world",
-			url:         "https://hello.world",
-			crossOrigin: "",
-			loading:     "",
-		},
-		{
-			scenario:    "url and simple crossorigin is parsed",
-			in:          "https://hello.world crossorigin",
-			url:         "https://hello.world",
-			crossOrigin: "true",
-			loading:     "",
-		},
-		{
-			scenario:    "url and defined crossorigin is parsed",
-			in:          "https://hello.world crossorigin=use-credentials",
-			url:         "https://hello.world",
-			crossOrigin: "use-credentials",
-			loading:     "",
-		},
-		{
-			scenario:    "simple crossorigin is parsed",
-			in:          "crossorigin",
-			url:         "",
-			crossOrigin: "true",
-			loading:     "",
-		},
-		{
-			scenario:    "defined crossorigin is parsed",
-			in:          "crossorigin=anonymous",
-			url:         "",
-			crossOrigin: "anonymous",
-			loading:     "",
-		},
-		{
-			scenario:    "out of order url and simple crossorigin is parsed",
-			in:          "    crossorigin    https://hello.world ",
-			url:         "https://hello.world",
-			crossOrigin: "true",
-			loading:     "",
-		},
-		{
-			scenario:    "url and async loading is parsed",
-			in:          "https://hello.world async",
-			url:         "https://hello.world",
-			crossOrigin: "",
-			loading:     "async",
-		},
-		{
-			scenario:    "url and defer loading is parsed",
-			in:          "https://hello.world defer",
-			url:         "https://hello.world",
-			crossOrigin: "",
-			loading:     "defer",
-		},
-		{
-			scenario:    "url with crossorigin and loading is parsed",
-			in:          "https://hello.world defer crossorigin",
-			url:         "https://hello.world",
-			crossOrigin: "true",
-			loading:     "defer",
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(u.scenario, func(t *testing.T) {
-			url, crossOrigin, loading := parseSrc(u.in)
-			require.Equal(t, u.url, url)
-			require.Equal(t, u.crossOrigin, crossOrigin)
-			require.Equal(t, u.loading, loading)
-		})
-	}
-}
-
 func TestParseHTTPResource(t *testing.T) {
 	utests := []struct {
 		scenario string
@@ -874,4 +784,74 @@ func TestParseHTTPResource(t *testing.T) {
 			require.Equal(t, u.resource, parseHTTPResource(u.in))
 		})
 	}
+}
+
+func TestHTTPResourceToLink(t *testing.T) {
+	t.Run("resource is converted to link", func(t *testing.T) {
+		link := parseHTTPResource("http://hello.world").toLink()
+
+		require.IsType(t, Link(), link)
+		require.Equal(t, "http://hello.world", link.(*htmlLink).attributes["href"])
+		require.NotContains(t, link.(*htmlLink).attributes, "crossorigin")
+	})
+
+	t.Run("resource is converted to link with naked cross origin", func(t *testing.T) {
+		link := parseHTTPResource("http://hello.world crossorigin").toLink()
+
+		require.IsType(t, Link(), link)
+		require.Equal(t, "http://hello.world", link.(*htmlLink).attributes["href"])
+		require.Equal(t, "", link.(*htmlLink).attributes["crossorigin"])
+	})
+
+	t.Run("resource is converted to link with cross origin", func(t *testing.T) {
+		link := parseHTTPResource("http://hello.world crossorigin=anonymous").toLink()
+
+		require.IsType(t, Link(), link)
+		require.Equal(t, "http://hello.world", link.(*htmlLink).attributes["href"])
+		require.Equal(t, "anonymous", link.(*htmlLink).attributes["crossorigin"])
+	})
+}
+
+func TestHTTPResourceToScript(t *testing.T) {
+	t.Run("resource is converted to script", func(t *testing.T) {
+		script := parseHTTPResource("http://hello.world").toScript()
+
+		require.IsType(t, Script(), script)
+		require.Equal(t, "http://hello.world", script.(*htmlScript).attributes["src"])
+		require.NotContains(t, script.(*htmlScript).attributes, "crossorigin")
+		require.NotContains(t, script.(*htmlScript).attributes, "async")
+		require.NotContains(t, script.(*htmlScript).attributes, "defer")
+	})
+
+	t.Run("resource is converted to script with naked cross origin", func(t *testing.T) {
+		script := parseHTTPResource("http://hello.world crossorigin").toScript()
+
+		require.IsType(t, Script(), script)
+		require.Equal(t, "http://hello.world", script.(*htmlScript).attributes["src"])
+		require.Equal(t, "", script.(*htmlScript).attributes["crossorigin"])
+	})
+
+	t.Run("resource is converted to script with cross origin", func(t *testing.T) {
+		script := parseHTTPResource("http://hello.world crossorigin=anonymous").toScript()
+
+		require.IsType(t, Script(), script)
+		require.Equal(t, "http://hello.world", script.(*htmlScript).attributes["src"])
+		require.Equal(t, "anonymous", script.(*htmlScript).attributes["crossorigin"])
+	})
+
+	t.Run("resource is converted to script with defer loading", func(t *testing.T) {
+		script := parseHTTPResource("http://hello.world defer").toScript()
+
+		require.IsType(t, Script(), script)
+		require.Equal(t, "http://hello.world", script.(*htmlScript).attributes["src"])
+		require.Equal(t, "true", script.(*htmlScript).attributes["defer"])
+	})
+
+	t.Run("resource is converted to script with async loading", func(t *testing.T) {
+		script := parseHTTPResource("http://hello.world async").toScript()
+
+		require.IsType(t, Script(), script)
+		require.Equal(t, "http://hello.world", script.(*htmlScript).attributes["src"])
+		require.Equal(t, "true", script.(*htmlScript).attributes["async"])
+	})
 }
