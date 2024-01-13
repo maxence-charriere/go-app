@@ -33,6 +33,9 @@ func (m *updateManager) Done(v Composer) {
 	}
 
 	updates := m.pending[depth]
+	if updates == nil {
+		return
+	}
 	if updates[v]--; updates[v] < 1 {
 		delete(updates, v)
 	}
