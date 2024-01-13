@@ -260,10 +260,12 @@ func TestContextPreventUpdate(t *testing.T) {
 
 	hello := &hello{}
 	e.Load(hello)
-	ctx := e.nodes.context(e.baseContext(), hello)
+	e.ConsumeAll()
 
+	ctx := e.nodes.context(e.baseContext(), hello)
 	ctx.Dispatch(func(ctx Context) {
 		require.Contains(t, e.updates.pending[1], hello)
+		require.Equal(t, 1, e.updates.pending[1][hello])
 		ctx.PreventUpdate()
 		require.Empty(t, e.updates.pending[1])
 	})
