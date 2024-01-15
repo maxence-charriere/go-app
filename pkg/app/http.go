@@ -937,7 +937,7 @@ func isStaticResourcePath(path string) bool {
 //   - "https://hello.world crossorigin"
 //   - "https://hello.world crossorigin=anonymous"
 //   - "https://hello.world async crossorigin"
-type ResourceString string
+// type ResourceString string
 
 type httpResource struct {
 	URL         string
