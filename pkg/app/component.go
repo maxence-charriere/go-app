@@ -93,13 +93,12 @@ type Navigator interface {
 }
 
 // Updater encapsulates components that require specific behaviors or reactions
-// when one of their exported fields is updated by the closest parent component.
+// when it is updated.
 // Implementing the Updater interface allows components to define responsive
-// actions that should be executed whenever they are modified by a parent.
+// actions that should be executed whenever they are modified.
 type Updater interface {
-	// OnUpdate is triggered whenever an exported field of the component gets
-	// modified by its immediate parent component. This method is an opportunity
-	// to handle related reactions or recalculations.
+	// OnUpdate is triggered whenever the component is updated. This method is
+	// an opportunity to handle related reactions or recalculations.
 	// This function always runs within the UI goroutine context.
 	OnUpdate(Context)
 }
