@@ -177,8 +177,7 @@ func (ctx Context) Notifications() NotificationService {
 }
 
 // Dispatch prompts the execution of a function on the UI goroutine,
-// flagging the enclosing component for an update, respecting any
-// implemented UpdateNotifier behavior.
+// flagging the enclosing component for an update.
 func (ctx Context) Dispatch(v func(Context)) {
 	ctx.dispatch(func() {
 		if !ctx.sourceElement.Mounted() {
@@ -223,12 +222,16 @@ func (ctx Context) After(d time.Duration, f func(Context)) {
 	})
 }
 
-// PreventUpdate halts updates for the enclosing component, respecting any
-// implemented UpdateNotifier behavior.
+// PreventUpdate halts updates for the enclosing component.
 func (ctx Context) PreventUpdate() {
 	for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
 		ctx.removeComponentUpdate(c)
 	}
+}
+
+// Update flags the enclosing component for an update.
+func (ctx Context) Update() {
+	ctx.Dispatch(nil)
 }
 
 // Handle designates a handler for a particular action, set to run on the UI

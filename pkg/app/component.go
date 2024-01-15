@@ -147,18 +147,6 @@ type Resizer interface {
 	OnResize(Context)
 }
 
-// UpdateNotifier defines a component that signals its parent component
-// regarding the requirement for an update in response to an HTML event.
-type UpdateNotifier interface {
-	Composer
-
-	// NotifyUpdate indicates whether the nearest parent component should be
-	// queued for an update. It returns true to signal that the parent component
-	// should be updated in the subsequent cycle,  and false to inhibit the
-	// update.
-	NotifyUpdate() bool
-}
-
 // Compo serves as the foundational struct for constructing a component. It
 // provides basic methods and fields needed for component management.
 type Compo struct {

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"sync"
 	"testing"
 )
@@ -18,7 +17,7 @@ func TestPromise(t *testing.T) {
 
 	promise := Window().Get("Promise").New(callback)
 	promise.Then(func(v Value) {
-		fmt.Println(v.String())
+		t.Log(v.String())
 		wg.Done()
 	})
 

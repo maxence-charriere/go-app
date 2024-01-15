@@ -273,6 +273,23 @@ func TestContextPreventUpdate(t *testing.T) {
 	e.ConsumeAll()
 }
 
+func TestContextUpdate(t *testing.T) {
+	e := newTestEngine()
+
+	hello := &hello{}
+	e.Load(hello)
+	e.ConsumeAll()
+
+	ctx := e.nodes.context(e.baseContext(), hello)
+	ctx.Update()
+	ctx.Dispatch(func(ctx Context) {
+		require.Contains(t, e.updates.pending[1], hello)
+		require.Equal(t, 2, e.updates.pending[1][hello])
+	})
+
+	e.ConsumeAll()
+}
+
 func TestContextHandle(t *testing.T) {
 	e := newTestEngine()
 
