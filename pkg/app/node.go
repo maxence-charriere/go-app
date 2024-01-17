@@ -537,9 +537,9 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 		return v, nil
 	}
 
-	// if updater, ok := v.(Updater); ok {
-	// 	updater.OnUpdate(ctx)
-	// }
+	if updater, ok := v.(Updater); ok {
+		updater.OnUpdate(ctx)
+	}
 
 	ctx.removeComponentUpdate(v)
 	return m.UpdateComponentRoot(ctx, v)
@@ -548,10 +548,6 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 // UpdateComponentRoot updates the root element of the given component.
 func (m nodeManager) UpdateComponentRoot(ctx Context, v Composer) (UI, error) {
 	ctx = m.context(ctx, v)
-
-	if updater, ok := v.(Updater); ok {
-		updater.OnUpdate(ctx)
-	}
 
 	root := v.root()
 	newRoot, err := m.renderComponent(v)
