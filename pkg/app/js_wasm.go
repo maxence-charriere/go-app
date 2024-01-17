@@ -49,6 +49,7 @@ func (v value) InstanceOf(t Value) bool {
 }
 
 func (v value) Invoke(args ...any) Value {
+	args = cleanArgs(args...)
 	return val(v.Value.Invoke(args...))
 }
 
