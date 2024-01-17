@@ -342,6 +342,7 @@ func cleanArg(v any) any {
 		for i, val := range v {
 			s[i] = cleanArg(val)
 		}
+		return s
 
 	case function:
 		return v.fn
