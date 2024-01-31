@@ -104,6 +104,20 @@ type Updater interface {
 	OnUpdate(Context)
 }
 
+// UpdateFinalizer encapsulates components that need to perform specific actions
+// after they have been updated and re-rendered. This interface is complementary
+// to the Updater interface, allowing components to define post-update behaviors
+// that should be executed once the component's update process, as defined by
+// the Updater interface, is complete.
+type UpdateFinalizer interface {
+	// OnUpdateComplete is triggered after a component has been re-rendered
+	// following an update. This method provides an opportunity to perform
+	// actions that are dependent on the component's updated state, such as
+	// final adjustments or cleanup operations. Like OnUpdate in the Updater
+	// interface, this function also runs within the UI goroutine context.
+	OnUpdateComplete(Context)
+}
+
 // AppUpdater defines components that are alerted when a newer version of the
 // application is downloaded in the background. Implementing this interface
 // allows components to proactively adapt to app updates, ensuring coherence

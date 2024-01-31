@@ -68,12 +68,13 @@ type bar struct {
 	Compo
 	Value string
 
-	onNavURL     string
-	appUpdated   bool
-	appInstalled bool
-	appRezized   bool
-	updated      bool
-	initialized  bool
+	onNavURL        string
+	appUpdated      bool
+	appInstalled    bool
+	appRezized      bool
+	updated         bool
+	updateCompleted bool
+	initialized     bool
 }
 
 func (b *bar) OnInit() {
@@ -104,6 +105,10 @@ func (b *bar) OnResize(ctx Context) {
 
 func (b *bar) OnUpdate(ctx Context) {
 	b.updated = true
+}
+
+func (b *bar) OnUpdateComplete(ctx Context) {
+	b.updateCompleted = true
 }
 
 func (b *bar) Render() UI {
