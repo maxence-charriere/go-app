@@ -56,7 +56,7 @@ function goappSetupNotifyUpdate(registration) {
       if (!navigator.serviceWorker.controller) {
         return;
       }
-      if (newSW.state != "installed") {
+      if (newSW.state != "activated") {
         return;
       }
       goappOnUpdate();
