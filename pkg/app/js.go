@@ -4,10 +4,6 @@ import (
 	"net/url"
 )
 
-const (
-// isClientSide = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
-)
-
 // Type represents the JavaScript type of a Value.
 type Type int
 
@@ -22,6 +18,29 @@ const (
 	TypeObject
 	TypeFunction
 )
+
+func (t Type) String() string {
+	switch t {
+	case TypeUndefined:
+		return "undefined"
+	case TypeNull:
+		return "null"
+	case TypeBoolean:
+		return "boolean"
+	case TypeNumber:
+		return "number"
+	case TypeString:
+		return "string"
+	case TypeSymbol:
+		return "symbol"
+	case TypeObject:
+		return "object"
+	case TypeFunction:
+		return "function"
+	default:
+		panic("bad type")
+	}
+}
 
 // Wrapper is implemented by types that are backed by a JavaScript value.
 type Wrapper interface {
