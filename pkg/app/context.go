@@ -286,7 +286,11 @@ func (ctx Context) DelState(state string) {
 	ctx.delState(ctx, state)
 }
 
-// TODO: see whether to deprecate
+// ResizeContent notifies the children of the associated element that implement
+// the Resizer interface about a resize event. It ensures that components can
+// adjust their size and layout in response to changes. This method is typically
+// used when the size of the container changes, requiring child components to
+// update their dimensions accordingly.
 func (ctx Context) ResizeContent() {
 	ctx.Defer(func(ctx Context) {
 		ctx.Dispatch(func(ctx Context) {
