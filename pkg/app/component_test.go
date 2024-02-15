@@ -165,3 +165,13 @@ func (c *navigatorComponent) OnNav(ctx Context) {
 		c.onNav(ctx)
 	}
 }
+
+type replacerComponent struct {
+	Compo
+
+	replace bool
+}
+
+func (c *replacerComponent) ReplaceOnUpdate() bool {
+	return c.replace
+}
