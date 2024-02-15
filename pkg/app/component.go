@@ -147,6 +147,20 @@ type Resizer interface {
 	OnResize(Context)
 }
 
+// Replacer defines the contract for UI components that require reinitialization
+// by being dismounted and then remounted upon an update. This interface is
+// essential for components with dynamic content that needs to reflect changes
+// in state or data without merely updating existing properties.
+type Replacer interface {
+	// ReplaceOnUpdate decides if a component should undergo a full lifecycle
+	// restart (dismount and remount) following an update. This method should
+	// return true for components needing to reset state, rebind data, or
+	// otherwise refresh their presentation in response to changes.
+	// Returns true to trigger replacement, false to maintain the current
+	// instance.
+	ReplaceOnUpdate() bool
+}
+
 // Compo serves as the foundational struct for constructing a component. It
 // provides basic methods and fields needed for component management.
 type Compo struct {
