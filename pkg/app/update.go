@@ -7,7 +7,9 @@ type updateManager struct {
 	pending []map[Composer]int
 }
 
-// Add queues the given component for an update.
+// Add queues a component for an update and increments its associated counter by
+// the given value. The component will be marked for update if its counter
+// becomes greater than 0.
 func (m *updateManager) Add(c Composer, v int) {
 	depth := int(c.depth())
 	if len(m.pending) <= depth {
@@ -25,26 +27,21 @@ func (m *updateManager) Add(c Composer, v int) {
 	updates[c] += v
 }
 
-// Done removes the given Composer from the update queue, marking it as updated.
-func (m *updateManager) Done(c Composer) {
-	depth := c.depth()
-	if len(m.pending) <= int(depth) {
-		return
-	}
-
-	updates := m.pending[depth]
-	if updates == nil {
-		return
-	}
-	delete(updates, c)
-}
-
-// ForEach iterates over all queued components, invoking the provided function
-// on each.
-func (m *updateManager) ForEach(do func(Composer)) {
+// UpdateForEach iterates over all components queued for updates via the Add
+// method, executing a specified function on each component with an associated
+// counter greater than 0. After the function is invoked on a component, its
+// entry is removed from the queue.
+//
+// This method ensures actions are taken only on components ready for an update
+// (counter > 0) and maintains the queue's cleanliness by removing components
+// once processed.
+func (m *updateManager) UpdateForEach(do func(Composer)) {
 	for _, updates := range m.pending {
-		for compo := range updates {
-			do(compo)
+		for compo, counter := range updates {
+			if counter > 0 {
+				do(compo)
+			}
+			delete(updates, compo)
 		}
 	}
 }

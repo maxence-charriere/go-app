@@ -259,9 +259,7 @@ func (e *engineX) Start(framerate int) {
 }
 
 func (e *engineX) processFrame() {
-	e.updates.ForEach(func(c Composer) {
-		defer e.updates.Done(c)
-
+	e.updates.UpdateForEach(func(c Composer) {
 		if !c.Mounted() {
 			return
 		}

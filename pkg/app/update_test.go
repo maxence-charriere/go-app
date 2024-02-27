@@ -36,34 +36,34 @@ func TestUpdateManagerAdd(t *testing.T) {
 	})
 }
 
-func TestUpdateManagerDone(t *testing.T) {
-	t.Run("component is removed from pending", func(t *testing.T) {
+func TestUpdateManagerForEach(t *testing.T) {
+	t.Run("component with positive counter is updated", func(t *testing.T) {
 		var m updateManager
 
 		compo := &hello{}
 		m.Add(compo, 1)
-		_, ok := m.pending[0][compo]
-		require.True(t, ok)
+		require.NotEmpty(t, m.pending[0])
 
-		m.Done(compo)
-		_, ok = m.pending[0][compo]
-		require.False(t, ok)
+		var updates int
+		m.UpdateForEach(func(c Composer) {
+			updates++
+		})
+		require.Equal(t, 1, updates)
+		require.Empty(t, m.pending[0])
 	})
 
-	t.Run("non added component is skipped", func(t *testing.T) {
+	t.Run("component with negative counter is skipped", func(t *testing.T) {
 		var m updateManager
-		m.Done(&hello{})
+
+		compo := &hello{}
+		m.Add(compo, -1)
+		require.NotEmpty(t, m.pending[0])
+
+		var updates int
+		m.UpdateForEach(func(c Composer) {
+			updates++
+		})
+		require.Zero(t, updates)
+		require.Empty(t, m.pending[0])
 	})
-}
-
-func TestUpdateManagerForEach(t *testing.T) {
-	var m updateManager
-
-	compo := &hello{}
-	m.Add(compo, 1)
-
-	m.ForEach(func(c Composer) {
-		m.Done(c)
-	})
-	require.Empty(t, m.pending[0])
 }
