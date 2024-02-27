@@ -893,7 +893,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("nav event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.addComponentUpdate = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer, v int) {
 			updates[c] = struct{}{}
 		}
 
@@ -909,7 +909,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("app update event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.addComponentUpdate = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer, v int) {
 			updates[c] = struct{}{}
 		}
 
@@ -925,7 +925,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("app install change event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.addComponentUpdate = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer, v int) {
 			updates[c] = struct{}{}
 		}
 
@@ -941,7 +941,7 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 
 	t.Run("resize change event is notified", func(t *testing.T) {
 		updates := make(map[UI]struct{})
-		ctx.addComponentUpdate = func(c Composer) {
+		ctx.addComponentUpdate = func(c Composer, v int) {
 			updates[c] = struct{}{}
 		}
 

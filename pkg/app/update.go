@@ -8,8 +8,8 @@ type updateManager struct {
 }
 
 // Add queues the given component for an update.
-func (m *updateManager) Add(v Composer) {
-	depth := int(v.depth())
+func (m *updateManager) Add(c Composer, v int) {
+	depth := int(c.depth())
 	if len(m.pending) <= depth {
 		size := max(depth+1, 100)
 		pending := make([]map[Composer]int, size)
@@ -22,12 +22,12 @@ func (m *updateManager) Add(v Composer) {
 		updates = make(map[Composer]int)
 		m.pending[depth] = updates
 	}
-	updates[v]++
+	updates[c] += v
 }
 
 // Done removes the given Composer from the update queue, marking it as updated.
-func (m *updateManager) Done(v Composer) {
-	depth := v.depth()
+func (m *updateManager) Done(c Composer) {
+	depth := c.depth()
 	if len(m.pending) <= int(depth) {
 		return
 	}
@@ -36,9 +36,7 @@ func (m *updateManager) Done(v Composer) {
 	if updates == nil {
 		return
 	}
-	if updates[v]--; updates[v] < 1 {
-		delete(updates, v)
-	}
+	delete(updates, c)
 }
 
 // ForEach iterates over all queued components, invoking the provided function

@@ -11,7 +11,7 @@ func TestUpdateManagerAdd(t *testing.T) {
 		var m updateManager
 
 		compo := &hello{}
-		m.Add(compo)
+		m.Add(compo, 1)
 		require.Len(t, m.pending, 100)
 		_, ok := m.pending[0][compo]
 		require.True(t, ok)
@@ -21,11 +21,11 @@ func TestUpdateManagerAdd(t *testing.T) {
 		var m updateManager
 
 		compo := &hello{}
-		m.Add(compo)
+		m.Add(compo, 1)
 		require.Len(t, m.pending, 100)
 
 		compo2 := &bar{Compo: Compo{treeDepth: 200}}
-		m.Add(compo2)
+		m.Add(compo2, 1)
 		require.Len(t, m.pending, 201)
 
 		_, added := m.pending[0][compo]
@@ -41,7 +41,7 @@ func TestUpdateManagerDone(t *testing.T) {
 		var m updateManager
 
 		compo := &hello{}
-		m.Add(compo)
+		m.Add(compo, 1)
 		_, ok := m.pending[0][compo]
 		require.True(t, ok)
 
@@ -60,7 +60,7 @@ func TestUpdateManagerForEach(t *testing.T) {
 	var m updateManager
 
 	compo := &hello{}
-	m.Add(compo)
+	m.Add(compo, 1)
 
 	m.ForEach(func(c Composer) {
 		m.Done(c)

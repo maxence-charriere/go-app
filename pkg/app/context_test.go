@@ -267,7 +267,7 @@ func TestContextPreventUpdate(t *testing.T) {
 		require.Contains(t, e.updates.pending[1], hello)
 		require.Equal(t, 1, e.updates.pending[1][hello])
 		ctx.PreventUpdate()
-		require.Empty(t, e.updates.pending[1])
+		require.Zero(t, e.updates.pending[1][hello])
 	})
 
 	e.ConsumeAll()
@@ -376,17 +376,16 @@ func makeTestContext() Context {
 	}
 
 	return Context{
-		Context:               context.Background(),
-		page:                  func() Page { return page },
-		resolveURL:            resolveURL,
-		localStorage:          localStorage,
-		sessionStorage:        sessionStorage,
-		dispatch:              func(f func()) { f() },
-		defere:                func(f func()) { f() },
-		async:                 func(f func()) { f() },
-		addComponentUpdate:    func(Composer) {},
-		removeComponentUpdate: func(Composer) {},
-		handleAction:          func(string, UI, bool, ActionHandler) {},
-		postAction:            func(Context, Action) {},
+		Context:            context.Background(),
+		page:               func() Page { return page },
+		resolveURL:         resolveURL,
+		localStorage:       localStorage,
+		sessionStorage:     sessionStorage,
+		dispatch:           func(f func()) { f() },
+		defere:             func(f func()) { f() },
+		async:              func(f func()) { f() },
+		addComponentUpdate: func(Composer, int) {},
+		handleAction:       func(string, UI, bool, ActionHandler) {},
+		postAction:         func(Context, Action) {},
 	}
 }
