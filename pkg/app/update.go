@@ -27,6 +27,16 @@ func (m *updateManager) Add(c Composer, v int) {
 	updates[c] += v
 }
 
+// Done removes the given component from the update queue, marking it as updated.
+func (m *updateManager) Done(v Composer) {
+	depth := v.depth()
+	if len(m.pending) <= int(depth) {
+		return
+	}
+	updates := m.pending[depth]
+	delete(updates, v)
+}
+
 // UpdateForEach iterates over all components queued for updates via the Add
 // method, executing a specified function on each component with an associated
 // counter greater than 0. After the function is invoked on a component, its

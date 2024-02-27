@@ -16,22 +16,23 @@ import (
 type Context struct {
 	context.Context
 
-	page               func() Page
-	appUpdatable       bool
-	resolveURL         func(string) string
-	navigate           func(*url.URL, bool)
-	localStorage       BrowserStorage
-	sessionStorage     BrowserStorage
-	dispatch           func(func())
-	defere             func(func())
-	async              func(func())
-	addComponentUpdate func(Composer, int)
-	handleAction       func(string, UI, bool, ActionHandler)
-	postAction         func(Context, Action)
-	observeState       func(Context, string, any) Observer
-	getState           func(Context, string, any)
-	setState           func(Context, string, any) State
-	delState           func(Context, string)
+	page                  func() Page
+	appUpdatable          bool
+	resolveURL            func(string) string
+	navigate              func(*url.URL, bool)
+	localStorage          BrowserStorage
+	sessionStorage        BrowserStorage
+	dispatch              func(func())
+	defere                func(func())
+	async                 func(func())
+	addComponentUpdate    func(Composer, int)
+	removeComponentUpdate func(Composer)
+	handleAction          func(string, UI, bool, ActionHandler)
+	postAction            func(Context, Action)
+	observeState          func(Context, string, any) Observer
+	getState              func(Context, string, any)
+	setState              func(Context, string, any) State
+	delState              func(Context, string)
 
 	sourceElement        UI
 	notifyComponentEvent func(Context, UI, any)

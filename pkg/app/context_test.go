@@ -376,16 +376,17 @@ func makeTestContext() Context {
 	}
 
 	return Context{
-		Context:            context.Background(),
-		page:               func() Page { return page },
-		resolveURL:         resolveURL,
-		localStorage:       localStorage,
-		sessionStorage:     sessionStorage,
-		dispatch:           func(f func()) { f() },
-		defere:             func(f func()) { f() },
-		async:              func(f func()) { f() },
-		addComponentUpdate: func(Composer, int) {},
-		handleAction:       func(string, UI, bool, ActionHandler) {},
-		postAction:         func(Context, Action) {},
+		Context:               context.Background(),
+		page:                  func() Page { return page },
+		resolveURL:            resolveURL,
+		localStorage:          localStorage,
+		sessionStorage:        sessionStorage,
+		dispatch:              func(f func()) { f() },
+		defere:                func(f func()) { f() },
+		async:                 func(f func()) { f() },
+		addComponentUpdate:    func(Composer, int) {},
+		removeComponentUpdate: func(c Composer) {},
+		handleAction:          func(string, UI, bool, ActionHandler) {},
+		postAction:            func(Context, Action) {},
 	}
 }

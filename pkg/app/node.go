@@ -541,7 +541,7 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 		updater.OnUpdate(ctx)
 	}
 
-	ctx.addComponentUpdate(v, -1)
+	ctx.removeComponentUpdate(v)
 	return m.UpdateComponentRoot(ctx, v)
 }
 
