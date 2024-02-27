@@ -23,6 +23,7 @@ func TestEngineBaseContext(t *testing.T) {
 	require.NotNil(t, ctx.defere)
 	require.NotNil(t, ctx.async)
 	require.NotNil(t, ctx.addComponentUpdate)
+	require.NotNil(t, ctx.removeComponentUpdate)
 	require.NotNil(t, ctx.handleAction)
 	require.NotNil(t, ctx.postAction)
 	require.NotNil(t, ctx.observeState)
