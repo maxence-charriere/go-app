@@ -25,7 +25,7 @@ type Context struct {
 	dispatch              func(func())
 	defere                func(func())
 	async                 func(func())
-	addComponentUpdate    func(Composer)
+	addComponentUpdate    func(Composer, int)
 	removeComponentUpdate func(Composer)
 	handleAction          func(string, UI, bool, ActionHandler)
 	postAction            func(Context, Action)
@@ -185,7 +185,7 @@ func (ctx Context) Dispatch(v func(Context)) {
 		}
 
 		for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
-			ctx.addComponentUpdate(c)
+			ctx.addComponentUpdate(c, 1)
 		}
 
 		if v != nil {
@@ -225,7 +225,7 @@ func (ctx Context) After(d time.Duration, f func(Context)) {
 // PreventUpdate halts updates for the enclosing component.
 func (ctx Context) PreventUpdate() {
 	for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
-		ctx.removeComponentUpdate(c)
+		ctx.addComponentUpdate(c, -1)
 	}
 }
 

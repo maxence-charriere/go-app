@@ -11,7 +11,7 @@ func TestUpdateManagerAdd(t *testing.T) {
 		var m updateManager
 
 		compo := &hello{}
-		m.Add(compo)
+		m.Add(compo, 1)
 		require.Len(t, m.pending, 100)
 		_, ok := m.pending[0][compo]
 		require.True(t, ok)
@@ -21,11 +21,11 @@ func TestUpdateManagerAdd(t *testing.T) {
 		var m updateManager
 
 		compo := &hello{}
-		m.Add(compo)
+		m.Add(compo, 1)
 		require.Len(t, m.pending, 100)
 
 		compo2 := &bar{Compo: Compo{treeDepth: 200}}
-		m.Add(compo2)
+		m.Add(compo2, 1)
 		require.Len(t, m.pending, 201)
 
 		_, added := m.pending[0][compo]
@@ -41,9 +41,26 @@ func TestUpdateManagerDone(t *testing.T) {
 		var m updateManager
 
 		compo := &hello{}
-		m.Add(compo)
+		m.Add(compo, 1)
 		_, ok := m.pending[0][compo]
 		require.True(t, ok)
+
+		m.Done(compo)
+		_, ok = m.pending[0][compo]
+		require.False(t, ok)
+	})
+
+	t.Run("removed updates are skipped", func(t *testing.T) {
+		var m updateManager
+
+		compo := &hello{}
+		m.Add(compo, 1)
+		_, ok := m.pending[0][compo]
+		require.True(t, ok)
+
+		m.pending[0] = nil
+		_, ok = m.pending[0][compo]
+		require.False(t, ok)
 
 		m.Done(compo)
 		_, ok = m.pending[0][compo]
@@ -56,14 +73,34 @@ func TestUpdateManagerDone(t *testing.T) {
 	})
 }
 
-func TestUpdateManagerForEach(t *testing.T) {
-	var m updateManager
+func TestUpdateManagerUpdateForEach(t *testing.T) {
+	t.Run("component with positive counter is updated", func(t *testing.T) {
+		var m updateManager
 
-	compo := &hello{}
-	m.Add(compo)
+		compo := &hello{}
+		m.Add(compo, 1)
+		require.NotEmpty(t, m.pending[0])
 
-	m.ForEach(func(c Composer) {
-		m.Done(c)
+		var updates int
+		m.UpdateForEach(func(c Composer) {
+			updates++
+		})
+		require.Equal(t, 1, updates)
+		require.Empty(t, m.pending[0])
 	})
-	require.Empty(t, m.pending[0])
+
+	t.Run("component with negative counter is skipped", func(t *testing.T) {
+		var m updateManager
+
+		compo := &hello{}
+		m.Add(compo, -1)
+		require.NotEmpty(t, m.pending[0])
+
+		var updates int
+		m.UpdateForEach(func(c Composer) {
+			updates++
+		})
+		require.Zero(t, updates)
+		require.Empty(t, m.pending[0])
+	})
 }
