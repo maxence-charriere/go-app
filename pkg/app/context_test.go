@@ -385,7 +385,7 @@ func makeTestContext() Context {
 		defere:                func(f func()) { f() },
 		async:                 func(f func()) { f() },
 		addComponentUpdate:    func(Composer, int) {},
-		removeComponentUpdate: func(c Composer) {},
+		removeComponentUpdate: func(Composer) {},
 		handleAction:          func(string, UI, bool, ActionHandler) {},
 		postAction:            func(Context, Action) {},
 	}
