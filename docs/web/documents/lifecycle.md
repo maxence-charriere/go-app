@@ -65,11 +65,11 @@ func (a *littleApp) Render() app.UI {
 		app.P().Text("That only display a text."),
 
 		// Displays an Update button when an update is available.
-		app.If(a.updateAvailable,
-			app.Button().
+		app.If(a.updateAvailable, func() app.UI {
+			return app.Button().
 				Text("Update!").
-				OnClick(a.onUpdateClick),
-		),
+				OnClick(a.onUpdateClick)
+		}),
 	)
 }
 

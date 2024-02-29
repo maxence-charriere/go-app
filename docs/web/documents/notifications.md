@@ -25,17 +25,17 @@ The Notification permission is given by requesting the user permission with [Con
 ```go
 func (f *foo) Render() app.UI {
 	return app.Div().Body(
-		app.If(f.notificationPermission == app.NotificationDefault,
-			app.Button().
+		app.If(f.notificationPermission == app.NotificationDefault, func() app.UI {
+			return app.Button().
 				Text("Enable Notifications").
-				OnClick(f.enableNotifications),
-		).ElseIf(f.notificationPermission == app.NotificationDenied,
-			app.Text("Notification permission is denied"),
-		).ElseIf(f.notificationPermission == app.NotificationGranted,
-			app.Text("Notification permission is already granted"),
-		).Else(
-			app.Text("Notification are not supported"),
-		),
+				OnClick(f.enableNotifications)
+		}).ElseIf(f.notificationPermission == app.NotificationDenied, func() app.UI {
+			return app.Text("Notification permission is denied")
+		}).ElseIf(f.notificationPermission == app.NotificationGranted, func() app.UI {
+			return app.Text("Notification permission is already granted")
+		}).Else(func() app.UI {
+			return app.Text("Notification are not supported")
+		}),
 	)
 }
 
@@ -52,19 +52,19 @@ A local notification is a notification created in the app with [Context.Notifica
 ```go
 func (f *foo) Render() app.UI {
 	return app.Div().Body(
-		app.If(f.notificationPermission == app.NotificationDefault,
-			app.Button().
+		app.If(f.notificationPermission == app.NotificationDefault, func() app.UI {
+			return app.Button().
 				Text("Enable Notifications").
-				OnClick(f.enableNotifications),
-		).ElseIf(f.notificationPermission == app.NotificationDenied,
-			app.Text("Notification permission is denied"),
-		).ElseIf(f.notificationPermission == app.NotificationGranted,
-			app.Button().
+				OnClick(f.enableNotifications)
+		}).ElseIf(f.notificationPermission == app.NotificationDenied, func() app.UI {
+			return app.Text("Notification permission is denied")
+		}).ElseIf(f.notificationPermission == app.NotificationGranted, func() app.UI {
+			return app.Button().
 				Text("Test Notification").
-				OnClick(f.enableNotifications),
-		).Else(
-			app.Text("Notification are not supported"),
-		),
+				OnClick(f.enableNotifications)
+		}).Else(func() app.UI {
+			return app.Text("Notification are not supported")
+		}),
 	)
 }
 

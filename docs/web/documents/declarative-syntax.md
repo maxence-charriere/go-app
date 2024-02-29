@@ -232,9 +232,10 @@ type myCompo struct {
 
 func (c *myCompo) Render() app.UI {
 	return app.Div().Body(
-		app.If(c.showTitle,
-			app.H1().Text("hello"),
-		),
+		app.If(c.showTitle, func() app.UI {
+			return app.H1().Text("hello")
+
+		}),
 	)
 }
 ```
@@ -252,19 +253,19 @@ type myCompo struct {
 
 func (c *myCompo) Render() app.UI {
 	return app.Div().Body(
-		app.If(c.color > 7,
-			app.H1().
+		app.If(c.color > 7, func() app.UI {
+			return app.H1().
 				Style("color", "green").
-				Text("Good!"),
-		).ElseIf(c.color < 4,
-			app.H1().
+				Text("Good!")
+		}).ElseIf(c.color < 4, func() app.UI {
+			return app.H1().
 				Style("color", "red").
-				Text("Bad!"),
-		).Else(
-			app.H1().
+				Text("Bad!")
+		}).Else(func() app.UI {
+			return app.H1().
 				Style("color", "orange").
-				Text("So so!"),
-		),
+				Text("So so!")
+		}),
 	)
 }
 ```
@@ -282,11 +283,11 @@ type myCompo struct {
 
 func (c *myCompo) Render() app.UI {
 	return app.Div().Body(
-		app.If(c.showTitle,
-			app.H1().Text("hello"),
-		).Else(
-			app.Text("world"), // Shown when showTitle == false
-		),
+		app.If(c.showTitle, func() app.UI {
+			return app.H1().Text("hello")
+		}).Else(func() app.UI {
+			return app.Text("world") // Shown when showTitle == false
+		}),
 	)
 }
 ```
