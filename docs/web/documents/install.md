@@ -67,11 +67,11 @@ func (h *hello) Render() app.UI {
 		Body(
 			app.H1().Text("Hello World!"),
 
-			app.If(h.isAppInstallable,
-				app.Button().
+			app.If(h.isAppInstallable, func() app.UI {
+				return app.Button().
 					Text("Install App").
-					OnClick(h.onInstallButtonClicked),
-			),
+					OnClick(h.onInstallButtonClicked)
+			}),
 		)
 }
 
