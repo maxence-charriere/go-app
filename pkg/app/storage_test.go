@@ -63,6 +63,11 @@ func testBrowserStorage(t *testing.T, s BrowserStorage) {
 			scenario: "foreach iterates over each storage keys",
 			function: testBrowserStorageForEach,
 		},
+
+		{
+			scenario: "contains reports an existing key",
+			function: testBrowserStorageContains,
+		},
 	}
 
 	for _, test := range tests {
@@ -194,4 +199,12 @@ func testBrowserStorageForEach(t *testing.T, s BrowserStorage) {
 	for _, k := range keys {
 		require.Contains(t, keyMap, k)
 	}
+}
+
+func testBrowserStorageContains(t *testing.T, s BrowserStorage) {
+	s.Clear()
+
+	require.False(t, s.Contains("lightsaber"))
+	s.Set("lightsaber", true)
+	require.True(t, s.Contains("lightsaber"))
 }

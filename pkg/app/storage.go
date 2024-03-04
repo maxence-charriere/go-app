@@ -7,30 +7,45 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// BrowserStorage is the interface that describes a web browser storage.
+// BrowserStorage defines an interface for interacting with web browser storage
+// mechanisms (such as localStorage in the Web API). It provides methods to set,
+// get, delete, and iterate over stored items, among other functionalities.
 type BrowserStorage interface {
-	// Set sets the value to the given key. The value must be json convertible.
+	// Set stores a value associated with a given key. The value must be capable
+	// of being converted to JSON format. If the value cannot be converted to
+	// JSON or if there's an issue with storage, an error is returned.
 	Set(k string, v any) error
 
-	// Get gets the item associated to the given key and store it in the given
-	// value.
-	// It returns an error if v is not a pointer.
+	// Get retrieves the value associated with a given key and stores it into
+	// the provided variable v. The variable v must be a pointer to a type that
+	// is compatible with the stored value. If v is not a pointer, an error is
+	// returned, indicating incorrect usage.
+	//
+	// If the key does not exist, the operation performs no action on v, leaving
+	// it unchanged. Use Contains to check whether a key exists.
 	Get(k string, v any) error
 
-	// Del deletes the item associated with the given key.
+	// Del removes the item associated with the specified key from the storage.
+	// If the key does not exist, the operation is a no-op.
 	Del(k string)
 
-	// Len returns the number of items stored.
+	// Len returns the total number of items currently stored. This count
+	// includes all keys, regardless of their value.
 	Len() int
 
-	// Clear deletes all items.
+	// Clear removes all items from the storage, effectively resetting it.
 	Clear()
 
-	// ForEach iterates over each item in the storage. For each item, it calls
-	// the provided function f with the key of the item as its argument.
-	// The order in which the items are processed is not specified and may vary
-	// across different implementations of the BrowserStorage interface.
-	ForEach(f func(key string))
+	// ForEach iterates over each item in the storage, executing the provided
+	// function f for each key. The exact order of iteration is not guaranteed
+	// and may vary across different implementations.
+	ForEach(f func(k string))
+
+	// Contains checks if the storage contains an item associated with the given
+	// key. It returns true if the item exists, false otherwise. This method
+	// provides a way to check for the existence of a key without retrieving the
+	// associated value.
+	Contains(k string) bool
 }
 
 type memoryStorage struct {
@@ -95,6 +110,11 @@ func (s *memoryStorage) ForEach(f func(key string)) {
 	}
 }
 
+func (s *memoryStorage) Contains(k string) bool {
+	_, ok := s.data[k]
+	return ok
+}
+
 type jsStorage struct {
 	name  string
 	mutex sync.RWMutex
@@ -132,7 +152,7 @@ func (s *jsStorage) Get(k string, v any) error {
 	defer s.mutex.RUnlock()
 
 	item := Window().Get(s.name).Call("getItem", k)
-	if !item.Truthy() {
+	if item.IsNull() {
 		return nil
 	}
 
@@ -142,21 +162,18 @@ func (s *jsStorage) Get(k string, v any) error {
 func (s *jsStorage) Del(k string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-
 	Window().Get(s.name).Call("removeItem", k)
 }
 
 func (s *jsStorage) Clear() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-
 	Window().Get(s.name).Call("clear")
 }
 
 func (s *jsStorage) Len() int {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-
 	return s.len()
 }
 
@@ -179,4 +196,10 @@ func (s *jsStorage) ForEach(f func(key string)) {
 	for key := range keys {
 		f(key)
 	}
+}
+
+func (s *jsStorage) Contains(k string) bool {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	return !Window().Get(s.name).Call("getItem", k).IsNull()
 }
