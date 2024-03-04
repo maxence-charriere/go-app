@@ -14,6 +14,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"reflect"
 	"runtime"
 )
 
@@ -25,6 +26,11 @@ const (
 	// IsServer reports whether the code is running on a server for
 	// pre-rendering purposes.
 	IsServer = runtime.GOARCH != "wasm" || runtime.GOOS != "js"
+)
+
+var (
+	routes = makeRouter()
+	window = newBrowserWindow()
 )
 
 // Getenv retrieves the value of the environment variable named by the key. It
@@ -113,4 +119,50 @@ func displayLoadError(err any) {
 		return
 	}
 	loadingLabel.setInnerText(fmt.Sprint(err))
+}
+
+// Route associates a given path with a function that generates a new Composer
+// component. When a user navigates to the specified path, the function
+// newComponent is invoked to create and mount the associated component.
+//
+// Example:
+//
+//	Route("/home", func() Composer {
+//	    return NewHomeComponent()
+//	})
+func Route(path string, newComponent func() Composer) {
+	routes.route(path, newComponent)
+}
+
+// RouteWithRegexp associates a URL path pattern with a function that generates
+// a new Composer component. When a user navigates to a URL path that matches
+// the given regular expression pattern, the function newComponent is invoked to
+// create and mount the associated component.
+//
+// Example:
+//
+//	RouteWithRegexp("^/users/[0-9]+$", func() Composer {
+//	    return NewUserComponent()
+//	})
+func RouteWithRegexp(pattern string, newComponent func() Composer) {
+	routes.routeWithRegexp(pattern, newComponent)
+}
+
+// NewZeroComponentFactory returns a function that, when invoked, creates and
+// returns a new instance of the same type as the provided component. The new
+// instance is initialized with zero values for all its fields.
+//
+// The function uses reflection to determine the type of the provided Composer
+// and to create new instances of that type.
+//
+// Example:
+//
+//	componentFunc := NewZeroComponentFactory(MyComponent{})
+//	newComponent := componentFunc()
+func NewZeroComponentFactory(c Composer) func() Composer {
+	componentType := reflect.TypeOf(c)
+
+	return func() Composer {
+		return reflect.New(componentType.Elem()).Interface().(Composer)
+	}
 }

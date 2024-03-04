@@ -10,13 +10,6 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-var (
-	window    = &browserWindow{}
-	errNoWasm = errors.New("unsupported instruction").
-			WithTag("required-architecture", "wasm").
-			WithTag("current-architecture", runtime.GOARCH)
-)
-
 type value struct{}
 
 func (v value) Bool() bool {
@@ -97,7 +90,9 @@ func (v value) Truthy() bool {
 }
 
 func (v value) Type() Type {
-	panic(errNoWasm)
+	panic(errors.New("unsupported instruction").
+		WithTag("required-architecture", "wasm").
+		WithTag("current-architecture", runtime.GOARCH))
 }
 
 func (v value) Then(f func(Value)) {
@@ -170,6 +165,10 @@ func funcOf(fn func(this Value, args []Value) any) Func {
 
 type browserWindow struct {
 	value
+}
+
+func newBrowserWindow() *browserWindow {
+	return &browserWindow{}
 }
 
 func (w browserWindow) URL() *url.URL {
