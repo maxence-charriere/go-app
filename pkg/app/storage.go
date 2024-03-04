@@ -23,9 +23,6 @@ type BrowserStorage interface {
 	// Len returns the number of items stored.
 	Len() int
 
-	// Key returns the key of the item associated to the given index.
-	Key(i int) (string, error)
-
 	// Clear deletes all items.
 	Clear()
 }

@@ -56,14 +56,6 @@ func testBrowserStorage(t *testing.T, s BrowserStorage) {
 			function: testBrowserStorageGetError,
 		},
 		{
-			scenario: "get key at given index",
-			function: testBrowserStorageKey,
-		},
-		{
-			scenario: "get key at given index returns an error",
-			function: testBrowserStorageKeyError,
-		},
-		{
 			scenario: "len returns the storage length",
 			function: testBrowserStorageLen,
 		},
@@ -161,22 +153,6 @@ func testBrowserStorageFull(t *testing.T, s BrowserStorage) {
 
 	require.Error(t, err)
 	t.Log(err)
-}
-
-func testBrowserStorageKey(t *testing.T, s BrowserStorage) {
-	s.Clear()
-
-	err := s.Set("hello", 42)
-	require.NoError(t, err)
-
-	v, err := s.Key(0)
-	require.NoError(t, err)
-	require.Equal(t, "hello", v)
-}
-
-func testBrowserStorageKeyError(t *testing.T, s BrowserStorage) {
-	_, err := s.Key(42)
-	require.Error(t, err)
 }
 
 func testBrowserStorageLen(t *testing.T, s BrowserStorage) {
