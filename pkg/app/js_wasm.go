@@ -7,10 +7,6 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-var (
-	window = &browserWindow{value: value{jsValue: js.Global()}}
-)
-
 type value struct {
 	jsValue
 }
@@ -250,6 +246,10 @@ type browserWindow struct {
 	body    UI
 	cursorX int
 	cursorY int
+}
+
+func newBrowserWindow() *browserWindow {
+	return &browserWindow{value: value{jsValue: js.Global()}}
 }
 
 func (w *browserWindow) URL() *url.URL {
