@@ -56,16 +56,17 @@ func testBrowserStorage(t *testing.T, s BrowserStorage) {
 			function: testBrowserStorageGetError,
 		},
 		{
-			scenario: "get key at given index",
-			function: testBrowserStorageKey,
-		},
-		{
-			scenario: "get key at given index returns an error",
-			function: testBrowserStorageKeyError,
-		},
-		{
 			scenario: "len returns the storage length",
 			function: testBrowserStorageLen,
+		},
+		{
+			scenario: "foreach iterates over each storage keys",
+			function: testBrowserStorageForEach,
+		},
+
+		{
+			scenario: "contains reports an existing key",
+			function: testBrowserStorageContains,
 		},
 	}
 
@@ -163,22 +164,6 @@ func testBrowserStorageFull(t *testing.T, s BrowserStorage) {
 	t.Log(err)
 }
 
-func testBrowserStorageKey(t *testing.T, s BrowserStorage) {
-	s.Clear()
-
-	err := s.Set("hello", 42)
-	require.NoError(t, err)
-
-	v, err := s.Key(0)
-	require.NoError(t, err)
-	require.Equal(t, "hello", v)
-}
-
-func testBrowserStorageKeyError(t *testing.T, s BrowserStorage) {
-	_, err := s.Key(42)
-	require.Error(t, err)
-}
-
 func testBrowserStorageLen(t *testing.T, s BrowserStorage) {
 	s.Clear()
 
@@ -187,4 +172,39 @@ func testBrowserStorageLen(t *testing.T, s BrowserStorage) {
 	s.Set("bye", 42)
 
 	require.Equal(t, 3, s.Len())
+}
+
+func testBrowserStorageForEach(t *testing.T, s BrowserStorage) {
+	s.Clear()
+
+	keys := []string{
+		"starwars",
+		"startrek",
+		"alien",
+		"marvel",
+		"dune",
+		"lords of the rings",
+	}
+	for _, k := range keys {
+		s.Set(k, 3000)
+	}
+	require.Equal(t, s.Len(), len(keys))
+
+	keyMap := make(map[string]struct{})
+	s.ForEach(func(key string) {
+		keyMap[key] = struct{}{}
+	})
+	require.Len(t, keyMap, len(keys))
+
+	for _, k := range keys {
+		require.Contains(t, keyMap, k)
+	}
+}
+
+func testBrowserStorageContains(t *testing.T, s BrowserStorage) {
+	s.Clear()
+
+	require.False(t, s.Contains("lightsaber"))
+	s.Set("lightsaber", true)
+	require.True(t, s.Contains("lightsaber"))
 }
