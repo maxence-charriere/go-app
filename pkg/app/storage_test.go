@@ -59,6 +59,10 @@ func testBrowserStorage(t *testing.T, s BrowserStorage) {
 			scenario: "len returns the storage length",
 			function: testBrowserStorageLen,
 		},
+		{
+			scenario: "foreach iterates over each storage keys",
+			function: testBrowserStorageForEach,
+		},
 	}
 
 	for _, test := range tests {
@@ -163,4 +167,31 @@ func testBrowserStorageLen(t *testing.T, s BrowserStorage) {
 	s.Set("bye", 42)
 
 	require.Equal(t, 3, s.Len())
+}
+
+func testBrowserStorageForEach(t *testing.T, s BrowserStorage) {
+	s.Clear()
+
+	keys := []string{
+		"starwars",
+		"startrek",
+		"alien",
+		"marvel",
+		"dune",
+		"lords of the rings",
+	}
+	for _, k := range keys {
+		s.Set(k, 3000)
+	}
+	require.Equal(t, s.Len(), len(keys))
+
+	keyMap := make(map[string]struct{})
+	s.ForEach(func(key string) {
+		keyMap[key] = struct{}{}
+	})
+	require.Len(t, keyMap, len(keys))
+
+	for _, k := range keys {
+		require.Contains(t, keyMap, k)
+	}
 }

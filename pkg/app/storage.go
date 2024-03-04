@@ -25,6 +25,12 @@ type BrowserStorage interface {
 
 	// Clear deletes all items.
 	Clear()
+
+	// ForEach iterates over each item in the storage. For each item, it calls
+	// the provided function f with the key of the item as its argument.
+	// The order in which the items are processed is not specified and may vary
+	// across different implementations of the BrowserStorage interface.
+	ForEach(f func(key string))
 }
 
 type memoryStorage struct {
@@ -83,21 +89,10 @@ func (s *memoryStorage) Len() int {
 	return l
 }
 
-func (s *memoryStorage) Key(i int) (string, error) {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-
-	j := 0
+func (s *memoryStorage) ForEach(f func(key string)) {
 	for k := range s.data {
-		if i == j {
-			return k, nil
-		}
-		j++
+		f(k)
 	}
-
-	return "", errors.New("index out of range").
-		WithTag("index", i).
-		WithTag("len", s.Len())
 }
 
 type jsStorage struct {
@@ -169,12 +164,19 @@ func (s *jsStorage) len() int {
 	return Window().Get(s.name).Get("length").Int()
 }
 
-func (s *jsStorage) Key(i int) (string, error) {
-	if l := s.len(); i < 0 || i >= l {
-		return "", errors.New("index out of range").
-			WithTag("index", i).
-			WithTag("len", l)
+func (s *jsStorage) ForEach(f func(key string)) {
+	s.mutex.Lock()
+	length := s.len()
+	keys := make(map[string]struct{}, length)
+	for i := 0; i < length; i++ {
+		key := Window().Get(s.name).Call("key", i)
+		if key.Truthy() {
+			keys[key.String()] = struct{}{}
+		}
 	}
+	s.mutex.Unlock()
 
-	return Window().Get(s.name).Call("key", i).String(), nil
+	for key := range keys {
+		f(key)
+	}
 }
