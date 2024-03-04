@@ -407,22 +407,14 @@ func (m *stateManager) Cleanup() {
 // remove any persisted states that have expired. This method ensures that the
 // local storage is kept clean by eliminating outdated or irrelevant state data.
 func (m *stateManager) CleanupExpiredPersistedStates(ctx Context) {
-	object := Window().Get("Object")
-	if !object.Truthy() {
-		return
-	}
-
-	keys := object.Call("keys", Window().Get("localStorage"))
-	for i, l := 0, keys.Get("length").Int(); i < l; i++ {
-		key := keys.Index(i).String()
-
+	ctx.LocalStorage().ForEach(func(key string) {
 		var state storableState
 		ctx.LocalStorage().Get(key, &state)
-
-		if (len(state.Value) != 0 || len(state.EncryptedValue) != 0) && expiredTime(state.ExpiresAt) {
+		if (len(state.Value) != 0 || len(state.EncryptedValue) != 0) &&
+			expiredTime(state.ExpiresAt) {
 			ctx.LocalStorage().Del(key)
 		}
-	}
+	})
 }
 
 func storeValue(recv, v any) error {
