@@ -165,7 +165,7 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 		WithTag("version", h.Version),
 	)
 
-	h.Env = app.Environment{
+	h.Env = map[string]string{
 		"VAPID_PUBLIC_KEY": opts.VAPIDPublicKey,
 	}
 
