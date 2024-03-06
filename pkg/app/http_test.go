@@ -229,7 +229,7 @@ func TestHandlerServeAppJSWithEnv(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		Env: Environment{
+		Env: map[string]string{
 			"FOO": "foo",
 			"BAR": "bar",
 		},

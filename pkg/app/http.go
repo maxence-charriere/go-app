@@ -24,195 +24,127 @@ const (
 	defaultThemeColor = "#2d2c2c"
 )
 
-// Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
-// and its resources.
+// Handler configures an HTTP handler to serve HTML pages that initialize a
+// Go WebAssembly (WASM) application along with its resources. It includes
+// configurations for PWA features, offline support, auto-update, and more.
 type Handler struct {
-	// The name of the web application as it is usually displayed to the user.
+	// Name specifies the display name of the web app, used where space permits.
 	Name string
 
-	// The name of the web application displayed to the user when there is not
-	// enough space to display Name.
+	// ShortName is an abbreviated app name for limited display areas.
 	ShortName string
 
-	// The icon that is used for the PWA, favicon, loading and default not
-	// found component.
+	// Icon represents the app icon used for PWA, favicon, and the default
+	// "not found" component. Attributes like crossorigin can be appended after
+	// a space.
 	Icon Icon
 
-	// A placeholder background color for the application page to display before
-	// its stylesheets are loaded.
-	//
-	// Default: #2d2c2c.
+	// BackgroundColor sets a placeholder background color for the app page
+	// before stylesheets load. Defaults to "#2d2c2c".
 	BackgroundColor string
 
-	// The theme color for the application. This affects how the OS displays the
-	// app (e.g., PWA title bar or Android's task switcher).
-	//
-	// DEFAULT: #2d2c2c.
+	// ThemeColor specifies the app's theme color, affecting OS-level UI elements
+	// like the PWA title bar. Defaults to "#2d2c2c".
 	ThemeColor string
 
-	// The text displayed while loading a page. Load progress can be inserted by
-	// including "{progress}" in the loading label.
-	//
-	// DEFAULT: "{progress}%".
+	// LoadingLabel shows text during page load, with "{progress}" for progress.
+	// Defaults to "{progress}%".
 	LoadingLabel string
 
-	// The page language.
-	//
-	// DEFAULT: en.
+	// Lang defines the primary language of the app page. Defaults to "en".
 	Lang string
 
-	// The custom libraries to load with the page.
+	// Libraries are custom libraries to load with the page.
 	Libraries []Library
 
-	// The page title.
+	// Title sets the title of the app page.
 	Title string
 
-	// The page description.
+	// Description provides a summary of the page's content, used as default
+	// meta description and og:description.
 	Description string
 
-	// Domain specifies the domain name of the server. It is primarily used
-	// to resolve page metadata such as 'go:url', ensuring accurate reference
-	// and representation of URLs within the application.
+	// Domain specifies the domain name for resolving page metadata like
+	// 'og:url'.
 	Domain string
 
-	// The page authors.
+	// Author lists the authors of the page.
 	Author string
 
-	// The page keywords.
+	// Keywords are words or phrases associated with the page.
 	Keywords []string
 
-	// The path of the default image that is used by social networks when
-	// linking the app.
+	// Image specifies the default image path used by social networks.
+	// Attributes like crossorigin can be appended after a space.
 	Image string
 
-	// The paths or urls of the CSS files to use with the page.
-	//
-	// eg:
-	//  app.Handler{
-	//      Styles: []string{
-	//          "/web/test.css",            // Static resource
-	//          "https://foo.com/test.css", // External resource
-	//      },
-	//  },
+	// Styles lists CSS files for the page, supporting local and external
+	// resources. Attributes like crossorigin can be appended after a space.
 	Styles []string
 
-	// The paths or urls of the font files to preload with the page.
-	//
-	// eg:
-	//  app.Handler{
-	//      Fonts: []string{
-	//          "/web/test.woff2",            // Static resource
-	//          "https://foo.com/test.woff2", // External resource
-	//      },
-	//  },
+	// Fonts lists font files to preload, improving performance and visual
+	// readiness. Attributes like crossorigin can be appended after a space.
 	Fonts []string
 
-	// The paths or urls of the JavaScript files to use with the page.
-	//
-	// eg:
-	//  app.Handler{
-	//      Scripts: []string{
-	//          "/web/test.js",            // Static resource
-	//          "https://foo.com/test.js", // External resource
-	//      },
-	//  },
+	// Scripts lists JavaScript files for the page. Attributes like crossorigin,
+	// async, and defer can be appended, separated with a space.
 	Scripts []string
 
-	// The path of the static resources that the browser is caching in order to
-	// provide offline mode.
-	//
-	// Note that Icon, Styles and Scripts are already cached by default.
-	//
-	// Paths are relative to the root directory.
+	// CacheableResources specifies extra static resources to cache for offline
+	// access. Icon, Styles and Scripts are already cached by default.
+	// Attributes like crossorigin can be appended after a space.
 	CacheableResources []string
 
-	// Additional headers to be added in head element.
+	// RawHeaders contains extra HTML headers for the page's <head> section.
 	RawHeaders []string
 
-	// The page HTML element.
-	//
-	// Default: Html().
+	// HTML returns the page's HTML element. Defaults to app.Html().
 	HTML func() HTMLHtml
 
-	// The page body element.
-	//
-	// Note that the lang attribute is always overridden by the Handler.Lang
-	// value.
-	//
-	// Default: Body().
+	// Body returns the page's body element. Defaults to app.Body().
 	Body func() HTMLBody
 
-	// The interval between each app auto-update while running in a web browser.
-	// Zero or negative values deactivates the auto-update mechanism.
-	//
-	// Default is 0.
+	// AutoUpdateInterval sets how often the app auto-updates in the browser.
+	// Disabled if set to 0. Defaults to 0.
 	AutoUpdateInterval time.Duration
 
-	// The environment variables that are passed to the progressive web app.
-	//
-	// Reserved keys:
-	// - GOAPP_VERSION
-	// - GOAPP_GOAPP_STATIC_RESOURCES_URL
-	Env Environment
+	// Env passes environment variables to the PWA. Note: Reserved keys
+	// (GOAPP_VERSION, GOAPP_GOAPP_STATIC_RESOURCES_URL) cannot be
+	// overridden and are used for internal configuration.
+	Env map[string]string
 
-	// The URLs that are launched in the app tab or window.
-	//
-	// By default, URLs with a different domain are launched in another tab.
-	// Specifying internal URLs is to override that behavior. A good use case
-	// would be the URL for an OAuth authentication.
+	// InternalURLs lists URLs to open within the app, overriding default behavior
+	// for external domains.
 	InternalURLs []string
 
-	// The URLs of the origins to preconnect in order to improve the user
-	// experience by preemptively initiating a connection to those origins.
-	// Preconnecting speeds up future loads from a given origin by preemptively
-	// performing part or all of the handshake (DNS+TCP for HTTP, and
-	// DNS+TCP+TLS for HTTPS origins).
+	// Preconnect specifies origins to preconnect to, speeding up future loads.
+	// Attributes like crossorigin can be appended after a space.
 	Preconnect []string
 
-	// The static resources that are accessible from custom paths. Files that
-	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
+	// ProxyResources maps custom paths to static resources. /robots.txt,
+	// /sitemap.xml, and /ads.txt, which are proxied by default.
 	ProxyResources []ProxyResource
 
-	// Resources is a ResourceResolver responsible for resolving static resource
-	// paths. It specifically handles paths that begin with "/web/", ensuring that
-	// static resources such as stylesheets, scripts, and images are correctly
-	// located and served.
-	//
-	// For example, a resource path like "/web/main.css" will be resolved to its
-	// full path or URL by the ResourceResolver.
-	//
-	// Default: LocalDir("")
+	// Resources resolves paths for static resources, specifically handling
+	// paths prefixed with "/web/". Defaults to app.LocalDir("").
 	Resources ResourceResolver
 
-	// The version number. This is used in order to update the PWA application
-	// in the browser. It must be set when deployed on a live system in order to
-	// prevent recurring updates.
-	//
-	// Default: Auto-generated in order to trigger pwa update on a local
-	// development system.
+	// Version defines the app's version. It's crucial for determining if an
+	// update is available. Must be set in live environments to avoid recurring
+	// updates. Auto-generated by default for local development updates.
 	Version string
 
-	// WasmContentLength specifies the length, in bytes, of the WebAssembly (WASM)
-	// file. This length is used to calculate the loading progress when serving the
-	// WASM binary.
-	//
-	// If this field is not set, the handler will attempt to use the
-	// WasmContentLengthHeader to determine the content length.
+	// WasmContentLength indicates the byte length of the WASM file for progress
+	// calculation. Falls back to WasmContentLengthHeader if unset.
 	WasmContentLength string
 
-	// WasmContentLengthHeader defines the HTTP header used to obtain the content
-	// length of the WebAssembly file. This is used as a fallback mechanism to
-	// determine the loading progress if WasmContentLength is not set.
-	//
-	// The default fallback HTTP header is "Content-Length".
+	// WasmContentLengthHeader specifies the HTTP header for the WASM file's
+	// content length. Defaults to "Content-Length".
 	WasmContentLengthHeader string
 
-	// The template used to generate app-worker.js. The template follows the
-	// text/template package model.
-	//
-	// By default set to DefaultAppWorkerJS, changing the template have very
-	// high chances to mess up go-app usage. Any issue related to a custom app
-	// worker template is not supported and will be closed.
+	// ServiceWorkerTemplate defines the app-worker.js template, defaulting
+	// to DefaultAppWorkerJS. Modifications are discouraged to avoid potential
+	// issues with go-app functionality.
 	ServiceWorkerTemplate string
 
 	once                 sync.Once
@@ -859,35 +791,27 @@ func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library [
 	w.Write(library)
 }
 
-// Icon describes a square image that is used in various places such as
-// application icon, favicon or loading icon.
+// Icon represents a square image utilized in various contexts, such as the
+// application icon, favicon, and loading icon. Paths specified for icons
+// are relative to the root directory unless stated otherwise.
 type Icon struct {
-	// The path or url to a square image/png file. It must have a side of 192px.
-	//
-	// Path is relative to the root directory.
+	// Default specifies the path or URL to a square image/png file with a
+	// dimension of 192x192 pixels. Represents the standard application icon.
 	Default string
 
-	// The path or url to larger square image/png file. It must have a side of
-	// 512px.
-	//
-	// Path is relative to the root directory.
+	// Large indicates the path or URL to a larger square image/png file,
+	// required to be 512x512 pixels. Used for high-resolution displays.
 	Large string
 
-	// The path or url to a svg file.
+	// SVG specifies the path or URL to an SVG file, providing vector-based
+	// imagery for scalable application icons. Ideal for responsive design.
 	SVG string
 
-	// The path or url to a square image/png file that is used for IOS/IPadOS
-	// home screen icon. It must have a side of 192px.
-	//
-	// Path is relative to the root directory.
-	//
-	// DEFAULT: Icon.Default
+	// AppleTouch defines the path or URL to a square image/png file for use as
+	// an iOS/iPadOS home screen icon, with a dimension of 192x192 pixels.
+	// If not set, Icon.Default is used as a fallback.
 	AppleTouch string
 }
-
-// Environment describes the environment variables to pass to the progressive
-// web app.
-type Environment map[string]string
 
 func isRemoteLocation(path string) bool {
 	return strings.HasPrefix(path, "https://") ||
