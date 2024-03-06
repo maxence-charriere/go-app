@@ -3,7 +3,7 @@ package ui
 import (
 	"fmt"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // IScroll is the interface that describes a base with a scrollable content

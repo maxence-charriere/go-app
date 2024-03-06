@@ -17,7 +17,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 const (

@@ -3,7 +3,7 @@ package ui
 import (
 	"fmt"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // Block is the interface that describes a block of content.

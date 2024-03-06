@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"runtime"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 type value struct{}

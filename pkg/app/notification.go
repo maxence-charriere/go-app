@@ -3,7 +3,7 @@ package app
 import (
 	"encoding/json"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 // Notification represents a user notification.

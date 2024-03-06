@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"reflect"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 // TestEngine encapsulates the methods required to load components and manage
