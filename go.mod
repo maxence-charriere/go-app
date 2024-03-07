@@ -1,4 +1,4 @@
-module github.com/maxence-charriere/go-app/v9
+module github.com/maxence-charriere/go-app/v10
 
 go 1.21
 

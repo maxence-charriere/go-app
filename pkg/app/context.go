@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 // Context represents a UI element-associated environment enabling interactions

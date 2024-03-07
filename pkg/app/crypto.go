@@ -6,7 +6,7 @@ import (
 	"crypto/rand"
 	"io"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 func encrypt(key string, v []byte) ([]byte, error) {

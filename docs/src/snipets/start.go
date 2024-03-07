@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // hello is a component that displays a simple "Hello World!". A component is a

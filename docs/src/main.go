@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"github.com/SherClockHolmes/webpush-go"
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/cli"
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-	"github.com/maxence-charriere/go-app/v9/pkg/logs"
-	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/cli"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/logs"
+	"github.com/maxence-charriere/go-app/v10/pkg/ui"
 )
 
 const (
@@ -165,7 +165,7 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 		WithTag("version", h.Version),
 	)
 
-	h.Env = app.Environment{
+	h.Env = map[string]string{
 		"VAPID_PUBLIC_KEY": opts.VAPIDPublicKey,
 	}
 

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 // BrowserStorage defines an interface for interacting with web browser storage

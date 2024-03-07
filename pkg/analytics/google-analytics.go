@@ -3,7 +3,7 @@ package analytics
 import (
 	"fmt"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // GoogleAnalyticsHeader returns the header to use in the app.Handler.RawHeader

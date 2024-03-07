@@ -27,7 +27,7 @@ Then Initialize the **go module** and download the **go-app** package.
 
 ```bash
 go mod init
-go get -u github.com/maxence-charriere/go-app/v9/pkg/app
+go get -u github.com/maxence-charriere/go-app/v10/pkg/app
 ```
 
 ## Code
@@ -43,7 +43,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // hello is a component that displays a simple "Hello World!". A component is a

@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 	"golang.org/x/net/html"
 )
 
@@ -55,7 +55,7 @@ func handleGetReference(ctx app.Context, a app.Action) {
 	content = strings.ReplaceAll(content, "▾", "")
 	content = strings.ReplaceAll(content, `title="Click to hide Overview section"`, "")
 	content = strings.ReplaceAll(content, `title="Click to hide Index section"`, "")
-	content = strings.ReplaceAll(content, "/src/github.com/maxence-charriere/go-app/v9/", "https://github.com/maxence-charriere/go-app/blob/master/")
+	content = strings.ReplaceAll(content, "/src/github.com/maxence-charriere/go-app/v10/", "https://github.com/maxence-charriere/go-app/blob/master/")
 
 	index, err := getHTML(doc, "#manual-nav")
 	if err != nil {

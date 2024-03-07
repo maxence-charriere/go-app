@@ -5,7 +5,7 @@ package analytics
 import (
 	"fmt"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // Backend is the interface that describes an analytics backend that sends
