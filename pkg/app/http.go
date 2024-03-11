@@ -104,10 +104,6 @@ type Handler struct {
 	// Body returns the page's body element. Defaults to app.Body().
 	Body func() HTMLBody
 
-	// AutoUpdateInterval sets how often the app auto-updates in the browser.
-	// Disabled if set to 0. Defaults to 0.
-	AutoUpdateInterval time.Duration
-
 	// Env passes environment variables to the PWA. Note: Reserved keys
 	// (GOAPP_VERSION, GOAPP_GOAPP_STATIC_RESOURCES_URL) cannot be
 	// overridden and are used for internal configuration.
@@ -324,7 +320,6 @@ func (h *Handler) makeAppJS() []byte {
 			WasmContentLength       string
 			WasmContentLengthHeader string
 			WorkerJS                string
-			AutoUpdateInterval      int64
 		}{
 			Env:                     jsonString(h.Env),
 			LoadingLabel:            h.LoadingLabel,
@@ -332,7 +327,6 @@ func (h *Handler) makeAppJS() []byte {
 			WasmContentLength:       h.WasmContentLength,
 			WasmContentLengthHeader: h.WasmContentLengthHeader,
 			WorkerJS:                h.Resources.Resolve("/app-worker.js"),
-			AutoUpdateInterval:      h.AutoUpdateInterval.Milliseconds(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}

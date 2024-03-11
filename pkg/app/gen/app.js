@@ -64,15 +64,11 @@ function goappSetupNotifyUpdate(registration) {
   });
 }
 
-function goappSetupAutoUpdate(registration) {
-  const autoUpdateInterval = "{{.AutoUpdateInterval}}";
-  if (autoUpdateInterval == 0) {
+function goappTryUpdate() {
+  if (!goappServiceWorkerRegistration) {
     return;
   }
-
-  window.setInterval(() => {
-    registration.update();
-  }, autoUpdateInterval);
+  goappServiceWorkerRegistration.update();
 }
 
 // -----------------------------------------------------------------------------

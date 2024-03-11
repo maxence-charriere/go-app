@@ -10,7 +10,6 @@ import (
 	"path"
 	"sync"
 	"syscall"
-	"time"
 
 	"github.com/SherClockHolmes/webpush-go"
 	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
@@ -130,7 +129,7 @@ func main() {
 		ThemeColor:      backgroundColor,
 		LoadingLabel:    "go-app documentation {progress}%",
 		Styles: []string{
-			"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
+			// "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
 			"/web/css/prism.css",
 			"/web/css/docs.css",
 		},
@@ -147,7 +146,6 @@ func main() {
 			"/web/documents/home.md",
 			"/web/documents/home-next.md",
 		},
-		AutoUpdateInterval: time.Minute,
 	}
 
 	switch cli.Load() {
