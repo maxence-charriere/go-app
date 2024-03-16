@@ -541,6 +541,10 @@ func (m nodeManager) updateComponent(ctx Context, v, new Composer) (UI, error) {
 		updater.OnUpdate(ctx)
 	}
 
+	if updateFinalizer, ok := v.(UpdateFinalizer); ok {
+		defer updateFinalizer.OnUpdateComplete(ctx)
+	}
+
 	ctx.removeComponentUpdate(v)
 	return m.UpdateComponentRoot(ctx, v)
 }
