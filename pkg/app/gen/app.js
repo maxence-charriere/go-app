@@ -30,7 +30,6 @@ async function goappInitServiceWorker() {
 
       goappServiceWorkerRegistration = registration;
       goappSetupNotifyUpdate(registration);
-      goappSetupAutoUpdate(registration);
       goappSetupPushNotification();
     } catch (err) {
       console.error("goapp service worker registration failed", err);
