@@ -50,7 +50,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 		},
 		Image: "/web/test.png",
 	}
-	h.Icon.AppleTouch = "ios.png"
+	h.Icon.Maskable = "ios.png"
 
 	h.ServeHTTP(w, r)
 
@@ -93,7 +93,7 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 		},
 		Image: "/web/test.png",
 	}
-	h.Icon.AppleTouch = "ios.png"
+	h.Icon.Maskable = "ios.png"
 
 	h.ServeHTTP(w, r)
 
@@ -134,7 +134,7 @@ func TestHandlerServePageWithGitHubPages(t *testing.T) {
 			`<meta http-equiv="refresh" content="30">`,
 		},
 	}
-	h.Icon.AppleTouch = "ios.png"
+	h.Icon.Maskable = "ios.png"
 
 	h.ServeHTTP(w, r)
 
@@ -357,7 +357,6 @@ func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `"short_name": "foo"`)
 	require.Contains(t, body, `"name": "foobar"`)
 	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
-	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
 	require.Contains(t, body, `"background_color": "#0000f0"`)
 	require.Contains(t, body, `"theme_color": "#0000ff"`)
 	require.Contains(t, body, `"scope": "/"`)
@@ -383,7 +382,6 @@ func TestHandlerServeManifestJSONWithRemoteBucket(t *testing.T) {
 	require.Equal(t, "application/manifest+json", w.Header().Get("Content-Type"))
 	require.Contains(t, body, `"short_name": "foo"`)
 	require.Contains(t, body, `"name": "foobar"`)
-	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
 	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
 	require.Contains(t, body, `"background_color": "#0000f0"`)
 	require.Contains(t, body, `"theme_color": "#0000ff"`)

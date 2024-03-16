@@ -210,8 +210,8 @@ func (h *Handler) initIcon() {
 		h.Icon.Large = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"
 	}
 
-	if h.Icon.AppleTouch == "" {
-		h.Icon.AppleTouch = h.Icon.Default
+	if h.Icon.Maskable == "" {
+		h.Icon.Maskable = h.Icon.Default
 	}
 
 	if h.Icon.SVG == "" {
@@ -350,7 +350,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		"/",
 		"/web/app.wasm",
 	)
-	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
+	setResources(h.Icon.Default, h.Icon.Large, h.Icon.Maskable)
 	setResources(h.Styles...)
 	setResources(h.Fonts...)
 	setResources(h.Scripts...)
@@ -395,6 +395,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			DefaultIcon     string
 			LargeIcon       string
 			SVGIcon         string
+			MaskableIcon    string
 			BackgroundColor string
 			ThemeColor      string
 			Scope           string
@@ -406,6 +407,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			DefaultIcon:     h.Resources.Resolve(h.Icon.Default),
 			LargeIcon:       h.Resources.Resolve(h.Icon.Large),
 			SVGIcon:         h.Resources.Resolve(h.Icon.SVG),
+			MaskableIcon:    h.Resources.Resolve(h.Icon.Maskable),
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
 			Scope:           scope,
@@ -723,7 +725,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Href(icon),
 				Link().
 					Rel("apple-touch-icon").
-					Href(h.Icon.AppleTouch),
+					Href(h.Icon.Maskable),
 				Link().
 					Rel("manifest").
 					Href("/manifest.webmanifest"),
@@ -801,10 +803,19 @@ type Icon struct {
 	// imagery for scalable application icons. Ideal for responsive design.
 	SVG string
 
-	// AppleTouch defines the path or URL to a square image/png file for use as
-	// an iOS/iPadOS home screen icon, with a dimension of 192x192 pixels.
-	// If not set, Icon.Default is used as a fallback.
-	AppleTouch string
+	// Maskable specifies the path or URL to an adaptive icon designed for various
+	// operating system shapes. This icon must be a PNG image with 192x192 pixels.
+	//
+	// Used in PWA manifests and as meta tags for Apple browsers, these icons adapt
+	// to device or browser shape requirements, avoiding unsightly cropping.
+	//
+	// To convert existing icons to a maskable format, visit
+	// https://maskable.app/editor. This tool simplifies creating icons that meet
+	// maskable specifications.
+	//
+	// If not specified, Icon.Default is used as a fallback. Specifying a maskable
+	// icon enhances user experience on platforms supporting adaptive icons.
+	Maskable string
 }
 
 func isRemoteLocation(path string) bool {
@@ -816,46 +827,6 @@ func isStaticResourcePath(path string) bool {
 	return strings.HasPrefix(path, "/web/") ||
 		strings.HasPrefix(path, "web/")
 }
-
-// func parseSrc(link string) (url, crossOrigin, loading string) {
-// 	for _, p := range strings.Split(link, " ") {
-// 		p = strings.TrimSpace(p)
-// 		if p == "" {
-// 			continue
-// 		}
-
-// 		switch {
-// 		case p == "crossorigin":
-// 			crossOrigin = "true"
-
-// 		case strings.HasPrefix(p, "crossorigin="):
-// 			crossOrigin = strings.TrimPrefix(p, "crossorigin=")
-
-// 		case p == "defer":
-// 			loading = "defer"
-
-// 		case p == "async":
-// 			loading = "async"
-
-// 		default:
-// 			url = p
-// 		}
-// 	}
-
-// 	return url, crossOrigin, loading
-// }
-
-// ResourceString represents a string that encapsulates a resource URL along with attributes
-// specifying how to load it. This includes attributes like 'async', 'defer', and 'crossorigin'.
-// The type is used to configure resource loading behavior in HTTP Handlers.
-//
-// Examples of ResourceString values include:
-//   - "https://hello.world async"
-//   - "https://hello.world defer"
-//   - "https://hello.world crossorigin"
-//   - "https://hello.world crossorigin=anonymous"
-//   - "https://hello.world async crossorigin"
-// type ResourceString string
 
 type httpResource struct {
 	URL         string
