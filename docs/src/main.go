@@ -102,9 +102,6 @@ func main() {
 		Description: defaultDescription,
 		Author:      "Maxence Charriere",
 		Image:       "https://go-app.dev/web/images/go-app.png",
-		Icon: app.Icon{
-			Default: "/web/icon.png",
-		},
 		Keywords: []string{
 			"go-app",
 			"go",
