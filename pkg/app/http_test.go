@@ -50,7 +50,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 		},
 		Image: "/web/test.png",
 	}
-	h.Icon.AppleTouch = "ios.png"
+	h.Icon.Maskable = "ios.png"
 
 	h.ServeHTTP(w, r)
 
@@ -93,7 +93,7 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 		},
 		Image: "/web/test.png",
 	}
-	h.Icon.AppleTouch = "ios.png"
+	h.Icon.Maskable = "ios.png"
 
 	h.ServeHTTP(w, r)
 
@@ -134,7 +134,7 @@ func TestHandlerServePageWithGitHubPages(t *testing.T) {
 			`<meta http-equiv="refresh" content="30">`,
 		},
 	}
-	h.Icon.AppleTouch = "ios.png"
+	h.Icon.Maskable = "ios.png"
 
 	h.ServeHTTP(w, r)
 

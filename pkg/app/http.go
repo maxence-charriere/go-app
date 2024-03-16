@@ -210,8 +210,8 @@ func (h *Handler) initIcon() {
 		h.Icon.Large = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"
 	}
 
-	if h.Icon.AppleTouch == "" {
-		h.Icon.AppleTouch = h.Icon.Default
+	if h.Icon.Maskable == "" {
+		h.Icon.Maskable = h.Icon.Default
 	}
 
 	if h.Icon.SVG == "" {
@@ -350,7 +350,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		"/",
 		"/web/app.wasm",
 	)
-	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
+	setResources(h.Icon.Default, h.Icon.Large, h.Icon.Maskable)
 	setResources(h.Styles...)
 	setResources(h.Fonts...)
 	setResources(h.Scripts...)
@@ -723,7 +723,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Href(icon),
 				Link().
 					Rel("apple-touch-icon").
-					Href(h.Icon.AppleTouch),
+					Href(h.Icon.Maskable),
 				Link().
 					Rel("manifest").
 					Href("/manifest.webmanifest"),
@@ -801,10 +801,19 @@ type Icon struct {
 	// imagery for scalable application icons. Ideal for responsive design.
 	SVG string
 
-	// AppleTouch defines the path or URL to a square image/png file for use as
-	// an iOS/iPadOS home screen icon, with a dimension of 192x192 pixels.
-	// If not set, Icon.Default is used as a fallback.
-	AppleTouch string
+	// Maskable specifies the path or URL to an adaptive icon designed for various
+	// operating system shapes. This icon must be a PNG image with 192x192 pixels.
+	//
+	// Used in PWA manifests and as meta tags for Apple browsers, these icons adapt
+	// to device or browser shape requirements, avoiding unsightly cropping.
+	//
+	// To convert existing icons to a maskable format, visit
+	// https://maskable.app/editor. This tool simplifies creating icons that meet
+	// maskable specifications.
+	//
+	// If not specified, Icon.Default is used as a fallback. Specifying a maskable
+	// icon enhances user experience on platforms supporting adaptive icons.
+	Maskable string
 }
 
 func isRemoteLocation(path string) bool {
