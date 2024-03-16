@@ -395,6 +395,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			DefaultIcon     string
 			LargeIcon       string
 			SVGIcon         string
+			MaskableIcon    string
 			BackgroundColor string
 			ThemeColor      string
 			Scope           string
@@ -406,6 +407,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			DefaultIcon:     h.Resources.Resolve(h.Icon.Default),
 			LargeIcon:       h.Resources.Resolve(h.Icon.Large),
 			SVGIcon:         h.Resources.Resolve(h.Icon.SVG),
+			MaskableIcon:    h.Resources.Resolve(h.Icon.Maskable),
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
 			Scope:           scope,

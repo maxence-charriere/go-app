@@ -22,7 +22,7 @@
       "src": "{{.MaskableIcon}}",
       "type": "image/png",
       "purpose": "maskable",
-      "sizes": "196x196"
+      "sizes": "192x192"
     }
   ],
   "scope": "{{.Scope}}",
