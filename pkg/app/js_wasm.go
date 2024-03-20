@@ -114,8 +114,12 @@ func (v value) firstElementChild() Value {
 	return v.Get("firstElementChild")
 }
 
-func (v value) addEventListener(event string, fn Func) {
-	v.Call("addEventListener", event, fn)
+func (v value) addEventListener(event string, fn Func, options map[string]any) {
+	if len(options) == 0 {
+		v.Call("addEventListener", event, fn)
+		return
+	}
+	v.Call("addEventListener", event, fn, options)
 }
 
 func (v value) removeEventListener(event string, fn Func) {

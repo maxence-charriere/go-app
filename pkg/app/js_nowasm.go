@@ -125,7 +125,7 @@ func (v value) firstElementChild() Value {
 	return value{}
 }
 
-func (v value) addEventListener(event string, fn Func) {
+func (v value) addEventListener(event string, fn Func, options map[string]any) {
 }
 
 func (v value) removeEventListener(event string, fn Func) {

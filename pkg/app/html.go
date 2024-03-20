@@ -81,11 +81,11 @@ func (e *htmlElement) events() eventHandlers {
 	return e.eventHandlers
 }
 
-func (e *htmlElement) setEventHandler(event string, h EventHandler, scope ...any) {
+func (e *htmlElement) setEventHandler(event string, h EventHandler, options ...EventOption) {
 	if e.eventHandlers == nil {
 		e.eventHandlers = make(eventHandlers)
 	}
-	e.eventHandlers.Set(event, h, scope...)
+	e.eventHandlers.Set(event, h, options...)
 }
 
 func (e *htmlElement) parent() UI {

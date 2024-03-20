@@ -21,11 +21,33 @@ func TestEventHandlersSet(t *testing.T) {
 }
 
 func TestMakeEventHandler(t *testing.T) {
-	eh := makeEventHandler("click", func(ctx Context, e Event) {}, 1)
-	require.Equal(t, "click", eh.event)
-	require.Equal(t, "/1", eh.scope)
-	require.NotNil(t, eh.goHandler)
-	require.Nil(t, eh.jsHandler)
+	t.Run("without options", func(t *testing.T) {
+		eh := makeEventHandler("click", func(ctx Context, e Event) {})
+		require.Equal(t, "click", eh.event)
+		require.Empty(t, eh.scope)
+		require.False(t, eh.passive)
+		require.NotNil(t, eh.goHandler)
+		require.Nil(t, eh.jsHandler)
+	})
+
+	t.Run("with scope option", func(t *testing.T) {
+		eh := makeEventHandler("click", func(ctx Context, e Event) {}, EventScope(1))
+		require.Equal(t, "click", eh.event)
+		require.Equal(t, "/1", eh.scope)
+		require.False(t, eh.passive)
+		require.NotNil(t, eh.goHandler)
+		require.Nil(t, eh.jsHandler)
+	})
+
+	t.Run("with passive option", func(t *testing.T) {
+		eh := makeEventHandler("click", func(ctx Context, e Event) {}, PassiveEvent())
+		require.Equal(t, "click", eh.event)
+		require.Empty(t, eh.scope)
+		require.True(t, eh.passive)
+		require.NotNil(t, eh.goHandler)
+		require.Nil(t, eh.jsHandler)
+	})
+
 }
 
 func TestEventHandlerEqual(t *testing.T) {
