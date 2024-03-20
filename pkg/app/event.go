@@ -25,34 +25,84 @@ func (e Event) StopImmediatePropagation() {
 	e.Call("stopImmediatePropagation")
 }
 
+// EventOption represents an option for configuring event handlers, such as
+// setting scopes or marking them as passive.
+type EventOption struct {
+	name  string
+	value string
+}
+
+// EventScope returns an EventOption that adds a scope to an event handler.
+// This is useful in dynamic UI contexts to ensure correct mounting and
+// dismounting of handlers as UI elements are reordered. The scope is defined
+// by concatenating the provided path arguments into a unique identifier.
+func EventScope(v ...any) EventOption {
+	return EventOption{
+		name:  "scope",
+		value: toPath(v...),
+	}
+}
+
+// PassiveEvent returns an EventOption that marks an event handler as passive.
+// Passive handlers improve performance for high-frequency events by signaling
+// that they will not call Event.PreventDefault(), allowing the browser to
+// optimize event processing.
+// More on passive listeners: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#using_passive_listeners
+func PassiveEvent() EventOption {
+	return EventOption{
+		name: "passive",
+	}
+}
+
 type eventHandlers map[string]eventHandler
 
-func (h eventHandlers) Set(event string, eh EventHandler, scope ...any) {
+func (h eventHandlers) Set(event string, eh EventHandler, options ...EventOption) {
 	if eh != nil {
-		h[event] = makeEventHandler(event, eh, scope...)
+		h[event] = makeEventHandler(event, eh, options...)
 	}
 }
 
 type eventHandler struct {
 	event     string
 	scope     string
+	passive   bool
 	goHandler EventHandler
 	jsHandler Func
 	close     func()
 }
 
-func makeEventHandler(event string, h EventHandler, scope ...any) eventHandler {
-	return eventHandler{
+func makeEventHandler(event string, h EventHandler, options ...EventOption) eventHandler {
+	handler := eventHandler{
 		event:     event,
-		scope:     toPath(scope...),
 		goHandler: h,
 	}
+
+	for _, option := range options {
+		switch option.name {
+		case "scope":
+			handler.scope = option.value
+
+		case "passive":
+			handler.passive = true
+		}
+	}
+	return handler
 }
 
 func (h eventHandler) Equal(v eventHandler) bool {
 	return h.event == v.event &&
 		h.scope == v.scope &&
+		h.passive == v.passive &&
 		reflect.ValueOf(h.goHandler).Pointer() == reflect.ValueOf(v.goHandler).Pointer()
+}
+
+func (h eventHandler) options() map[string]any {
+	if h.passive {
+		return map[string]any{
+			"passive": true,
+		}
+	}
+	return nil
 }
 
 func trackMousePosition(e Event) {

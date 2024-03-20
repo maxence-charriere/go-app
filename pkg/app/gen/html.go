@@ -2230,7 +2230,7 @@ func writeInterface(w io.Writer, t tag) {
 
 	fmt.Fprintf(w, `
 		// Invokes the specified handler when the corresponding event is triggered.
-		On(event string, h EventHandler, scope ...any) HTML%s 
+		On(event string, h EventHandler, options ...EventOption) HTML%s 
 	`, t.Name)
 
 	for _, e := range t.EventHandlers {
@@ -2323,8 +2323,8 @@ func writeStruct(w io.Writer, t tag) {
 	fmt.Fprintln(w)
 
 	fmt.Fprintf(w, `
-		func (e *html%s) On(event string, h EventHandler, scope ...any)  HTML%s {
-			e.setEventHandler(event, h, scope...)
+		func (e *html%s) On(event string, h EventHandler, options ...EventOption)  HTML%s {
+			e.setEventHandler(event, h, options...)
 			return e
 		}
 		`,
@@ -2523,10 +2523,10 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 		fmt.Fprintf(w, `func (e *html%s)`, t.Name)
 	}
 
-	fmt.Fprintf(w, `%s (h EventHandler, scope ...any) HTML%s`, e.Name, t.Name)
+	fmt.Fprintf(w, `%s (h EventHandler, options ...EventOption) HTML%s`, e.Name, t.Name)
 	if !isInterface {
 		fmt.Fprintf(w, `{
-			return e.On("%s", h, scope...)
+			return e.On("%s", h, options...)
 		}`, strings.TrimPrefix(strings.ToLower(e.Name), "on"))
 	}
 }

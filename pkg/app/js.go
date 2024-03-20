@@ -153,7 +153,7 @@ type Value interface {
 	replaceChild(new, old Wrapper)
 	removeChild(c Wrapper)
 	firstElementChild() Value
-	addEventListener(event string, fn Func)
+	addEventListener(event string, fn Func, options map[string]any)
 	removeEventListener(event string, fn Func)
 	setNodeValue(v string)
 	setInnerHTML(v string)

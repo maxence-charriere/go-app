@@ -200,7 +200,7 @@ func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHan
 		}
 		return nil
 	})
-	v.JSValue().addEventListener(event, jsHandler)
+	v.JSValue().addEventListener(event, jsHandler, handler.options())
 
 	return eventHandler{
 		event:     event,
