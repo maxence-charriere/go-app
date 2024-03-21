@@ -166,3 +166,12 @@ func NewZeroComponentFactory(c Composer) func() Composer {
 		return reflect.New(componentType.Elem()).Interface().(Composer)
 	}
 }
+
+// TryUpdate attempts to update the application in the browser. On success, it
+// notifies components implementing the AppUpdater interface that an update is
+// ready.
+func TryUpdate() {
+	if tryUpdate := Window().Get("goappTryUpdate"); IsClient && tryUpdate.Truthy() {
+		tryUpdate.Invoke()
+	}
+}

@@ -53,15 +53,6 @@ func (ctx Context) AppUpdateAvailable() bool {
 	return ctx.appUpdatable
 }
 
-// TryUpdateApp attempts to update the application in the browser. On success,
-// it notifies components implementing the AppUpdater interface that an update
-// is ready.
-func (ctx Context) TryUpdateApp() {
-	if tryUpdate := Window().Get("goappTryUpdate"); IsClient && tryUpdate.Truthy() {
-		tryUpdate.Invoke()
-	}
-}
-
 // IsAppInstallable verifies if the app is eligible for installation.
 func (ctx Context) IsAppInstallable() bool {
 	if Window().Get("goappIsAppInstallable").Truthy() {
