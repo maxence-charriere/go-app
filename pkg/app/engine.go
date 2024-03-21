@@ -162,7 +162,6 @@ func (e *engineX) initBrowser() {
 		return
 	}
 	e.browser.HandleEvents(e.baseContext(), e.notifyComponentEvent)
-	e.states.InitBroadcast(e.baseContext())
 }
 
 func (e *engineX) notifyComponentEvent(event any) {

@@ -597,8 +597,6 @@ func TestStateManagerSet(t *testing.T) {
 		var m stateManager
 		ctx := makeTestContext()
 
-		e := newTestEngine()
-		m.InitBroadcast(e.baseContext())
 		state := m.Set(ctx, stateName, 42).Broadcast()
 		require.Equal(t, 42, state.value)
 		require.NotNil(t, state.ctx)
@@ -626,17 +624,30 @@ func TestStateManagerSet(t *testing.T) {
 
 		m1 := newTestEngine()
 		m2 := newTestEngine()
+		m3 := newTestEngine()
+
+		compo3 := &hello{}
+		err := m3.Load(compo3)
+		require.NoError(t, err)
+		ctx3 := m2.nodes.context(m3.baseContext(), compo3)
+		var value3 int
+		broadcasted3 := false
+		ctx3.ObserveState(stateName, &value3).
+			OnChange(func() {
+				broadcasted3 = true
+			})
 
 		compo2 := &hello{}
-		err := m2.Load(compo2)
+		err = m2.Load(compo2)
 		require.NoError(t, err)
 		ctx2 := m2.nodes.context(m2.baseContext(), compo2)
 		var value2 int
-
-		broadcasted := false
-		ctx2.ObserveState(stateName, &value2).OnChange(func() {
-			broadcasted = true
-		})
+		broadcasted2 := false
+		ctx2.ObserveState(stateName, &value2).
+			WithBroadcast().
+			OnChange(func() {
+				broadcasted2 = true
+			})
 
 		compo1 := &hello{}
 		err = m1.Load(compo1)
@@ -645,12 +656,14 @@ func TestStateManagerSet(t *testing.T) {
 		ctx1.SetState(stateName, 42).Broadcast()
 		m1.ConsumeAll()
 
-		for !broadcasted {
+		for !broadcasted2 {
 			m2.ConsumeAll()
 			time.Sleep(time.Millisecond * 5)
 		}
 
 		require.Equal(t, 42, value2)
+		require.Zero(t, value3)
+		require.False(t, broadcasted3)
 	})
 }
 

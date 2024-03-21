@@ -47,6 +47,10 @@ func (s State) PersistWithEncryption() State {
 
 // Broadcast signals that changes to the state will be broadcasted to other
 // browser tabs and windows sharing the same origin when it is supported.
+//
+// Using Broadcast creates a BroadcastChannel, which prevents the page from
+// being cached. This may impact the Chrome Lighthouse performance score due to
+// the additional resources required to manage the broadcast channel.
 func (s State) Broadcast() State {
 	return s.broadcast(s)
 }
@@ -63,9 +67,11 @@ type Observer struct {
 	receiver      any
 	condition     func() bool
 	changeHandler func()
+	broadcast     bool
 
-	state       string
-	setObserver func(Observer) Observer
+	state           string
+	setObserver     func(Observer) Observer
+	enableBroadcast func()
 }
 
 // While sets a condition for the observer, determining whether it observes
@@ -83,6 +89,21 @@ func (o Observer) OnChange(h func()) Observer {
 	return o.setObserver(o)
 }
 
+// WithBroadcast enables the observer to listen to state changes that are
+// broadcasted by other browser tabs or windows. This is useful for s
+// ynchronizing state across multiple open instances of a web application within
+// the same browser.
+//
+// Calling WithBroadcast creates a BroadcastChannel, which prevents the page
+// from being cached. This may impact the Chrome Lighthouse performance
+// score due to the additional resources required to manage the broadcast
+// channel.
+func (o Observer) WithBroadcast() Observer {
+	o.enableBroadcast()
+	o.broadcast = true
+	return o.setObserver(o)
+}
+
 func (o Observer) observing() bool {
 	if o.source == nil || !o.source.Mounted() {
 		return false
@@ -97,11 +118,12 @@ func (o Observer) observing() bool {
 // to state values. It supports concurrency-safe operations and provides
 // functionality to observe state changes.
 type stateManager struct {
-	mutex            sync.RWMutex
-	states           map[string]State
-	observers        map[string]map[UI]Observer
-	broadcastStoreID string
-	broadcastChannel Value
+	mutex             sync.RWMutex
+	states            map[string]State
+	observers         map[string]map[UI]Observer
+	initBroadcastOnce sync.Once
+	broadcastStoreID  string
+	broadcastChannel  Value
 }
 
 // Observe initiates observation for a specified state, ensuring the state
@@ -109,11 +131,13 @@ type stateManager struct {
 // offers methods for advanced observation configurations.
 func (m *stateManager) Observe(ctx Context, state string, receiver any) Observer {
 	m.Get(ctx, state, receiver)
+
 	return m.setObserver(Observer{
-		source:      ctx.Src(),
-		receiver:    receiver,
-		state:       state,
-		setObserver: m.setObserver,
+		source:          ctx.Src(),
+		receiver:        receiver,
+		state:           state,
+		setObserver:     m.setObserver,
+		enableBroadcast: func() { m.initBroadcast(ctx) },
 	})
 }
 
@@ -135,6 +159,7 @@ func (m *stateManager) setObserver(v Observer) Observer {
 		receiver:      v.receiver,
 		condition:     v.condition,
 		changeHandler: v.changeHandler,
+		broadcast:     v.broadcast,
 	}
 
 	return v
@@ -296,6 +321,8 @@ func (m *stateManager) broadcast(s State) State {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
+	m.initBroadcast(s.ctx)
+
 	if m.broadcastChannel == nil {
 		Log(errors.New("broadcast not supported").
 			WithTag("state", s.name))
@@ -318,22 +345,22 @@ func (m *stateManager) broadcast(s State) State {
 	return s
 }
 
-// InitBroadcast initializes a broadcast channel to share state changes
-// across browser tabs or windows.
-func (m *stateManager) InitBroadcast(ctx Context) {
-	broadcastChannel := Window().Get("BroadcastChannel")
-	if !broadcastChannel.Truthy() {
-		return
-	}
-	broadcastChannel = broadcastChannel.New("go-app-broadcast-states")
-	m.broadcastChannel = broadcastChannel
-	m.broadcastStoreID = uuid.NewString()
+func (m *stateManager) initBroadcast(ctx Context) {
+	m.initBroadcastOnce.Do(func() {
+		broadcastChannel := Window().Get("BroadcastChannel")
+		if !broadcastChannel.Truthy() {
+			return
+		}
+		broadcastChannel = broadcastChannel.New("go-app-broadcast-states")
+		m.broadcastChannel = broadcastChannel
+		m.broadcastStoreID = uuid.NewString()
 
-	handleBroadcast := FuncOf(func(this Value, args []Value) any {
-		m.handleBroadcast(ctx, args[0].Get("data"))
-		return nil
+		handleBroadcast := FuncOf(func(this Value, args []Value) any {
+			m.handleBroadcast(ctx, args[0].Get("data"))
+			return nil
+		})
+		broadcastChannel.Set("onmessage", handleBroadcast)
 	})
-	broadcastChannel.Set("onmessage", handleBroadcast)
 }
 
 func (m *stateManager) handleBroadcast(ctx Context, data Value) {
@@ -349,6 +376,9 @@ func (m *stateManager) handleBroadcast(ctx Context, data Value) {
 
 	for _, observer := range m.observers[state] {
 		o := observer
+		if !o.broadcast {
+			continue
+		}
 
 		ctx.sourceElement = o.source
 		ctx.Dispatch(func(ctx Context) {
