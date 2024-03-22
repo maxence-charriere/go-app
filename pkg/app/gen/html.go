@@ -492,6 +492,7 @@ var tags = []tag{
 			"srcset",
 			"usemap",
 			"width",
+			"loading",
 		)...),
 		EventHandlers: withMediaEventHandlers(withGlobalEventHandlers(
 			eventHandlersByName(
@@ -1366,7 +1367,7 @@ var attrs = map[string]attr{
 	"loading": {
 		Name: "Loading",
 		Type: "fmt",
-		Doc:  "Determines the browser's loading behavior for the iframe ('eager' or 'lazy').",
+		Doc:  "Determines the browser's loading behavior ('eager' or 'lazy').",
 	},
 	"loop": {
 		Name: "Loop",

@@ -3762,6 +3762,7 @@ func TestImg(t *testing.T) {
 	elem.IsMap(true)
 	elem.IsMap(false)
 	elem.Lang("hello %v", 42)
+	elem.Loading("hello %v", 42)
 	elem.Role("hello %v", 42)
 	elem.Sizes("hello %v", 42)
 	elem.Spellcheck(true)

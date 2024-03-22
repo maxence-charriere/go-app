@@ -24156,7 +24156,7 @@ type HTMLIFrame interface {
 	// Declares the language of the element's content.
 	Lang(format string, v ...any) HTMLIFrame
 
-	// Determines the browser's loading behavior for the iframe ('eager' or 'lazy').
+	// Determines the browser's loading behavior ('eager' or 'lazy').
 	Loading(format string, v ...any) HTMLIFrame
 
 	// Assigns a name to the element.
@@ -24726,6 +24726,9 @@ type HTMLImg interface {
 	// Declares the language of the element's content.
 	Lang(format string, v ...any) HTMLImg
 
+	// Determines the browser's loading behavior ('eager' or 'lazy').
+	Loading(format string, v ...any) HTMLImg
+
 	// Communicates the intended function or meaning of an element to assistive technologies.
 	Role(format string, v ...any) HTMLImg
 
@@ -25037,6 +25040,11 @@ func (e *htmlImg) IsMap(v bool) HTMLImg {
 
 func (e *htmlImg) Lang(format string, v ...any) HTMLImg {
 	e.setAttr("lang", FormatString(format, v...))
+	return e
+}
+
+func (e *htmlImg) Loading(format string, v ...any) HTMLImg {
+	e.setAttr("loading", FormatString(format, v...))
 	return e
 }
 
