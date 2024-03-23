@@ -461,6 +461,16 @@ func TestNodeManagerCanUpdate(t *testing.T) {
 		var m nodeManager
 		require.False(t, m.CanUpdate(ElemSelfClosing("input"), ElemSelfClosing("br")))
 	})
+
+	t.Run("replacer component can be updated", func(t *testing.T) {
+		var m nodeManager
+		require.True(t, m.CanUpdate(&replacerComponent{}, &replacerComponent{}))
+	})
+
+	t.Run("replacer component cannot be updated", func(t *testing.T) {
+		var m nodeManager
+		require.False(t, m.CanUpdate(&replacerComponent{replace: true}, &replacerComponent{replace: true}))
+	})
 }
 
 func BenchmarkNodeManagerCanUpdate(b *testing.B) {
@@ -1208,7 +1218,6 @@ func TestCanUpdateValue(t *testing.T) {
 }
 
 func TestComponent(t *testing.T) {
-
 	t.Run("parent component is returned", func(t *testing.T) {
 		compo := &compoWithCustomRoot{Root: Div()}
 

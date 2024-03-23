@@ -342,6 +342,9 @@ func (m nodeManager) CanUpdate(v, new UI) bool {
 	case *htmlElem, *htmlElemSelfClosing:
 		return v.(HTML).Tag() == new.(HTML).Tag()
 
+	case Replacer:
+		return !v.(Replacer).ReplaceOnUpdate()
+
 	default:
 		return true
 	}
