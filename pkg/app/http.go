@@ -762,6 +762,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Img().
 							ID("app-wasm-loader-icon").
 							Class("goapp-logo goapp-spin").
+							Alt("wasm loader icon").
 							Src(h.Icon.Default),
 						P().
 							ID("app-wasm-loader-label").
