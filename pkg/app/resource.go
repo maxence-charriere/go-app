@@ -96,7 +96,10 @@ func GitHubPages(repoName string) ResourceProvider {
 // given prefix.
 func CustomProvider(path, prefix string) ResourceProvider {
 	root := strings.Trim(path, "/")
-	prefix = "/" + strings.Trim(prefix, "/")
+
+	if prefix != "" {
+		prefix = "/" + strings.Trim(prefix, "/")
+	}
 
 	return localDir{
 		Handler: http.FileServer(http.Dir(root)),
