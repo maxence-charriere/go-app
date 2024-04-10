@@ -50,11 +50,15 @@ func IfSlice(expr bool, elems func() []UI) Condition {
 	if !expr {
 		return condition{}
 	}
-	return condition{children: FilterUIElems(elems()...)}
+	return condition{
+		children: FilterUIElems(elems()...),
+		matched:  true,
+	}
 }
 
 type condition struct {
 	children []UI
+	matched  bool
 }
 
 func (c condition) ElseIf(expr bool, elem func() UI) Condition {
@@ -64,11 +68,12 @@ func (c condition) ElseIf(expr bool, elem func() UI) Condition {
 }
 
 func (c condition) ElseIfSlice(expr bool, elems func() []UI) Condition {
-	if !expr {
+	if c.matched || !expr {
 		return c
 	}
 
 	c.children = FilterUIElems(elems()...)
+	c.matched = true
 	return c
 }
 
