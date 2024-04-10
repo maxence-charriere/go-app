@@ -64,7 +64,7 @@ func (c condition) ElseIf(expr bool, elem func() UI) Condition {
 }
 
 func (c condition) ElseIfSlice(expr bool, elems func() []UI) Condition {
-	if len(c.children) != 0 || !expr {
+	if !expr {
 		return c
 	}
 
