@@ -80,7 +80,7 @@ func (b *browser) handleNavigationFromJS(ctx Context) {
 }
 
 func (b *browser) handleAppUpdate(ctx Context, notifyComponentEvent func(any)) {
-	b.appUpdate = FuncOf(func(this Value, args []Value) any {
+	appUpdate := func() {
 		ctx.dispatch(func() {
 			b.AppUpdatable = true
 			notifyComponentEvent(appUpdate{})
@@ -88,8 +88,15 @@ func (b *browser) handleAppUpdate(ctx Context, notifyComponentEvent func(any)) {
 		ctx.defere(func() {
 			Log(Window().URL().Hostname() + " has been updated, reload to see changes")
 		})
+	}
+
+	b.appUpdate = FuncOf(func(this Value, args []Value) any {
+		appUpdate()
 		return nil
 	})
+	if Window().Get("goappOnUpdate").Truthy() {
+		defer appUpdate()
+	}
 	Window().Set("goappOnUpdate", b.appUpdate)
 }
 

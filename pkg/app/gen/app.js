@@ -2,7 +2,7 @@
 // go-app
 // -----------------------------------------------------------------------------
 var goappNav = function () {};
-var goappOnUpdate = function () {};
+var goappOnUpdate = null;
 var goappOnAppInstallChange = function () {};
 
 const goappEnv = {{.Env}};
@@ -56,6 +56,10 @@ function goappSetupNotifyUpdate(registration) {
         return;
       }
       if (newSW.state != "activated") {
+        return;
+      }
+      if (goappOnUpdate == nil) {
+        goappOnUpdate = true;
         return;
       }
       goappOnUpdate();
