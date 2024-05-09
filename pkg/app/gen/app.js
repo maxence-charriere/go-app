@@ -58,7 +58,7 @@ function goappSetupNotifyUpdate(registration) {
       if (newSW.state != "activated") {
         return;
       }
-      if (goappOnUpdate == nil) {
+      if (goappOnUpdate == null) {
         goappOnUpdate = true;
         return;
       }
