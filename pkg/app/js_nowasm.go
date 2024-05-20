@@ -7,14 +7,7 @@ import (
 	"net/url"
 	"runtime"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-)
-
-var (
-	window    = &browserWindow{}
-	errNoWasm = errors.New("unsupported instruction").
-			WithTag("required-architecture", "wasm").
-			WithTag("current-architecture", runtime.GOARCH)
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 type value struct{}
@@ -97,7 +90,9 @@ func (v value) Truthy() bool {
 }
 
 func (v value) Type() Type {
-	panic(errNoWasm)
+	panic(errors.New("unsupported instruction").
+		WithTag("required-architecture", "wasm").
+		WithTag("current-architecture", runtime.GOARCH))
 }
 
 func (v value) Then(f func(Value)) {
@@ -130,7 +125,7 @@ func (v value) firstElementChild() Value {
 	return value{}
 }
 
-func (v value) addEventListener(event string, fn Func) {
+func (v value) addEventListener(event string, fn Func, options map[string]any) {
 }
 
 func (v value) removeEventListener(event string, fn Func) {
@@ -172,6 +167,10 @@ type browserWindow struct {
 	value
 }
 
+func newBrowserWindow() *browserWindow {
+	return &browserWindow{}
+}
+
 func (w browserWindow) URL() *url.URL {
 	return &url.URL{}
 }
@@ -192,10 +191,6 @@ func (w *browserWindow) GetElementByID(id string) Value {
 }
 
 func (w *browserWindow) ScrollToID(id string) {
-}
-
-func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	return func() {}
 }
 
 func (w *browserWindow) setBody(body UI) {

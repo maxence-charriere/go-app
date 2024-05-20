@@ -1,63 +1,90 @@
 package app
 
-import (
-	"context"
-	"io"
-
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-)
-
-// Condition represents a control structure that displays nodes depending on a
-// given expression.
+// Condition represents a control structure for conditionally displaying UI
+// elements. It extends the UI interface to include methods for handling
+// conditional logic.
 type Condition interface {
 	UI
 
-	// ElseIf sets the condition with the given nodes if previous expressions
-	// were not met and given expression is true.
-	ElseIf(expr bool, elems ...UI) Condition
+	// ElseIf sets a UI element to be displayed when the given boolean
+	// expression is true and all previous conditions have been false.
+	//
+	// expr: Boolean expression to evaluate.
+	// elem: Function that returns the UI element to display.
+	ElseIf(expr bool, elem func() UI) Condition
 
-	// Else sets the condition with the given UI elements if previous
-	// expressions were not met.
-	Else(elems ...UI) Condition
+	// ElseIfSlice sets multiple UI elements to be displayed when the given
+	// boolean expression is true and all previous conditions have been false.
+	//
+	// expr: Boolean expression to evaluate.
+	// elems: Function that returns a slice of UI elements to display.
+	ElseIfSlice(expr bool, elems func() []UI) Condition
+
+	// Else sets a UI element to be displayed as a fallback when all previous
+	// conditions have been false.
+	//
+	// elem: Function that returns the UI element to display.
+	Else(elem func() UI) Condition
+
+	// ElseSlice sets multiple UI elements to be displayed as a fallback when
+	// all previous conditions have been false.
+	//
+	// expr: Boolean expression to evaluate.
+	// elems: Function that returns a slice of UI elements to display.
+	ElseSlice(elems func() []UI) Condition
+
+	body() []UI
 }
 
-// If returns a condition that filters the given elements according to the given
-// expression.
-func If(expr bool, elems ...UI) Condition {
-	if !expr {
-		elems = nil
-	}
+// If returns a Condition that will display the given UI element based on the
+// evaluation of the provided boolean expression.
+func If(expr bool, elem func() UI) Condition {
+	return IfSlice(expr, func() []UI {
+		return []UI{elem()}
+	})
+}
 
+// IfSlice returns a Condition that will display the given slice of UI elements
+// based on the evaluation of the provided boolean expression.
+func IfSlice(expr bool, elems func() []UI) Condition {
+	if !expr {
+		return condition{}
+	}
 	return condition{
-		body:      FilterUIElems(elems...),
-		satisfied: expr,
+		children: FilterUIElems(elems()...),
+		matched:  true,
 	}
 }
 
 type condition struct {
-	body      []UI
-	satisfied bool
+	children []UI
+	matched  bool
 }
 
-func (c condition) ElseIf(expr bool, elems ...UI) Condition {
-	if c.satisfied {
+func (c condition) ElseIf(expr bool, elem func() UI) Condition {
+	return c.ElseIfSlice(expr, func() []UI {
+		return []UI{elem()}
+	})
+}
+
+func (c condition) ElseIfSlice(expr bool, elems func() []UI) Condition {
+	if c.matched || !expr {
 		return c
 	}
 
-	if expr {
-		c.body = FilterUIElems(elems...)
-		c.satisfied = expr
-	}
-
+	c.children = FilterUIElems(elems()...)
+	c.matched = true
 	return c
 }
 
-func (c condition) Else(elems ...UI) Condition {
-	return c.ElseIf(true, elems...)
+func (c condition) Else(elem func() UI) Condition {
+	return c.ElseSlice(func() []UI {
+		return []UI{elem()}
+	})
 }
 
-func (c condition) Kind() Kind {
-	return Selector
+func (c condition) ElseSlice(elems func() []UI) Condition {
+	return c.ElseIfSlice(true, elems)
 }
 
 func (c condition) JSValue() Value {
@@ -68,70 +95,14 @@ func (c condition) Mounted() bool {
 	return false
 }
 
-func (c condition) name() string {
-	return "if.else"
+func (c condition) body() []UI {
+	return c.children
 }
 
-func (c condition) self() UI {
-	return c
-}
-
-func (c condition) setSelf(UI) {
-}
-
-func (c condition) getContext() context.Context {
+func (c condition) parent() UI {
 	return nil
 }
 
-func (c condition) getDispatcher() Dispatcher {
+func (c condition) setParent(UI) UI {
 	return nil
-}
-
-func (c condition) getAttributes() attributes {
-	return nil
-}
-
-func (c condition) getEventHandlers() eventHandlers {
-	return nil
-}
-
-func (c condition) getParent() UI {
-	return nil
-}
-
-func (c condition) setParent(UI) {
-}
-
-func (c condition) getChildren() []UI {
-	return c.body
-}
-
-func (c condition) mount(Dispatcher) error {
-	return errors.New("condition is not mountable").
-		WithTag("name", c.name()).
-		WithTag("kind", c.Kind())
-}
-
-func (c condition) dismount() {
-}
-
-func (c condition) canUpdateWith(UI) bool {
-	return false
-}
-
-func (c condition) updateWith(UI) error {
-	return errors.New("condition cannot be updated").
-		WithTag("name", c.name()).
-		WithTag("kind", c.Kind())
-}
-
-func (c condition) onComponentEvent(any) {
-}
-
-func (c condition) html(w io.Writer) {
-	panic("shoulnd not be called")
-}
-
-func (c condition) htmlWithIndent(w io.Writer, indent int) {
-	panic("shoulnd not be called")
 }

@@ -3,112 +3,117 @@ package app
 import (
 	"encoding/json"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
-// A user notification.
+// Notification represents a user notification.
 type Notification struct {
-	// The title shown at the top of the notification window.
+	// The title displayed prominently at the top of the notification.
 	Title string `json:"title"`
 
-	// The URL path to navigate to when the notification is clicked.
+	// Path is the URL to navigate to upon clicking the notification.
 	Path string `json:"path"`
 
-	// The notification's language, as specified in
-	// https://www.sitepoint.com/iso-2-letter-language-codes.
+	// Lang specifies the notification's language, using ISO 2-letter codes.
+	// See: https://www.sitepoint.com/iso-2-letter-language-codes
 	Lang string `json:"lang,omitempty"`
 
-	// The URL of the image used to represent the notification when there isn't
-	// enough space to display the notification itself.
+	// Badge is the URL of an image to represent the notification when space
+	// is limited.
 	Badge string `json:"badge,omitempty"`
 
-	// The body text of the notification, which is displayed below the title.
+	// Body is the main content, displayed below the title.
 	Body string `json:"body,omitempty"`
 
-	// An identifying tag for the notification.
+	// Tag provides a unique identifier for the notification.
 	Tag string `json:"tag,omitempty"`
 
-	// The URL of an icon to be displayed in the notification.
+	// Icon is the URL of an icon shown in the notification.
 	Icon string `json:"icon,omitempty"`
 
-	// The URL of an image to be displayed in the notification.
+	// Image is the URL of an image displayed in the notification.
 	Image string `json:"image,omitempty"`
 
-	// Arbitrary data that to be associated with the notification.
-	//
-	// The "goapp" key is reserved to go-app data.
+	// Data contains arbitrary data associated with the notification.
+	// Note: "goapp" key is reserved for go-app data.
 	Data map[string]any `json:"data"`
 
-	// Specifies whether the user should be notified after a new notification
-	// replaces an old one.
+	// Renotify determines if the user should be notified when a new
+	// notification replaces an existing one.
 	Renotify bool `json:"renotify,omitempty"`
 
-	// Indicates whether a notification should remain active until the user
-	// clicks or dismisses it, rather than closing automatically.
+	// RequireInteraction ensures the notification remains active until
+	// the user acts on it, not closing automatically.
 	RequireInteraction bool `json:"requireInteraction,omitempty"`
 
-	// specifies whether the notification is silent (no sounds or vibrations
-	// issued), regardless of the device settings.
+	// Silent specifies if the notification should be silent, suppressing
+	// all sounds and vibrations, regardless of device settings.
 	Silent bool `json:"silent,omitempty"`
 
-	// A vibration pattern for the device's vibration hardware to emit with the
-	// notification.
-	//
-	// See https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API#vibration_patterns.
+	// Vibrate defines a vibration pattern for the device upon notification.
+	// See: https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API
 	Vibrate []int `json:"vibrate,omitempty"`
 
-	// The actions to display in the notification.
+	// Actions lists the available actions displayed within the notification.
 	Actions []NotificationAction `json:"actions,omitempty"`
 }
 
-// A notification action.
+// NotificationAction represents an actionable item within a notification.
 type NotificationAction struct {
-	// The user action id to be displayed on the notification.
+	// Action is the unique ID associated with the user's action on
+	// the notification.
 	Action string `json:"action"`
 
-	// The action text to be shown to the user.
+	// Title is the descriptive text shown alongside the action.
 	Title string `json:"title"`
 
-	// The URL of an icon to display with the action.
+	// Icon is the URL of an image to represent the action.
 	Icon string `json:"icon,omitempty"`
 
-	// The URL path to navigate to when the action is clicked.
+	// Path is the URL to navigate to upon clicking the action.
 	Path string `json:"path"`
 }
 
-// NotificationSubscription represents a PushSubscription object from the Push
-// API.
+// NotificationSubscription encapsulates a PushSubscription from the Push API.
 type NotificationSubscription struct {
+	// Endpoint is the push service endpoint URL.
 	Endpoint string `json:"endpoint"`
-	Keys     struct {
-		Auth   string `json:"auth"`
+
+	// Keys contains cryptographic keys used for the subscription.
+	Keys struct {
+		// Auth is the authentication secret.
+		Auth string `json:"auth"`
+
+		// P256dh is the user's public key, associated with the push
+		// subscription.
 		P256dh string `json:"p256dh"`
 	} `json:"keys"`
 }
 
-// NotificationPermission a permission to display notifications.
+// NotificationPermission represents permission levels for displaying
+// notifications to users.
 type NotificationPermission string
 
 const (
-	// The user notifications choice is unknown and therefore the browser acts
-	// as if the value were denied.
+	// NotificationDefault indicates the user's choice for notifications is
+	// unknown, prompting the browser to treat it as "denied".
 	NotificationDefault NotificationPermission = "default"
 
-	// The user accepts having notifications displayed.
+	// NotificationGranted means the user has allowed notifications.
 	NotificationGranted NotificationPermission = "granted"
 
-	// The user refuses to have notifications displayed.
+	// NotificationDenied means the user has declined notifications.
 	NotificationDenied NotificationPermission = "denied"
 
-	// Notifications are not supported by the browser.
+	// NotificationNotSupported indicates that the browser doesn't support
+	// notifications.
 	NotificationNotSupported NotificationPermission = "unsupported"
 )
 
-type NotificationService struct {
-	dispatcher Dispatcher
-}
+// NotificationService provides functionalities related to user notifications.
+type NotificationService struct{}
 
-// Returns the current notification permission.
+// Permission retrieves the current notification permission status.
 func (s NotificationService) Permission() NotificationPermission {
 	notification := Window().Get("Notification")
 	if !notification.Truthy() {
@@ -118,7 +123,7 @@ func (s NotificationService) Permission() NotificationPermission {
 	return NotificationPermission(notification.Get("permission").String())
 }
 
-// Requests the user whether the app can use notifications.
+// RequestPermission prompts the user for permission to display notifications.
 func (s NotificationService) RequestPermission() NotificationPermission {
 	notification := Window().Get("Notification")
 	if !notification.Truthy() {
@@ -135,13 +140,15 @@ func (s NotificationService) RequestPermission() NotificationPermission {
 	return NotificationPermission(<-permission)
 }
 
-// Creates and display a user notification.
+// New creates and displays a notification to the user.
 func (s NotificationService) New(n Notification) {
 	notification, _ := json.Marshal(n)
 	Window().Call("goappNewNotification", string(notification))
 }
 
-// Returns a notification subscription with the given vap id.
+// Subscribe retrieves a notification subscription using the provided VAPID
+// public key. If the key is empty or push notifications aren't supported, an
+// error is returned.
 func (s NotificationService) Subscribe(vapIDPublicKey string) (NotificationSubscription, error) {
 	if vapIDPublicKey == "" {
 		return NotificationSubscription{}, errors.New("vapid public key is empty")
@@ -164,8 +171,7 @@ func (s NotificationService) Subscribe(vapIDPublicKey string) (NotificationSubsc
 	err := json.Unmarshal([]byte(jsSub), &sub)
 	if err != nil {
 		return NotificationSubscription{}, errors.
-			New("decoding push notification subscription failed").
-			Wrap(err)
+			New("failed to decode push notification subscription").Wrap(err)
 	}
 	return sub, nil
 }

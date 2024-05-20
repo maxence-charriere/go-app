@@ -15,11 +15,11 @@ func (h *hello) Render() app.UI {
 	return app.Div().Body(
 		app.H1().Body(
 			app.Text("Hello, "),
-			app.If(h.name != "",
-				app.Text(h.name),
-			).Else(
-				app.Text("World!"),
-			),
+			app.If(h.name != "", func() app.UI {
+				return app.Text(h.name)
+			}).Else(func() app.UI {
+				return app.Text("World!")
+			}),
 		),
 		app.P().Body(
 			app.Input().

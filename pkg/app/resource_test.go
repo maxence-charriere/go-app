@@ -16,9 +16,10 @@ import (
 func TestLocalDir(t *testing.T) {
 	testSkipWasm(t)
 
-	h, _ := LocalDir("test").(localDir)
-	require.Equal(t, "test", h.Static())
-	require.Equal(t, "test/web/app.wasm", h.AppWASM())
+	h, _ := LocalDir("test").(localResourceResolver)
+	require.Equal(t, "/", h.Resolve(""))
+	require.Equal(t, "/", h.Resolve("/"))
+	require.Equal(t, "test/web/app.wasm", h.Resolve("/web/app.wasm"))
 
 	close := testCreateDir(t, "test/web")
 	defer close()
@@ -45,22 +46,147 @@ func TestLocalDir(t *testing.T) {
 func TestRemoteBucket(t *testing.T) {
 	utests := []struct {
 		scenario string
-		provider ResourceProvider
+		provider ResourceResolver
 	}{
 		{
 			scenario: "remote bucket",
 			provider: RemoteBucket("https://storage.googleapis.com/test"),
 		},
 		{
-			scenario: "remote bucket with web suffix",
-			provider: RemoteBucket("https://storage.googleapis.com/test/web/"),
+			scenario: "remote bucket with / suffix",
+			provider: RemoteBucket("https://storage.googleapis.com/test/"),
 		},
 	}
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			require.Equal(t, "https://storage.googleapis.com/test", u.provider.Static())
-			require.Equal(t, "https://storage.googleapis.com/test/web/app.wasm", u.provider.AppWASM())
+			require.Equal(t, "/", u.provider.Resolve(""))
+			require.Equal(t, "/", u.provider.Resolve("/"))
+			require.Equal(t, "https://storage.googleapis.com/test/web/app.wasm", u.provider.Resolve("/web/app.wasm"))
+		})
+	}
+}
+
+func TestClientResourceResolver(t *testing.T) {
+	utests := []struct {
+		scenario           string
+		staticResourcesURL string
+		path               string
+		expected           string
+	}{
+		{
+			scenario: "non-static resource is skipped",
+			path:     "/hello",
+			expected: "/hello",
+		},
+		{
+			scenario: "non-static resource without slash is skipped",
+			path:     "hello",
+			expected: "hello",
+		},
+		{
+			scenario:           "non-static resource with remote root dir is skipped",
+			staticResourcesURL: "https://storage.googleapis.com/go-app/web",
+			path:               "/hello",
+			expected:           "/hello",
+		},
+		{
+			scenario:           "non-static resource without slash and with remote root dir is skipped",
+			staticResourcesURL: "https://storage.googleapis.com/go-app/web",
+			path:               "hello",
+			expected:           "hello",
+		},
+		{
+			scenario:           "static resource",
+			staticResourcesURL: "/web",
+			path:               "/web/hello.css",
+			expected:           "/web/hello.css",
+		},
+		{
+			scenario:           "static resource without slash",
+			staticResourcesURL: "web",
+			path:               "web/hello.css",
+			expected:           "web/hello.css",
+		},
+		{
+			scenario:           "static resource with remote root dir is resolved",
+			staticResourcesURL: "https://storage.googleapis.com/go-app/web",
+			path:               "/web/hello.css",
+			expected:           "https://storage.googleapis.com/go-app/web/hello.css",
+		},
+		{
+			scenario:           "static resource without slash and with remote root dir is resolved",
+			staticResourcesURL: "https://storage.googleapis.com/go-app/web",
+			path:               "web/hello.css",
+			expected:           "https://storage.googleapis.com/go-app/web/hello.css",
+		},
+		{
+			scenario: "resolved static resource is skipped",
+			path:     "https://storage.googleapis.com/go-app/web/hello.css",
+			expected: "https://storage.googleapis.com/go-app/web/hello.css",
+		},
+		{
+			scenario:           "resolved static resource with remote root dir is skipped",
+			staticResourcesURL: "https://storage.googleapis.com/go-app/web",
+			path:               "https://storage.googleapis.com/go-app/web/hello.css",
+			expected:           "https://storage.googleapis.com/go-app/web/hello.css",
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			res := clientResourceResolver(u.staticResourcesURL)(u.path)
+			require.Equal(t, u.expected, res)
+		})
+	}
+}
+
+func TestResoveOGResource(t *testing.T) {
+	utests := []struct {
+		scenario string
+		in       string
+		out      string
+	}{
+		{
+			scenario: "remote url",
+			in:       "https://murlok.io/warrior",
+			out:      "https://murlok.io/warrior",
+		},
+		{
+			scenario: "empty path",
+			in:       "",
+			out:      "https://test.io",
+		},
+		{
+			scenario: "root path",
+			in:       "/",
+			out:      "https://test.io",
+		},
+		{
+			scenario: "path",
+			in:       "/warrior",
+			out:      "https://test.io/warrior",
+		},
+		{
+			scenario: "path with slash suffix",
+			in:       "/warrior/",
+			out:      "https://test.io/warrior",
+		},
+		{
+			scenario: "static resource",
+			in:       "/web/warrior.png",
+			out:      "https://test.io/web/warrior.png",
+		},
+		{
+			scenario: "static resource without slash prefix",
+			in:       "web/warrior.png",
+			out:      "https://test.io/web/warrior.png",
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			require.Equal(t, u.out, resolveOGResource("test.io", u.in))
 		})
 	}
 }

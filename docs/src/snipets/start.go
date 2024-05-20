@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // hello is a component that displays a simple "Hello World!". A component is a
@@ -29,7 +29,7 @@ func main() {
 	//
 	// This is done by calling the Route() function,  which tells go-app what
 	// component to display for a given path, on both client and server-side.
-	app.Route("/", &hello{})
+	app.Route("/", app.NewZeroComponentFactory(&hello{}))
 
 	// Once the routes set up, the next thing to do is to either launch the app
 	// or the server that serves the app.

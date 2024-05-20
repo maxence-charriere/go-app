@@ -1,6 +1,6 @@
 package ui
 
-import "github.com/maxence-charriere/go-app/v9/pkg/app"
+import "github.com/maxence-charriere/go-app/v10/pkg/app"
 
 // IStack is the interface that describes a container that displays its items
 // as stacked panels.

@@ -4,10 +4,6 @@ import (
 	"net/url"
 )
 
-const (
-// isClientSide = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
-)
-
 // Type represents the JavaScript type of a Value.
 type Type int
 
@@ -22,6 +18,29 @@ const (
 	TypeObject
 	TypeFunction
 )
+
+func (t Type) String() string {
+	switch t {
+	case TypeUndefined:
+		return "undefined"
+	case TypeNull:
+		return "null"
+	case TypeBoolean:
+		return "boolean"
+	case TypeNumber:
+		return "number"
+	case TypeString:
+		return "string"
+	case TypeSymbol:
+		return "symbol"
+	case TypeObject:
+		return "object"
+	case TypeFunction:
+		return "function"
+	default:
+		panic("bad type")
+	}
+}
 
 // Wrapper is implemented by types that are backed by a JavaScript value.
 type Wrapper interface {
@@ -134,7 +153,7 @@ type Value interface {
 	replaceChild(new, old Wrapper)
 	removeChild(c Wrapper)
 	firstElementChild() Value
-	addEventListener(event string, fn Func)
+	addEventListener(event string, fn Func, options map[string]any)
 	removeEventListener(event string, fn Func)
 	setNodeValue(v string)
 	setInnerHTML(v string)
@@ -161,8 +180,8 @@ func Undefined() Value {
 //	| bool                   | boolean                |
 //	| integers and floats    | number                 |
 //	| string                 | string                 |
-//	| []any          | new array              |
-//	| map[string]any | new object             |
+//	| []any                  | new array              |
+//	| map[string]any         | new object             |
 //
 // Panics if x is not one of the expected types.
 func ValueOf(x any) Value {
@@ -219,11 +238,6 @@ type BrowserWindow interface {
 
 	// Scrolls to the HTML element with the given id.
 	ScrollToID(id string)
-
-	// AddEventListener subscribes a given handler to the specified event. It
-	// returns a function that must be called to unsubscribe the handler and
-	// release allocated resources.
-	AddEventListener(event string, h EventHandler) func()
 
 	setBody(body UI)
 	createElement(tag, xmlns string) (Value, error)

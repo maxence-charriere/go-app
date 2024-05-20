@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type architecturePage struct {
@@ -11,10 +11,6 @@ type architecturePage struct {
 
 func newArchitecturePage() *architecturePage {
 	return &architecturePage{}
-}
-
-func (p *architecturePage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *architecturePage) OnNav(ctx app.Context) {

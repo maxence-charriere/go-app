@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type installPage struct {
@@ -11,10 +11,6 @@ type installPage struct {
 
 func newInstallPage() *installPage {
 	return &installPage{}
-}
-
-func (p *installPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *installPage) OnNav(ctx app.Context) {

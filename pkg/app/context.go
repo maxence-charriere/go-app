@@ -8,306 +8,70 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
-// Context is the interface that describes a context tied to a UI element.
-//
-// A context provides mechanisms to deal with the browser, the current page,
-// navigation, concurrency, and component communication.
-//
-// It is canceled when its associated UI element is dismounted.
-type Context interface {
+// Context represents a UI element-associated environment enabling interactions
+// with the browser, page navigation, concurrency, and component communication.
+type Context struct {
 	context.Context
 
-	// Returns the UI element tied to the context.
-	Src() UI
+	page                  func() Page
+	appUpdatable          bool
+	resolveURL            func(string) string
+	navigate              func(*url.URL, bool)
+	localStorage          BrowserStorage
+	sessionStorage        BrowserStorage
+	dispatch              func(func())
+	defere                func(func())
+	async                 func(func())
+	addComponentUpdate    func(Composer, int)
+	removeComponentUpdate func(Composer)
+	handleAction          func(string, UI, bool, ActionHandler)
+	postAction            func(Context, Action)
+	observeState          func(Context, string, any) Observer
+	getState              func(Context, string, any)
+	setState              func(Context, string, any) State
+	delState              func(Context, string)
 
-	// Returns the associated JavaScript value. The is an helper method for:
-	//  ctx.Src.JSValue()
-	JSSrc() Value
-
-	// Reports whether the app has been updated in background. Use app.Reload()
-	// to load the updated version.
-	AppUpdateAvailable() bool
-
-	// Reports whether the app is installable.
-	IsAppInstallable() bool
-
-	// Shows the app install prompt if the app is installable.
-	ShowAppInstallPrompt()
-
-	// Returns the current page.
-	Page() Page
-
-	// Executes the given function on the UI goroutine and notifies the
-	// context's nearest component to update its state.
-	Dispatch(fn func(Context))
-
-	// Executes the given function on the UI goroutine after notifying the
-	// context's nearest component to update its state.
-	Defer(fn func(Context))
-
-	// Registers the handler for the given action name. When an action occurs,
-	// the handler is executed on the UI goroutine.
-	Handle(actionName string, h ActionHandler)
-
-	// Creates an action with optional tags, to be handled with Context.Handle.
-	// Eg:
-	//  ctx.NewAction("myAction")
-	//  ctx.NewAction("myAction", app.T("purpose", "test"))
-	//  ctx.NewAction("myAction", app.Tags{
-	//      "foo": "bar",
-	//      "hello": "world",
-	//  })
-	NewAction(name string, tags ...Tagger)
-
-	// Creates an action with a value and optional tags, to be handled with
-	// Context.Handle. Eg:
-	//  ctx.NewActionWithValue("processValue", 42)
-	//  ctx.NewActionWithValue("processValue", 42, app.T("type", "number"))
-	//  ctx.NewActionWithValue("myAction", 42, app.Tags{
-	//      "foo": "bar",
-	//      "hello": "world",
-	//  })
-	NewActionWithValue(name string, v any, tags ...Tagger)
-
-	// Executes the given function on a new goroutine.
-	//
-	// The difference versus just launching a goroutine is that it ensures that
-	// the asynchronous function is called before a page is fully pre-rendered
-	// and served over HTTP.
-	Async(fn func())
-
-	// Asynchronously waits for the given duration and dispatches the given
-	// function.
-	After(d time.Duration, fn func(Context))
-
-	// Executes the given function and notifies the parent components to update
-	// their state. It should be used to launch component custom event handlers.
-	Emit(fn func())
-
-	// Reloads the WebAssembly app to the current page. It is like refreshing
-	// the browser page.
-	Reload()
-
-	// Navigates to the given URL. This is a helper method that converts url to
-	// an *url.URL and then calls ctx.NavigateTo under the hood.
-	Navigate(url string)
-
-	// Navigates to the given URL.
-	NavigateTo(u *url.URL)
-
-	// Resolves the given path to make it point to the right location whether
-	// static resources are located on a local directory or a remote bucket.
-	ResolveStaticResource(string) string
-
-	// Returns a storage that uses the browser local storage associated to the
-	// document origin. Data stored has no expiration time.
-	LocalStorage() BrowserStorage
-
-	// Returns a storage that uses the browser session storage associated to the
-	// document origin. Data stored expire when the page session ends.
-	SessionStorage() BrowserStorage
-
-	// Scrolls to the HTML element with the given id.
-	ScrollTo(id string)
-
-	// Returns a UUID that identifies the app on the current device.
-	DeviceID() string
-
-	// Encrypts the given value using AES encryption.
-	Encrypt(v any) ([]byte, error)
-
-	// Decrypts the given encrypted bytes and stores them in the given value.
-	Decrypt(crypted []byte, v any) error
-
-	// Sets the state with the given value.
-	// Example:
-	//  ctx.SetState("/globalNumber", 42, Persistent)
-	//
-	// Options can be added to persist a state into the local storage, encrypt,
-	// expire, or broadcast the state across browser tabs and windows.
-	// Example:
-	//  ctx.SetState("/globalNumber", 42, Persistent, Broadcast)
-	SetState(state string, v any, opts ...StateOption)
-
-	// Stores the specified state value into the given receiver. Panics when the
-	// receiver is not a pointer or nil.
-	GetState(state string, recv any)
-
-	// Deletes the given state. All value observations are stopped.
-	DelState(state string)
-
-	// Creates an observer that observes changes for the given state.
-	// Example:
-	//  type myComponent struct {
-	//      app.Compo
-	//
-	//      number int
-	//  }
-	//
-	//  func (c *myComponent) OnMount(ctx app.Context) {
-	//      ctx.ObserveState("/globalNumber").Value(&c.number)
-	//  }
-	ObserveState(state string) Observer
-
-	// Returns the app dispatcher.
-	Dispatcher() Dispatcher
-
-	// Returns the service to setup and display notifications.
-	Notifications() NotificationService
-
-	// Prevents the component that contains the context source to be updated.
-	PreventUpdate()
+	sourceElement        UI
+	notifyComponentEvent func(Context, UI, any)
 }
 
-type uiContext struct {
-	context.Context
-
-	src                UI
-	jsSrc              Value
-	appUpdateAvailable bool
-	page               Page
-	disp               Dispatcher
+// Src retrieves the linked UI element of the context.
+func (ctx Context) Src() UI {
+	return ctx.sourceElement
 }
 
-func (ctx uiContext) Src() UI {
-	return ctx.src
+// JSSrc fetches the JavaScript representation of the associated UI element.
+func (ctx Context) JSSrc() Value {
+	return ctx.sourceElement.JSValue()
 }
 
-func (ctx uiContext) JSSrc() Value {
-	return ctx.jsSrc
+// AppUpdateAvailable checks if there's a pending app update.
+func (ctx Context) AppUpdateAvailable() bool {
+	return ctx.appUpdatable
 }
 
-func (ctx uiContext) AppUpdateAvailable() bool {
-	return ctx.appUpdateAvailable
-}
-
-func (ctx uiContext) IsAppInstallable() bool {
+// IsAppInstallable verifies if the app is eligible for installation.
+func (ctx Context) IsAppInstallable() bool {
 	if Window().Get("goappIsAppInstallable").Truthy() {
 		return Window().Call("goappIsAppInstallable").Bool()
 	}
 	return false
 }
 
-func (ctx uiContext) IsAppInstalled() bool {
-	if Window().Get("goappIsAppInstalled").Truthy() {
-		return Window().Call("goappIsAppInstalled").Bool()
-	}
-	return false
-}
-
-func (ctx uiContext) ShowAppInstallPrompt() {
+// ShowAppInstallPrompt initiates the app installation process.
+func (ctx Context) ShowAppInstallPrompt() {
 	if ctx.IsAppInstallable() {
 		Window().Call("goappShowInstallPrompt")
 	}
 }
 
-func (ctx uiContext) Page() Page {
-	return ctx.page
-}
-
-func (ctx uiContext) Dispatch(fn func(Context)) {
-	ctx.Dispatcher().Dispatch(Dispatch{
-		Mode:     Update,
-		Source:   ctx.Src(),
-		Function: fn,
-	})
-}
-
-func (ctx uiContext) Defer(fn func(Context)) {
-	ctx.Dispatcher().Dispatch(Dispatch{
-		Mode:     Defer,
-		Source:   ctx.Src(),
-		Function: fn,
-	})
-}
-
-func (ctx uiContext) Handle(actionName string, h ActionHandler) {
-	ctx.Dispatcher().Handle(actionName, ctx.Src(), h)
-}
-
-func (ctx uiContext) NewAction(name string, tags ...Tagger) {
-	ctx.NewActionWithValue(name, nil, tags...)
-}
-
-func (ctx uiContext) NewActionWithValue(name string, v any, tags ...Tagger) {
-	var tagMap Tags
-	for _, t := range tags {
-		if tagMap == nil {
-			tagMap = t.Tags()
-			continue
-		}
-		for k, v := range t.Tags() {
-			tagMap[k] = v
-		}
-	}
-
-	ctx.Dispatcher().Post(Action{
-		Name:  name,
-		Value: v,
-		Tags:  tagMap,
-	})
-}
-
-func (ctx uiContext) Async(fn func()) {
-	ctx.Dispatcher().Async(fn)
-}
-
-func (ctx uiContext) After(d time.Duration, fn func(Context)) {
-	ctx.Async(func() {
-		time.Sleep(d)
-		ctx.Dispatch(fn)
-	})
-}
-
-func (ctx uiContext) Emit(fn func()) {
-	ctx.Dispatcher().Emit(ctx.Src(), fn)
-}
-
-func (ctx uiContext) Reload() {
-	if IsServer {
-		return
-	}
-	ctx.Defer(func(ctx Context) {
-		Window().Get("location").Call("reload")
-	})
-}
-
-func (ctx uiContext) Navigate(rawURL string) {
-	ctx.Defer(func(ctx Context) {
-		navigate(ctx.Dispatcher(), rawURL)
-	})
-}
-
-func (ctx uiContext) NavigateTo(u *url.URL) {
-	ctx.Defer(func(ctx Context) {
-		navigateTo(ctx.Dispatcher(), u, true)
-	})
-}
-
-func (ctx uiContext) ResolveStaticResource(path string) string {
-	return ctx.Dispatcher().resolveStaticResource(path)
-}
-
-func (ctx uiContext) LocalStorage() BrowserStorage {
-	return ctx.Dispatcher().getLocalStorage()
-}
-
-func (ctx uiContext) SessionStorage() BrowserStorage {
-	return ctx.Dispatcher().getSessionStorage()
-}
-
-func (ctx uiContext) ScrollTo(id string) {
-	ctx.Defer(func(ctx Context) {
-		Window().ScrollToID(id)
-	})
-}
-
-func (ctx uiContext) DeviceID() string {
+// DeviceID fetches a distinct identifier for the app on the present device.
+func (ctx Context) DeviceID() string {
 	var id string
-	if err := ctx.LocalStorage().Get("/go-app/deviceID", &id); err != nil {
+	if err := ctx.localStorage.Get("/go-app/deviceID", &id); err != nil {
 		panic(errors.New("retrieving device id failed").Wrap(err))
 	}
 	if id != "" {
@@ -315,13 +79,69 @@ func (ctx uiContext) DeviceID() string {
 	}
 
 	id = uuid.NewString()
-	if err := ctx.LocalStorage().Set("/go-app/deviceID", id); err != nil {
+	if err := ctx.localStorage.Set("/go-app/deviceID", id); err != nil {
 		panic(errors.New("creating device id failed").Wrap(err))
 	}
 	return id
 }
 
-func (ctx uiContext) Encrypt(v any) ([]byte, error) {
+// Page retrieves the current active page.
+func (ctx Context) Page() Page {
+	return ctx.page()
+}
+
+// Reload refreshes the present page.
+func (ctx Context) Reload() {
+	if IsServer {
+		return
+	}
+	Window().Get("location").Call("reload")
+}
+
+// Navigate transitions to the given URL string.
+func (ctx Context) Navigate(rawURL string) {
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		Log(errors.New("navigating to URL failed").
+			WithTag("url", rawURL).
+			Wrap(err))
+		return
+	}
+	ctx.NavigateTo(u)
+}
+
+// NavigateTo transitions to the provided URL.
+func (ctx Context) NavigateTo(u *url.URL) {
+	ctx.navigate(u, true)
+}
+
+// ResolveStaticResource adjusts a given path to point to the correct static
+// resource location.
+func (ctx Context) ResolveStaticResource(v string) string {
+	return ctx.resolveURL(v)
+}
+
+// ScrollTo adjusts the scrollbar to target an HTML element by its ID.
+func (ctx Context) ScrollTo(id string) {
+	ctx.Defer(func(ctx Context) {
+		Window().ScrollToID(id)
+	})
+}
+
+// LocalStorage accesses the browser's local storage tied to the document
+// origin.
+func (ctx Context) LocalStorage() BrowserStorage {
+	return ctx.localStorage
+}
+
+// SessionStorage accesses the browser's session storage tied to the
+// document origin.
+func (ctx Context) SessionStorage() BrowserStorage {
+	return ctx.sessionStorage
+}
+
+// Encrypt enciphers a value using AES encryption.
+func (ctx Context) Encrypt(v any) ([]byte, error) {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return nil, errors.New("encoding value failed").Wrap(err)
@@ -334,7 +154,8 @@ func (ctx uiContext) Encrypt(v any) ([]byte, error) {
 	return b, nil
 }
 
-func (ctx uiContext) Decrypt(crypted []byte, v any) error {
+// Decrypt deciphers encrypted data into a given reference value.
+func (ctx Context) Decrypt(crypted []byte, v any) error {
 	b, err := decrypt(ctx.cryptoKey(), crypted)
 	if err != nil {
 		return errors.New("decrypting value failed").Wrap(err)
@@ -346,45 +167,134 @@ func (ctx uiContext) Decrypt(crypted []byte, v any) error {
 	return nil
 }
 
-func (ctx uiContext) SetState(state string, v any, opts ...StateOption) {
-	ctx.Dispatcher().SetState(state, v, opts...)
-}
-
-func (ctx uiContext) GetState(state string, recv any) {
-	ctx.Dispatcher().GetState(state, recv)
-}
-
-func (ctx uiContext) DelState(state string) {
-	ctx.Dispatcher().DelState(state)
-}
-
-func (ctx uiContext) ObserveState(state string) Observer {
-	return ctx.Dispatcher().ObserveState(state, ctx.src)
-}
-
-func (ctx uiContext) Dispatcher() Dispatcher {
-	return ctx.disp
-}
-
-func (ctx uiContext) Notifications() NotificationService {
-	return NotificationService{dispatcher: ctx.Dispatcher()}
-}
-
-func (ctx uiContext) PreventUpdate() {
-	ctx.Dispatcher().preventComponentUpdate(getComponent(ctx.src))
-}
-
-func (ctx uiContext) cryptoKey() string {
+func (ctx Context) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
-func makeContext(src UI) Context {
-	return uiContext{
-		Context:            src.getContext(),
-		src:                src,
-		jsSrc:              src.JSValue(),
-		appUpdateAvailable: appUpdateAvailable,
-		page:               src.getDispatcher().getCurrentPage(),
-		disp:               src.getDispatcher(),
+// Notifications accesses the notifications service.
+func (ctx Context) Notifications() NotificationService {
+	return NotificationService{}
+}
+
+// Dispatch prompts the execution of a function on the UI goroutine,
+// flagging the enclosing component for an update.
+func (ctx Context) Dispatch(v func(Context)) {
+	ctx.dispatch(func() {
+		if !ctx.sourceElement.Mounted() {
+			return
+		}
+
+		for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
+			ctx.addComponentUpdate(c, 1)
+		}
+
+		if v != nil {
+			v(ctx)
+		}
+	})
+}
+
+// Defer postpones the function execution on the UI goroutine until the
+// current update cycle completes.
+func (ctx Context) Defer(v func(Context)) {
+	ctx.defere(func() {
+		if !ctx.sourceElement.Mounted() {
+			return
+		}
+
+		if v != nil {
+			v(ctx)
+		}
+	})
+}
+
+// Async initiates a function asynchronously. It enables go-app to monitor
+// goroutines, ensuring they conclude when rendering server-side.
+func (ctx Context) Async(v func()) {
+	ctx.async(v)
+}
+
+// After pauses for a determined span, then triggers a specified function.
+func (ctx Context) After(d time.Duration, f func(Context)) {
+	ctx.async(func() {
+		time.Sleep(d)
+		ctx.Dispatch(f)
+	})
+}
+
+// PreventUpdate halts updates for the enclosing component.
+func (ctx Context) PreventUpdate() {
+	for c, ok := component(ctx.sourceElement); ok; c, ok = component(c.parent()) {
+		ctx.addComponentUpdate(c, -1)
 	}
+}
+
+// Update flags the enclosing component for an update.
+func (ctx Context) Update() {
+	ctx.Dispatch(nil)
+}
+
+// Handle designates a handler for a particular action, set to run on the UI
+// goroutine.
+func (ctx Context) Handle(action string, h ActionHandler) {
+	ctx.handleAction(action, ctx.sourceElement, false, h)
+}
+
+// NewAction generates a new action for handling.
+func (ctx Context) NewAction(action string, tags ...Tagger) {
+	ctx.NewActionWithValue(action, nil, tags...)
+
+}
+
+// NewActionWithValue crafts an action with a given value for processing.
+func (ctx Context) NewActionWithValue(action string, v any, tags ...Tagger) {
+	var tagMap Tags
+	for _, tag := range tags {
+		if tagMap == nil {
+			tagMap = make(Tags)
+		}
+
+		for k, v := range tag.Tags() {
+			tagMap[k] = v
+		}
+	}
+
+	ctx.postAction(ctx, Action{
+		Name:  action,
+		Value: v,
+		Tags:  tagMap,
+	})
+}
+
+// ObserveState establishes an observer for a state, tracking its changes.
+func (ctx Context) ObserveState(state string, recv any) Observer {
+	return ctx.observeState(ctx, state, recv)
+}
+
+// GetState fetches the value of a particular state.
+func (ctx Context) GetState(state string, recv any) {
+	ctx.getState(ctx, state, recv)
+}
+
+// SetState modifies a state with the provided value.
+func (ctx Context) SetState(state string, v any) State {
+	return ctx.setState(ctx, state, v)
+}
+
+// DelState erases a state, halting all associated observations.
+func (ctx Context) DelState(state string) {
+	ctx.delState(ctx, state)
+}
+
+// ResizeContent notifies the children of the associated element that implement
+// the Resizer interface about a resize event. It ensures that components can
+// adjust their size and layout in response to changes. This method is typically
+// used when the size of the container changes, requiring child components to
+// update their dimensions accordingly.
+func (ctx Context) ResizeContent() {
+	ctx.Defer(func(ctx Context) {
+		ctx.Dispatch(func(ctx Context) {
+			ctx.notifyComponentEvent(ctx, ctx.Src(), resize{})
+		})
+	})
 }

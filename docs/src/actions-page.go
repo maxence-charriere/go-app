@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type actionPage struct {
@@ -11,10 +11,6 @@ type actionPage struct {
 
 func newActionPage() *actionPage {
 	return &actionPage{}
-}
-
-func (p *actionPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *actionPage) OnNav(ctx app.Context) {

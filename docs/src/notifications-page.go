@@ -7,9 +7,9 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 type notificationsPage struct {
@@ -20,10 +20,6 @@ type notificationsPage struct {
 
 func newNotificationsPage() *notificationsPage {
 	return &notificationsPage{}
-}
-
-func (p *notificationsPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *notificationsPage) OnMount(ctx app.Context) {

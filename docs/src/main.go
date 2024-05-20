@@ -10,15 +10,14 @@ import (
 	"path"
 	"sync"
 	"syscall"
-	"time"
 
 	"github.com/SherClockHolmes/webpush-go"
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/cli"
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-	"github.com/maxence-charriere/go-app/v9/pkg/logs"
-	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/cli"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/logs"
+	"github.com/maxence-charriere/go-app/v10/pkg/ui"
 )
 
 const (
@@ -49,29 +48,29 @@ func main() {
 	ui.BlockPadding = 18
 	analytics.Add(analytics.NewGoogleAnalytics())
 
-	app.Route("/", newHomePage())
-	app.Route("/getting-started", newGettingStartedPage())
-	app.Route("/architecture", newArchitecturePage())
-	app.Route("/reference", newReferencePage())
+	app.Route("/", app.NewZeroComponentFactory(newHomePage()))
+	app.Route("/getting-started", app.NewZeroComponentFactory(newGettingStartedPage()))
+	app.Route("/architecture", app.NewZeroComponentFactory(newArchitecturePage()))
+	app.Route("/reference", app.NewZeroComponentFactory(newReferencePage()))
 
-	app.Route("/components", newComponentsPage())
-	app.Route("/declarative-syntax", newDeclarativeSyntaxPage())
-	app.Route("/routing", newRoutingPage())
-	app.Route("/static-resources", newStaticResourcePage())
-	app.Route("/js", newJSPage())
-	app.Route("/concurrency", newConcurrencyPage())
-	app.Route("/seo", newSEOPage())
-	app.Route("/lifecycle", newLifecyclePage())
-	app.Route("/install", newInstallPage())
-	app.Route("/testing", newTestingPage())
-	app.Route("/actions", newActionPage())
-	app.Route("/states", newStatesPage())
-	app.Route("/notifications", newNotificationsPage())
+	app.Route("/components", app.NewZeroComponentFactory(newComponentsPage()))
+	app.Route("/declarative-syntax", app.NewZeroComponentFactory(newDeclarativeSyntaxPage()))
+	app.Route("/routing", app.NewZeroComponentFactory(newRoutingPage()))
+	app.Route("/static-resources", app.NewZeroComponentFactory(newStaticResourcePage()))
+	app.Route("/js", app.NewZeroComponentFactory(newJSPage()))
+	app.Route("/concurrency", app.NewZeroComponentFactory(newConcurrencyPage()))
+	app.Route("/seo", app.NewZeroComponentFactory(newSEOPage()))
+	app.Route("/lifecycle", app.NewZeroComponentFactory(newLifecyclePage()))
+	app.Route("/install", app.NewZeroComponentFactory(newInstallPage()))
+	app.Route("/testing", app.NewZeroComponentFactory(newTestingPage()))
+	app.Route("/actions", app.NewZeroComponentFactory(newActionPage()))
+	app.Route("/states", app.NewZeroComponentFactory(newStatesPage()))
+	app.Route("/notifications", app.NewZeroComponentFactory(newNotificationsPage()))
 
-	app.Route("/migrate", newMigratePage())
-	app.Route("/github-deploy", newGithubDeployPage())
+	app.Route("/migrate", app.NewZeroComponentFactory(newMigratePage()))
+	app.Route("/github-deploy", app.NewZeroComponentFactory(newGithubDeployPage()))
 
-	app.Route("/privacy-policy", newPrivacyPolicyPage())
+	app.Route("/privacy-policy", app.NewZeroComponentFactory(newPrivacyPolicyPage()))
 
 	app.Handle(installApp, handleAppInstall)
 	app.Handle(updateApp, handleAppUpdate)
@@ -103,9 +102,6 @@ func main() {
 		Description: defaultDescription,
 		Author:      "Maxence Charriere",
 		Image:       "https://go-app.dev/web/images/go-app.png",
-		Icon: app.Icon{
-			Default: "/web/icon.png",
-		},
 		Keywords: []string{
 			"go-app",
 			"go",
@@ -130,7 +126,7 @@ func main() {
 		ThemeColor:      backgroundColor,
 		LoadingLabel:    "go-app documentation {progress}%",
 		Styles: []string{
-			"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
+			// "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
 			"/web/css/prism.css",
 			"/web/css/docs.css",
 		},
@@ -147,7 +143,6 @@ func main() {
 			"/web/documents/home.md",
 			"/web/documents/home-next.md",
 		},
-		AutoUpdateInterval: time.Minute,
 	}
 
 	switch cli.Load() {
@@ -165,7 +160,7 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 		WithTag("version", h.Version),
 	)
 
-	h.Env = app.Environment{
+	h.Env = map[string]string{
 		"VAPID_PUBLIC_KEY": opts.VAPIDPublicKey,
 	}
 

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type concurrencyPage struct {
@@ -11,10 +11,6 @@ type concurrencyPage struct {
 
 func newConcurrencyPage() *concurrencyPage {
 	return &concurrencyPage{}
-}
-
-func (p *concurrencyPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *concurrencyPage) OnNav(ctx app.Context) {

@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 func toString(v any) string {
@@ -139,4 +139,11 @@ func FormatString(format string, v ...any) string {
 		return format
 	}
 	return fmt.Sprintf(format, v...)
+}
+
+func previewText(v string) string {
+	if len(v) <= 80 {
+		return v
+	}
+	return v[:77] + "..."
 }

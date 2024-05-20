@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/ui"
 )
 
 type menu struct {
@@ -203,13 +203,13 @@ func (m *menu) Render() app.UI {
 
 				app.Div().Class("separator"),
 
-				app.If(m.appInstallable,
-					ui.Link().
+				app.If(m.appInstallable, func() app.UI {
+					return ui.Link().
 						Class(linkClass).
 						Icon(downloadSVG).
 						Label("Install").
-						OnClick(m.installApp),
-				),
+						OnClick(m.installApp)
+				}),
 				ui.Link().
 					Class(linkClass).
 					Icon(userLockSVG).

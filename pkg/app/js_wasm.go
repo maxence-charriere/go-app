@@ -2,54 +2,47 @@ package app
 
 import (
 	"net/url"
-	"reflect"
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-)
-
-var (
-	window = &browserWindow{value: value{Value: js.Global()}}
+	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
 
 type value struct {
-	js.Value
+	jsValue
 }
 
 func (v value) Call(m string, args ...any) Value {
-	args = cleanArgs(args...)
-	return val(v.Value.Call(m, args...))
+	res := v.jsValue.Call(m, syscallJSArgs(args)...)
+	return ValueOf(res)
 }
 
 func (v value) Delete(p string) {
-	v.Value.Delete(p)
+	v.jsValue.Delete(p)
 }
 
 func (v value) Equal(w Value) bool {
-	return v.Value.Equal(jsval(w))
+	return v.jsValue.Equal(syscalJSValueOf(w))
 }
 
 func (v value) Get(p string) Value {
-	return val(v.Value.Get(p))
+	return ValueOf(v.jsValue.Get(p))
 }
 
 func (v value) Set(p string, x any) {
-	if wrapper, ok := x.(Wrapper); ok {
-		x = jsval(wrapper.JSValue())
-	}
-	v.Value.Set(p, x)
+	v.jsValue.Set(p, syscalJSValueOf(x))
 }
 
 func (v value) Index(i int) Value {
-	return val(v.Value.Index(i))
+	return ValueOf(v.jsValue.Index(i))
 }
 
 func (v value) InstanceOf(t Value) bool {
-	return v.Value.InstanceOf(jsval(t))
+	return v.jsValue.InstanceOf(syscalJSValueOf(t))
 }
 
 func (v value) Invoke(args ...any) Value {
-	return val(v.Value.Invoke(args...))
+	res := v.jsValue.Invoke(syscallJSArgs(args)...)
+	return ValueOf(res)
 }
 
 func (v value) JSValue() Value {
@@ -57,12 +50,18 @@ func (v value) JSValue() Value {
 }
 
 func (v value) New(args ...any) Value {
-	args = cleanArgs(args...)
-	return val(v.Value.New(args...))
+	res := v.jsValue.New(syscallJSArgs(args)...)
+	return ValueOf(res)
 }
 
 func (v value) Type() Type {
-	return Type(v.Value.Type())
+	return Type(v.jsValue.Type())
+}
+
+func (v value) Release() {
+	if function, ok := v.jsValue.(jsFunc); ok {
+		function.Release()
+	}
 }
 
 func (v value) Then(f func(Value)) {
@@ -115,8 +114,12 @@ func (v value) firstElementChild() Value {
 	return v.Get("firstElementChild")
 }
 
-func (v value) addEventListener(event string, fn Func) {
-	v.Call("addEventListener", event, fn)
+func (v value) addEventListener(event string, fn Func, options map[string]any) {
+	if len(options) == 0 {
+		v.Call("addEventListener", event, fn)
+		return
+	}
+	v.Call("addEventListener", event, fn, options)
 }
 
 func (v value) removeEventListener(event string, fn Func) {
@@ -136,53 +139,108 @@ func (v value) setInnerText(val string) {
 }
 
 func null() Value {
-	return val(js.Null())
+	return valueOf(js.Null())
 }
 
 func undefined() Value {
-	return val(js.Undefined())
+	return valueOf(js.Undefined())
 }
 
-func valueOf(x any) Value {
-	switch t := x.(type) {
-	case value:
-		x = t.Value
+func valueOf(v any) Value {
+	switch v := v.(type) {
+	case jsValue:
+		return value{jsValue: v}
 
-	case function:
-		x = t.fn
+	case Wrapper:
+		return v.JSValue()
 
-	case *browserWindow:
-		x = t.Value
+	default:
+		return value{jsValue: js.ValueOf(v)}
+	}
+}
 
-	case Event:
-		return valueOf(t.Value)
+func funcOf(function func(this Value, args []Value) any) Func {
+	return value{
+		jsValue: js.FuncOf(func(this js.Value, args []js.Value) any {
+			goArgs := make([]Value, len(args))
+			for i, arg := range args {
+				goArgs[i] = ValueOf(arg)
+			}
+
+			return syscalJSValueOf(function(ValueOf(this), goArgs))
+		}),
+	}
+}
+
+type jsValue interface {
+	Bool() bool
+	Call(string, ...any) js.Value
+	Delete(string)
+	Equal(js.Value) bool
+	Float() float64
+	Get(string) js.Value
+	Index(int) js.Value
+	InstanceOf(js.Value) bool
+	Int() int
+	Invoke(...any) js.Value
+	IsNaN() bool
+	IsNull() bool
+	IsUndefined() bool
+	Length() int
+	New(...any) js.Value
+	Set(string, any)
+	SetIndex(int, any)
+	String() string
+	Truthy() bool
+	Type() js.Type
+}
+
+type jsFunc interface {
+	jsValue
+	Release()
+}
+
+type jsError interface {
+	jsValue
+	Error() string
+}
+
+func syscallJSArgs(v []any) []any {
+	if len(v) == 0 {
+		return nil
 	}
 
-	return val(js.ValueOf(x))
+	s := make([]any, len(v))
+	for i, value := range v {
+		s[i] = syscalJSValueOf(value)
+	}
+	return s
 }
 
-type function struct {
-	value
-	fn js.Func
-}
+func syscalJSValueOf(v any) js.Value {
+	switch v := v.(type) {
+	case value:
+		return syscalJSValueOf(v.jsValue)
 
-func (f function) Release() {
-	f.fn.Release()
-}
+	case Wrapper:
+		return syscalJSValueOf(v.JSValue())
 
-func funcOf(fn func(this Value, args []Value) any) Func {
-	f := js.FuncOf(func(this js.Value, args []js.Value) any {
-		wargs := make([]Value, len(args))
-		for i, a := range args {
-			wargs[i] = val(a)
+	case map[string]any:
+		m := make(map[string]any, len(v))
+		for key, value := range v {
+			m[key] = syscalJSValueOf(value)
 		}
+		return js.ValueOf(m)
 
-		return fn(val(this), wargs)
-	})
+	case []any:
+		s := make([]any, len(v))
+		for i, value := range v {
+			s[i] = syscalJSValueOf(value)
+		}
+		return js.ValueOf(s)
 
-	return function{
-		value: value{Value: f.Value},
-		fn:    f,
+	default:
+		return js.ValueOf(v)
 	}
 }
 
@@ -192,6 +250,10 @@ type browserWindow struct {
 	body    UI
 	cursorX int
 	cursorY int
+}
+
+func newBrowserWindow() *browserWindow {
+	return &browserWindow{value: value{jsValue: js.Global()}}
 }
 
 func (w *browserWindow) URL() *url.URL {
@@ -247,31 +309,6 @@ func (w *browserWindow) ScrollToID(id string) {
 	}
 }
 
-func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeJSEventHandler(w.body, func(ctx Context, e Event) {
-		h(ctx, e)
-
-		// Trigger children components updates:
-		if len(w.body.getChildren()) == 0 {
-			return
-		}
-		compo, ok := w.body.getChildren()[0].(Composer)
-		if !ok {
-			return
-		}
-		ctx.Dispatcher().Dispatch(Dispatch{
-			Mode:   Update,
-			Source: compo,
-		})
-	})
-	w.addEventListener(event, callback)
-
-	return func() {
-		w.removeEventListener(event, callback)
-		callback.Release()
-	}
-}
-
 func (w *browserWindow) setBody(body UI) {
 	w.body = body
 }
@@ -297,83 +334,21 @@ func (w *browserWindow) createTextNode(v string) Value {
 }
 
 func (w *browserWindow) addHistory(u *url.URL) {
+	u.Scheme = w.URL().Scheme
+	u.Host = w.URL().Host
 	w.Get("history").Call("pushState", nil, "", u.String())
-	lastURLVisited = u
 }
 
 func (w *browserWindow) replaceHistory(u *url.URL) {
+	u.Scheme = w.URL().Scheme
+	u.Host = w.URL().Host
 	w.Get("history").Call("replaceState", nil, "", u.String())
-	lastURLVisited = u
-}
-
-func val(v js.Value) Value {
-	return value{Value: v}
-}
-
-func jsval(v Value) js.Value {
-	switch v := v.(type) {
-	case value:
-		return v.Value
-
-	case function:
-		return v.Value
-
-	case *browserWindow:
-		return v.Value
-
-	case Event:
-		return jsval(v.Value)
-
-	default:
-		Log("%s", errors.New("syscall/js value conversion failed").
-			WithTag("type", reflect.TypeOf(v)),
-		)
-		return js.Undefined()
-	}
-}
-
-// JSValue returns the underlying syscall/js value of the given Javascript
-// value.
-func JSValue(v Value) js.Value {
-	return jsval(v)
 }
 
 func copyBytesToGo(dst []byte, src Value) int {
-	return js.CopyBytesToGo(dst, jsval(src))
+	return js.CopyBytesToGo(dst, syscalJSValueOf(src))
 }
 
 func copyBytesToJS(dst Value, src []byte) int {
-	return js.CopyBytesToJS(jsval(dst), src)
-}
-
-func cleanArgs(args ...any) []any {
-	for i, a := range args {
-
-		args[i] = cleanArg(a)
-	}
-
-	return args
-}
-
-func cleanArg(v any) any {
-	switch v := v.(type) {
-	case map[string]any:
-		m := make(map[string]any, len(v))
-		for key, val := range v {
-			m[key] = cleanArg(val)
-		}
-		return m
-
-	case []any:
-		s := make([]any, len(v))
-		for i, val := range v {
-			s[i] = cleanArgs(val)
-		}
-
-	case Wrapper:
-		return jsval(v.JSValue())
-	}
-
-	return v
-
+	return js.CopyBytesToJS(syscalJSValueOf(dst), src)
 }

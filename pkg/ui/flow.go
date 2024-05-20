@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 // IFlow is the interface that describes a container that displays its items as
@@ -164,9 +164,11 @@ func (f *flow) refresh(ctx app.Context) {
 		f.itemsPerRow = itemsPerRow
 		f.itemWidth = itemWidthFloat
 
-		ctx.Defer(func(app.Context) {
-			f.ResizeContent()
-		})
+		// ctx.Defer(func(app.Context) {
+		// 	f.ResizeContent()
+		// })
+
+		ctx.ResizeContent()
 	}
 }
 

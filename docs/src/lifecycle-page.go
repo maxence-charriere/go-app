@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type lifecyclePage struct {
@@ -11,10 +11,6 @@ type lifecyclePage struct {
 
 func newLifecyclePage() *lifecyclePage {
 	return &lifecyclePage{}
-}
-
-func (p *lifecyclePage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *lifecyclePage) OnNav(ctx app.Context) {

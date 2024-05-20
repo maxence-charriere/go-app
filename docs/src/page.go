@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/ui"
 )
 
 const (
@@ -71,8 +71,8 @@ func (p *page) Render() app.UI {
 			newMenu().Class("fill"),
 		).
 		Index(
-			app.If(len(p.Iindex) != 0,
-				ui.Scroll().
+			app.If(len(p.Iindex) != 0, func() app.UI {
+				return ui.Scroll().
 					Class("fill").
 					HeaderHeight(headerHeight).
 					Content(
@@ -90,8 +90,8 @@ func (p *page) Render() app.UI {
 								newIndexLink().Title("Report an Issue"),
 								app.Div().Class("separator"),
 							),
-					),
-			),
+					)
+			}),
 		).
 		Content(
 			ui.Scroll().
@@ -105,8 +105,8 @@ func (p *page) Render() app.UI {
 								Right().
 								Middle().
 								Content(
-									app.If(p.updateAvailable,
-										app.Div().
+									app.If(p.updateAvailable, func() app.UI {
+										return app.Div().
 											Class("link-update").
 											Body(
 												ui.Link().
@@ -117,8 +117,8 @@ func (p *page) Render() app.UI {
 													Icon(downloadSVG).
 													Label("Update").
 													OnClick(p.updateApp),
-											),
-									),
+											)
+									}),
 								),
 						),
 				).

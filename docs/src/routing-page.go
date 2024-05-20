@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type routingPage struct {
@@ -11,10 +11,6 @@ type routingPage struct {
 
 func newRoutingPage() *routingPage {
 	return &routingPage{}
-}
-
-func (p *routingPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *routingPage) OnNav(ctx app.Context) {

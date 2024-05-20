@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type seoPage struct {
@@ -11,10 +11,6 @@ type seoPage struct {
 
 func newSEOPage() *seoPage {
 	return &seoPage{}
-}
-
-func (p *seoPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *seoPage) OnNav(ctx app.Context) {

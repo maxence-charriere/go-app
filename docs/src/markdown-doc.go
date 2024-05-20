@@ -6,8 +6,8 @@ import (
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/ui"
 )
 
 type markdownDoc struct {
@@ -93,10 +93,6 @@ func (d *remoteMarkdownDoc) Src(v string) *remoteMarkdownDoc {
 	return d
 }
 
-func (d *remoteMarkdownDoc) OnPreRender(ctx app.Context) {
-	d.load(ctx)
-}
-
 func (d *remoteMarkdownDoc) OnMount(ctx app.Context) {
 	d.load(ctx)
 }
@@ -107,14 +103,13 @@ func (d *remoteMarkdownDoc) OnUpdate(ctx app.Context) {
 
 func (d *remoteMarkdownDoc) load(ctx app.Context) {
 	src := d.Isrc
-	ctx.ObserveState(markdownState(src)).
+	ctx.ObserveState(markdownState(src), &d.md).
 		While(func() bool {
 			return src == d.Isrc
 		}).
 		OnChange(func() {
 			ctx.Defer(scrollTo)
-		}).
-		Value(&d.md)
+		})
 
 	ctx.NewAction(getMarkdown, app.T("path", d.Isrc))
 }
@@ -130,10 +125,10 @@ func (d *remoteMarkdownDoc) Render() app.UI {
 				Loading(d.md.Status == loading).
 				Err(d.md.Err).
 				Label(fmt.Sprintf("Loading %s...", filepath.Base(d.Isrc))),
-			app.If(d.md.Status == loaded,
-				newMarkdownDoc().
+			app.If(d.md.Status == loaded, func() app.UI {
+				return newMarkdownDoc().
 					Class("fill").
-					MD(d.md.Data),
-			).Else(),
+					MD(d.md.Data)
+			}),
 		)
 }

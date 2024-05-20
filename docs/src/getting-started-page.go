@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type gettingStartedPage struct {
@@ -11,10 +11,6 @@ type gettingStartedPage struct {
 
 func newGettingStartedPage() *gettingStartedPage {
 	return &gettingStartedPage{}
-}
-
-func (p *gettingStartedPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *gettingStartedPage) OnNav(ctx app.Context) {

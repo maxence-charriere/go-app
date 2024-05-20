@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type declarativeSyntaxPage struct {
@@ -11,10 +11,6 @@ type declarativeSyntaxPage struct {
 
 func newDeclarativeSyntaxPage() *declarativeSyntaxPage {
 	return &declarativeSyntaxPage{}
-}
-
-func (p *declarativeSyntaxPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *declarativeSyntaxPage) OnNav(ctx app.Context) {

@@ -143,3 +143,23 @@ func BenchmarkAppendClass(b *testing.B) {
 		AppendClass("hello", "foo-bar-k", "bar-lkj-adsf-adsf")
 	}
 }
+
+func TestPreviewText(t *testing.T) {
+	t.Run("full text is previewed", func(t *testing.T) {
+		require.Equal(t, "hello", previewText("hello"))
+	})
+
+	t.Run("text of 80 chara is previewed", func(t *testing.T) {
+		require.Equal(t,
+			"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			previewText("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+		)
+	})
+
+	t.Run("text over 80 chara is previewed", func(t *testing.T) {
+		require.Equal(t,
+			"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...",
+			previewText("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxhello"),
+		)
+	})
+}

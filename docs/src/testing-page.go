@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
-	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v10/pkg/app"
 )
 
 type testingPage struct {
@@ -11,10 +11,6 @@ type testingPage struct {
 
 func newTestingPage() *testingPage {
 	return &testingPage{}
-}
-
-func (p *testingPage) OnPreRender(ctx app.Context) {
-	p.initPage(ctx)
 }
 
 func (p *testingPage) OnNav(ctx app.Context) {
