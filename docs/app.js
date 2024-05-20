@@ -2,10 +2,10 @@
 // go-app
 // -----------------------------------------------------------------------------
 var goappNav = function () {};
-var goappOnUpdate = function () {};
+var goappOnUpdate = null;
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"/","GOAPP_STATIC_RESOURCES_URL":"/web","GOAPP_VERSION":"8a5b8e9e77360856e3666adbdd05a1a9e4e08803"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"/","GOAPP_STATIC_RESOURCES_URL":"/web","GOAPP_VERSION":"34a299e7ea7a9ec21ddb30f92b1df04559793b07"};
 const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLength = "";
 const goappWasmContentLengthHeader = "";
@@ -30,7 +30,6 @@ async function goappInitServiceWorker() {
 
       goappServiceWorkerRegistration = registration;
       goappSetupNotifyUpdate(registration);
-      goappSetupAutoUpdate(registration);
       goappSetupPushNotification();
     } catch (err) {
       console.error("goapp service worker registration failed", err);
@@ -59,20 +58,20 @@ function goappSetupNotifyUpdate(registration) {
       if (newSW.state != "activated") {
         return;
       }
+      if (goappOnUpdate == null) {
+        goappOnUpdate = true;
+        return;
+      }
       goappOnUpdate();
     });
   });
 }
 
-function goappSetupAutoUpdate(registration) {
-  const autoUpdateInterval = "60000";
-  if (autoUpdateInterval == 0) {
+function goappTryUpdate() {
+  if (!goappServiceWorkerRegistration) {
     return;
   }
-
-  window.setInterval(() => {
-    registration.update();
-  }, autoUpdateInterval);
+  goappServiceWorkerRegistration.update();
 }
 
 // -----------------------------------------------------------------------------

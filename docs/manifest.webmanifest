@@ -9,13 +9,19 @@
       "sizes": "any"
     },
     {
-      "src": "/",
+      "src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "/web/icon.png",
+      "src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png",
       "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png",
+      "type": "image/png",
+      "purpose": "maskable",
       "sizes": "192x192"
     }
   ],

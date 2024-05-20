@@ -1,8 +1,8 @@
-const cacheName = "app-" + "8a5b8e9e77360856e3666adbdd05a1a9e4e08803";
-const resourcesToCache = ["/","/app.css","/app.js","/manifest.webmanifest","/wasm_exec.js","/web/app.wasm","/web/css/docs.css","/web/css/prism.css","/web/documents/home-next.md","/web/documents/home.md","/web/documents/updates.md","/web/documents/what-is-go-app.md","/web/icon.png","/web/js/prism.js","https://fonts.googleapis.com/css2?family=montserrat:wght@400;500\u0026display=swap","https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236"];
+const cacheName = "app-" + "34a299e7ea7a9ec21ddb30f92b1df04559793b07";
+const resourcesToCache = ["/","/app.css","/app.js","/manifest.webmanifest","/wasm_exec.js","/web/app.wasm","/web/css/docs.css","/web/css/prism.css","/web/documents/home-next.md","/web/documents/home.md","/web/documents/updates.md","/web/documents/what-is-go-app.md","/web/js/prism.js","https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236","https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"];
 
 self.addEventListener("install", (event) => {
-  console.log("installing app worker 8a5b8e9e77360856e3666adbdd05a1a9e4e08803");
+  console.log("installing app worker 34a299e7ea7a9ec21ddb30f92b1df04559793b07");
 
   event.waitUntil(
     caches
@@ -28,7 +28,7 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
-  console.log("app worker 8a5b8e9e77360856e3666adbdd05a1a9e4e08803 is activated");
+  console.log("app worker 34a299e7ea7a9ec21ddb30f92b1df04559793b07 is activated");
 });
 
 self.addEventListener("fetch", (event) => {
