@@ -162,7 +162,6 @@ func (e *engineX) initBrowser() {
 		return
 	}
 	e.browser.HandleEvents(e.baseContext(), e.notifyComponentEvent)
-	Window().Set("goappLoaded", true)
 }
 
 func (e *engineX) notifyComponentEvent(event any) {
