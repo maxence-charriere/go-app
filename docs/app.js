@@ -2,10 +2,18 @@
 // go-app
 // -----------------------------------------------------------------------------
 var goappNav = function () {};
-var goappOnUpdate = null;
-var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"/","GOAPP_STATIC_RESOURCES_URL":"/web","GOAPP_VERSION":"c64a0ec08e7d44be12840f82c66b64a03a7a89bd"};
+var goappUpdatedBeforeWasmLoaded = false;
+var goappOnUpdate = function () {
+  goappUpdatedBeforeWasmLoaded = true;
+};
+
+var goappAppInstallChangedBeforeWasmLoaded = false;
+var goappOnAppInstallChange = function () {
+  goappAppInstallChangedBeforeWasmLoaded = true;
+};
+
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"/","GOAPP_STATIC_RESOURCES_URL":"/web","GOAPP_VERSION":"f342425a016f79dd1b0034dc34d8a200f5aeff12"};
 const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLength = "";
 const goappWasmContentLengthHeader = "";
@@ -56,10 +64,6 @@ function goappSetupNotifyUpdate(registration) {
         return;
       }
       if (newSW.state != "activated") {
-        return;
-      }
-      if (goappOnUpdate == null) {
-        goappOnUpdate = true;
         return;
       }
       goappOnUpdate();
