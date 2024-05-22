@@ -1,6 +1,8 @@
 package app
 
-import "time"
+import (
+	"time"
+)
 
 type browser struct {
 	AppUpdatable bool
@@ -40,6 +42,11 @@ func (b *browser) handleAnchorClick(ctx Context) {
 					}
 
 					if download := target.Call("getAttribute", "download"); !download.IsNull() {
+						return
+					}
+
+					switch target.Get("target").String() {
+					case "_blank":
 						return
 					}
 
