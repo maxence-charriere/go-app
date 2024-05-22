@@ -94,20 +94,29 @@ func (b *browser) handleAppUpdate(ctx Context, notifyComponentEvent func(any)) {
 		appUpdate()
 		return nil
 	})
-	if Window().Get("goappOnUpdate").Truthy() {
-		defer appUpdate()
-	}
 	Window().Set("goappOnUpdate", b.appUpdate)
+
+	if Window().Get("goappUpdatedBeforeWasmLoaded").Truthy() {
+		appUpdate()
+	}
 }
 
 func (b *browser) handleAppInstallChange(ctx Context, notifyComponentEvent func(any)) {
-	b.appInstallChange = FuncOf(func(this Value, args []Value) any {
+	appInstallChange := func() {
 		ctx.dispatch(func() {
 			notifyComponentEvent(appInstallChange{})
 		})
+	}
+
+	b.appInstallChange = FuncOf(func(this Value, args []Value) any {
+		appInstallChange()
 		return nil
 	})
 	Window().Set("goappOnAppInstallChange", b.appInstallChange)
+
+	if Window().Get("goappAppInstallChangedBeforeWasmLoaded").Truthy() {
+		appInstallChange()
+	}
 }
 
 func (b *browser) handleAppResize(ctx Context, notifyComponentEvent func(any)) {

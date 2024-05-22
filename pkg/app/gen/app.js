@@ -2,8 +2,16 @@
 // go-app
 // -----------------------------------------------------------------------------
 var goappNav = function () {};
-var goappOnUpdate = null;
-var goappOnAppInstallChange = function () {};
+
+var goappUpdatedBeforeWasmLoaded = false;
+var goappOnUpdate = function () {
+  goappUpdatedBeforeWasmLoaded = true;
+};
+
+var goappAppInstallChangedBeforeWasmLoaded = false;
+var goappOnAppInstallChange = function () {
+  goappAppInstallChangedBeforeWasmLoaded = true;
+};
 
 const goappEnv = {{.Env}};
 const goappLoadingLabel = "{{.LoadingLabel}}";
@@ -56,10 +64,6 @@ function goappSetupNotifyUpdate(registration) {
         return;
       }
       if (newSW.state != "activated") {
-        return;
-      }
-      if (goappOnUpdate == null) {
-        goappOnUpdate = true;
         return;
       }
       goappOnUpdate();
