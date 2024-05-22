@@ -96,7 +96,7 @@ func (b *browser) handleAppUpdate(ctx Context, notifyComponentEvent func(any)) {
 	})
 	Window().Set("goappOnUpdate", b.appUpdate)
 
-	if Window().Get("goappUpdatedBeforeWasmLoaded").Bool() {
+	if Window().Get("goappUpdatedBeforeWasmLoaded").Truthy() {
 		appUpdate()
 	}
 }
@@ -114,7 +114,7 @@ func (b *browser) handleAppInstallChange(ctx Context, notifyComponentEvent func(
 	})
 	Window().Set("goappOnAppInstallChange", b.appInstallChange)
 
-	if Window().Get("goappAppInstallChangedBeforeWasmLoaded").Bool() {
+	if Window().Get("goappAppInstallChangedBeforeWasmLoaded").Truthy() {
 		appInstallChange()
 	}
 }
