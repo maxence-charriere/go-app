@@ -69,9 +69,6 @@ func setJSAttribute(jsElement Value, name, value string) {
 	case "value":
 		jsElement.Set(name, value)
 
-	case "class":
-		jsElement.Set("className", value)
-
 	case "contenteditable":
 		jsElement.Set("contentEditable", value)
 
