@@ -652,7 +652,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Content(h.ThemeColor),
 				Meta().
 					Name("viewport").
-					Content("width=device-width, initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+					Content("width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"),
 				Meta().
 					Property("og:url").
 					Content(resolveOGResource(h.Domain, h.Resources.Resolve(page.URL().Path))),
