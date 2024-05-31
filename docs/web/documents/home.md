@@ -40,8 +40,8 @@ Serving an app built with go-app is done by using the [Go standard HTTP model](h
 ```go
 func main() {
     // Go-app component routing (client-side):
-	app.Route("/", &hello{})
-	app.Route("/hello", &hello{})
+	app.Route("/", func() app.Composer { return &hello{} })
+	app.Route("/hello", func() app.Composer { return &hello{} })
 	app.RunWhenOnBrowser()
 
     // Standard HTTP routing (server-side):
