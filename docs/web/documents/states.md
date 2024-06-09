@@ -19,19 +19,19 @@ func handleGreet(ctx app.Context, a app.Action) {
 }
 ```
 
-By default a state lives within app memory, It gets deleted when the app is closed. The way a state is set can be modified by using options.
+By default a state lives within app memory, It gets deleted when the app is closed. The way a state is set can be modified by calling methods.
 
-### Options
+### Methods
 
-| Name                              | Description                                                                      | Note                                                                                 |
+| Name                               | Description                                                                      | Note                                                                                 |
 | --------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [Persist](/reference#Persist)     | The state is persisted on local storage, making it available for later sessions. | The value must be compatible with [encoding/json](https://pkg.go.dev/encoding/json). |
-| [Encrypt](/reference#Encrypt)     | The state is encrypted when persisted on local storage.                          | Requires the use of the [Persist](/reference#Persist) option.                        |
-| [ExpiresIn](/reference#ExpiresIn) | The state is deleted after the given duration.                                   |                                                                                      |
-| [ExpiresAt](/reference#ExpiresAt) | The state is deleted at the given time.                                          |                                                                                      |
-| [Broadcast](/reference#Broadcast) | The state is propagated to other browser tabs and windows.                       | The value must be compatible with [encoding/json](https://pkg.go.dev/encoding/json). |
+| [Persist()](/reference#State.Persist)     | The state is persisted on local storage, making it available for later sessions. | The value must be compatible with [encoding/json](https://pkg.go.dev/encoding/json). |
+| [PersistWithEncryption()](/reference#State.PersistWithEncryption)     | The state is encrypted when persisted on local storage.                          | Requires the use of the [Persist](/reference#Persist) option.                        |
+| [ExpiresIn(time)](/reference#State.ExpiresIn) | The state is deleted after the given duration.                                   |                                                                                      |
+| [ExpiresAt(time)](/reference#State.ExpiresAt) | The state is deleted at the given time.                                          |                                                                                      |
+| [Broadcast()](/reference#State.Broadcast) | The state is propagated to other browser tabs and windows.                       | The value must be compatible with [encoding/json](https://pkg.go.dev/encoding/json). |
 
-Options are set by appending the options at the end of the `SetState` method. Here is an example where a state is persisted in local storage and propagated across browsers tabs and windows:
+Options are set by calling function at the end of the `SetState` method. Here is an example where a state is persisted in local storage and propagated across browsers tabs and windows:
 
 ```go
 func handleGreet(ctx app.Context, a app.Action) {
@@ -40,9 +40,9 @@ func handleGreet(ctx app.Context, a app.Action) {
 		return
 	}
 
-	ctx.SetState("greet-name", name,
-		app.Persist,
-		app.Broadcast,
+	ctx.SetState("greet-name", name).
+		Persist().
+		Broadcast(),
 	)
 }
 ```
