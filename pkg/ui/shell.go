@@ -207,6 +207,8 @@ func (s *shell) Render() app.UI {
 						app.Div().
 							Class("goapp-shell-hamburger-button-default").
 							Text("☰"),
+					).Else(
+						s.IhamburgerButton,
 					),
 				),
 			app.Div().
