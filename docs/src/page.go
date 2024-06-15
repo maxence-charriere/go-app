@@ -174,16 +174,16 @@ func (p *page) Render() app.UI {
 							app.Div().Class("separator"),
 
 							// Testing space
-							app.H2().Text("Test"),
-							app.Form().
-								Method("post").
-								Action("http://localhost:9600/api/test").
-								EncType("multipart/form-data").
-								Body(
-									app.Input().Placeholder("What is your first name?").AutoFocus(true),
-									app.Input().Placeholder("What is your last name?"),
-									app.Input().Type("submit").Value("Submit"),
-								),
+							// app.H2().Text("Test"),
+							// app.Form().
+							// 	Method("post").
+							// 	Action("http://localhost:9600/api/test").
+							// 	EncType("multipart/form-data").
+							// 	Body(
+							// 		app.Input().Placeholder("What is your first name?").AutoFocus(true),
+							// 		app.Input().Placeholder("What is your last name?"),
+							// 		app.Input().Type("submit").Value("Submit"),
+							// 	),
 						),
 					),
 				),
