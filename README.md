@@ -83,14 +83,16 @@ func main() {
 	app.Route("/hello", func() app.Composer { return &hello{} })
 	app.RunWhenOnBrowser()
 
-	// HTTP routing:
-	http.Handle("/", &app.Handler{
-		Name:        "Hello",
-		Description: "An Hello World! example",
-	})
-
-	if err := http.ListenAndServe(":8000", nil); err != nil {
-		log.Fatal(err)
+	if app.IsServer {
+		// HTTP routing:
+		http.Handle("/", &app.Handler{
+			Name:        "Hello",
+			Description: "An Hello World! example",
+		})
+	
+		if err := http.ListenAndServe(":8000", nil); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 ```
