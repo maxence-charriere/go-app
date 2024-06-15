@@ -1,44 +1,50 @@
+// -----------------------------------------------------------------------------
+// PWA
+// -----------------------------------------------------------------------------
 const cacheName = "app-" + "{{.Version}}";
 const resourcesToCache = {{.ResourcesToCache}};
 
 self.addEventListener("install", (event) => {
   console.log("installing app worker {{.Version}}");
-
-  event.waitUntil(
-    caches
-      .open(cacheName)
-      .then((cache) => {
-        return cache.addAll(resourcesToCache);
-      })
-      .then(() => {
-        self.skipWaiting();
-      })
-  );
+  event.waitUntil(installWorker());
 });
 
+async function installWorker() {
+  const cache = await caches.open(cacheName);
+  await cache.addAll(resourcesToCache);
+  await self.skipWaiting(); // Use this new service worker
+}
+
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(
-        keyList.map((key) => {
-          if (key !== cacheName) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
-  );
+  event.waitUntil(deletePreviousCaches());
   console.log("app worker {{.Version}} is activated");
 });
 
+async function deletePreviousCaches() {
+  keys = await caches.keys();
+  keys.forEach(async (key) => {
+    if (key != cacheName) {
+      console.log("deleting", key, "cache");
+      await caches.delete(key);
+    }
+  });
+}
+
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
+  event.respondWith(fetchWithCache(event.request));
 });
 
+async function fetchWithCache(request) {
+  cachedResponse = await caches.match(request);
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+  return fetch(request);
+}
+
+// -----------------------------------------------------------------------------
+// Push Notifications
+// -----------------------------------------------------------------------------
 self.addEventListener("push", (event) => {
   if (!event.data || !event.data.text()) {
     return;
