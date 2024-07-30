@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------
 // PWA
 // -----------------------------------------------------------------------------
-const cacheName = "app-" + "45ce0d586872985c88bc19ef48ab5fe0a4c45485";
+const cacheName = "app-" + "014798ad69974caff88fe5d7b8abad9690508a5f";
 const resourcesToCache = ["/","/app.css","/app.js","/manifest.webmanifest","/wasm_exec.js","/web/app.wasm","/web/css/docs.css","/web/css/prism.css","/web/documents/home-next.md","/web/documents/home.md","/web/documents/updates.md","/web/documents/what-is-go-app.md","/web/js/prism.js","https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236","https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"];
 
 self.addEventListener("install", (event) => {
-  console.log("installing app worker 45ce0d586872985c88bc19ef48ab5fe0a4c45485");
+  console.log("installing app worker 014798ad69974caff88fe5d7b8abad9690508a5f");
   event.waitUntil(installWorker());
 });
 
@@ -17,7 +17,7 @@ async function installWorker() {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(deletePreviousCaches());
-  console.log("app worker 45ce0d586872985c88bc19ef48ab5fe0a4c45485 is activated");
+  console.log("app worker 014798ad69974caff88fe5d7b8abad9690508a5f is activated");
 });
 
 async function deletePreviousCaches() {
