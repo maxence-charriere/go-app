@@ -256,6 +256,10 @@ func newBrowserWindow() *browserWindow {
 	return &browserWindow{value: value{jsValue: js.Global()}}
 }
 
+func (w *browserWindow) Alert(alertMessage string) {
+	w.Call("alert", alertMessage)
+}
+
 func (w *browserWindow) URL() *url.URL {
 	rawurl := w.
 		Get("location").
