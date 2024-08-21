@@ -605,6 +605,7 @@ func (m nodeManager) updateRawHTML(ctx Context, v, new *raw) (UI, error) {
 	for parent := v.parent(); parent != nil; parent = parent.parent() {
 		if parent, isHTML := parent.(HTML); isHTML {
 			parent.JSValue().replaceChild(newMount, v)
+			newMount.setParent(parent)
 			break
 		}
 	}
