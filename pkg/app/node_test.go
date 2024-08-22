@@ -841,6 +841,7 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.IsType(t, Raw(""), newSpan)
 		require.Equal(t, "<span>bye</span>", newSpan.(*raw).value)
 		require.True(t, newSpan.Mounted())
+		require.Equal(t, body, newSpan.parent())
 		require.False(t, span.Mounted())
 	})
 
