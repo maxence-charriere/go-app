@@ -411,7 +411,7 @@ func TestHandlerServeManifestJSONWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
 	require.Contains(t, body, `"background_color": "#0000f0"`)
 	require.Contains(t, body, `"theme_color": "#0000ff"`)
-	require.Contains(t, body, `"scope": "/go-app/"`)
+	require.Contains(t, body, `"scope": "/"`)
 	require.Contains(t, body, `"start_url": "/go-app"`)
 }
 
