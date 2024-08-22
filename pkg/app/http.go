@@ -385,6 +385,11 @@ func (h *Handler) makeManifestJSON() []byte {
 		scope += "/"
 	}
 
+	startURL := h.Resources.Resolve("/")
+	if !strings.HasSuffix(startURL, "/") {
+		startURL += "/"
+	}
+
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
@@ -411,7 +416,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
 			Scope:           scope,
-			StartURL:        h.Resources.Resolve("/"),
+			StartURL:        startURL,
 		}); err != nil {
 		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))
 	}
