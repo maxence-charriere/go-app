@@ -13,7 +13,7 @@ var goappOnAppInstallChange = function () {
   goappAppInstallChangedBeforeWasmLoaded = true;
 };
 
-const goappEnv = {{.Env}};
+// const goappEnv = {{.Env}};
 const goappLoadingLabel = "{{.LoadingLabel}}";
 const goappWasmContentLength = "{{.WasmContentLength}}";
 const goappWasmContentLengthHeader = "{{.WasmContentLengthHeader}}";
@@ -76,7 +76,12 @@ function goappTryUpdate() {
   if (!goappServiceWorkerRegistration) {
     return;
   }
-  goappServiceWorkerRegistration.update();
+
+  try {
+    goappServiceWorkerRegistration.update();
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // -----------------------------------------------------------------------------
