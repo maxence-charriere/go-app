@@ -72,15 +72,15 @@ function goappSetupNotifyUpdate(registration) {
   });
 }
 
-function goappTryUpdate() {
+async function goappTryUpdate() {
   if (!goappServiceWorkerRegistration) {
     return;
   }
 
   try {
-    goappServiceWorkerRegistration.update();
+    await goappServiceWorkerRegistration.update();
   } catch (err) {
-    console.error(err);
+    console.error("goapp update skipped: ", err);
   }
 }
 
