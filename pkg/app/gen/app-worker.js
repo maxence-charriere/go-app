@@ -10,8 +10,13 @@ self.addEventListener("install", (event) => {
 });
 
 async function installWorker() {
-  const cache = await caches.open(cacheName);
-  await cache.addAll(resourcesToCache);
+  try {
+    const cache = await caches.open(cacheName);
+    await cache.addAll(resourcesToCache);
+  } catch (err) {
+    console.error("caching app worker resources failed:", err);
+  }
+
   await self.skipWaiting(); // Use this new service worker
 }
 

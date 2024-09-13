@@ -61,13 +61,10 @@ function goappSetupNotifyUpdate(registration) {
   registration.addEventListener("updatefound", (event) => {
     const newSW = registration.installing;
     newSW.addEventListener("statechange", (event) => {
-      if (!navigator.serviceWorker.controller) {
-        return;
+      switch (newSW.state) {
+        case "activated":
+          goappOnUpdate();
       }
-      if (newSW.state != "activated") {
-        return;
-      }
-      goappOnUpdate();
     });
   });
 }
