@@ -24,8 +24,12 @@ async function deletePreviousCaches() {
   keys = await caches.keys();
   keys.forEach(async (key) => {
     if (key != cacheName) {
-      console.log("deleting", key, "cache");
-      await caches.delete(key);
+      try {
+        console.log("deleting", key, "cache");
+        await caches.delete(key);
+      } catch (err) {
+        console.error("deleting", key, "cache failed:", err);
+      }
     }
   });
 }
