@@ -62,7 +62,7 @@ function goappSetupNotifyUpdate(registration) {
     const newSW = registration.installing;
     newSW.addEventListener("statechange", (event) => {
       switch (newSW.state) {
-        case "installed":
+        case "activated":
           goappOnUpdate();
       }
     });
