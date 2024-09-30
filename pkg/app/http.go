@@ -361,7 +361,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		resourcesTocache = append(resourcesTocache, h.Resources.Resolve(k))
 	}
 	sort.Slice(resourcesTocache, func(a, b int) bool {
-		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) < 0
+		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) > 0
 	})
 
 	var b bytes.Buffer
