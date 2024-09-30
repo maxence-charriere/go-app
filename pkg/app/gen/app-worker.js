@@ -7,16 +7,17 @@ const resourcesToCache = {{.ResourcesToCache}};
 self.addEventListener("install", (event) => {
   console.log("installing app worker {{.Version}}");
   event.waitUntil(installWorker());
+  event.waitUntil(self.skipWaiting());
 });
 
 async function installWorker() {
   const cache = await caches.open(cacheName);
   await cache.addAll(resourcesToCache);
-  await self.skipWaiting(); // Use this new service worker
 }
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(deletePreviousCaches());
+  event.waitUntil(self.clients.claim());
   console.log("app worker {{.Version}} is activated");
 });
 
