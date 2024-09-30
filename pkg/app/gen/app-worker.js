@@ -4,10 +4,14 @@
 const cacheName = "app-" + "{{.Version}}";
 const resourcesToCache = {{.ResourcesToCache}};
 
-self.addEventListener("install", (event) => {
-  console.log("installing app worker {{.Version}}");
-  event.waitUntil(installWorker());
-  event.waitUntil(self.skipWaiting());
+self.addEventListener("install", async (event) => {
+  try {
+    console.log("installing app worker {{.Version}}");
+    await installWorker();
+    await self.skipWaiting();
+  } catch (error) {
+    console.error("error during installation:", error);
+  }
 });
 
 async function installWorker() {
@@ -15,10 +19,14 @@ async function installWorker() {
   await cache.addAll(resourcesToCache);
 }
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(deletePreviousCaches());
-  event.waitUntil(self.clients.claim());
-  console.log("app worker {{.Version}} is activated");
+self.addEventListener("activate", async (event) => {
+  try {
+    await deletePreviousCaches(); // Await cache cleanup
+    await self.clients.claim(); // Ensure the service worker takes control of the clients
+    console.log("app worker {{.Version}} is activated");
+  } catch (error) {
+    console.error("error during activation:", error);
+  }
 });
 
 async function deletePreviousCaches() {
@@ -40,11 +48,22 @@ self.addEventListener("fetch", (event) => {
 });
 
 async function fetchWithCache(request) {
-  cachedResponse = await caches.match(request);
-  if (cachedResponse) {
-    return cachedResponse;
+  const url = new URL(request.url);
+  if (url.pathname === "/") {
+    try {
+      return await fetch(request);
+    } catch (error) {
+      console.error("network failed, trying to serve from cache:", error);
+      const cachedResponse = await caches.match(request);
+      return cachedResponse || new Response("Offline");
+    }
   }
-  return fetch(request);
+
+  const cachedResponse = await caches.match(request);
+  if (cachedResponse) {
+    return cachedResponse; 
+  }
+  return await fetch(request);
 }
 
 // -----------------------------------------------------------------------------
