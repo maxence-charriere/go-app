@@ -347,9 +347,10 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		"/app.js",
 		"/manifest.webmanifest",
 		"/wasm_exec.js",
-		"/",
 		"/web/app.wasm",
+		"/",
 	)
+	setResources(h.Fonts...)
 	setResources(h.Icon.Default, h.Icon.Large, h.Icon.Maskable)
 	setResources(h.Styles...)
 	setResources(h.Scripts...)
