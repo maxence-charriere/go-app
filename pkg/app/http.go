@@ -705,15 +705,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					}
 					return nil
 				}),
-				Range(h.Styles).Slice(func(i int) UI {
-					if resource := parseHTTPResource(h.Styles[i]); resource.URL != "" {
-						return resource.toLink().
-							Type("text/css").
-							Rel("preload").
-							As("style")
-					}
-					return nil
-				}),
 				Link().
 					Rel("icon").
 					Href(icon),
