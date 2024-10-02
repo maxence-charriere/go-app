@@ -263,7 +263,7 @@ func (h *Handler) initPWAResources() {
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
-		Body:        []byte(wasmExecJS()),
+		Body:        []byte(wasmExecJS() + "\ngoappInitWebAssembly()"),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
@@ -649,9 +649,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Name("viewport").
 					Content("width=device-width, initial-scale=1, viewport-fit=cover"),
 				Meta().
-					Name("apple-mobile-web-app-capable").
-					Content("yes"),
-				Meta().
 					Property("og:url").
 					Content(resolveOGResource(h.Domain, h.Resources.Resolve(page.URL().Path))),
 				Meta().
@@ -726,12 +723,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					}
 					return nil
 				}),
+				Script().Src("/app.js"),
 				Script().
 					Defer(true).
 					Src("/wasm_exec.js"),
-				Script().
-					Defer(true).
-					Src("/app.js"),
 				Range(h.Scripts).Slice(func(i int) UI {
 					if resource := parseHTTPResource(h.Scripts[i]); resource.URL != "" {
 						return resource.toScript()
