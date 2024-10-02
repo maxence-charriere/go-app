@@ -15,7 +15,7 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 
 
 
-<script>var goVersion = "go1.22.4";</script>
+<script>var goVersion = "go1.23.1";</script>
 <script src="/lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -1635,7 +1635,7 @@ resources to run Go-based progressive web apps.
 				
 				<pre>const (
     <span class="comment">// The default template used to generate app-worker.js.</span>
-    <span id="DefaultAppWorkerJS">DefaultAppWorkerJS</span> = &#34;// -----------------------------------------------------------------------------\n// PWA\n// -----------------------------------------------------------------------------\nconst cacheName = \&#34;app-\&#34; + \&#34;{{.Version}}\&#34;;\nconst resourcesToCache = {{.ResourcesToCache}};\n\nself.addEventListener(\&#34;install\&#34;, (event) =&gt; {\n  console.log(\&#34;installing app worker {{.Version}}\&#34;);\n  event.waitUntil(installWorker());\n});\n\nasync function installWorker() {\n  const cache = await caches.open(cacheName);\n  await cache.addAll(resourcesToCache);\n  await self.skipWaiting(); // Use this new service worker\n}\n\nself.addEventListener(\&#34;activate\&#34;, (event) =&gt; {\n  event.waitUntil(deletePreviousCaches());\n  console.log(\&#34;app worker {{.Version}} is activated\&#34;);\n});\n\nasync function deletePreviousCaches() {\n  keys = await caches.keys();\n  keys.forEach(async (key) =&gt; {\n    if (key != cacheName) {\n      console.log(\&#34;deleting\&#34;, key, \&#34;cache\&#34;);\n      await caches.delete(key);\n    }\n  });\n}\n\nself.addEventListener(\&#34;fetch\&#34;, (event) =&gt; {\n  event.respondWith(fetchWithCache(event.request));\n});\n\nasync function fetchWithCache(request) {\n  cachedResponse = await caches.match(request);\n  if (cachedResponse) {\n    return cachedResponse;\n  }\n  return fetch(request);\n}\n\n// -----------------------------------------------------------------------------\n// Push Notifications\n// -----------------------------------------------------------------------------\nself.addEventListener(\&#34;push\&#34;, (event) =&gt; {\n  if (!event.data || !event.data.text()) {\n    return;\n  }\n\n  const notification = JSON.parse(event.data.text());\n  if (!notification) {\n    return;\n  }\n\n  const title = notification.title;\n  delete notification.title;\n\n  if (!notification.data) {\n    notification.data = {};\n  }\n  let actions = [];\n  for (let i in notification.actions) {\n    const action = notification.actions[i];\n\n    actions.push({\n      action: action.action,\n      path: action.path,\n    });\n\n    delete action.path;\n  }\n  notification.data.goapp = {\n    path: notification.path,\n    actions: actions,\n  };\n  delete notification.path;\n\n  event.waitUntil(self.registration.showNotification(title, notification));\n});\n\nself.addEventListener(\&#34;notificationclick\&#34;, (event) =&gt; {\n  event.notification.close();\n\n  const notification = event.notification;\n  let path = notification.data.goapp.path;\n\n  for (let i in notification.data.goapp.actions) {\n    const action = notification.data.goapp.actions[i];\n    if (action.action === event.action) {\n      path = action.path;\n      break;\n    }\n  }\n\n  event.waitUntil(\n    clients\n      .matchAll({\n        type: \&#34;window\&#34;,\n      })\n      .then((clientList) =&gt; {\n        for (var i = 0; i &lt; clientList.length; i++) {\n          let client = clientList[i];\n          if (\&#34;focus\&#34; in client) {\n            client.focus();\n            client.postMessage({\n              goapp: {\n                type: \&#34;notification\&#34;,\n                path: path,\n              },\n            });\n            return;\n          }\n        }\n\n        if (clients.openWindow) {\n          return clients.openWindow(path);\n        }\n      })\n  );\n});\n&#34;
+    <span id="DefaultAppWorkerJS">DefaultAppWorkerJS</span> = &#34;// -----------------------------------------------------------------------------\n// PWA\n// -----------------------------------------------------------------------------\nconst cacheName = \&#34;app-\&#34; + \&#34;{{.Version}}\&#34;;\nconst resourcesToCache = {{.ResourcesToCache}};\n\nself.addEventListener(\&#34;install\&#34;, async (event) =&gt; {\n  try {\n    console.log(\&#34;installing app worker {{.Version}}\&#34;);\n    await installWorker();\n    await self.skipWaiting();\n  } catch (error) {\n    console.error(\&#34;error during installation:\&#34;, error);\n  }\n});\n\nasync function installWorker() {\n  const cache = await caches.open(cacheName);\n  await cache.addAll(resourcesToCache);\n}\n\nself.addEventListener(\&#34;activate\&#34;, async (event) =&gt; {\n  try {\n    await deletePreviousCaches(); // Await cache cleanup\n    await self.clients.claim(); // Ensure the service worker takes control of the clients\n    console.log(\&#34;app worker {{.Version}} is activated\&#34;);\n  } catch (error) {\n    console.error(\&#34;error during activation:\&#34;, error);\n  }\n});\n\nasync function deletePreviousCaches() {\n  keys = await caches.keys();\n  keys.forEach(async (key) =&gt; {\n    if (key != cacheName) {\n      try {\n        console.log(\&#34;deleting\&#34;, key, \&#34;cache\&#34;);\n        await caches.delete(key);\n      } catch (err) {\n        console.error(\&#34;deleting\&#34;, key, \&#34;cache failed:\&#34;, err);\n      }\n    }\n  });\n}\n\nself.addEventListener(\&#34;fetch\&#34;, (event) =&gt; {\n  event.respondWith(fetchWithCache(event.request));\n});\n\nasync function fetchWithCache(request) {\n  const cachedResponse = await caches.match(request);\n  if (cachedResponse) {\n    return cachedResponse;\n  }\n  return await fetch(request);\n}\n\n// -----------------------------------------------------------------------------\n// Push Notifications\n// -----------------------------------------------------------------------------\nself.addEventListener(\&#34;push\&#34;, (event) =&gt; {\n  if (!event.data || !event.data.text()) {\n    return;\n  }\n\n  const notification = JSON.parse(event.data.text());\n  if (!notification) {\n    return;\n  }\n\n  const title = notification.title;\n  delete notification.title;\n\n  if (!notification.data) {\n    notification.data = {};\n  }\n  let actions = [];\n  for (let i in notification.actions) {\n    const action = notification.actions[i];\n\n    actions.push({\n      action: action.action,\n      path: action.path,\n    });\n\n    delete action.path;\n  }\n  notification.data.goapp = {\n    path: notification.path,\n    actions: actions,\n  };\n  delete notification.path;\n\n  event.waitUntil(self.registration.showNotification(title, notification));\n});\n\nself.addEventListener(\&#34;notificationclick\&#34;, (event) =&gt; {\n  event.notification.close();\n\n  const notification = event.notification;\n  let path = notification.data.goapp.path;\n\n  for (let i in notification.data.goapp.actions) {\n    const action = notification.data.goapp.actions[i];\n    if (action.action === event.action) {\n      path = action.path;\n      break;\n    }\n  }\n\n  event.waitUntil(\n    clients\n      .matchAll({\n        type: \&#34;window\&#34;,\n      })\n      .then((clientList) =&gt; {\n        for (var i = 0; i &lt; clientList.length; i++) {\n          let client = clientList[i];\n          if (\&#34;focus\&#34; in client) {\n            client.focus();\n            client.postMessage({\n              goapp: {\n                type: \&#34;notification\&#34;,\n                path: path,\n              },\n            });\n            return;\n          }\n        }\n\n        if (clients.openWindow) {\n          return clients.openWindow(path);\n        }\n      })\n  );\n});\n&#34;
 )</pre>
 			
 		
@@ -25981,7 +25981,7 @@ configurations for PWA features, offline support, auto-update, and more.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=12565:12632#L458">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=12456:12523#L453">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -25995,7 +25995,7 @@ configurations for PWA features, offline support, auto-update, and more.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=20639:21802#L784">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=20326:21489#L773">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -27644,7 +27644,7 @@ package.
 
 
 <div id="footer">
-Build version go1.22.4.<br>
+Build version go1.23.1.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,

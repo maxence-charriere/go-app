@@ -1,31 +1,44 @@
 // -----------------------------------------------------------------------------
 // PWA
 // -----------------------------------------------------------------------------
-const cacheName = "app-" + "014798ad69974caff88fe5d7b8abad9690508a5f";
-const resourcesToCache = ["/","/app.css","/app.js","/manifest.webmanifest","/wasm_exec.js","/web/app.wasm","/web/css/docs.css","/web/css/prism.css","/web/documents/home-next.md","/web/documents/home.md","/web/documents/updates.md","/web/documents/what-is-go-app.md","/web/js/prism.js","https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236","https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"];
+const cacheName = "app-" + "174e4030da44f4b3255aedb965beea90a03cb3dc";
+const resourcesToCache = ["https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png","https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236","/web/js/prism.js","/web/documents/what-is-go-app.md","/web/documents/updates.md","/web/documents/home.md","/web/documents/home-next.md","/web/css/prism.css","/web/css/docs.css","/web/app.wasm","/wasm_exec.js","/manifest.webmanifest","/app.js","/app.css","/"];
 
-self.addEventListener("install", (event) => {
-  console.log("installing app worker 014798ad69974caff88fe5d7b8abad9690508a5f");
-  event.waitUntil(installWorker());
+self.addEventListener("install", async (event) => {
+  try {
+    console.log("installing app worker 174e4030da44f4b3255aedb965beea90a03cb3dc");
+    await installWorker();
+    await self.skipWaiting();
+  } catch (error) {
+    console.error("error during installation:", error);
+  }
 });
 
 async function installWorker() {
   const cache = await caches.open(cacheName);
   await cache.addAll(resourcesToCache);
-  await self.skipWaiting(); // Use this new service worker
 }
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(deletePreviousCaches());
-  console.log("app worker 014798ad69974caff88fe5d7b8abad9690508a5f is activated");
+self.addEventListener("activate", async (event) => {
+  try {
+    await deletePreviousCaches(); // Await cache cleanup
+    await self.clients.claim(); // Ensure the service worker takes control of the clients
+    console.log("app worker 174e4030da44f4b3255aedb965beea90a03cb3dc is activated");
+  } catch (error) {
+    console.error("error during activation:", error);
+  }
 });
 
 async function deletePreviousCaches() {
   keys = await caches.keys();
   keys.forEach(async (key) => {
     if (key != cacheName) {
-      console.log("deleting", key, "cache");
-      await caches.delete(key);
+      try {
+        console.log("deleting", key, "cache");
+        await caches.delete(key);
+      } catch (err) {
+        console.error("deleting", key, "cache failed:", err);
+      }
     }
   });
 }
@@ -35,11 +48,11 @@ self.addEventListener("fetch", (event) => {
 });
 
 async function fetchWithCache(request) {
-  cachedResponse = await caches.match(request);
+  const cachedResponse = await caches.match(request);
   if (cachedResponse) {
     return cachedResponse;
   }
-  return fetch(request);
+  return await fetch(request);
 }
 
 // -----------------------------------------------------------------------------
