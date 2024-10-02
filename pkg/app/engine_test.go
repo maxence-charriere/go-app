@@ -266,7 +266,7 @@ func TestEngineEncode(t *testing.T) {
 			),
 		))
 		require.NoError(t, err)
-		require.Equal(t, "<!DOCTYPE html>\n<html>\n  <body>\n    <span></span>\n    bye\n  </body>\n</html>", b.String())
+		require.Equal(t, "<!doctype html>\n<html>\n  <body>\n    <span></span>\n    bye\n  </body>\n</html>", b.String())
 	})
 }
 
