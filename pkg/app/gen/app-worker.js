@@ -4,28 +4,41 @@
 const cacheName = "app-" + "{{.Version}}";
 const resourcesToCache = {{.ResourcesToCache}};
 
-self.addEventListener("install", (event) => {
-  console.log("installing app worker {{.Version}}");
-  event.waitUntil(installWorker());
+self.addEventListener("install", async (event) => {
+  try {
+    console.log("installing app worker {{.Version}}");
+    await installWorker();
+    await self.skipWaiting();
+  } catch (error) {
+    console.error("error during installation:", error);
+  }
 });
 
 async function installWorker() {
   const cache = await caches.open(cacheName);
   await cache.addAll(resourcesToCache);
-  await self.skipWaiting(); // Use this new service worker
 }
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(deletePreviousCaches());
-  console.log("app worker {{.Version}} is activated");
+self.addEventListener("activate", async (event) => {
+  try {
+    await deletePreviousCaches(); // Await cache cleanup
+    await self.clients.claim(); // Ensure the service worker takes control of the clients
+    console.log("app worker {{.Version}} is activated");
+  } catch (error) {
+    console.error("error during activation:", error);
+  }
 });
 
 async function deletePreviousCaches() {
   keys = await caches.keys();
   keys.forEach(async (key) => {
     if (key != cacheName) {
-      console.log("deleting", key, "cache");
-      await caches.delete(key);
+      try {
+        console.log("deleting", key, "cache");
+        await caches.delete(key);
+      } catch (err) {
+        console.error("deleting", key, "cache failed:", err);
+      }
     }
   });
 }
@@ -35,11 +48,11 @@ self.addEventListener("fetch", (event) => {
 });
 
 async function fetchWithCache(request) {
-  cachedResponse = await caches.match(request);
+  const cachedResponse = await caches.match(request);
   if (cachedResponse) {
     return cachedResponse;
   }
-  return fetch(request);
+  return await fetch(request);
 }
 
 // -----------------------------------------------------------------------------

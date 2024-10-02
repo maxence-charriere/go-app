@@ -31,18 +31,16 @@ goappInitWebAssembly();
 // -----------------------------------------------------------------------------
 async function goappInitServiceWorker() {
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", async () => {
-      try {
-        const registration = await navigator.serviceWorker.register(
-          "{{.WorkerJS}}"
-        );
-        goappServiceWorkerRegistration = registration;
-        goappSetupNotifyUpdate(registration);
-        goappSetupPushNotification();
-      } catch (err) {
-        console.error("goapp service worker registration failed: ", err);
-      }
-    });
+    try {
+      const registration = await navigator.serviceWorker.register(
+        "{{.WorkerJS}}"
+      );
+      goappServiceWorkerRegistration = registration;
+      goappSetupNotifyUpdate(registration);
+      goappSetupPushNotification();
+    } catch (err) {
+      console.error("goapp service worker registration failed: ", err);
+    }
   }
 }
 
@@ -64,10 +62,11 @@ function goappSetupNotifyUpdate(registration) {
       if (!navigator.serviceWorker.controller) {
         return;
       }
-      if (newSW.state != "activated") {
-        return;
+
+      switch (newSW.state) {
+        case "installed":
+          goappOnUpdate();
       }
-      goappOnUpdate();
     });
   });
 }

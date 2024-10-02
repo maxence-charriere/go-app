@@ -340,7 +340,7 @@ func (e *engineX) Encode(w *bytes.Buffer, document HTMLHtml) error {
 	children = append(children, body.body()...)
 	body.setBody(children)
 
-	w.WriteString("<!DOCTYPE html>\n")
+	w.WriteString("<!doctype html>\n")
 	e.nodes.Encode(e.baseContext(), w, document)
 	return nil
 }

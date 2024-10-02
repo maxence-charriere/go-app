@@ -347,12 +347,12 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		"/app.js",
 		"/manifest.webmanifest",
 		"/wasm_exec.js",
-		"/",
 		"/web/app.wasm",
+		"/",
 	)
+	setResources(h.Fonts...)
 	setResources(h.Icon.Default, h.Icon.Large, h.Icon.Maskable)
 	setResources(h.Styles...)
-	setResources(h.Fonts...)
 	setResources(h.Scripts...)
 	setResources(h.CacheableResources...)
 
@@ -361,7 +361,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		resourcesTocache = append(resourcesTocache, h.Resources.Resolve(k))
 	}
 	sort.Slice(resourcesTocache, func(a, b int) bool {
-		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) < 0
+		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) > 0
 	})
 
 	var b bytes.Buffer
@@ -647,7 +647,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Content(h.ThemeColor),
 				Meta().
 					Name("viewport").
-					Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+					Content("width=device-width, initial-scale=1, viewport-fit=cover"),
+				Meta().
+					Name("apple-mobile-web-app-capable").
+					Content("yes"),
 				Meta().
 					Property("og:url").
 					Content(resolveOGResource(h.Domain, h.Resources.Resolve(page.URL().Path))),
@@ -703,15 +706,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 							Rel("preload").
 							As(p.As).
 							FetchPriority(p.FetchPriority)
-					}
-					return nil
-				}),
-				Range(h.Styles).Slice(func(i int) UI {
-					if resource := parseHTTPResource(h.Styles[i]); resource.URL != "" {
-						return resource.toLink().
-							Type("text/css").
-							Rel("preload").
-							As("style")
 					}
 					return nil
 				}),
