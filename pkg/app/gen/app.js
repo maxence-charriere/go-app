@@ -24,6 +24,7 @@ let deferredPrompt = null;
 goappInitServiceWorker();
 goappWatchForUpdate();
 goappWatchForInstallable();
+goappInitWebAssembly();
 
 // -----------------------------------------------------------------------------
 // Service Worker
