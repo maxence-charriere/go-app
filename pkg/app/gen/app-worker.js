@@ -48,20 +48,9 @@ self.addEventListener("fetch", (event) => {
 });
 
 async function fetchWithCache(request) {
-  const url = new URL(request.url);
-  if (url.pathname === "/") {
-    try {
-      return await fetch(request);
-    } catch (error) {
-      console.error("network failed, trying to serve from cache:", error);
-      const cachedResponse = await caches.match(request);
-      return cachedResponse || new Response("Offline");
-    }
-  }
-
   const cachedResponse = await caches.match(request);
   if (cachedResponse) {
-    return cachedResponse; 
+    return cachedResponse;
   }
   return await fetch(request);
 }
