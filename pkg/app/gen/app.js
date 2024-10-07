@@ -64,7 +64,7 @@ function goappSetupNotifyUpdate(registration) {
       }
 
       switch (newSW.state) {
-        case "installed":
+        case "activated":
           goappOnUpdate();
       }
     });
