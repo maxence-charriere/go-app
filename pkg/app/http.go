@@ -854,20 +854,17 @@ func parseHTTPResource(v string) httpResource {
 		if elem = strings.TrimSpace(elem); elem == "" {
 			continue
 		}
-		lower := strings.ToLower(elem)
 
-		switch {
-		case lower == "crossorigin":
+		switch e := strings.ToLower(elem); {
+		case e == "crossorigin":
 			res.CrossOrigin = "true"
 
-		case strings.HasPrefix(lower, "crossorigin="):
-			res.CrossOrigin = strings.TrimPrefix(lower, "crossorigin=")
+		case strings.HasPrefix(e, "crossorigin="):
+			res.CrossOrigin = strings.TrimPrefix(e, "crossorigin=")
 
-		case lower == "defer":
-			res.LoadingMode = "defer"
-
-		case lower == "async":
-			res.LoadingMode = "async"
+		case e == "defer",
+			e == "async":
+			res.LoadingMode = e
 
 		default:
 			res.URL = elem
