@@ -72,49 +72,6 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 	t.Log(body)
 }
 
-func TestHandlerPreservesURLCasing(t *testing.T) {
-	r := httptest.NewRequest(http.MethodGet, "/", nil)
-	w := httptest.NewRecorder()
-
-	h := Handler{
-		Resources: LocalDir(""),
-		Title:     "Handler testing",
-		Scripts: []string{
-			"web/Hello.js",
-			"http://boo.com/Bar.js",
-		},
-		Styles: []string{
-			"web/Foo.css",
-			"/web/Bar.css",
-			"https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded",
-		},
-		RawHeaders: []string{
-			`<meta http-equiv="refresh" content="30">`,
-		},
-		Image: "/web/test.png",
-	}
-	h.Icon.Maskable = "ios.png"
-
-	h.ServeHTTP(w, r)
-
-	body := w.Body.String()
-	require.Equal(t, http.StatusOK, w.Code)
-	require.Contains(t, body, `<html lang="en">`)
-	require.Contains(t, body, `href="/web/Foo.css"`)
-	require.Contains(t, body, `href="/web/Bar.css"`)
-	require.Contains(t, body, `href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"`)
-	require.Contains(t, body, `src="/web/Hello.js"`)
-	require.Contains(t, body, `src="http://boo.com/Bar.js"`)
-	require.Contains(t, body, `href="/manifest.webmanifest"`)
-	require.Contains(t, body, `href="/app.css"`)
-	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
-	require.Contains(t, body, `<div id="pre-render-ok">`)
-	require.Contains(t, body, `content="https:///web/test.png"`)
-	require.Contains(t, body, `<img src="/web/resolve-static-resource-test.jpg">`)
-
-	t.Log(body)
-}
-
 func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
@@ -814,6 +771,15 @@ func TestParseHTTPResource(t *testing.T) {
 			in:       "https://hello.world defer crossorigin",
 			resource: httpResource{
 				URL:         "https://hello.world",
+				CrossOrigin: "true",
+				LoadingMode: "defer",
+			},
+		},
+		{
+			scenario: "url is case sensitive",
+			in:       "https://Hello.World defer crossorigin",
+			resource: httpResource{
+				URL:         "https://Hello.World",
 				CrossOrigin: "true",
 				LoadingMode: "defer",
 			},

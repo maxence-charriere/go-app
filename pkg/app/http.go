@@ -850,27 +850,24 @@ func (r httpResource) toScript() HTMLScript {
 
 func parseHTTPResource(v string) httpResource {
 	var res httpResource
-	for _, elem := range strings.Split(v, " ") {
-		if elem = strings.TrimSpace(elem); elem == "" {
+	for _, part := range strings.Split(v, " ") {
+		if part = strings.TrimSpace(part); part == "" {
 			continue
 		}
-		lower := strings.ToLower(elem)
 
-		switch {
-		case lower == "crossorigin":
+		switch normalizedPart := strings.ToLower(part); {
+		case normalizedPart == "crossorigin":
 			res.CrossOrigin = "true"
 
-		case strings.HasPrefix(lower, "crossorigin="):
-			res.CrossOrigin = strings.TrimPrefix(lower, "crossorigin=")
+		case strings.HasPrefix(normalizedPart, "crossorigin="):
+			res.CrossOrigin = strings.TrimPrefix(normalizedPart, "crossorigin=")
 
-		case lower == "defer":
-			res.LoadingMode = "defer"
-
-		case lower == "async":
-			res.LoadingMode = "async"
+		case normalizedPart == "defer",
+			normalizedPart == "async":
+			res.LoadingMode = normalizedPart
 
 		default:
-			res.URL = elem
+			res.URL = part
 		}
 	}
 	return res
