@@ -232,7 +232,7 @@ async function goappInitWebAssembly() {
 
 function goappCanLoadWebAssembly() {
   if (
-    /bot|googlebot|crawler|spider|robot|crawling|adspeed/i.test(
+    /bot|googlebot|crawler|spider|robot|crawling|adspeed|lighthouse/i.test(
       navigator.userAgent
     )
   ) {
