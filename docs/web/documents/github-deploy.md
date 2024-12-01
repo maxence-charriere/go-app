@@ -10,8 +10,8 @@ A static website can be generated with the help of the [GenerateStaticWebsite()]
 
 ```go
 func main() {
-	app.Route("/", &hello{})
-	app.Route("/hello"), &hello{})
+	app.Route("/", func() app.Composer { return &hello{} })
+	app.Route("/hello", func() app.Composer { return &hello{} })
 	app.RunWhenOnBrowser()
 
 	err := app.GenerateStaticWebsite(".", &app.Handler{
@@ -66,8 +66,8 @@ In that scenario, the [Handler](/reference#Handler) resource provider must be ch
 
 ```go
 func main() {
-	app.Route("/", &hello{})
-	app.Route("/hello"), &hello{})
+	app.Route("/", func() app.Composer { return &hello{} })
+	app.Route("/hello", func() app.Composer { return &hello{} })
 	app.RunWhenOnBrowser()
 
 	err := app.GenerateStaticWebsite(".", &app.Handler{
