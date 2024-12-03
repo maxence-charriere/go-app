@@ -3,25 +3,25 @@
   "name": "{{.Name}}",
   "description": "{{.Description}}",
   "icons": [
-    {
-      "src": "{{.SVGIcon}}",
-      "type": "image/svg+xml",
-      "sizes": "any"
-    },
-    {
-      "src": "{{.LargeIcon}}",
-      "type": "image/png",
-      "sizes": "512x512"
-    },
-    {
-      "src": "{{.DefaultIcon}}",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
+    {{if .MaskableIcon}}{
       "src": "{{.MaskableIcon}}",
       "type": "image/png",
       "purpose": "maskable",
+      "sizes": "512x512"
+    },{{end}}
+    {{if .SVGIcon}}{
+      "src": "{{.SVGIcon}}",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },{{end}}
+    {{if .LargeIcon}}{
+      "src": "{{.LargeIcon}}",
+      "type": "image/png",
+      "sizes": "512x512"
+    },{{end}}
+    {
+      "src": "{{.DefaultIcon}}",
+      "type": "image/png",
       "sizes": "192x192"
     }
   ],

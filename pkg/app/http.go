@@ -794,7 +794,7 @@ type Icon struct {
 	SVG string
 
 	// Maskable specifies the path or URL to an adaptive icon designed for various
-	// operating system shapes. This icon must be a PNG image with 192x192 pixels.
+	// operating system shapes. This icon must be a PNG image with 512x512 pixels.
 	//
 	// Used in PWA manifests and as meta tags for Apple browsers, these icons adapt
 	// to device or browser shape requirements, avoiding unsightly cropping.
