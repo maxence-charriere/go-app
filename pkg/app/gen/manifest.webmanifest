@@ -3,28 +3,22 @@
   "name": "{{.Name}}",
   "description": "{{.Description}}",
   "icons": [
-    {{if .MaskableIcon}}
-    {
+    {{if .MaskableIcon}}{
       "src": "{{.MaskableIcon}}",
       "type": "image/png",
       "purpose": "maskable",
       "sizes": "512x512"
-    },
-    {{end}}
-    {{if .SVGIcon}}
-    {
+    },{{end}}
+    {{if .SVGIcon}}{
       "src": "{{.SVGIcon}}",
       "type": "image/svg+xml",
       "sizes": "any"
-    },
-    {{end}}
-    {{if .LargeIcon}}
-    {
+    },{{end}}
+    {{if .LargeIcon}}{
       "src": "{{.LargeIcon}}",
       "type": "image/png",
       "sizes": "512x512"
-    },
-    {{end}}
+    },{{end}}
     {
       "src": "{{.DefaultIcon}}",
       "type": "image/png",
