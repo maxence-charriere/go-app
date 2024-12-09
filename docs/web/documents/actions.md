@@ -80,7 +80,7 @@ Actions can also be handled at component level by registering an [ActionHandler]
 
 ```go
 func (h *hello) OnMount(ctx app.Context) {
-	ctx.Handle("greet") // Registering action handler.
+	ctx.Handle("greet", h.handleGreet) // Registering action handler.
 }
 
 func (h *hello) onChange(ctx app.Context, e app.EventHandler) {
