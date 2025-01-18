@@ -2447,7 +2447,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				for k, v := range s {
-					e.Style(k, v)
+					e.Style(k, "%s", v)
 				}
 				return e
 			}`)
