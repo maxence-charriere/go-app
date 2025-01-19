@@ -9,6 +9,8 @@ type attributes map[string]string
 
 func (a attributes) Set(name string, value any) {
 	switch name {
+	case "value":
+		a[name] = toString(value)
 	case "style", "allow":
 		a[name] += toAttributeValue(value) + ";"
 
