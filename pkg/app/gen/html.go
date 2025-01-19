@@ -2445,9 +2445,10 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 	case "style|map":
 		fmt.Fprintf(w, `%s(s map[string]string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
-			fmt.Fprintf(w, `{
+			style := `e.Style(k, "%s", v)`
+			fmt.Fprintln(w, `{
 				for k, v := range s {
-					e.Style(k, "%s", v)
+					`+style+`
 				}
 				return e
 			}`)
@@ -2581,7 +2582,8 @@ import (
 				fmt.Fprintln(f, `map[string]any{"foo": "bar"})`)
 
 			case "style":
-				fmt.Fprintln(f, `"margin", "%vpx", 42)`)
+				line := `"margin", "%vpx", 42)`
+				fmt.Fprintln(f, line)
 
 			case "style|map":
 				fmt.Fprintln(f, `map[string]string{"color": "pink"})`)
@@ -2607,7 +2609,8 @@ import (
 				fmt.Fprintln(f, `"http://www.w3.org/2000/svg")`)
 
 			case "fmt":
-				fmt.Fprintln(f, `"hello %v", 42)`)
+				line := `"hello %v", 42)`
+				fmt.Fprintln(f, line)
 
 			default:
 				fmt.Fprintln(f, `42)`)
@@ -2628,7 +2631,8 @@ import (
 		switch t.Type {
 		case parent:
 			fmt.Fprintln(f, `elem.Text("hello")`)
-			fmt.Fprintln(f, `elem.Textf("hello %s", "Maxence")`)
+			line := `elem.Textf("hello %s", "Maxence")`
+			fmt.Fprintln(f, line)
 
 		case privateParent:
 			fmt.Fprintln(f, `elem.privateBody(Text("hello"))`)
