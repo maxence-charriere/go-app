@@ -38,7 +38,7 @@ func main() {
 			Var: "wasmExecJSGoCurrent",
 			Filename: filepath.Join(
 				runtime.GOROOT(),
-				"misc",
+				"lib",
 				"wasm",
 				"wasm_exec.js",
 			),
