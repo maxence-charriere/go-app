@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 
@@ -75,7 +75,7 @@ func (f *foo) OnNav(ctx app.Context) {
 		}
 		defer r.Body.Close()
 
-		b, err := ioutil.ReadAll(r.Body)
+		b, err := io.ReadAll(r.Body)
 		if err != nil {
 			app.Log(err)
 			return
