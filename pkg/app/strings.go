@@ -3,7 +3,6 @@ package app
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"reflect"
 	"strconv"
 	"strings"
@@ -49,12 +48,6 @@ func toPath(v ...any) string {
 	}
 
 	return b.String()
-}
-
-func writeIndent(w io.Writer, indent int) {
-	for i := 0; i < indent*2; i++ {
-		io.WriteString(w, " ")
-	}
 }
 
 func stringTo(s string, v any) error {

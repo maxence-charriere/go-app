@@ -4,7 +4,7 @@
 package app
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -132,7 +132,7 @@ func createStaticPage(path string) ([]byte, error) {
 	}
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, errors.New("reading request body failed").
 			WithTag("path", path).
