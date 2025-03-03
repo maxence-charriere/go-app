@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -140,6 +141,27 @@ func testBrowserStorageGetError(t *testing.T, s BrowserStorage) {
 	var f func()
 	err = s.Get("/value", &f)
 	require.Error(t, err)
+}
+
+func testBrowserStorageFull(t *testing.T, s BrowserStorage) {
+	testSkipNonWasm(t)
+
+	var err error
+	data := make([]byte, 4096)
+	i := 0
+
+	for {
+		key := fmt.Sprintf("/key_%d", i)
+
+		if err = s.Set(key, data); err != nil {
+			break
+		}
+
+		i++
+	}
+
+	require.Error(t, err)
+	t.Log(err)
 }
 
 func testBrowserStorageLen(t *testing.T, s BrowserStorage) {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"log"
 	"net/http"
 
@@ -56,4 +57,33 @@ func main() {
 	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal(err)
 	}
+}
+
+type foo struct {
+	app.Compo
+
+	response []byte
+}
+
+func (f *foo) OnNav(ctx app.Context) {
+	// Launching a new goroutine:
+	ctx.Async(func() {
+		r, err := http.Get("/bar")
+		if err != nil {
+			app.Log(err)
+			return
+		}
+		defer r.Body.Close()
+
+		b, err := io.ReadAll(r.Body)
+		if err != nil {
+			app.Log(err)
+			return
+		}
+
+		// Storing HTTP response in component field:
+		ctx.Dispatch(func(app.Context) {
+			f.response = b
+		})
+	})
 }
