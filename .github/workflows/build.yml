@@ -48,16 +48,14 @@ jobs:
           go-version: "1.24"
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Install Chrome
+      - name: Install chrome
         uses: browser-actions/setup-chrome@latest
       - name: Install WASM Browser Test
         run: |
           go install github.com/agnivade/wasmbrowsertest@latest
-          echo "#!/bin/bash" > $(go env GOPATH)/bin/go_js_wasm_exec
-          echo "$(go env GOPATH)/bin/wasmbrowsertest --no-sandbox \"\$@\"" >> $(go env GOPATH)/bin/go_js_wasm_exec
-          chmod +x $(go env GOPATH)/bin/go_js_wasm_exec
+          mv `go env GOPATH`/bin/wasmbrowsertest `go env GOPATH`/bin/go_js_wasm_exec
       - name: Run Unit Tests
         run: |
-          GOARCH=wasm GOOS=js go test ./pkg/app
-          GOARCH=wasm GOOS=js go test ./pkg/errors
-          GOARCH=wasm GOOS=js go test ./pkg/logs
+          GOARCH=wasm GOOS=js GO_WASM_EXEC="$(go env GOPATH)/bin/go_js_wasm_exec --no-sandbox" go test ./pkg/app
+          GOARCH=wasm GOOS=js GO_WASM_EXEC="$(go env GOPATH)/bin/go_js_wasm_exec --no-sandbox" go test ./pkg/errors
+          GOARCH=wasm GOOS=js GO_WASM_EXEC="$(go env GOPATH)/bin/go_js_wasm_exec --no-sandbox" go test ./pkg/logs
