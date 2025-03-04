@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -36,7 +36,7 @@ func get(ctx app.Context, path string) ([]byte, error) {
 		return nil, errors.New(res.Status).WithTag("path", path)
 	}
 
-	b, err := ioutil.ReadAll(res.Body)
+	b, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, errors.New("reading document failed").
 			WithTag("path", path).
