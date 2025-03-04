@@ -821,6 +821,54 @@ func TestNodeManagerUpdate(t *testing.T) {
 		require.Nil(t, newCompo)
 	})
 
+	t.Run("update dismount enforcer component with same compo ids does not trigger dismount", func(t *testing.T) {
+		var m nodeManager
+
+		old := &dismountEnforcerComponent{
+			Text: "hi",
+			id:   "foo",
+		}
+		elem, err := m.Mount(ctx, 1, Div().Body(old))
+		require.NoError(t, err)
+		require.NotNil(t, elem)
+
+		update := &dismountEnforcerComponent{
+			Text: "bye",
+			id:   "foo",
+		}
+		updatedElem, err := m.Update(ctx, elem, Div().Body(update))
+		require.NoError(t, err)
+
+		new := updatedElem.(*htmlDiv).body()[0]
+		require.True(t, old == new)
+		require.False(t, update == new)
+		require.Equal(t, "bye", new.(*dismountEnforcerComponent).Text)
+	})
+
+	t.Run("update dismount enforcer component with differen compo ids triggers dismount", func(t *testing.T) {
+		var m nodeManager
+
+		old := &dismountEnforcerComponent{
+			Text: "hi",
+			id:   "foo",
+		}
+		elem, err := m.Mount(ctx, 1, Div().Body(old))
+		require.NoError(t, err)
+		require.NotNil(t, elem)
+
+		update := &dismountEnforcerComponent{
+			Text: "bye",
+			id:   "bar",
+		}
+		updatedElem, err := m.Update(ctx, elem, Div().Body(update))
+		require.NoError(t, err)
+
+		new := updatedElem.(*htmlDiv).body()[0]
+		require.False(t, old == new)
+		require.True(t, update == new)
+		require.Equal(t, "bye", new.(*dismountEnforcerComponent).Text)
+	})
+
 	t.Run("update raw html replaces its value", func(t *testing.T) {
 		var m nodeManager
 
@@ -1209,7 +1257,6 @@ func TestCanUpdateValue(t *testing.T) {
 }
 
 func TestComponent(t *testing.T) {
-
 	t.Run("parent component is returned", func(t *testing.T) {
 		compo := &compoWithCustomRoot{Root: Div()}
 

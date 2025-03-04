@@ -148,3 +148,14 @@ func (c *navigatorComponent) OnNav(ctx Context) {
 		c.onNav(ctx)
 	}
 }
+
+type dismountEnforcerComponent struct {
+	Compo
+
+	Text string
+	id   string
+}
+
+func (c *dismountEnforcerComponent) CompoID() string {
+	return c.id
+}
