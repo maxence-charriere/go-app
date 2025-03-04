@@ -92,6 +92,17 @@ type Navigator interface {
 	OnNav(Context)
 }
 
+// DismountEnforcer defines a contract for components that enforce
+// a dismount operation when they undergo updates. Implementing this interface
+// allows components to specify whether they should be removed and re-added
+// upon updates instead of being modified in place.
+type DismountEnforcer interface {
+	// CompoID returns an identifier used to determine a component's identity.
+	// When a component update occurs, a mismatch in IDs triggers the dismount
+	// of the current component and the mounting of a new version.
+	CompoID() string
+}
+
 // Updater encapsulates components that require specific behaviors or reactions
 // when one of their exported fields is updated by the closest parent component.
 // Implementing the Updater interface allows components to define responsive

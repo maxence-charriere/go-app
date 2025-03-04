@@ -107,7 +107,7 @@ func (m nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 
 	switch v := v.(type) {
 	case *text:
-		return m.mountText(depth, v)
+		return m.mountText(v)
 
 	case HTML:
 		return m.mountHTML(ctx, depth, v)
@@ -125,7 +125,7 @@ func (m nodeManager) Mount(ctx Context, depth uint, v UI) (UI, error) {
 	}
 }
 
-func (m nodeManager) mountText(depth uint, v *text) (UI, error) {
+func (m nodeManager) mountText(v *text) (UI, error) {
 	if v.Mounted() {
 		return nil, errors.New("text is already mounted").
 			WithTag("parent-type", reflect.TypeOf(v.parent())).
@@ -339,6 +339,9 @@ func (m nodeManager) CanUpdate(v, new UI) bool {
 	}
 
 	switch v.(type) {
+	case DismountEnforcer:
+		return v.(DismountEnforcer).CompoID() == new.(DismountEnforcer).CompoID()
+
 	case *htmlElem, *htmlElemSelfClosing:
 		return v.(HTML).Tag() == new.(HTML).Tag()
 
