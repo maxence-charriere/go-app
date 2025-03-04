@@ -69,6 +69,18 @@ func (b *builtWithGoapp) Render() app.UI {
 						Name("Keygean").
 						Description("Sign, verify, encrypt and decrypt data with GPG in your browser.").
 						Href("https://pojntfx.github.io/keygaen"),
+					newBuiltWithGoappItem().
+						Class("fill").
+						Image("/web/images/dagger.png").
+						Name("Dagger.io").
+						Description("Ship magical agents, not agents of chaos.").
+						Href("https://dagger.io"),
+					newBuiltWithGoappItem().
+						Class("fill").
+						Image("/web/images/crd-to-sample-yaml.png").
+						Name("CRDToYAML").
+						Description("Generate YAML sample files from CRDs and OpenAPIJSON schemas.").
+						Href("https://crdtoyaml.com"),
 				),
 		)
 }
