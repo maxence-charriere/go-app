@@ -40,7 +40,7 @@ jobs:
 
   client:
     name: WebAssembly Unit Tests
-    runs-on: debian-12
+    runs-on: debian-11
     steps:
       - name: Setup Go
         uses: actions/setup-go@v3
