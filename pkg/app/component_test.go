@@ -137,23 +137,6 @@ func (c *compoWithCustomRoot) Render() UI {
 	return c.Root
 }
 
-type updateNotifierCompo struct {
-	Compo
-	Root   UI
-	notify bool
-}
-
-func (c *updateNotifierCompo) NotifyUpdate() bool {
-	return c.notify
-}
-
-func (c *updateNotifierCompo) Render() UI {
-	if c.Root != nil {
-		return c.Root
-	}
-	return Span()
-}
-
 type navigatorComponent struct {
 	Compo
 
