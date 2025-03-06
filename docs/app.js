@@ -13,7 +13,7 @@ var goappOnAppInstallChange = function () {
   goappAppInstallChangedBeforeWasmLoaded = true;
 };
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"/","GOAPP_STATIC_RESOURCES_URL":"/web","GOAPP_VERSION":"174e4030da44f4b3255aedb965beea90a03cb3dc"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"/","GOAPP_STATIC_RESOURCES_URL":"/web","GOAPP_VERSION":"8a09cae95cc54f7ede06c043c00fa408649b2edb"};
 const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLength = "";
 const goappWasmContentLengthHeader = "";
@@ -64,7 +64,7 @@ function goappSetupNotifyUpdate(registration) {
       }
 
       switch (newSW.state) {
-        case "installed":
+        case "activated":
           goappOnUpdate();
       }
     });
