@@ -1656,7 +1656,7 @@ func attrsByNames(names ...string) []attr {
 	for _, n := range names {
 		attr, ok := attrs[n]
 		if !ok {
-			panic("unkowmn attr: " + n)
+			panic("unknown attr: " + n)
 		}
 		res = append(res, attr)
 	}
