@@ -357,19 +357,71 @@ func (h *Handler) makeAppWorkerJS() []byte {
 }
 
 func (h *Handler) makeManifestJSON() []byte {
-	s := manifestJSON
-	s = strings.ReplaceAll(s, "{{.ShortName}}", h.ShortName)
-	s = strings.ReplaceAll(s, "{{.Name}}", h.Name)
-	s = strings.ReplaceAll(s, "{{.Description}}", h.Description)
-	s = strings.ReplaceAll(s, "{{.DefaultIcon}}", h.Resources.Resolve(h.Icon.Default))
-	s = strings.ReplaceAll(s, "{{.LargeIcon}}", h.Resources.Resolve(h.Icon.Large))
-	s = strings.ReplaceAll(s, "{{.SVGIcon}}", h.Resources.Resolve(h.Icon.SVG))
-	s = strings.ReplaceAll(s, "{{.MaskableIcon}}", h.Resources.Resolve(h.Icon.Maskable))
-	s = strings.ReplaceAll(s, "{{.BackgroundColor}}", h.BackgroundColor)
-	s = strings.ReplaceAll(s, "{{.ThemeColor}}", h.ThemeColor)
-	s = strings.ReplaceAll(s, "{{.Scope}}", "/")
-	s = strings.ReplaceAll(s, "{{.StartURL}}", h.Resources.Resolve("/"))
-	return []byte(s)
+	type ManifestIcon struct {
+		Src     string `json:"src"`
+		Type    string `json:"type"`
+		Purpose string `json:"purpose"`
+		Sizes   string `json:"sizes"`
+	}
+	type Manifest struct {
+		ShortName       string         `json:"short_name"`
+		Name            string         `json:"name"`
+		Description     string         `json:"description"`
+		Scope           string         `json:"scope"`
+		StartURL        string         `json:"start_url"`
+		BackgroundColor string         `json:"background_color"`
+		ThemeColor      string         `json:"theme_color"`
+		Display         string         `json:"display"`
+		Icons           []ManifestIcon `json:"icons"`
+	}
+
+	m := Manifest{
+		ShortName:       h.ShortName,
+		Name:            h.Name,
+		Description:     h.Description,
+		Scope:           "/",
+		StartURL:        h.Resources.Resolve("/"),
+		BackgroundColor: h.BackgroundColor,
+		ThemeColor:      h.ThemeColor,
+		Display:         "standalone",
+	}
+
+	if i := h.Resources.Resolve(h.Icon.Maskable); i != "" {
+		m.Icons = append(m.Icons, ManifestIcon{
+			Src:     i,
+			Type:    "image/png",
+			Purpose: "maskable",
+			Sizes:   "512x512",
+		})
+	}
+	if i := h.Resources.Resolve(h.Icon.SVG); i != "" {
+		m.Icons = append(m.Icons, ManifestIcon{
+			Src:   i,
+			Type:  "image/svg+xml",
+			Sizes: "any",
+		})
+	}
+	if i := h.Resources.Resolve(h.Icon.Large); i != "" {
+		m.Icons = append(m.Icons, ManifestIcon{
+			Src:   i,
+			Type:  "image/png",
+			Sizes: "512x512",
+		})
+	}
+	if i := h.Resources.Resolve(h.Icon.Default); i != "" {
+		m.Icons = append(m.Icons, ManifestIcon{
+			Src:   i,
+			Type:  "image/png",
+			Sizes: "192x192",
+		})
+	}
+
+	res, err := json.Marshal(m)
+	if err != nil {
+		panic("not possible")
+	}
+
+	return res
 }
 
 func (h *Handler) initProxyResources() {

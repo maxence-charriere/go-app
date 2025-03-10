@@ -354,13 +354,13 @@ func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/manifest+json", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `"short_name": "foo"`)
-	require.Contains(t, body, `"name": "foobar"`)
-	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
-	require.Contains(t, body, `"background_color": "#0000f0"`)
-	require.Contains(t, body, `"theme_color": "#0000ff"`)
-	require.Contains(t, body, `"scope": "/"`)
-	require.Contains(t, body, `"start_url": "/"`)
+	require.Contains(t, body, `"short_name":"foo"`)
+	require.Contains(t, body, `"name":"foobar"`)
+	require.Contains(t, body, `"src":"https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
+	require.Contains(t, body, `"background_color":"#0000f0"`)
+	require.Contains(t, body, `"theme_color":"#0000ff"`)
+	require.Contains(t, body, `"scope":"/"`)
+	require.Contains(t, body, `"start_url":"/"`)
 }
 
 func TestHandlerServeManifestJSONWithRemoteBucket(t *testing.T) {
@@ -380,13 +380,13 @@ func TestHandlerServeManifestJSONWithRemoteBucket(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/manifest+json", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `"short_name": "foo"`)
-	require.Contains(t, body, `"name": "foobar"`)
-	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
-	require.Contains(t, body, `"background_color": "#0000f0"`)
-	require.Contains(t, body, `"theme_color": "#0000ff"`)
-	require.Contains(t, body, `"scope": "/"`)
-	require.Contains(t, body, `"start_url": "/"`)
+	require.Contains(t, body, `"short_name":"foo"`)
+	require.Contains(t, body, `"name":"foobar"`)
+	require.Contains(t, body, `"src":"https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
+	require.Contains(t, body, `"background_color":"#0000f0"`)
+	require.Contains(t, body, `"theme_color":"#0000ff"`)
+	require.Contains(t, body, `"scope":"/"`)
+	require.Contains(t, body, `"start_url":"/"`)
 }
 
 func TestHandlerServeManifestJSONWithGitHubPages(t *testing.T) {
@@ -406,13 +406,13 @@ func TestHandlerServeManifestJSONWithGitHubPages(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/manifest+json", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `"short_name": "foo"`)
-	require.Contains(t, body, `"name": "foobar"`)
-	require.Contains(t, body, `"src": "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
-	require.Contains(t, body, `"background_color": "#0000f0"`)
-	require.Contains(t, body, `"theme_color": "#0000ff"`)
-	require.Contains(t, body, `"scope": "/"`)
-	require.Contains(t, body, `"start_url": "/go-app"`)
+	require.Contains(t, body, `"short_name":"foo"`)
+	require.Contains(t, body, `"name":"foobar"`)
+	require.Contains(t, body, `"src":"https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"`)
+	require.Contains(t, body, `"background_color":"#0000f0"`)
+	require.Contains(t, body, `"theme_color":"#0000ff"`)
+	require.Contains(t, body, `"scope":"/"`)
+	require.Contains(t, body, `"start_url":"/go-app"`)
 }
 
 func TestHandlerServeAppCSS(t *testing.T) {

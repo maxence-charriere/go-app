@@ -359,10 +359,8 @@ func TestOptionParserParse(t *testing.T) {
 			require.NoError(t, err)
 
 			if test.parseFlagsErr {
-				require.Panics(t, func() {
-					err = p.flags.Parse(test.args)
-				})
-				t.Log("error:", err)
+				err = p.flags.Parse(test.args)
+				require.Error(t, err)
 				return
 			}
 
