@@ -357,13 +357,43 @@ func (h *Handler) makeAppWorkerJS() []byte {
 }
 
 func (h *Handler) makeManifestJSON() []byte {
-	type ManifestIcon struct {
+	type manifestIcon struct {
 		Src     string `json:"src"`
 		Type    string `json:"type"`
 		Purpose string `json:"purpose"`
 		Sizes   string `json:"sizes"`
 	}
-	type Manifest struct {
+
+	var icons []manifestIcon
+	if iconURL := h.Resources.Resolve(h.Icon.Maskable); iconURL != "" {
+		icons = append(icons, manifestIcon{
+			Src:     iconURL,
+			Type:    "image/png",
+			Purpose: "maskable",
+			Sizes:   "512x512",
+		})
+	}
+	if iconURL := h.Resources.Resolve(h.Icon.SVG); iconURL != "" {
+		icons = append(icons, manifestIcon{
+			Src:   iconURL,
+			Type:  "image/svg+xml",
+			Sizes: "any",
+		})
+	}
+	if iconURL := h.Resources.Resolve(h.Icon.Large); iconURL != "" {
+		icons = append(icons, manifestIcon{
+			Src:   iconURL,
+			Type:  "image/png",
+			Sizes: "512x512",
+		})
+	}
+	icons = append(icons, manifestIcon{
+		Src:   h.Resources.Resolve(h.Icon.Default),
+		Type:  "image/png",
+		Sizes: "192x192",
+	})
+
+	manifest := struct {
 		ShortName       string         `json:"short_name"`
 		Name            string         `json:"name"`
 		Description     string         `json:"description"`
@@ -372,10 +402,8 @@ func (h *Handler) makeManifestJSON() []byte {
 		BackgroundColor string         `json:"background_color"`
 		ThemeColor      string         `json:"theme_color"`
 		Display         string         `json:"display"`
-		Icons           []ManifestIcon `json:"icons"`
-	}
-
-	m := Manifest{
+		Icons           []manifestIcon `json:"icons"`
+	}{
 		ShortName:       h.ShortName,
 		Name:            h.Name,
 		Description:     h.Description,
@@ -384,44 +412,14 @@ func (h *Handler) makeManifestJSON() []byte {
 		BackgroundColor: h.BackgroundColor,
 		ThemeColor:      h.ThemeColor,
 		Display:         "standalone",
+		Icons:           icons,
 	}
 
-	if i := h.Resources.Resolve(h.Icon.Maskable); i != "" {
-		m.Icons = append(m.Icons, ManifestIcon{
-			Src:     i,
-			Type:    "image/png",
-			Purpose: "maskable",
-			Sizes:   "512x512",
-		})
-	}
-	if i := h.Resources.Resolve(h.Icon.SVG); i != "" {
-		m.Icons = append(m.Icons, ManifestIcon{
-			Src:   i,
-			Type:  "image/svg+xml",
-			Sizes: "any",
-		})
-	}
-	if i := h.Resources.Resolve(h.Icon.Large); i != "" {
-		m.Icons = append(m.Icons, ManifestIcon{
-			Src:   i,
-			Type:  "image/png",
-			Sizes: "512x512",
-		})
-	}
-	if i := h.Resources.Resolve(h.Icon.Default); i != "" {
-		m.Icons = append(m.Icons, ManifestIcon{
-			Src:   i,
-			Type:  "image/png",
-			Sizes: "192x192",
-		})
-	}
-
-	res, err := json.Marshal(m)
+	manifestJSON, err := json.Marshal(manifest)
 	if err != nil {
-		panic("not possible")
+		panic(errors.New("encoding manifest failed").Wrap(err))
 	}
-
-	return res
+	return manifestJSON
 }
 
 func (h *Handler) initProxyResources() {
