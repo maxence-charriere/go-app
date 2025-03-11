@@ -4,7 +4,7 @@
 package app
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -573,7 +573,7 @@ func TestHandlerProxyResources(t *testing.T) {
 					return
 				}
 
-				body, err := ioutil.ReadAll(res.Body)
+				body, err := io.ReadAll(res.Body)
 				require.NoError(t, err)
 
 				if u.notProxy {

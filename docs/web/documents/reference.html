@@ -15,7 +15,7 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 
 
 
-<script>var goVersion = "go1.23.1";</script>
+<script>var goVersion = "go1.24.0";</script>
 <script src="/lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -347,6 +347,11 @@ resources to run Go-based progressive web apps.
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Context.Update">func (ctx Context) Update()</a></dd>
+				
+			
+				
+				<dd><a href="#DismountEnforcer">type DismountEnforcer</a></dd>
+				
 				
 			
 				
@@ -1652,7 +1657,7 @@ resources to run Go-based progressive web apps.
 		
 			
 			
-			<h2 id="AppendClass">func <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/strings.go?s=1690:1740#L96">AppendClass</a>
+			<h2 id="AppendClass">func <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/strings.go?s=1576:1626#L89">AppendClass</a>
 				<a class="permalink" href="#AppendClass">&#xb6;</a>
 				
 				
@@ -1700,7 +1705,7 @@ dst.
 		
 			
 			
-			<h2 id="FormatString">func <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/strings.go?s=2301:2350#L127">FormatString</a>
+			<h2 id="FormatString">func <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/strings.go?s=2187:2236#L120">FormatString</a>
 				<a class="permalink" href="#FormatString">&#xb6;</a>
 				
 				
@@ -1716,7 +1721,7 @@ It uses fmt.Sprintf when len(v) != 0.
 		
 			
 			
-			<h2 id="GenerateStaticWebsite">func <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/static.go?s=476:549#L13">GenerateStaticWebsite</a>
+			<h2 id="GenerateStaticWebsite">func <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/static.go?s=469:542#L13">GenerateStaticWebsite</a>
 				<a class="permalink" href="#GenerateStaticWebsite">&#xb6;</a>
 				
 				
@@ -2073,7 +2078,7 @@ via Context.NewAction().
 		
 			
 			
-			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=4738:5315#L114">AppInstaller</a>
+			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=5283:5860#L125">AppInstaller</a>
 				<a class="permalink" href="#AppInstaller">&#xb6;</a>
 				
 				
@@ -2111,7 +2116,7 @@ user experiences tailored to the app&apos;s current status.
 		
 			
 			
-			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=4082:4441#L101">AppUpdater</a>
+			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=4627:4986#L112">AppUpdater</a>
 				<a class="permalink" href="#AppUpdater">&#xb6;</a>
 				
 				
@@ -2258,7 +2263,7 @@ get, delete, and iterate over stored items, among other functionalities.
 		
 			
 			
-			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=6048:6149#L142">Compo</a>
+			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=6593:6694#L153">Compo</a>
 				<a class="permalink" href="#Compo">&#xb6;</a>
 				
 				
@@ -2283,7 +2288,7 @@ provides basic methods and fields needed for component management.
 
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=6304:6335#L151">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=6849:6880#L162">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue">&#xb6;</a>
 					
 					
@@ -2297,7 +2302,7 @@ If the root element isn&apos;t defined, it returns a nil JavaScript value.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=6496:6526#L159">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=7041:7071#L170">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted">&#xb6;</a>
 					
 					
@@ -2310,7 +2315,7 @@ If the root element isn&apos;t defined, it returns a nil JavaScript value.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=6837:6864#L167">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=7382:7409#L178">Render</a>
 					<a class="permalink" href="#Compo.Render">&#xb6;</a>
 					
 					
@@ -2326,7 +2331,7 @@ this method to customize the component&apos;s appearance.
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=7627:7670#L190">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=8172:8215#L201">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo">&#xb6;</a>
 					
 					
@@ -2907,6 +2912,37 @@ document origin.
 				
 				
 				
+			
+		
+			
+			
+			<h2 id="DismountEnforcer">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=3442:3711#L89">DismountEnforcer</a>
+				<a class="permalink" href="#DismountEnforcer">&#xb6;</a>
+				
+				
+			</h2>
+			<p>DismountEnforcer defines a contract for components that enforce
+a dismount operation when they undergo updates. Implementing this interface
+allows components to specify whether they should be removed and re-added
+upon updates instead of being modified in place.
+
+			<pre>type DismountEnforcer interface {
+    <span class="comment">// CompoID returns an identifier used to determine a component&#39;s identity.</span>
+    <span class="comment">// When a component update occurs, a mismatch in IDs triggers the dismount</span>
+    <span class="comment">// of the current component and the mounting of a new version.</span>
+    CompoID() <a href="/pkg/builtin/#string">string</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
 			
 		
 			
@@ -26018,7 +26054,7 @@ are relative to the root directory unless stated otherwise.
     SVG <a href="/pkg/builtin/#string">string</a>
 
 <span id="Icon.Maskable"></span>    <span class="comment">// Maskable specifies the path or URL to an adaptive icon designed for various</span>
-    <span class="comment">// operating system shapes. This icon must be a PNG image with 192x192 pixels.</span>
+    <span class="comment">// operating system shapes. This icon must be a PNG image with 512x512 pixels.</span>
     <span class="comment">//</span>
     <span class="comment">// Used in PWA manifests and as meta tags for Apple browsers, these icons adapt</span>
     <span class="comment">// to device or browser shape requirements, avoiding unsightly cropping.</span>
@@ -26729,7 +26765,7 @@ be a slice, an array or a map with strings as keys.
 		
 			
 			
-			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=5556:5900#L132">Resizer</a>
+			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=6101:6445#L143">Resizer</a>
 				<a class="permalink" href="#Resizer">&#xb6;</a>
 				
 				
@@ -27378,7 +27414,7 @@ follow the conventions of fmt.Sprintf.
 		
 			
 			
-			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=3481:3793#L89">Updater</a>
+			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/component.go?s=4026:4338#L100">Updater</a>
 				<a class="permalink" href="#Updater">&#xb6;</a>
 				
 				
@@ -27644,7 +27680,7 @@ package.
 
 
 <div id="footer">
-Build version go1.23.1.<br>
+Build version go1.24.0.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
