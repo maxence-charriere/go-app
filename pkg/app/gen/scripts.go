@@ -48,10 +48,6 @@ func main() {
 			Filename: "gen/app.js",
 		},
 		{
-			Var:      "manifestJSON",
-			Filename: "gen/manifest.webmanifest",
-		},
-		{
 			Var:      "appCSS",
 			Filename: "gen/app.css",
 		},
