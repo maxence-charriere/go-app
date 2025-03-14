@@ -688,6 +688,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Content(v)
 				}),
 				Title().Text(page.Title()),
+				If(page.canonicalLink != "", func() UI {
+					return Link().
+						Rel("canonical").
+						Href(resolveOGResource(h.Domain, page.canonicalLink))
+				}),
 				Range(h.Preconnect).Slice(func(i int) UI {
 					if resource := parseHTTPResource(h.Preconnect[i]); resource.URL != "" {
 						return resource.toLink().Rel("preconnect")

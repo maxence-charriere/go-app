@@ -57,4 +57,5 @@ func testPage(t *testing.T, p Page) {
 	require.NotZero(t, h)
 
 	p.SetTwitterCard(TwitterCard{Card: "summary"})
+	p.SetCanonicalLink("/canon")
 }

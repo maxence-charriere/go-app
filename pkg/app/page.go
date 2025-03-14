@@ -65,6 +65,9 @@ type Page interface {
 
 	// Set the Twitter card.
 	SetTwitterCard(v TwitterCard)
+
+	// Set the page's canonical link.
+	SetCanonicalLink(format string, v ...any)
 }
 
 type requestPage struct {
@@ -79,6 +82,7 @@ type requestPage struct {
 	preloads       []Preload
 	loadingLabel   string
 	image          string
+	canonicalLink  string
 	width          int
 	height         int
 	twitterCardMap map[string]string
@@ -171,6 +175,12 @@ func (p *requestPage) Size() (width int, height int) {
 func (p *requestPage) SetTwitterCard(v TwitterCard) {
 	v.Image = p.resolveURL(v.Image)
 	p.twitterCardMap = v.toMap()
+}
+
+func (p *requestPage) SetCanonicalLink(format string, v ...any) {
+	if canonicalLink := FormatString(format, v...); canonicalLink != "" {
+		p.canonicalLink = p.resolveURL(canonicalLink)
+	}
 }
 
 type browserPage struct {
@@ -281,6 +291,9 @@ func (p browserPage) SetTwitterCard(v TwitterCard) {
 		meta.setAttr("content", v)
 		head.appendChild(meta)
 	}
+}
+
+func (p browserPage) SetCanonicalLink(format string, v ...any) {
 }
 
 func (p browserPage) metaByName(v string) Value {
