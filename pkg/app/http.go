@@ -658,7 +658,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Name("viewport").
 					Content("width=device-width, initial-scale=1, viewport-fit=cover"),
 				Meta().
-					Name("apple-mobile-web-app-capable").
+					Name("mobile-web-app-capable").
 					Content("yes"),
 				Meta().
 					Property("og:url").
