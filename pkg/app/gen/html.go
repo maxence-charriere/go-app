@@ -623,6 +623,12 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
+		Name:          "Menu",
+		Doc:           "that represents an unordered list of items.",
+		Attrs:         withGlobalAttrs(),
+		EventHandlers: withGlobalEventHandlers(),
+	},
+	{
 		Name: "Meta",
 		Type: selfClosing,
 		Doc:  "that provides metadata about the HTML document.",
@@ -2183,7 +2189,6 @@ import (
 		fmt.Fprintln(f)
 		fmt.Fprintln(f)
 	}
-
 }
 
 func writeInterface(w io.Writer, t tag) {
