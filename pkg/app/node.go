@@ -771,30 +771,29 @@ func (m nodeManager) encodeRawHTML(w *bytes.Buffer, depth int, v *raw) {
 
 func canUpdateValue(v, new reflect.Value) bool {
 	switch v.Kind() {
-	case reflect.String,
-		reflect.Bool,
-		reflect.Int,
-		reflect.Int64,
-		reflect.Int32,
-		reflect.Int16,
-		reflect.Int8,
-		reflect.Uint,
-		reflect.Uint64,
-		reflect.Uint32,
-		reflect.Uint16,
-		reflect.Uint8,
-		reflect.Float64,
-		reflect.Float32:
-		return !v.Equal(new)
-
+	case reflect.String:
+		return v.String() != new.String()
+	case reflect.Bool:
+		return v.Bool() != new.Bool()
+	case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
+		return v.Int() != new.Int()
+	case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8:
+		return v.Uint() != new.Uint()
+	case reflect.Float64, reflect.Float32:
+		return v.Float() != new.Float()
 	default:
-		switch v.Interface().(type) {
-		case time.Time:
-			return !v.Equal(new)
+		vInterface := v.Interface()
+		newInterface := new.Interface()
 
-		default:
-			return !reflect.DeepEqual(v.Interface(), new.Interface())
+		// Special handling for time.Time
+		if _, ok := vInterface.(time.Time); ok {
+			t1, _ := vInterface.(time.Time)
+			t2, _ := newInterface.(time.Time)
+			return !t1.Equal(t2)
 		}
+
+		// For other types, fall back to reflect.DeepEqual
+		return !reflect.DeepEqual(vInterface, newInterface)
 	}
 }
 
