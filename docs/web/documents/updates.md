@@ -1,6 +1,11 @@
 ## Updates
 
+| Date | Description |
 | ---- | ----------- |
+| Thu Mar 20 2025 | [v10.1.3](https://github.com/maxence-charriere/go-app/releases/tag/v10.1.3) is now available |
+| Fri Mar 14 2025 | [v10.1.2](https://github.com/maxence-charriere/go-app/releases/tag/v10.1.2) is now available |
+| Tue Mar 11 2025 | [v10.1.1](https://github.com/maxence-charriere/go-app/releases/tag/v10.1.1) is now available |
+| Thu Mar 06 2025 | [v10.1.0](https://github.com/maxence-charriere/go-app/releases/tag/v10.1.0) is now available |
 | Sat Feb 15 2025 | [v10.0.10](https://github.com/maxence-charriere/go-app/releases/tag/v10.0.10) is now available |
 | Tue Dec 03 2024 | [v10.0.9](https://github.com/maxence-charriere/go-app/releases/tag/v10.0.9) is now available |
 | Thu Oct 10 2024 | [v10.0.8](https://github.com/maxence-charriere/go-app/releases/tag/v10.0.8) is now available |
