@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Lifecycle Overview
 
 Apps created with go-app are WebAssembly binaries that are served through HTTP requests.

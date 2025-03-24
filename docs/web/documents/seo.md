@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 [SEO](https://en.wikipedia.org/wiki/Search_engine_optimization) (Search engine optimization) is to make web content readable and indexable by search engines such as [Google](https://google.com).

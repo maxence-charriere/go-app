@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Push Notifications
 
 Push notifications are notifications that are sent by a remote server and that can be displayed whether the app is running or closed. Setting them up requires sending a subscription to a push notification server.

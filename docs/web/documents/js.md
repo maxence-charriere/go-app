@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 Since WebAssembly is browser-based technology, some scenarios may require DOM access and JavaScript calls.

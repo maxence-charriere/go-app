@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Declarative Syntax
 
 Go-app uses a declarative syntax so you can **write reusable component-based UI elements just by using the Go programming language**.

@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 go-app v9 brings new features like removing the need to manually call `compo.Update()` to update what is displayed on the screen. Unfortunately, it comes with some breaking changes.

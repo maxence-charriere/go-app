@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Enable Notifications
 
 Enabling notifications requires the user to give permission to display them.

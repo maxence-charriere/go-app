@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 Routing is about **associating a component with an URL path**.

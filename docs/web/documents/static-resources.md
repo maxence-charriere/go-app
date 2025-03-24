@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 Images and other resources are often used to enhance a user interface. They are referred to as static resources. Here is a list of common static resources:

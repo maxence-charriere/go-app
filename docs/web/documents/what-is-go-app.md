@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## What is go-app?
 
 Go-app is a package for **building [progressive web apps (PWA)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) with the [Go programming language (Golang)](https://golang.org) and [WebAssembly (Wasm)](https://webassembly.org)**.

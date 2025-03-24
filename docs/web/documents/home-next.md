@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Next
 
 - [Getting started](/getting-started)

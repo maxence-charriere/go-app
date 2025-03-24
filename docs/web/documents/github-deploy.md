@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 [GitHub Pages](https://pages.github.com) is a pretty easy way to have a running and available website. The limitation is that only static websites can be hosted.

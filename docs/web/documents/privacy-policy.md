@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 Go-app.dev is a website that provides documentation to use the [go-app](https://github.com/maxence-charriere/go-app) open-source package.

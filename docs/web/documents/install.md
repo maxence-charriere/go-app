@@ -1,3 +1,5 @@
+<!-- wiki:ignore -->
+
 ## Intro
 
 Apps built with this package are [progressive web apps (PWA)](https://web.dev/progressive-web-apps). They are **out of the box installable**, which mean they can run in their own window and can be pinned on the dock, taskbar, or home screen.
