@@ -2,6 +2,8 @@
 
 GoApp is a package for building fast and modern Progressive Web Apps (PWAs) using Go and WebAssembly.
 
+## Overview
+
 It allows you to build web user interfaces using Go syntax by composing HTML-based components. Here's a minimal "Hello World" example:
 
 ```go
@@ -38,13 +40,14 @@ func main() {
 
 The program is compiled into two binaries:
 
-- A WebAssembly (WASM) binary, executed in the web browser:
+- **A WebAssembly (WASM) binary**, executed in the web browser:
 
   ```sh
   GOARCH=wasm GOOS=js go build -o web/app.wasm
   ```
 
-- A standard Go binary, which serves the WebAssembly file, support files, and static resources:
+- **A standard Go binary**, which serves the WebAssembly file, support files, and static resources:
+
   ```sh
   go build
   ```
