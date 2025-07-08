@@ -110,7 +110,8 @@ func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 	switch {
 	case e.internalURL(destination),
 		e.mailTo(destination):
-		Window().Get("location").Set("href", destination.String())
+		// Window().Get("location").Set("href", destination.String())
+		Window().Call("open", destination.String(), "_blank", "noopener")
 		return
 
 	case e.externalNavigation(destination):
