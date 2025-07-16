@@ -8,31 +8,26 @@ import (
 type attributes map[string]string
 
 func (a attributes) Set(name string, value any) {
+	var v string
 	switch name {
 	case "value":
-		a[name] = toString(value)
+		v = toString(value)
 
 	case "style", "allow":
-		a[name] += toAttributeValue(value) + ";"
+		v = strings.TrimLeft(a[name]+";"+toAttributeValue(value), ";")
 
 	case "class":
-		if v := strings.TrimSpace(toAttributeValue(value)); v != "" {
-			s := a[name]
-			if s != "" {
-				s += " "
-			}
-			a[name] = s + v
-		}
+		v = strings.TrimSpace(a[name] + " " + toAttributeValue(value))
 
 	case "srcset":
-		s := a[name]
-		if s != "" {
-			s += ", "
-		}
-		a[name] = s + toAttributeValue(value)
+		v = strings.TrimLeft(a[name]+", "+toAttributeValue(value), ", ")
 
 	default:
-		a[name] = toAttributeValue(value)
+		v = toAttributeValue(value)
+	}
+
+	if v != "" {
+		a[name] = v
 	}
 }
 

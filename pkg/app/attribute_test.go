@@ -10,7 +10,14 @@ func TestAttributesSet(t *testing.T) {
 	t.Run("set style", func(t *testing.T) {
 		attributes := make(attributes)
 		attributes.Set("style", "width:42px")
-		require.Equal(t, "width:42px;", attributes["style"])
+		require.Equal(t, "width:42px", attributes["style"])
+	})
+
+	t.Run("set multiple style", func(t *testing.T) {
+		attributes := make(attributes)
+		attributes.Set("style", "width:42px")
+		attributes.Set("style", "height:42px")
+		require.Equal(t, "width:42px;height:42px", attributes["style"])
 	})
 
 	t.Run("set class", func(t *testing.T) {
