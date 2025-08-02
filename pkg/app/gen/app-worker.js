@@ -30,17 +30,19 @@ self.addEventListener("activate", async (event) => {
 });
 
 async function deletePreviousCaches() {
-  keys = await caches.keys();
-  keys.forEach(async (key) => {
-    if (key != cacheName) {
-      try {
-        console.log("deleting", key, "cache");
-        await caches.delete(key);
-      } catch (err) {
-        console.error("deleting", key, "cache failed:", err);
+  const keys = await caches.keys();
+  await Promise.all(
+    keys.map(async (key) => {
+      if (key !== cacheName) {
+        try {
+          console.log("deleting", key, "cache");
+          await caches.delete(key);
+        } catch (err) {
+          console.error("deleting", key, "cache failed:", err);
+        }
       }
-    }
-  });
+    })
+  );
 }
 
 self.addEventListener("fetch", (event) => {
