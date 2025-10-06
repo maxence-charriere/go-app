@@ -93,8 +93,20 @@ function goappIsAppInstallable() {
 }
 
 function goappIsAppInstalled() {
-  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-  return isStandalone || navigator.standalone;
+  return navigator.standalone === true ||
+    window.matchMedia("(display-mode: standalone)").matches ||
+    document.referrer.startsWith('android-app://');
+}
+
+function goappIsAppleBrowser() {
+  const ua = navigator.userAgent;
+  const isIPadOS = /\bMacintosh\b/.test(ua) && navigator.maxTouchPoints > 1;
+  const isIOSFamily = /iP(hone|ad|od)/.test(ua) || isIPadOS;
+  const isMacSafari =
+    /\bMacintosh\b/.test(ua) &&
+    /\bSafari\b/.test(ua) &&
+    !/\bChrome\b|\bEdg\b|\bOPR\b|\bBrave\b/.test(ua);
+  return isIOSFamily || isMacSafari;
 }
 
 async function goappShowInstallPrompt() {
