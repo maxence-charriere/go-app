@@ -61,6 +61,14 @@ func (ctx Context) IsAppInstallable() bool {
 	return false
 }
 
+// IsAppleBrowser reports whether the app is running on an Apple browser.
+func (ctx Context) IsAppleBrowser() bool {
+	if Window().Get("goappIsAppleBrowser").Truthy() {
+		return Window().Call("goappIsAppleBrowser").Bool()
+	}
+	return false
+}
+
 // ShowAppInstallPrompt initiates the app installation process.
 func (ctx Context) ShowAppInstallPrompt() {
 	if ctx.IsAppInstallable() {
