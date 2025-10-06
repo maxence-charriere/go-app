@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // go-app
 // -----------------------------------------------------------------------------
-var goappNav = function () { };
+var goappNav = function () {};
 
 var goappUpdatedBeforeWasmLoaded = false;
 var goappOnUpdate = function () {
@@ -13,7 +13,7 @@ var goappOnAppInstallChange = function () {
   goappAppInstallChangedBeforeWasmLoaded = true;
 };
 
-const goappEnv = {{.Env }};
+const goappEnv = {{ .Env }};
 const goappLoadingLabel = "{{.LoadingLabel}}";
 const goappWasmContentLength = "{{.WasmContentLength}}";
 const goappWasmContentLengthHeader = "{{.WasmContentLengthHeader}}";
@@ -260,7 +260,7 @@ async function fetchWithProgress(url, progess) {
   if (contentLength <= 0) {
     try {
       contentLength = response.headers.get(goappWasmContentLengthHeader);
-    } catch { }
+    } catch {}
     if (!goappWasmContentLengthHeader || !contentLength) {
       contentLength = response.headers.get("Content-Length");
     }
@@ -278,7 +278,7 @@ async function fetchWithProgress(url, progess) {
       {
         async start(controller) {
           var reader = response.body.getReader();
-          for (; ;) {
+          for (;;) {
             var { done, value } = await reader.read();
 
             if (done) {
