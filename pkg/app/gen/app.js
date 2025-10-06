@@ -89,7 +89,7 @@ function goappWatchForInstallable() {
 }
 
 function goappIsAppInstallable() {
-  return !goappIsAppInstalled() && deferredPrompt != null;
+  return !goappIsAppInstalled() && (deferredPrompt != null || goappIsAppleBrowser());
 }
 
 function goappIsAppInstalled() {
