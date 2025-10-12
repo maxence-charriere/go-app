@@ -1,4 +1,4 @@
-module github.com/maxence-charriere/go-app/v10
+module github.com/mira-x/go-app/v10
 
 go 1.23.0
 
