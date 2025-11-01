@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -634,6 +635,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		icon = h.Icon.Default
 	}
 
+	routeComposer := routes.routes[page.URL().Path]
+	var components []UI
+	components = getAllChildCompnents(components, routeComposer())
+	var addedComponentLinks = make(map[string]string)
+
 	var b bytes.Buffer
 	err := engine.Encode(&b, h.HTML().
 		Lang(page.Lang()).
@@ -756,6 +762,28 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Range(h.RawHeaders).Slice(func(i int) UI {
 					return Raw(h.RawHeaders[i])
 				}),
+				Range(components).Slice(func(i int) UI {
+					compo, ok := components[i].(Composer)
+					if !ok {
+						return nil
+					}
+
+					componentName := strings.ToLower(reflect.TypeOf(compo).Elem().Name())
+					linkHref := fmt.Sprintf("lazy-css-%s", componentName)
+					_, isAdded := addedComponentLinks[componentName]
+
+					if compo.GetLazyCSSPath() != "" && !isAdded {
+						if resource := parseHTTPResource(compo.GetLazyCSSPath()); resource.URL != "" {
+							addedComponentLinks[componentName] = linkHref
+							return resource.toLink().
+								Type("text/css").
+								Rel("stylesheet").
+								ID(linkHref)
+						}
+						return nil
+					}
+					return nil
+				}),
 			),
 			h.Body().privateBody(
 				Aside().
@@ -783,6 +811,30 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")
 	w.Write(b.Bytes())
+}
+
+func getAllChildCompnents(components []UI, v UI) []UI {
+	var children []UI
+	switch n := v.(type) {
+	case Composer:
+		children = FilterUIElems(n.Render())
+	case HTML:
+		children = FilterUIElems(n.body()...)
+	default:
+		return components
+	}
+
+	components = append(components, v)
+
+	if len(children) == 0 {
+		return components
+	}
+
+	for _, c := range children {
+		components = getAllChildCompnents(components, c)
+	}
+
+	return components
 }
 
 func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library []byte) {
