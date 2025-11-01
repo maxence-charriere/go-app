@@ -636,7 +636,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	routeComposer := routes.routes[page.URL().Path]
-	var components []UI
+	var components []Composer
 	components = getAllChildCompnents(components, routeComposer())
 	var addedComponentLinks = make(map[string]string)
 
@@ -763,17 +763,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					return Raw(h.RawHeaders[i])
 				}),
 				Range(components).Slice(func(i int) UI {
-					compo, ok := components[i].(Composer)
-					if !ok {
-						return nil
-					}
-
-					componentName := strings.ToLower(reflect.TypeOf(compo).Elem().Name())
+					componentName := strings.ToLower(reflect.TypeOf(components[i]).Elem().Name())
 					linkHref := fmt.Sprintf("lazy-css-%s", componentName)
 					_, isAdded := addedComponentLinks[componentName]
 
-					if compo.GetLazyCSSPath() != "" && !isAdded {
-						if resource := parseHTTPResource(compo.GetLazyCSSPath()); resource.URL != "" {
+					if !isAdded {
+						if resource := parseHTTPResource(components[i].GetLazyCSSPath()); resource.URL != "" {
 							addedComponentLinks[componentName] = linkHref
 							return resource.toLink().
 								Type("text/css").
@@ -813,18 +808,20 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	w.Write(b.Bytes())
 }
 
-func getAllChildCompnents(components []UI, v UI) []UI {
+func getAllChildCompnents(components []Composer, v UI) []Composer {
+
 	var children []UI
 	switch n := v.(type) {
 	case Composer:
 		children = FilterUIElems(n.Render())
+		if n.GetLazyCSSPath() != "" {
+			components = append(components, n)
+		}
 	case HTML:
 		children = FilterUIElems(n.body()...)
 	default:
 		return components
 	}
-
-	components = append(components, v)
 
 	if len(children) == 0 {
 		return components
