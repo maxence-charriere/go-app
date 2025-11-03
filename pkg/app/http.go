@@ -124,9 +124,9 @@ type Handler struct {
 	// paths prefixed with "/web/". Defaults to app.LocalDir("").
 	Resources ResourceResolver
 
-	// StartURL is the URL opened by default when the installed PWA is opened.
-	// This, however, does not affect the default URL when the app is opened
-	// as normal website in the browser. Defaults to "/".
+	// StartURL defines the initial URL the PWA opens when launched from the
+	// home screen or app icon. It should be a relative path (e.g., "/") and
+	// typically points to the root of the app. Defaults to "/".
 	StartURL string
 
 	// Version defines the app's version. It's crucial for determining if an
@@ -247,6 +247,10 @@ func (h *Handler) initPWA() {
 
 	if h.LoadingLabel == "" {
 		h.LoadingLabel = "{progress}%"
+	}
+
+	if h.StartURL == "" {
+		h.StartURL = "/"
 	}
 }
 
