@@ -29,6 +29,7 @@ func (a attributes) Set(name string, value any) {
 	switch v {
 	case "cite",
 		"data",
+		"download",
 		"href",
 		"src":
 		a[name] = v
