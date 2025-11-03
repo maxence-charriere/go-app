@@ -31,7 +31,8 @@ func (a attributes) Set(name string, value any) {
 		"data",
 		"download",
 		"href",
-		"src":
+		"src",
+		"value":
 		a[name] = v
 
 	default:
