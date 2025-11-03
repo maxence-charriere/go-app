@@ -26,8 +26,17 @@ func (a attributes) Set(name string, value any) {
 		v = toAttributeValue(value)
 	}
 
-	if v != "" {
+	switch v {
+	case "cite",
+		"data",
+		"href",
+		"src":
 		a[name] = v
+
+	default:
+		if v != "" {
+			a[name] = v
+		}
 	}
 }
 
