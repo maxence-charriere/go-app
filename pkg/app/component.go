@@ -30,6 +30,8 @@ type Composer interface {
 	// Render constructs and returns the visual representation of the component
 	// as a node tree.
 	Render() UI
+	GetLazyCSSPath() string
+	SetLazyCSSPath(path string) Composer
 
 	setRef(Composer) Composer
 	depth() uint
@@ -165,6 +167,7 @@ type Compo struct {
 	ref           Composer
 	parentElement UI
 	rootElement   UI
+	lazyCssPath   string
 }
 
 // JSValue retrieves the JavaScript value associated with the component's root.
@@ -202,6 +205,14 @@ func (c *Compo) Render() UI {
 					Text("func (c "+componentName+") Render() app.UI"),
 			),
 		)
+}
+
+func (c *Compo) SetLazyCSSPath(path string) Composer {
+	c.lazyCssPath = path
+	return c.ref
+}
+func (c *Compo) GetLazyCSSPath() string {
+	return c.lazyCssPath
 }
 
 // ValueTo captures the value of the DOM element (if it exists) that triggered

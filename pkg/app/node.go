@@ -2,10 +2,12 @@ package app
 
 import (
 	"bytes"
+	"fmt"
 	"html"
 	"io"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v10/pkg/errors"
@@ -237,6 +239,10 @@ func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, er
 		ctx.Dispatch(mounter.OnMount)
 	}
 
+	if !IsServer {
+		m.loadLazyCSS(v)
+	}
+
 	root, err := m.renderComponent(v)
 	if err != nil {
 		return nil, errors.New("rendering component failed").
@@ -254,6 +260,36 @@ func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, er
 	v = v.setRoot(root)
 
 	return v, nil
+}
+
+func (m nodeManager) loadLazyCSS(v Composer) {
+	doc := Window().Get("document")
+	existing := doc.Call("querySelector", fmt.Sprintf("link[href='%s']", v.GetLazyCSSPath()))
+	if v.GetLazyCSSPath() != "" && !IsServer && existing.IsNull() {
+		componentName := strings.ToLower(reflect.TypeOf(v).Elem().Name())
+		done := make(chan struct{})
+		css, _ := Window().createElement("link", "")
+		css.setAttr("rel", "stylesheet")
+		css.setAttr("type", "text/css")
+		css.setAttr("id", fmt.Sprintf("lazy-css-%s", componentName))
+		css.setAttr("href", v.GetLazyCSSPath())
+		onload := FuncOf(func(this Value, args []Value) interface{} {
+			close(done)
+			return nil
+		})
+		css.Set("onload", onload)
+		css.Set("onerror", onload)
+		Window().Get("document").Get("head").appendChild(css)
+		<-done
+	}
+}
+
+func (m nodeManager) unloadLazyCss(v Composer) {
+	doc := Window().Get("document")
+	existing := doc.Call("querySelector", fmt.Sprintf("link[href='%s']", v.GetLazyCSSPath()))
+	if !existing.IsNull() {
+		Window().Get("document").Get("head").removeChild(existing)
+	}
 }
 
 func (m nodeManager) renderComponent(v Composer) (UI, error) {
@@ -317,6 +353,8 @@ func (m nodeManager) dismountHTMLEventHandler(handler eventHandler) {
 func (m nodeManager) dismountComponent(v Composer) {
 	m.Dismount(v.root())
 	v.setRef(nil)
+
+	m.unloadLazyCss(v)
 
 	if dismounter, ok := v.(Dismounter); ok {
 		dismounter.OnDismount()
