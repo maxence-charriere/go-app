@@ -60,7 +60,7 @@ func TestToAttributeValue(t *testing.T) {
 		out      string
 	}{
 		{
-			scenario: "spaces arround",
+			scenario: "spaces around",
 			in:       "   \n  foo       \n",
 			out:      "foo",
 		},
