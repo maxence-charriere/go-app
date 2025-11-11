@@ -30,6 +30,7 @@ type Context struct {
 	handleAction          func(string, UI, bool, ActionHandler)
 	postAction            func(Context, Action)
 	observeState          func(Context, string, any) Observer
+	unObserveState        func(Context, string)
 	getState              func(Context, string, any)
 	setState              func(Context, string, any) State
 	delState              func(Context, string)
@@ -277,6 +278,10 @@ func (ctx Context) NewActionWithValue(action string, v any, tags ...Tagger) {
 // ObserveState establishes an observer for a state, tracking its changes.
 func (ctx Context) ObserveState(state string, recv any) Observer {
 	return ctx.observeState(ctx, state, recv)
+}
+
+func (ctx Context) UnObserveState(state string) {
+	ctx.unObserveState(ctx, state)
 }
 
 // GetState fetches the value of a particular state.
