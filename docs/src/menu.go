@@ -53,7 +53,7 @@ func (m *menu) Render() app.UI {
 						app.A().
 							Class("heading").
 							Class("app-title").
-							Href("/").
+							Href("https://go-app.dev/").
 							Text("Go-App"),
 					),
 				),
@@ -68,139 +68,36 @@ func (m *menu) Render() app.UI {
 					Label("Home").
 					Href("/").
 					Class(isFocus("/")),
-				ui.Link().
-					Class(linkClass).
-					Icon(rocketSVG).
-					Label("Getting Started").
-					Href("/getting-started").
-					Class(isFocus("/getting-started")),
-				ui.Link().
-					Class(linkClass).
-					Icon(fileTreeSVG).
-					Label("Architecture").
-					Href("/architecture").
-					Class(isFocus("/architecture")),
-				ui.Link().
-					Class(linkClass).
-					Icon(golangSVG).
-					Label("Reference").
-					Href("/reference").
-					Class(isFocus("/reference")),
 
 				app.Div().Class("separator"),
 
-				ui.Link().
-					Class(linkClass).
-					Icon(gridSVG).
-					Label("Components").
-					Href("/components").
-					Class(isFocus("/components")),
-				ui.Link().
-					Class(linkClass).
-					Icon(keyboardSVG).
-					Label("Declarative Syntax").
-					Href("/declarative-syntax").
-					Class(isFocus("/declarative-syntax")),
-				ui.Link().
-					Class(linkClass).
-					Icon(routeSVG).
-					Label("Routing").
-					Href("/routing").
-					Class(isFocus("/routing")),
 				ui.Link().
 					Class(linkClass).
 					Icon(imgFolderSVG).
-					Label("Images and Static Resources").
-					Href("/static-resources").
-					Class(isFocus("/static-resources")),
-				ui.Link().
-					Class(linkClass).
-					Icon(jsSVG).
-					Label("JavaScript Interoperability").
-					Href("/js").
-					Class(isFocus("/js")),
-				ui.Link().
-					Class(linkClass).
-					Icon(concurrencySVG).
-					Label("Concurrency").
-					Href("/concurrency").
-					Class(isFocus("/concurrency")),
-				ui.Link().
-					Class(linkClass).
-					Icon(seoSVG).
-					Label("SEO").
-					Href("/seo").
-					Class(isFocus("/seo")),
-				ui.Link().
-					Class(linkClass).
-					Icon(arrowSVG).
-					Label("Lifecycle and Updates").
-					Href("/lifecycle").
-					Class(isFocus("/lifecycle")),
-				ui.Link().
-					Class(linkClass).
-					Icon(downloadSVG).
-					Label("Install").
-					Href("/install").
-					Class(isFocus("/install")),
-				ui.Link().
-					Class(linkClass).
-					Icon(testSVG).
-					Label("Testing").
-					Href("/testing").
-					Class(isFocus("/testing")),
-				ui.Link().
-					Class(linkClass).
-					Icon(actionSVG).
-					Label("Actions").
-					Href("/actions").
-					Class(isFocus("/actions")),
-				ui.Link().
-					Class(linkClass).
-					Icon(stateSVG).
-					Label("State Management").
-					Href("/states").
-					Class(isFocus("/states")),
-				ui.Link().
-					Class(linkClass).
-					Icon(bellSVG).
-					Label("Notifications").
-					Href("/notifications").
-					Class(isFocus("/notifications")),
-
+					Label("Intro").
+					Href("/intro").
+					Class(isFocus("/intro")),
 				app.Div().Class("separator"),
-
 				ui.Link().
 					Class(linkClass).
-					Icon(swapSVG).
-					Label("Migrate From v8 to v9").
-					Href("/migrate").
-					Class(isFocus("/migrate")),
+					Icon(keyboardSVG).
+					Label("Words").
+					Href("https://my-go-app-bvk.pages.dev/"),
 				ui.Link().
 					Class(linkClass).
-					Icon(githubSVG).
-					Label("Deploy on GitHub Pages").
-					Href("/github-deploy").
-					Class(isFocus("/github-deploy")),
-
-				app.Div().Class("separator"),
-
+					Icon(keyboardSVG).
+					Label("Destroy Math").
+					Href("https://destroy-math.pages.dev/"),
 				ui.Link().
 					Class(linkClass).
-					Icon(twitterSVG).
-					Label("Twitter").
-					Href(twitterURL),
+					Icon(keyboardSVG).
+					Label("Pieboy").
+					Href("https://pieboy.melamday.workers.dev/"),
 				ui.Link().
 					Class(linkClass).
-					Icon(githubSVG).
-					Label("GitHub").
-					Href(githubURL),
-				ui.Link().
-					Class(linkClass).
-					Icon(opensourceSVG).
-					Label("Open Collective").
-					Href(openCollectiveURL),
-
+					Icon(keyboardSVG).
+					Label("Hackrooms").
+					Href("https://hackrooms.pages.dev/"),
 				app.Div().Class("separator"),
 
 				app.If(m.appInstallable, func() app.UI {
@@ -213,9 +110,8 @@ func (m *menu) Render() app.UI {
 				ui.Link().
 					Class(linkClass).
 					Icon(userLockSVG).
-					Label("Privacy Policy").
-					Href("/privacy-policy").
-					Class(isFocus("/privacy-policy")),
+					Label("Resume").
+					Href("http://mamday-resume.s3-website.us-east-2.amazonaws.com/"),
 
 				app.Div().Class("separator"),
 			),

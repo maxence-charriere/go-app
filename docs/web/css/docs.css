@@ -422,21 +422,24 @@ strong {
 .separator:first-of-type,
 .reference .Documentation-overviewHeader {
   margin-top: 42px;
+  margin-bottom: 42px;
 }
 
 .separator:last-of-type {
   margin-top: 18px;
+  margin-bottom: 18px;
 }
 
 .separator,
 .markdown h2,
 .markdown h3,
 .reference h2 {
-  margin-top: 84px;
+  margin-top: 42px;
 }
 
 .markdown h2:first-of-type {
-  margin-top: 0;
+  margin-top: 42;
+  margin-bottom: 42;
 }
 
 /*------------------------------------------------------------------------------
@@ -528,10 +531,6 @@ strong {
 }
 
 .updates .markdown tr:first-child td {
-  /* margin: 0;
-  padding: 12px 24px 12px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08); */
-  /* padding-top: 0; */
   border-top: none;
 }
 
@@ -631,7 +630,7 @@ strong {
 .markdown .title h1 {
   border: 0;
   margin: 0;
-  padding: 0;
+  padding: 10;
   margin-left: 12px;
   margin-right: 42px;
   font-size: 26px;
@@ -721,11 +720,77 @@ strong {
   color: mediumspringgreen;
 }
 
-.hamburger-menu-icon {
-  width: 30px;
-  height: 30px;
-  margin: 3px 0 0 3px;
-  z-index: 1000;
+/* -----------------------------------------------------------------------------
+// Hamburger Menu
+------------------------------------------------------------------------------*/
+
+.menu {
+  display: none;
+}
+
+/* Hamburger button*/
+.hamburger-button svg {
+  width: 24px;
+  height: 24px;
+  color: black;
+  background: rgb(146, 173, 146);
+  display: block;
+}
+
+@media (max-width: 768px) {
+
+/* Hamburger button - ALWAYS VISIBLE */
+  .hamburger-button {
+    display: block !important;
+    cursor: pointer;
+    padding: 12px;
+    color: black;
+    background: rgb(146, 173, 146);
+    /* Make it obvious */
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+    pointer-events: auto !important;
+    /* Ensure it receives clicks */
+    touch-action: manipulation;
+    /* Better touch handling */
+  }
+
+  /* Hide desktop menu by default on mobile */
+  .menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    z-index: 999;
+    overflow-y: auto;
+    background: linear-gradient(#2e343a, rgba(0, 0, 0, 0.9));
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  /* Show menu when shell has menu-open class */
+  [data-goapp-ui="shell"].menu-open .menu {
+    display: block;
+    transform: translateX(0);
+  }
+
+  /* Backdrop */
+  [data-goapp-ui="shell"].menu-open::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+  }
+
 }
 
 /*------------------------------------------------------------------------------
@@ -735,6 +800,7 @@ strong {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -744,18 +810,23 @@ strong {
   0% {
     transform: translateY(0);
   }
+
   10% {
     transform: translateY(-6px);
   }
+
   30% {
     transform: translateY(0);
   }
+
   35% {
     transform: translateY(-6px);
   }
+
   55% {
     transform: translateY(0);
   }
+
   100% {
     transform: translateY(0);
   }

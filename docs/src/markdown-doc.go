@@ -55,7 +55,12 @@ func (d *markdownDoc) Render() app.UI {
 }
 
 func (d *markdownDoc) highlightCode(ctx app.Context) {
-	app.Window().Get("Prism").Call("highlightAll")
+	prism := app.Window().Get("Prism")
+	if !prism.Truthy() {
+		// Prism not loaded yet, skip highlighting
+		return
+	}
+	prism.Call("highlightAll")
 }
 
 func parseMarkdown(md []byte) []byte {
