@@ -15,7 +15,7 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 
 
 
-<script>var goVersion = "go1.24.0";</script>
+<script>var goVersion = "go1.25.3";</script>
 <script src="/lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -290,6 +290,9 @@ resources to run Go-based progressive web apps.
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Context.IsAppInstallable">func (ctx Context) IsAppInstallable() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Context.IsAppleBrowser">func (ctx Context) IsAppleBrowser() bool</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Context.JSSrc">func (ctx Context) JSSrc() Value</a></dd>
@@ -1640,7 +1643,7 @@ resources to run Go-based progressive web apps.
 				
 				<pre>const (
     <span class="comment">// The default template used to generate app-worker.js.</span>
-    <span id="DefaultAppWorkerJS">DefaultAppWorkerJS</span> = &#34;// -----------------------------------------------------------------------------\n// PWA\n// -----------------------------------------------------------------------------\nconst cacheName = \&#34;app-\&#34; + \&#34;{{.Version}}\&#34;;\nconst resourcesToCache = {{.ResourcesToCache}};\n\nself.addEventListener(\&#34;install\&#34;, async (event) =&gt; {\n  try {\n    console.log(\&#34;installing app worker {{.Version}}\&#34;);\n    await installWorker();\n    await self.skipWaiting();\n  } catch (error) {\n    console.error(\&#34;error during installation:\&#34;, error);\n  }\n});\n\nasync function installWorker() {\n  const cache = await caches.open(cacheName);\n  await cache.addAll(resourcesToCache);\n}\n\nself.addEventListener(\&#34;activate\&#34;, async (event) =&gt; {\n  try {\n    await deletePreviousCaches(); // Await cache cleanup\n    await self.clients.claim(); // Ensure the service worker takes control of the clients\n    console.log(\&#34;app worker {{.Version}} is activated\&#34;);\n  } catch (error) {\n    console.error(\&#34;error during activation:\&#34;, error);\n  }\n});\n\nasync function deletePreviousCaches() {\n  keys = await caches.keys();\n  keys.forEach(async (key) =&gt; {\n    if (key != cacheName) {\n      try {\n        console.log(\&#34;deleting\&#34;, key, \&#34;cache\&#34;);\n        await caches.delete(key);\n      } catch (err) {\n        console.error(\&#34;deleting\&#34;, key, \&#34;cache failed:\&#34;, err);\n      }\n    }\n  });\n}\n\nself.addEventListener(\&#34;fetch\&#34;, (event) =&gt; {\n  event.respondWith(fetchWithCache(event.request));\n});\n\nasync function fetchWithCache(request) {\n  const cachedResponse = await caches.match(request);\n  if (cachedResponse) {\n    return cachedResponse;\n  }\n  return await fetch(request);\n}\n\n// -----------------------------------------------------------------------------\n// Push Notifications\n// -----------------------------------------------------------------------------\nself.addEventListener(\&#34;push\&#34;, (event) =&gt; {\n  if (!event.data || !event.data.text()) {\n    return;\n  }\n\n  const notification = JSON.parse(event.data.text());\n  if (!notification) {\n    return;\n  }\n\n  const title = notification.title;\n  delete notification.title;\n\n  if (!notification.data) {\n    notification.data = {};\n  }\n  let actions = [];\n  for (let i in notification.actions) {\n    const action = notification.actions[i];\n\n    actions.push({\n      action: action.action,\n      path: action.path,\n    });\n\n    delete action.path;\n  }\n  notification.data.goapp = {\n    path: notification.path,\n    actions: actions,\n  };\n  delete notification.path;\n\n  event.waitUntil(self.registration.showNotification(title, notification));\n});\n\nself.addEventListener(\&#34;notificationclick\&#34;, (event) =&gt; {\n  event.notification.close();\n\n  const notification = event.notification;\n  let path = notification.data.goapp.path;\n\n  for (let i in notification.data.goapp.actions) {\n    const action = notification.data.goapp.actions[i];\n    if (action.action === event.action) {\n      path = action.path;\n      break;\n    }\n  }\n\n  event.waitUntil(\n    clients\n      .matchAll({\n        type: \&#34;window\&#34;,\n      })\n      .then((clientList) =&gt; {\n        for (var i = 0; i &lt; clientList.length; i++) {\n          let client = clientList[i];\n          if (\&#34;focus\&#34; in client) {\n            client.focus();\n            client.postMessage({\n              goapp: {\n                type: \&#34;notification\&#34;,\n                path: path,\n              },\n            });\n            return;\n          }\n        }\n\n        if (clients.openWindow) {\n          return clients.openWindow(path);\n        }\n      })\n  );\n});\n&#34;
+    <span id="DefaultAppWorkerJS">DefaultAppWorkerJS</span> = &#34;// -----------------------------------------------------------------------------\n// PWA\n// -----------------------------------------------------------------------------\nconst cacheName = \&#34;app-\&#34; + \&#34;{{.Version}}\&#34;;\nconst resourcesToCache = {{.ResourcesToCache}};\n\nself.addEventListener(\&#34;install\&#34;, async (event) =&gt; {\n  try {\n    console.log(\&#34;installing app worker {{.Version}}\&#34;);\n    await installWorker();\n    await self.skipWaiting();\n  } catch (error) {\n    console.error(\&#34;error during installation:\&#34;, error);\n  }\n});\n\nasync function installWorker() {\n  const cache = await caches.open(cacheName);\n  await cache.addAll(resourcesToCache);\n}\n\nself.addEventListener(\&#34;activate\&#34;, async (event) =&gt; {\n  try {\n    await deletePreviousCaches(); // Await cache cleanup\n    await self.clients.claim(); // Ensure the service worker takes control of the clients\n    console.log(\&#34;app worker {{.Version}} is activated\&#34;);\n  } catch (error) {\n    console.error(\&#34;error during activation:\&#34;, error);\n  }\n});\n\nasync function deletePreviousCaches() {\n  const keys = await caches.keys();\n  await Promise.all(\n    keys.map(async (key) =&gt; {\n      if (key !== cacheName) {\n        try {\n          console.log(\&#34;deleting\&#34;, key, \&#34;cache\&#34;);\n          await caches.delete(key);\n        } catch (err) {\n          console.error(\&#34;deleting\&#34;, key, \&#34;cache failed:\&#34;, err);\n        }\n      }\n    })\n  );\n}\n\nself.addEventListener(\&#34;fetch\&#34;, (event) =&gt; {\n  event.respondWith(fetchWithCache(event.request));\n});\n\nasync function fetchWithCache(request) {\n  const cachedResponse = await caches.match(request);\n  if (cachedResponse) {\n    return cachedResponse;\n  }\n  return await fetch(request);\n}\n\n// -----------------------------------------------------------------------------\n// Push Notifications\n// -----------------------------------------------------------------------------\nself.addEventListener(\&#34;push\&#34;, (event) =&gt; {\n  if (!event.data || !event.data.text()) {\n    return;\n  }\n\n  const notification = JSON.parse(event.data.text());\n  if (!notification) {\n    return;\n  }\n\n  event.waitUntil(\n    showNotification(self.registration, notification)\n  );\n});\n\nself.addEventListener(\&#34;message\&#34;, (event) =&gt; {\n  const msg = event.data;\n  if (!msg || msg.type !== \&#34;goapp:notify\&#34;) {\n    return;\n  }\n\n  event.waitUntil(\n    showNotification(self.registration, msg.options)\n  );\n});\n\nasync function showNotification(registration, notification) {\n  const title = notification.title || \&#34;\&#34;;\n  let delay = notification.delay || 0;\n\n  let actions = [];\n  for (let i in notification.actions) {\n    const action = notification.actions[i];\n    actions.push({\n      action: action.action,\n      path: action.path,\n    });\n    delete action.path;\n  }\n\n  notification.data = notification.data || {};\n  notification.data.goapp = {\n    path: notification.path,\n    actions: actions,\n  };\n  delete notification.title;\n  delete notification.path;\n  delete notification.delay;\n\n  if (delay &gt; 0) {\n    delay = Math.floor(delay / 1e6);\n    await sleep(delay);\n  }\n  await registration.showNotification(title, notification);\n}\n\nfunction sleep(ms) {\n  return new Promise((resolve) =&gt; setTimeout(resolve, ms));\n}\n\nself.addEventListener(\&#34;notificationclick\&#34;, (event) =&gt; {\n  event.notification.close();\n\n  const notification = event.notification;\n  let path = notification.data.goapp.path;\n\n  for (let i in notification.data.goapp.actions) {\n    const action = notification.data.goapp.actions[i];\n    if (action.action === event.action) {\n      path = action.path;\n      break;\n    }\n  }\n\n  event.waitUntil(\n    clients\n      .matchAll({\n        type: \&#34;window\&#34;,\n      })\n      .then((clientList) =&gt; {\n        for (var i = 0; i &lt; clientList.length; i++) {\n          let client = clientList[i];\n          if (\&#34;focus\&#34; in client) {\n            client.focus();\n            client.postMessage({\n              goapp: {\n                type: \&#34;notification\&#34;,\n                path: path,\n              },\n            });\n            return;\n          }\n        }\n\n        if (clients.openWindow) {\n          return clients.openWindow(path);\n        }\n      })\n  );\n});&#34;
 )</pre>
 			
 		
@@ -2500,7 +2503,7 @@ with the browser, page navigation, concurrency, and component communication.
 
 			
 				
-				<h3 id="Context.After">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5659:5717#L208">After</a>
+				<h3 id="Context.After">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5900:5958#L216">After</a>
 					<a class="permalink" href="#Context.After">&#xb6;</a>
 					
 					
@@ -2526,7 +2529,7 @@ with the browser, page navigation, concurrency, and component communication.
 				
 			
 				
-				<h3 id="Context.Async">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5530:5564#L203">Async</a>
+				<h3 id="Context.Async">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5771:5805#L211">Async</a>
 					<a class="permalink" href="#Context.Async">&#xb6;</a>
 					
 					
@@ -2540,7 +2543,7 @@ goroutines, ensuring they conclude when rendering server-side.
 				
 			
 				
-				<h3 id="Context.Decrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=4195:4250#L148">Decrypt</a>
+				<h3 id="Context.Decrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=4436:4491#L156">Decrypt</a>
 					<a class="permalink" href="#Context.Decrypt">&#xb6;</a>
 					
 					
@@ -2553,7 +2556,7 @@ goroutines, ensuring they conclude when rendering server-side.
 				
 			
 				
-				<h3 id="Context.Defer">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5236:5277#L189">Defer</a>
+				<h3 id="Context.Defer">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5477:5518#L197">Defer</a>
 					<a class="permalink" href="#Context.Defer">&#xb6;</a>
 					
 					
@@ -2567,7 +2570,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.DelState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7405:7446#L275">DelState</a>
+				<h3 id="Context.DelState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7646:7687#L283">DelState</a>
 					<a class="permalink" href="#Context.DelState">&#xb6;</a>
 					
 					
@@ -2580,7 +2583,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.DeviceID">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2076:2112#L62">DeviceID</a>
+				<h3 id="Context.DeviceID">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2317:2353#L70">DeviceID</a>
 					<a class="permalink" href="#Context.DeviceID">&#xb6;</a>
 					
 					
@@ -2593,7 +2596,7 @@ current update cycle completes.
 				
 			
 				
-				<h3 id="Context.Dispatch">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=4853:4897#L171">Dispatch</a>
+				<h3 id="Context.Dispatch">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5094:5138#L179">Dispatch</a>
 					<a class="permalink" href="#Context.Dispatch">&#xb6;</a>
 					
 					
@@ -2607,7 +2610,7 @@ flagging the enclosing component for an update.
 				
 			
 				
-				<h3 id="Context.Encrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3831:3880#L134">Encrypt</a>
+				<h3 id="Context.Encrypt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=4072:4121#L142">Encrypt</a>
 					<a class="permalink" href="#Context.Encrypt">&#xb6;</a>
 					
 					
@@ -2620,7 +2623,7 @@ flagging the enclosing component for an update.
 				
 			
 				
-				<h3 id="Context.GetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7101:7152#L265">GetState</a>
+				<h3 id="Context.GetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7342:7393#L273">GetState</a>
 					<a class="permalink" href="#Context.GetState">&#xb6;</a>
 					
 					
@@ -2633,7 +2636,7 @@ flagging the enclosing component for an update.
 				
 			
 				
-				<h3 id="Context.Handle">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6194:6251#L229">Handle</a>
+				<h3 id="Context.Handle">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6435:6492#L237">Handle</a>
 					<a class="permalink" href="#Context.Handle">&#xb6;</a>
 					
 					
@@ -2660,6 +2663,19 @@ goroutine.
 				
 			
 				
+				<h3 id="Context.IsAppleBrowser">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=1888:1928#L55">IsAppleBrowser</a>
+					<a class="permalink" href="#Context.IsAppleBrowser">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context">Context</a>) IsAppleBrowser() <a href="/pkg/builtin/#bool">bool</a></pre>
+				<p>IsAppleBrowser reports whether the app is running on an Apple browser.
+
+				
+				
+				
+			
+				
 				<h3 id="Context.JSSrc">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=1360:1392#L37">JSSrc</a>
 					<a class="permalink" href="#Context.JSSrc">&#xb6;</a>
 					
@@ -2673,7 +2689,7 @@ goroutine.
 				
 			
 				
-				<h3 id="Context.LocalStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3529:3577#L123">LocalStorage</a>
+				<h3 id="Context.LocalStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3770:3818#L131">LocalStorage</a>
 					<a class="permalink" href="#Context.LocalStorage">&#xb6;</a>
 					
 					
@@ -2687,7 +2703,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Navigate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2751:2793#L92">Navigate</a>
+				<h3 id="Context.Navigate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2992:3034#L100">Navigate</a>
 					<a class="permalink" href="#Context.Navigate">&#xb6;</a>
 					
 					
@@ -2700,7 +2716,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NavigateTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3010:3051#L104">NavigateTo</a>
+				<h3 id="Context.NavigateTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3251:3292#L112">NavigateTo</a>
 					<a class="permalink" href="#Context.NavigateTo">&#xb6;</a>
 					
 					
@@ -2713,7 +2729,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NewAction">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6362:6421#L234">NewAction</a>
+				<h3 id="Context.NewAction">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6603:6662#L242">NewAction</a>
 					<a class="permalink" href="#Context.NewAction">&#xb6;</a>
 					
 					
@@ -2726,7 +2742,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.NewActionWithValue">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6548:6623#L240">NewActionWithValue</a>
+				<h3 id="Context.NewActionWithValue">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6789:6864#L248">NewActionWithValue</a>
 					<a class="permalink" href="#Context.NewActionWithValue">&#xb6;</a>
 					
 					
@@ -2739,7 +2755,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Notifications">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=4643:4697#L165">Notifications</a>
+				<h3 id="Context.Notifications">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=4884:4938#L173">Notifications</a>
 					<a class="permalink" href="#Context.Notifications">&#xb6;</a>
 					
 					
@@ -2752,7 +2768,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.ObserveState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6935:6999#L260">ObserveState</a>
+				<h3 id="Context.ObserveState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7176:7240#L268">ObserveState</a>
 					<a class="permalink" href="#Context.ObserveState">&#xb6;</a>
 					
 					
@@ -2765,7 +2781,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Page">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2508:2538#L79">Page</a>
+				<h3 id="Context.Page">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2749:2779#L87">Page</a>
 					<a class="permalink" href="#Context.Page">&#xb6;</a>
 					
 					
@@ -2778,7 +2794,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.PreventUpdate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=5841:5875#L216">PreventUpdate</a>
+				<h3 id="Context.PreventUpdate">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6082:6116#L224">PreventUpdate</a>
 					<a class="permalink" href="#Context.PreventUpdate">&#xb6;</a>
 					
 					
@@ -2791,7 +2807,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.Reload">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2601:2628#L84">Reload</a>
+				<h3 id="Context.Reload">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2842:2869#L92">Reload</a>
 					<a class="permalink" href="#Context.Reload">&#xb6;</a>
 					
 					
@@ -2804,7 +2820,7 @@ origin.
 				
 			
 				
-				<h3 id="Context.ResizeContent">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7835:7869#L284">ResizeContent</a>
+				<h3 id="Context.ResizeContent">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=8076:8110#L292">ResizeContent</a>
 					<a class="permalink" href="#Context.ResizeContent">&#xb6;</a>
 					
 					
@@ -2821,7 +2837,7 @@ update their dimensions accordingly.
 				
 			
 				
-				<h3 id="Context.ResolveStaticResource">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3179:3236#L110">ResolveStaticResource</a>
+				<h3 id="Context.ResolveStaticResource">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3420:3477#L118">ResolveStaticResource</a>
 					<a class="permalink" href="#Context.ResolveStaticResource">&#xb6;</a>
 					
 					
@@ -2835,7 +2851,7 @@ resource location.
 				
 			
 				
-				<h3 id="Context.ScrollTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3339:3377#L115">ScrollTo</a>
+				<h3 id="Context.ScrollTo">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3580:3618#L123">ScrollTo</a>
 					<a class="permalink" href="#Context.ScrollTo">&#xb6;</a>
 					
 					
@@ -2848,7 +2864,7 @@ resource location.
 				
 			
 				
-				<h3 id="Context.SessionStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3697:3747#L129">SessionStorage</a>
+				<h3 id="Context.SessionStorage">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=3938:3988#L137">SessionStorage</a>
 					<a class="permalink" href="#Context.SessionStorage">&#xb6;</a>
 					
 					
@@ -2862,7 +2878,7 @@ document origin.
 				
 			
 				
-				<h3 id="Context.SetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7244:7298#L270">SetState</a>
+				<h3 id="Context.SetState">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=7485:7539#L278">SetState</a>
 					<a class="permalink" href="#Context.SetState">&#xb6;</a>
 					
 					
@@ -2875,7 +2891,7 @@ document origin.
 				
 			
 				
-				<h3 id="Context.ShowAppInstallPrompt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=1878:1919#L55">ShowAppInstallPrompt</a>
+				<h3 id="Context.ShowAppInstallPrompt">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=2119:2160#L63">ShowAppInstallPrompt</a>
 					<a class="permalink" href="#Context.ShowAppInstallPrompt">&#xb6;</a>
 					
 					
@@ -2901,7 +2917,7 @@ document origin.
 				
 			
 				
-				<h3 id="Context.Update">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6051:6078#L223">Update</a>
+				<h3 id="Context.Update">func (Context) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/context.go?s=6292:6319#L231">Update</a>
 					<a class="permalink" href="#Context.Update">&#xb6;</a>
 					
 					
@@ -25877,7 +25893,7 @@ application.
 		
 			
 			
-			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=512:4897#L20">Handler</a>
+			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=495:5108#L19">Handler</a>
 				<a class="permalink" href="#Handler">&#xb6;</a>
 				
 				
@@ -25984,6 +26000,11 @@ configurations for PWA features, offline support, auto-update, and more.
     <span class="comment">// paths prefixed with &#34;/web/&#34;. Defaults to app.LocalDir(&#34;&#34;).</span>
     Resources <a href="#ResourceResolver">ResourceResolver</a>
 
+<span id="Handler.StartURL"></span>    <span class="comment">// StartURL defines the initial URL the PWA opens when launched from the</span>
+    <span class="comment">// home screen or app icon. It should be a relative path (e.g., &#34;/&#34;) and</span>
+    <span class="comment">// typically points to the root of the app. Defaults to &#34;/&#34;.</span>
+    StartURL <a href="/pkg/builtin/#string">string</a>
+
 <span id="Handler.Version"></span>    <span class="comment">// Version defines the app&#39;s version. It&#39;s crucial for determining if an</span>
     <span class="comment">// update is available. Must be set in live environments to avoid recurring</span>
     <span class="comment">// updates. Auto-generated by default for local development updates.</span>
@@ -26017,7 +26038,7 @@ configurations for PWA features, offline support, auto-update, and more.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=12456:12523#L453">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=13052:13119#L471">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -26031,7 +26052,7 @@ configurations for PWA features, offline support, auto-update, and more.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=20326:21489#L773">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/http.go?s=21073:22236#L796">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -26200,7 +26221,7 @@ to be executed when they are navigated to within the application.
 		
 			
 			
-			<h2 id="Notification">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=145:2047#L1">Notification</a>
+			<h2 id="Notification">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=153:2377#L1">Notification</a>
 				<a class="permalink" href="#Notification">&#xb6;</a>
 				
 				
@@ -26254,6 +26275,13 @@ to be executed when they are navigated to within the application.
     <span class="comment">// See: https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API</span>
     Vibrate []<a href="/pkg/builtin/#int">int</a> `json:&#34;vibrate,omitempty&#34;`
 
+<span id="Notification.Delay"></span>    <span class="comment">// Delay specifies how long to wait before displaying the notification.</span>
+    <span class="comment">//</span>
+    <span class="comment">// The duration is serialized as a Go time.Duration and interpreted</span>
+    <span class="comment">// client-side. Actual delivery time is best-effort and may be delayed</span>
+    <span class="comment">// further depending on browser and system constraints.</span>
+    Delay <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a> `json:&#34;delay,omitempty&#34;`
+
 <span id="Notification.Actions"></span>    <span class="comment">// Actions lists the available actions displayed within the notification.</span>
     Actions []<a href="#NotificationAction">NotificationAction</a> `json:&#34;actions,omitempty&#34;`
 }
@@ -26273,7 +26301,7 @@ to be executed when they are navigated to within the application.
 		
 			
 			
-			<h2 id="NotificationAction">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2124:2552#L52">NotificationAction</a>
+			<h2 id="NotificationAction">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2454:2882#L60">NotificationAction</a>
 				<a class="permalink" href="#NotificationAction">&#xb6;</a>
 				
 				
@@ -26310,7 +26338,7 @@ to be executed when they are navigated to within the application.
 		
 			
 			
-			<h2 id="NotificationPermission">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=3134:3168#L85">NotificationPermission</a>
+			<h2 id="NotificationPermission">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=3464:3498#L93">NotificationPermission</a>
 				<a class="permalink" href="#NotificationPermission">&#xb6;</a>
 				
 				
@@ -26351,7 +26379,7 @@ notifications to users.
 		
 			
 			
-			<h2 id="NotificationService">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=3850:3883#L104">NotificationService</a>
+			<h2 id="NotificationService">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4180:4213#L112">NotificationService</a>
 				<a class="permalink" href="#NotificationService">&#xb6;</a>
 				
 				
@@ -26373,7 +26401,7 @@ notifications to users.
 
 			
 				
-				<h3 id="NotificationService.New">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4733:4781#L134">New</a>
+				<h3 id="NotificationService.New">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=5063:5111#L142">New</a>
 					<a class="permalink" href="#NotificationService.New">&#xb6;</a>
 					
 					
@@ -26386,7 +26414,7 @@ notifications to users.
 				
 			
 				
-				<h3 id="NotificationService.Permission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=3953:4017#L107">Permission</a>
+				<h3 id="NotificationService.Permission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4283:4347#L115">Permission</a>
 					<a class="permalink" href="#NotificationService.Permission">&#xb6;</a>
 					
 					
@@ -26399,7 +26427,7 @@ notifications to users.
 				
 			
 				
-				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4287:4358#L117">RequestPermission</a>
+				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4617:4688#L125">RequestPermission</a>
 					<a class="permalink" href="#NotificationService.RequestPermission">&#xb6;</a>
 					
 					
@@ -26412,7 +26440,7 @@ notifications to users.
 				
 			
 				
-				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=5060:5155#L142">Subscribe</a>
+				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=5390:5485#L150">Subscribe</a>
 					<a class="permalink" href="#NotificationService.Subscribe">&#xb6;</a>
 					
 					
@@ -26429,7 +26457,7 @@ error is returned.
 		
 			
 			
-			<h2 id="NotificationSubscription">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2633:3035#L68">NotificationSubscription</a>
+			<h2 id="NotificationSubscription">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2963:3365#L76">NotificationSubscription</a>
 				<a class="permalink" href="#NotificationSubscription">&#xb6;</a>
 				
 				
@@ -26541,7 +26569,7 @@ channel.
 		
 			
 			
-			<h2 id="Page">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/page.go?s=99:1354#L1">Page</a>
+			<h2 id="Page">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/page.go?s=99:1433#L1">Page</a>
 				<a class="permalink" href="#Page">&#xb6;</a>
 				
 				
@@ -26607,6 +26635,9 @@ channel.
 
     <span class="comment">// Set the Twitter card.</span>
     SetTwitterCard(v <a href="#TwitterCard">TwitterCard</a>)
+
+    <span class="comment">// Set the page&#39;s canonical link.</span>
+    SetCanonicalLink(format <a href="/pkg/builtin/#string">string</a>, v ...<a href="/pkg/builtin/#any">any</a>)
 }</pre>
 
 			
@@ -26653,7 +26684,7 @@ server-side preparations for rendering.
 		
 			
 			
-			<h2 id="Preload">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/page.go?s=6561:6672#L310">Preload</a>
+			<h2 id="Preload">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/page.go?s=6922:7033#L323">Preload</a>
 				<a class="permalink" href="#Preload">&#xb6;</a>
 				
 				
@@ -27680,7 +27711,7 @@ package.
 
 
 <div id="footer">
-Build version go1.24.0.<br>
+Build version go1.25.3.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
