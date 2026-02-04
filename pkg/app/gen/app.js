@@ -154,7 +154,7 @@ async function goappSubscribePushNotifications(vapIDpublicKey) {
   }
 }
 
-function goappNewNotification(jsonNotification) {
+async function goappNewNotification(jsonNotification) {
   let notification = JSON.parse(jsonNotification);
 
   const title = notification.title;
@@ -176,10 +176,21 @@ function goappNewNotification(jsonNotification) {
   }
 
   const serviceWorker = goappServiceWorkerRegistration.active;
+
+  let delay = notification.delay || 0;
+  if (delay > 0) {
+    delay = Math.floor(delay / 1e6);
+    await sleep(delay);
+  }
+
   serviceWorker.postMessage({
     type: "goapp:notify",
     options: notification,
   });
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 // -----------------------------------------------------------------------------

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v10/pkg/analytics"
 	"github.com/maxence-charriere/go-app/v10/pkg/app"
@@ -110,7 +111,7 @@ func (p *notificationsPage) testNotification(ctx app.Context, e app.Event) {
 		// 		Path:   "/notifications",
 		// 	},
 		// },
-		// Delay: time.Second * 2,
+		Delay: time.Second * 2,
 	})
 }
 
