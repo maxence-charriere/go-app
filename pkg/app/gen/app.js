@@ -154,7 +154,7 @@ async function goappSubscribePushNotifications(vapIDpublicKey) {
   }
 }
 
-async function goappNewNotification(jsonNotification) {
+function goappNewNotification(jsonNotification) {
   let notification = JSON.parse(jsonNotification);
 
   const title = notification.title;

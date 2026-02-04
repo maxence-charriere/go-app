@@ -26221,7 +26221,7 @@ to be executed when they are navigated to within the application.
 		
 			
 			
-			<h2 id="Notification">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=153:2102#L1">Notification</a>
+			<h2 id="Notification">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=153:2377#L1">Notification</a>
 				<a class="permalink" href="#Notification">&#xb6;</a>
 				
 				
@@ -26275,7 +26275,12 @@ to be executed when they are navigated to within the application.
     <span class="comment">// See: https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API</span>
     Vibrate []<a href="/pkg/builtin/#int">int</a> `json:&#34;vibrate,omitempty&#34;`
 
-<span id="Notification.Delay"></span>    Delay <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a> `json:&#34;delay,omitempty&#34;`
+<span id="Notification.Delay"></span>    <span class="comment">// Delay specifies how long to wait before displaying the notification.</span>
+    <span class="comment">//</span>
+    <span class="comment">// The duration is serialized as a Go time.Duration and interpreted</span>
+    <span class="comment">// client-side. Actual delivery time is best-effort and may be delayed</span>
+    <span class="comment">// further depending on browser and system constraints.</span>
+    Delay <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a> `json:&#34;delay,omitempty&#34;`
 
 <span id="Notification.Actions"></span>    <span class="comment">// Actions lists the available actions displayed within the notification.</span>
     Actions []<a href="#NotificationAction">NotificationAction</a> `json:&#34;actions,omitempty&#34;`
@@ -26296,7 +26301,7 @@ to be executed when they are navigated to within the application.
 		
 			
 			
-			<h2 id="NotificationAction">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2179:2607#L55">NotificationAction</a>
+			<h2 id="NotificationAction">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2454:2882#L60">NotificationAction</a>
 				<a class="permalink" href="#NotificationAction">&#xb6;</a>
 				
 				
@@ -26333,7 +26338,7 @@ to be executed when they are navigated to within the application.
 		
 			
 			
-			<h2 id="NotificationPermission">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=3189:3223#L88">NotificationPermission</a>
+			<h2 id="NotificationPermission">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=3464:3498#L93">NotificationPermission</a>
 				<a class="permalink" href="#NotificationPermission">&#xb6;</a>
 				
 				
@@ -26374,7 +26379,7 @@ notifications to users.
 		
 			
 			
-			<h2 id="NotificationService">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=3905:3938#L107">NotificationService</a>
+			<h2 id="NotificationService">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4180:4213#L112">NotificationService</a>
 				<a class="permalink" href="#NotificationService">&#xb6;</a>
 				
 				
@@ -26396,7 +26401,7 @@ notifications to users.
 
 			
 				
-				<h3 id="NotificationService.New">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4788:4836#L137">New</a>
+				<h3 id="NotificationService.New">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=5063:5111#L142">New</a>
 					<a class="permalink" href="#NotificationService.New">&#xb6;</a>
 					
 					
@@ -26409,7 +26414,7 @@ notifications to users.
 				
 			
 				
-				<h3 id="NotificationService.Permission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4008:4072#L110">Permission</a>
+				<h3 id="NotificationService.Permission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4283:4347#L115">Permission</a>
 					<a class="permalink" href="#NotificationService.Permission">&#xb6;</a>
 					
 					
@@ -26422,7 +26427,7 @@ notifications to users.
 				
 			
 				
-				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4342:4413#L120">RequestPermission</a>
+				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=4617:4688#L125">RequestPermission</a>
 					<a class="permalink" href="#NotificationService.RequestPermission">&#xb6;</a>
 					
 					
@@ -26435,7 +26440,7 @@ notifications to users.
 				
 			
 				
-				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=5115:5210#L145">Subscribe</a>
+				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=5390:5485#L150">Subscribe</a>
 					<a class="permalink" href="#NotificationService.Subscribe">&#xb6;</a>
 					
 					
@@ -26452,7 +26457,7 @@ error is returned.
 		
 			
 			
-			<h2 id="NotificationSubscription">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2688:3090#L71">NotificationSubscription</a>
+			<h2 id="NotificationSubscription">type <a href="/src/github.com/maxence-charriere/go-app/v10/pkg/app/notification.go?s=2963:3365#L76">NotificationSubscription</a>
 				<a class="permalink" href="#NotificationSubscription">&#xb6;</a>
 				
 				
