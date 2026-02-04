@@ -70,31 +70,55 @@ self.addEventListener("push", (event) => {
     return;
   }
 
-  const title = notification.title;
-  delete notification.title;
+  event.waitUntil(
+    showNotification(self.registration, notification)
+  );
+});
 
-  if (!notification.data) {
-    notification.data = {};
+self.addEventListener("message", (event) => {
+  const msg = event.data;
+  if (!msg || msg.type !== "goapp:notify") {
+    return;
   }
+
+  event.waitUntil(
+    showNotification(self.registration, msg.options)
+  );
+});
+
+async function showNotification(registration, notification) {
+  const title = notification.title || "";
+  let delay = notification.delay || 0;
+
   let actions = [];
   for (let i in notification.actions) {
     const action = notification.actions[i];
-
     actions.push({
       action: action.action,
       path: action.path,
     });
-
     delete action.path;
   }
+
+  notification.data = notification.data || {};
   notification.data.goapp = {
     path: notification.path,
     actions: actions,
   };
+  delete notification.title;
   delete notification.path;
+  delete notification.delay;
 
-  event.waitUntil(self.registration.showNotification(title, notification));
-});
+  if (delay > 0) {
+    delay = Math.floor(delay / 1e6);
+    await sleep(delay);
+  }
+  await registration.showNotification(title, notification);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();

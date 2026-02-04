@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v10/pkg/errors"
 )
@@ -53,6 +54,8 @@ type Notification struct {
 	// Vibrate defines a vibration pattern for the device upon notification.
 	// See: https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API
 	Vibrate []int `json:"vibrate,omitempty"`
+
+	Delay time.Duration `json:"delay,omitempty"`
 
 	// Actions lists the available actions displayed within the notification.
 	Actions []NotificationAction `json:"actions,omitempty"`
