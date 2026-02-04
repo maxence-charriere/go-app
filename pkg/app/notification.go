@@ -55,6 +55,11 @@ type Notification struct {
 	// See: https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API
 	Vibrate []int `json:"vibrate,omitempty"`
 
+	// Delay specifies how long to wait before displaying the notification.
+	//
+	// The duration is serialized as a Go time.Duration and interpreted
+	// client-side. Actual delivery time is best-effort and may be delayed
+	// further depending on browser and system constraints.
 	Delay time.Duration `json:"delay,omitempty"`
 
 	// Actions lists the available actions displayed within the notification.
