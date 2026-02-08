@@ -61,18 +61,21 @@ async function fetchWithCache(request) {
 // Push Notifications
 // -----------------------------------------------------------------------------
 self.addEventListener("push", (event) => {
-  if (!event.data || !event.data.text()) {
-    return;
-  }
+  event.waitUntil((async () => {
+    let notification;
 
-  const notification = JSON.parse(event.data.text());
-  if (!notification) {
-    return;
-  }
+    try {
+      notification = event.data ? event.data.json() : null;
+    } catch {
+      notification = null;
+    }
 
-  event.waitUntil(
-    showNotification(self.registration, notification)
-  );
+    if (!notification) {
+      return;
+    }
+
+    await showNotification(self.registration, notification);
+  })());
 });
 
 self.addEventListener("message", (event) => {
