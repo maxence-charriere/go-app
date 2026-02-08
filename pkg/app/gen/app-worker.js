@@ -88,7 +88,6 @@ self.addEventListener("message", (event) => {
 
 async function showNotification(registration, notification) {
   const title = notification.title || "";
-  let delay = notification.delay || 0;
 
   let actions = [];
   for (let i in notification.actions) {
@@ -107,12 +106,7 @@ async function showNotification(registration, notification) {
   };
   delete notification.title;
   delete notification.path;
-  delete notification.delay;
 
-  if (delay > 0) {
-    delay = Math.floor(delay / 1e6);
-    await sleep(delay);
-  }
   await registration.showNotification(title, notification);
 }
 
