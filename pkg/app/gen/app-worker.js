@@ -106,6 +106,7 @@ async function showNotification(registration, notification) {
     body: notification.body,
     icon: notification.icon,
     badge: notification.badge,
+    actions: notification.actions,
     data: {
       goapp: {
         path: notification.path,
