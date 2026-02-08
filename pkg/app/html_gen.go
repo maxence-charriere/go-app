@@ -30416,6 +30416,477 @@ func (e *htmlMark) setBody(v []UI) HTML {
 	return e
 }
 
+// The interface that represents a "menu" HTML element.
+type HTMLMenu interface {
+	HTML
+
+	// Sets the content of the element.
+	Body(elems ...UI) HTMLMenu
+
+	// Sets the content of the element with a text node containing the stringified given value.
+	Text(v any) HTMLMenu
+
+	// Sets the content of the element with a text node formatted according to a format specifier.
+	Textf(format string, v ...any) HTMLMenu
+
+	// Assigns a keyboard shortcut for quick element activation or focus, enhancing user experience.
+	AccessKey(format string, v ...any) HTMLMenu
+
+	// Allocates ARIA roles and properties to the element to enhance accessibility for users with disabilities. Can be called multiple times to assign various roles and properties.
+	Aria(k string, v any) HTMLMenu
+
+	// Sets an attribute with its associated value, allowing for flexible HTML customization.
+	Attr(n string, v any) HTMLMenu
+
+	// Assigns one or more classnames to an element, linking it to styles defined in a stylesheet. Can be called multiple times to assign multiple classnames.
+	Class(v ...string) HTMLMenu
+
+	// Determines if the content of an element is editable by the user, allowing for in-page content modification.
+	ContentEditable(v bool) HTMLMenu
+
+	// Allows for storage of custom data specific to individual elements. Can be called multiple times to store multiple sets of data, often used for scripting purposes.
+	DataSet(k string, v any) HTMLMenu
+
+	// Denotes datasets linked to an element and can store multiple sets of data.
+	DataSets(ds map[string]any) HTMLMenu
+
+	// Defines the text direction for the content within an element, such as 'ltr' (left-to-right) or 'rtl' (right-to-left).
+	Dir(format string, v ...any) HTMLMenu
+
+	// Specifies if an element can be dragged by the user, supporting drag-and-drop operations.
+	Draggable(v bool) HTMLMenu
+
+	// Marks an element as currently irrelevant or not yet relevant.
+	Hidden(v bool) HTMLMenu
+
+	// Assigns a unique identifier to an element.
+	ID(format string, v ...any) HTMLMenu
+
+	// Declares the language of the element's content.
+	Lang(format string, v ...any) HTMLMenu
+
+	// Communicates the intended function or meaning of an element to assistive technologies.
+	Role(format string, v ...any) HTMLMenu
+
+	// Indicates whether the element's content is subject to spell and grammar checks.
+	Spellcheck(v bool) HTMLMenu
+
+	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
+	Style(k, format string, v ...any) HTMLMenu
+
+	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
+	Styles(s map[string]string) HTMLMenu
+
+	// Determines the tabbing sequence of an element within the document navigation.
+	TabIndex(v int) HTMLMenu
+
+	// Provides additional information about an element, typically displayed as a tooltip. Can be called with the desired title format and content.
+	Title(format string, v ...any) HTMLMenu
+
+	// Invokes the specified handler when the corresponding event is triggered.
+	On(event string, h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the given handler when the element loses focus.
+	OnBlur(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the specified handler when the element's value changes.
+	OnChange(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the specified handler upon a mouse click on the element.
+	OnClick(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the provided handler upon activation of a context menu.
+	OnContextMenu(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the handler when content of an element is copied by the user.
+	OnCopy(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the handler when the user cuts content from an element.
+	OnCut(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the provided handler when the element is double-clicked by the mouse.
+	OnDblClick(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the handler as an element is being dragged.
+	OnDrag(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the handler at the conclusion of a drag operation.
+	OnDragEnd(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the handler when an element is dragged onto a valid drop target.
+	OnDragEnter(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the handler when an element exits a valid drop target.
+	OnDragLeave(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the handler as an element is dragged over a valid drop target.
+	OnDragOver(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the handler at the initiation of a drag operation.
+	OnDragStart(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the handler when a dragged element is released onto a drop target.
+	OnDrop(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the given handler when the element receives focus.
+	OnFocus(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the specified handler when the element receives user input.
+	OnInput(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the provided handler when the element is determined to be invalid.
+	OnInvalid(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the specified handler when a user starts pressing a key.
+	OnKeyDown(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the provided handler as a key is pressed by the user.
+	OnKeyPress(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the given handler as a mouse button is pressed on the element.
+	OnMouseDown(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the specified handler when the mouse pointer first enters the element's boundaries.
+	OnMouseEnter(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the provided handler when the mouse pointer leaves the element and its descendants.
+	OnMouseLeave(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the given handler as the mouse pointer moves across the element.
+	OnMouseMove(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the specified handler when the mouse pointer exits the element.
+	OnMouseOut(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the provided handler as the mouse pointer hovers over the element.
+	OnMouseOver(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the given handler when a mouse button is released above the element.
+	OnMouseUp(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the handler as content is pasted into an element by the user.
+	OnPaste(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the given handler upon clicking the Reset button within a form.
+	OnReset(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the handler as an element's scrollbar is scrolled.
+	OnScroll(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the specified handler when input is provided in a search field.
+	OnSearch(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Invokes the provided handler after text within the element is selected.
+	OnSelect(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Executes the given handler when the form undergoes submission.
+	OnSubmit(h EventHandler, options ...EventOption) HTMLMenu
+
+	// Triggers the specified handler as the mouse wheel scrolls over the element.
+	OnWheel(h EventHandler, options ...EventOption) HTMLMenu
+}
+
+// Returns an HTML element that represents an unordered list of items.
+func Menu() HTMLMenu {
+	e := &htmlMenu{
+		htmlElement: htmlElement{
+			tag:           "menu",
+			isSelfClosing: false,
+		},
+	}
+
+	return e
+}
+
+type htmlMenu struct {
+	htmlElement
+}
+
+func (e *htmlMenu) Body(v ...UI) HTMLMenu {
+	return e.setBody(FilterUIElems(v...)).(*htmlMenu)
+}
+
+func (e *htmlMenu) Text(v any) HTMLMenu {
+	return e.Body(Text(v))
+}
+
+func (e *htmlMenu) Textf(format string, v ...any) HTMLMenu {
+	return e.Body(Textf(format, v...))
+}
+
+func (e *htmlMenu) AccessKey(format string, v ...any) HTMLMenu {
+	e.setAttr("accesskey", FormatString(format, v...))
+	return e
+}
+
+func (e *htmlMenu) Aria(k string, v any) HTMLMenu {
+	e.setAttr("aria-"+k, FormatString("%v", v))
+	return e
+}
+
+func (e *htmlMenu) Attr(n string, v any) HTMLMenu {
+	e.setAttr(n, v)
+	return e
+}
+
+func (e *htmlMenu) Class(v ...string) HTMLMenu {
+	e.setAttr("class", strings.Join(v, " "))
+	return e
+}
+
+func (e *htmlMenu) ContentEditable(v bool) HTMLMenu {
+	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlMenu) DataSet(k string, v any) HTMLMenu {
+	e.setAttr("data-"+k, FormatString("%v", v))
+	return e
+}
+
+func (e *htmlMenu) DataSets(ds map[string]any) HTMLMenu {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
+	return e
+}
+
+func (e *htmlMenu) Dir(format string, v ...any) HTMLMenu {
+	e.setAttr("dir", FormatString(format, v...))
+	return e
+}
+
+func (e *htmlMenu) Draggable(v bool) HTMLMenu {
+	e.setAttr("draggable", v)
+	return e
+}
+
+func (e *htmlMenu) Hidden(v bool) HTMLMenu {
+	e.setAttr("hidden", v)
+	return e
+}
+
+func (e *htmlMenu) ID(format string, v ...any) HTMLMenu {
+	e.setAttr("id", FormatString(format, v...))
+	return e
+}
+
+func (e *htmlMenu) Lang(format string, v ...any) HTMLMenu {
+	e.setAttr("lang", FormatString(format, v...))
+	return e
+}
+
+func (e *htmlMenu) Role(format string, v ...any) HTMLMenu {
+	e.setAttr("role", FormatString(format, v...))
+	return e
+}
+
+func (e *htmlMenu) Spellcheck(v bool) HTMLMenu {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.setAttr("spellcheck", s)
+	return e
+}
+
+func (e *htmlMenu) Style(k, format string, v ...any) HTMLMenu {
+	e.setAttr("style", k+":"+FormatString(format, v...))
+	return e
+}
+
+func (e *htmlMenu) Styles(s map[string]string) HTMLMenu {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
+func (e *htmlMenu) TabIndex(v int) HTMLMenu {
+	e.setAttr("tabindex", v)
+	return e
+}
+
+func (e *htmlMenu) Title(format string, v ...any) HTMLMenu {
+	e.setAttr("title", FormatString(format, v...))
+	return e
+}
+
+func (e *htmlMenu) On(event string, h EventHandler, options ...EventOption) HTMLMenu {
+	e.setEventHandler(event, h, options...)
+	return e
+}
+
+func (e *htmlMenu) OnBlur(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("blur", h, options...)
+}
+
+func (e *htmlMenu) OnChange(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("change", h, options...)
+}
+
+func (e *htmlMenu) OnClick(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("click", h, options...)
+}
+
+func (e *htmlMenu) OnContextMenu(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("contextmenu", h, options...)
+}
+
+func (e *htmlMenu) OnCopy(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("copy", h, options...)
+}
+
+func (e *htmlMenu) OnCut(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("cut", h, options...)
+}
+
+func (e *htmlMenu) OnDblClick(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("dblclick", h, options...)
+}
+
+func (e *htmlMenu) OnDrag(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("drag", h, options...)
+}
+
+func (e *htmlMenu) OnDragEnd(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("dragend", h, options...)
+}
+
+func (e *htmlMenu) OnDragEnter(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("dragenter", h, options...)
+}
+
+func (e *htmlMenu) OnDragLeave(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("dragleave", h, options...)
+}
+
+func (e *htmlMenu) OnDragOver(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("dragover", h, options...)
+}
+
+func (e *htmlMenu) OnDragStart(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("dragstart", h, options...)
+}
+
+func (e *htmlMenu) OnDrop(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("drop", h, options...)
+}
+
+func (e *htmlMenu) OnFocus(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("focus", h, options...)
+}
+
+func (e *htmlMenu) OnInput(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("input", h, options...)
+}
+
+func (e *htmlMenu) OnInvalid(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("invalid", h, options...)
+}
+
+func (e *htmlMenu) OnKeyDown(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("keydown", h, options...)
+}
+
+func (e *htmlMenu) OnKeyPress(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("keypress", h, options...)
+}
+
+func (e *htmlMenu) OnKeyUp(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("keyup", h, options...)
+}
+
+func (e *htmlMenu) OnMouseDown(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("mousedown", h, options...)
+}
+
+func (e *htmlMenu) OnMouseEnter(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("mouseenter", h, options...)
+}
+
+func (e *htmlMenu) OnMouseLeave(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("mouseleave", h, options...)
+}
+
+func (e *htmlMenu) OnMouseMove(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("mousemove", h, options...)
+}
+
+func (e *htmlMenu) OnMouseOut(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("mouseout", h, options...)
+}
+
+func (e *htmlMenu) OnMouseOver(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("mouseover", h, options...)
+}
+
+func (e *htmlMenu) OnMouseUp(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("mouseup", h, options...)
+}
+
+func (e *htmlMenu) OnPaste(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("paste", h, options...)
+}
+
+func (e *htmlMenu) OnReset(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("reset", h, options...)
+}
+
+func (e *htmlMenu) OnScroll(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("scroll", h, options...)
+}
+
+func (e *htmlMenu) OnSearch(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("search", h, options...)
+}
+
+func (e *htmlMenu) OnSelect(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("select", h, options...)
+}
+
+func (e *htmlMenu) OnSubmit(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("submit", h, options...)
+}
+
+func (e *htmlMenu) OnWheel(h EventHandler, options ...EventOption) HTMLMenu {
+	return e.On("wheel", h, options...)
+}
+
+func (e *htmlMenu) setDepth(v uint) UI {
+	e.treeDepth = v
+	return e
+}
+
+func (e *htmlMenu) setJSElement(v Value) HTML {
+	e.jsElement = v
+	return e
+}
+
+func (e *htmlMenu) setAttrs(v attributes) HTML {
+	e.attributes = v
+	return e
+}
+
+func (e *htmlMenu) setEvents(v eventHandlers) HTML {
+	e.eventHandlers = v
+	return e
+}
+
+func (e *htmlMenu) setParent(v UI) UI {
+	e.parentElement = v
+	return e
+}
+
+func (e *htmlMenu) setBody(v []UI) HTML {
+	e.children = v
+	return e
+}
+
 // The interface that represents a "meta" HTML element.
 type HTMLMeta interface {
 	HTML
