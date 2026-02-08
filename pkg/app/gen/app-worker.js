@@ -61,18 +61,21 @@ async function fetchWithCache(request) {
 // Push Notifications
 // -----------------------------------------------------------------------------
 self.addEventListener("push", (event) => {
-  if (!event.data || !event.data.text()) {
-    return;
-  }
+  event.waitUntil((async () => {
+    let notification;
 
-  const notification = JSON.parse(event.data.text());
-  if (!notification) {
-    return;
-  }
+    try {
+      notification = event.data ? event.data.json() : null;
+    } catch {
+      notification = null;
+    }
 
-  event.waitUntil(
-    showNotification(self.registration, notification)
-  );
+    if (!notification) {
+      return;
+    }
+
+    await showNotification(self.registration, notification);
+  })());
 });
 
 self.addEventListener("message", (event) => {
@@ -87,7 +90,7 @@ self.addEventListener("message", (event) => {
 });
 
 async function showNotification(registration, notification) {
-  const title = notification.title || "";
+  const title = notification.title || "Notification";
 
   let actions = [];
   for (let i in notification.actions) {
@@ -99,19 +102,18 @@ async function showNotification(registration, notification) {
     delete action.path;
   }
 
-  notification.data = notification.data || {};
-  notification.data.goapp = {
-    path: notification.path,
-    actions: actions,
-  };
-  delete notification.title;
-  delete notification.path;
-
-  await registration.showNotification(title, notification);
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  await registration.showNotification(title, {
+    body: notification.body,
+    icon: notification.icon,
+    badge: notification.badge,
+    actions: notification.actions,
+    data: {
+      goapp: {
+        path: notification.path,
+        actions: actions
+      }
+    }
+  });
 }
 
 self.addEventListener("notificationclick", (event) => {
