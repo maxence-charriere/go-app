@@ -103,13 +103,13 @@ func (p *notificationsPage) testNotification(ctx app.Context, e app.Event) {
 		Title: fmt.Sprintln("go-app test", n),
 		Body:  fmt.Sprintln("Test notification for go-app number", n),
 		Path:  "/notifications#example",
-		// Actions: []app.NotificationAction{
-		// 	{
-		// 		Title:  "test",
-		// 		Action: ":test",
-		// 		Path:   "/notifications",
-		// 	},
-		// },
+		Actions: []app.NotificationAction{
+			{
+				Title:  "test",
+				Action: ":test",
+				Path:   "/notifications",
+			},
+		},
 	})
 }
 

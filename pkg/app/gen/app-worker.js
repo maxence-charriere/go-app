@@ -90,7 +90,7 @@ self.addEventListener("message", (event) => {
 });
 
 async function showNotification(registration, notification) {
-  const title = notification.title || "";
+  const title = notification.title || "Notification";
 
   let actions = [];
   for (let i in notification.actions) {
@@ -102,19 +102,17 @@ async function showNotification(registration, notification) {
     delete action.path;
   }
 
-  notification.data = notification.data || {};
-  notification.data.goapp = {
-    path: notification.path,
-    actions: actions,
-  };
-  delete notification.title;
-  delete notification.path;
-
-  await registration.showNotification(title, notification);
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  await registration.showNotification(title, {
+    body: notification.body,
+    icon: notification.icon,
+    badge: notification.badge,
+    data: {
+      goapp: {
+        path: notification.path,
+        actions: actions
+      }
+    }
+  });
 }
 
 self.addEventListener("notificationclick", (event) => {
