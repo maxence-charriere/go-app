@@ -110,7 +110,6 @@ func (p *notificationsPage) testNotification(ctx app.Context, e app.Event) {
 		// 		Path:   "/notifications",
 		// 	},
 		// },
-		// Delay: time.Second * 2,
 	})
 }
 
