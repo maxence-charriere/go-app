@@ -414,6 +414,17 @@ func (m *stateManager) Delete(ctx Context, state string) {
 	ctx.LocalStorage().Del(state)
 }
 
+func (m *stateManager) UnObserve(ctx Context, state string) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	for src := range m.observers[state] {
+		if src == ctx.Src() {
+			delete(m.observers[state], src)
+		}
+	}
+}
+
 // Cleanup removes observers that are no longer active and cleans up any states
 // without observers.
 func (m *stateManager) Cleanup() {
