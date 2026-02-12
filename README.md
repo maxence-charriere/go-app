@@ -105,6 +105,7 @@ func main() {
 - [Murlok.io](https://murlok.io/)
 - [liwasc](https://pojntfx.github.io/liwasc/)
 - [go-app Docs](https://go-app.dev/)
+- [Prompt Composer](https://marosiak.github.io/prompt-composer/)
 
 ## Contributors
 
