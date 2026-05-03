@@ -2,6 +2,8 @@ module github.com/maxence-charriere/go-app/v10
 
 go 1.23.0
 
+toolchain go1.25.0
+
 require (
 	github.com/SherClockHolmes/webpush-go v1.4.0
 	github.com/gomarkdown/markdown v0.0.0-20260417124207-7d523f7318df
