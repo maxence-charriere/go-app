@@ -2294,7 +2294,7 @@ func writeStruct(w io.Writer, t tag) {
 			)
 			fmt.Fprintf(w, `
 			func (e *html%s) Textf(format string, v ...any) HTML%s {
-				e.setAttr("value", FormatString(format, v...))
+				e.setAttr("value", fmt.Sprintf(format, v...))
 				return e
 			}
 			`,
@@ -2423,7 +2423,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(k string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("data-"+k, FormatString("%s", v))
+				e.setAttr("data-"+k, fmt.Sprintf("%s", v))
 				return e
 			}`, "%v")
 		}
@@ -2452,7 +2452,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(k string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("aria-"+k, FormatString("%s", v))
+				e.setAttr("aria-"+k, fmt.Sprintf("%s", v))
 				return e
 			}`, "%v")
 		}
@@ -2536,7 +2536,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%sf(format string, v ...any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("%s", FormatString(format, v...))
+				e.setAttr("%s", fmt.Sprintf(format, v...))
 				return e
 			}`, attrName)
 		}

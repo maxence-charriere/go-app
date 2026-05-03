@@ -123,17 +123,6 @@ func jsonString(v any) string {
 	return string(b)
 }
 
-// Formats a string with the given format and values.
-// It uses fmt.Sprintf when len(v) != 0.
-//
-// TODO: Write a faster Sprintf to use with values.
-func FormatString(format string, v ...any) string {
-	if len(v) == 0 {
-		return format
-	}
-	return fmt.Sprintf(format, v...)
-}
-
 func previewText(v string) string {
 	if len(v) <= 80 {
 		return v

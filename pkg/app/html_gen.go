@@ -283,12 +283,12 @@ func (e *htmlA) AccessKey(v string) HTMLA {
 }
 
 func (e *htmlA) AccessKeyf(format string, v ...any) HTMLA {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlA) Aria(k string, v any) HTMLA {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -308,7 +308,7 @@ func (e *htmlA) ContentEditable(v bool) HTMLA {
 }
 
 func (e *htmlA) DataSet(k string, v any) HTMLA {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -325,7 +325,7 @@ func (e *htmlA) Dir(v string) HTMLA {
 }
 
 func (e *htmlA) Dirf(format string, v ...any) HTMLA {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -335,7 +335,7 @@ func (e *htmlA) Download(v string) HTMLA {
 }
 
 func (e *htmlA) Downloadf(format string, v ...any) HTMLA {
-	e.setAttr("download", FormatString(format, v...))
+	e.setAttr("download", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -355,7 +355,7 @@ func (e *htmlA) Href(v string) HTMLA {
 }
 
 func (e *htmlA) Hreff(format string, v ...any) HTMLA {
-	e.setAttr("href", FormatString(format, v...))
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -365,7 +365,7 @@ func (e *htmlA) HrefLang(v string) HTMLA {
 }
 
 func (e *htmlA) HrefLangf(format string, v ...any) HTMLA {
-	e.setAttr("hreflang", FormatString(format, v...))
+	e.setAttr("hreflang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -375,7 +375,7 @@ func (e *htmlA) ID(v string) HTMLA {
 }
 
 func (e *htmlA) IDf(format string, v ...any) HTMLA {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -385,7 +385,7 @@ func (e *htmlA) Lang(v string) HTMLA {
 }
 
 func (e *htmlA) Langf(format string, v ...any) HTMLA {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -395,7 +395,7 @@ func (e *htmlA) Media(v string) HTMLA {
 }
 
 func (e *htmlA) Mediaf(format string, v ...any) HTMLA {
-	e.setAttr("media", FormatString(format, v...))
+	e.setAttr("media", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -405,7 +405,7 @@ func (e *htmlA) Ping(v string) HTMLA {
 }
 
 func (e *htmlA) Pingf(format string, v ...any) HTMLA {
-	e.setAttr("ping", FormatString(format, v...))
+	e.setAttr("ping", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -415,7 +415,7 @@ func (e *htmlA) Rel(v string) HTMLA {
 }
 
 func (e *htmlA) Relf(format string, v ...any) HTMLA {
-	e.setAttr("rel", FormatString(format, v...))
+	e.setAttr("rel", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -425,7 +425,7 @@ func (e *htmlA) Role(v string) HTMLA {
 }
 
 func (e *htmlA) Rolef(format string, v ...any) HTMLA {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -467,7 +467,7 @@ func (e *htmlA) Target(v string) HTMLA {
 }
 
 func (e *htmlA) Targetf(format string, v ...any) HTMLA {
-	e.setAttr("target", FormatString(format, v...))
+	e.setAttr("target", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -477,7 +477,7 @@ func (e *htmlA) Title(v string) HTMLA {
 }
 
 func (e *htmlA) Titlef(format string, v ...any) HTMLA {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -487,7 +487,7 @@ func (e *htmlA) Type(v string) HTMLA {
 }
 
 func (e *htmlA) Typef(format string, v ...any) HTMLA {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -890,12 +890,12 @@ func (e *htmlAbbr) AccessKey(v string) HTMLAbbr {
 }
 
 func (e *htmlAbbr) AccessKeyf(format string, v ...any) HTMLAbbr {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlAbbr) Aria(k string, v any) HTMLAbbr {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -915,7 +915,7 @@ func (e *htmlAbbr) ContentEditable(v bool) HTMLAbbr {
 }
 
 func (e *htmlAbbr) DataSet(k string, v any) HTMLAbbr {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -932,7 +932,7 @@ func (e *htmlAbbr) Dir(v string) HTMLAbbr {
 }
 
 func (e *htmlAbbr) Dirf(format string, v ...any) HTMLAbbr {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -952,7 +952,7 @@ func (e *htmlAbbr) ID(v string) HTMLAbbr {
 }
 
 func (e *htmlAbbr) IDf(format string, v ...any) HTMLAbbr {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -962,7 +962,7 @@ func (e *htmlAbbr) Lang(v string) HTMLAbbr {
 }
 
 func (e *htmlAbbr) Langf(format string, v ...any) HTMLAbbr {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -972,7 +972,7 @@ func (e *htmlAbbr) Role(v string) HTMLAbbr {
 }
 
 func (e *htmlAbbr) Rolef(format string, v ...any) HTMLAbbr {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1014,7 +1014,7 @@ func (e *htmlAbbr) Title(v string) HTMLAbbr {
 }
 
 func (e *htmlAbbr) Titlef(format string, v ...any) HTMLAbbr {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1417,12 +1417,12 @@ func (e *htmlAddress) AccessKey(v string) HTMLAddress {
 }
 
 func (e *htmlAddress) AccessKeyf(format string, v ...any) HTMLAddress {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlAddress) Aria(k string, v any) HTMLAddress {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1442,7 +1442,7 @@ func (e *htmlAddress) ContentEditable(v bool) HTMLAddress {
 }
 
 func (e *htmlAddress) DataSet(k string, v any) HTMLAddress {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1459,7 +1459,7 @@ func (e *htmlAddress) Dir(v string) HTMLAddress {
 }
 
 func (e *htmlAddress) Dirf(format string, v ...any) HTMLAddress {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1479,7 +1479,7 @@ func (e *htmlAddress) ID(v string) HTMLAddress {
 }
 
 func (e *htmlAddress) IDf(format string, v ...any) HTMLAddress {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1489,7 +1489,7 @@ func (e *htmlAddress) Lang(v string) HTMLAddress {
 }
 
 func (e *htmlAddress) Langf(format string, v ...any) HTMLAddress {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1499,7 +1499,7 @@ func (e *htmlAddress) Role(v string) HTMLAddress {
 }
 
 func (e *htmlAddress) Rolef(format string, v ...any) HTMLAddress {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1541,7 +1541,7 @@ func (e *htmlAddress) Title(v string) HTMLAddress {
 }
 
 func (e *htmlAddress) Titlef(format string, v ...any) HTMLAddress {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1983,7 +1983,7 @@ func (e *htmlArea) AccessKey(v string) HTMLArea {
 }
 
 func (e *htmlArea) AccessKeyf(format string, v ...any) HTMLArea {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1993,12 +1993,12 @@ func (e *htmlArea) Alt(v string) HTMLArea {
 }
 
 func (e *htmlArea) Altf(format string, v ...any) HTMLArea {
-	e.setAttr("alt", FormatString(format, v...))
+	e.setAttr("alt", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlArea) Aria(k string, v any) HTMLArea {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2023,12 +2023,12 @@ func (e *htmlArea) Coords(v string) HTMLArea {
 }
 
 func (e *htmlArea) Coordsf(format string, v ...any) HTMLArea {
-	e.setAttr("coords", FormatString(format, v...))
+	e.setAttr("coords", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlArea) DataSet(k string, v any) HTMLArea {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2045,7 +2045,7 @@ func (e *htmlArea) Dir(v string) HTMLArea {
 }
 
 func (e *htmlArea) Dirf(format string, v ...any) HTMLArea {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2055,7 +2055,7 @@ func (e *htmlArea) Download(v string) HTMLArea {
 }
 
 func (e *htmlArea) Downloadf(format string, v ...any) HTMLArea {
-	e.setAttr("download", FormatString(format, v...))
+	e.setAttr("download", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2075,7 +2075,7 @@ func (e *htmlArea) Href(v string) HTMLArea {
 }
 
 func (e *htmlArea) Hreff(format string, v ...any) HTMLArea {
-	e.setAttr("href", FormatString(format, v...))
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2085,7 +2085,7 @@ func (e *htmlArea) HrefLang(v string) HTMLArea {
 }
 
 func (e *htmlArea) HrefLangf(format string, v ...any) HTMLArea {
-	e.setAttr("hreflang", FormatString(format, v...))
+	e.setAttr("hreflang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2095,7 +2095,7 @@ func (e *htmlArea) ID(v string) HTMLArea {
 }
 
 func (e *htmlArea) IDf(format string, v ...any) HTMLArea {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2105,7 +2105,7 @@ func (e *htmlArea) Lang(v string) HTMLArea {
 }
 
 func (e *htmlArea) Langf(format string, v ...any) HTMLArea {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2115,7 +2115,7 @@ func (e *htmlArea) Media(v string) HTMLArea {
 }
 
 func (e *htmlArea) Mediaf(format string, v ...any) HTMLArea {
-	e.setAttr("media", FormatString(format, v...))
+	e.setAttr("media", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2125,7 +2125,7 @@ func (e *htmlArea) Rel(v string) HTMLArea {
 }
 
 func (e *htmlArea) Relf(format string, v ...any) HTMLArea {
-	e.setAttr("rel", FormatString(format, v...))
+	e.setAttr("rel", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2135,7 +2135,7 @@ func (e *htmlArea) Role(v string) HTMLArea {
 }
 
 func (e *htmlArea) Rolef(format string, v ...any) HTMLArea {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2145,7 +2145,7 @@ func (e *htmlArea) Shape(v string) HTMLArea {
 }
 
 func (e *htmlArea) Shapef(format string, v ...any) HTMLArea {
-	e.setAttr("shape", FormatString(format, v...))
+	e.setAttr("shape", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2187,7 +2187,7 @@ func (e *htmlArea) Target(v string) HTMLArea {
 }
 
 func (e *htmlArea) Targetf(format string, v ...any) HTMLArea {
-	e.setAttr("target", FormatString(format, v...))
+	e.setAttr("target", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2197,7 +2197,7 @@ func (e *htmlArea) Title(v string) HTMLArea {
 }
 
 func (e *htmlArea) Titlef(format string, v ...any) HTMLArea {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2207,7 +2207,7 @@ func (e *htmlArea) Type(v string) HTMLArea {
 }
 
 func (e *htmlArea) Typef(format string, v ...any) HTMLArea {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2610,12 +2610,12 @@ func (e *htmlArticle) AccessKey(v string) HTMLArticle {
 }
 
 func (e *htmlArticle) AccessKeyf(format string, v ...any) HTMLArticle {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlArticle) Aria(k string, v any) HTMLArticle {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2635,7 +2635,7 @@ func (e *htmlArticle) ContentEditable(v bool) HTMLArticle {
 }
 
 func (e *htmlArticle) DataSet(k string, v any) HTMLArticle {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2652,7 +2652,7 @@ func (e *htmlArticle) Dir(v string) HTMLArticle {
 }
 
 func (e *htmlArticle) Dirf(format string, v ...any) HTMLArticle {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2672,7 +2672,7 @@ func (e *htmlArticle) ID(v string) HTMLArticle {
 }
 
 func (e *htmlArticle) IDf(format string, v ...any) HTMLArticle {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2682,7 +2682,7 @@ func (e *htmlArticle) Lang(v string) HTMLArticle {
 }
 
 func (e *htmlArticle) Langf(format string, v ...any) HTMLArticle {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2692,7 +2692,7 @@ func (e *htmlArticle) Role(v string) HTMLArticle {
 }
 
 func (e *htmlArticle) Rolef(format string, v ...any) HTMLArticle {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2734,7 +2734,7 @@ func (e *htmlArticle) Title(v string) HTMLArticle {
 }
 
 func (e *htmlArticle) Titlef(format string, v ...any) HTMLArticle {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3137,12 +3137,12 @@ func (e *htmlAside) AccessKey(v string) HTMLAside {
 }
 
 func (e *htmlAside) AccessKeyf(format string, v ...any) HTMLAside {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlAside) Aria(k string, v any) HTMLAside {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3162,7 +3162,7 @@ func (e *htmlAside) ContentEditable(v bool) HTMLAside {
 }
 
 func (e *htmlAside) DataSet(k string, v any) HTMLAside {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3179,7 +3179,7 @@ func (e *htmlAside) Dir(v string) HTMLAside {
 }
 
 func (e *htmlAside) Dirf(format string, v ...any) HTMLAside {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3199,7 +3199,7 @@ func (e *htmlAside) ID(v string) HTMLAside {
 }
 
 func (e *htmlAside) IDf(format string, v ...any) HTMLAside {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3209,7 +3209,7 @@ func (e *htmlAside) Lang(v string) HTMLAside {
 }
 
 func (e *htmlAside) Langf(format string, v ...any) HTMLAside {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3219,7 +3219,7 @@ func (e *htmlAside) Role(v string) HTMLAside {
 }
 
 func (e *htmlAside) Rolef(format string, v ...any) HTMLAside {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3261,7 +3261,7 @@ func (e *htmlAside) Title(v string) HTMLAside {
 }
 
 func (e *htmlAside) Titlef(format string, v ...any) HTMLAside {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3763,12 +3763,12 @@ func (e *htmlAudio) AccessKey(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) AccessKeyf(format string, v ...any) HTMLAudio {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlAudio) Aria(k string, v any) HTMLAudio {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3803,12 +3803,12 @@ func (e *htmlAudio) CrossOrigin(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) CrossOriginf(format string, v ...any) HTMLAudio {
-	e.setAttr("crossorigin", FormatString(format, v...))
+	e.setAttr("crossorigin", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlAudio) DataSet(k string, v any) HTMLAudio {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3825,7 +3825,7 @@ func (e *htmlAudio) Dir(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) Dirf(format string, v ...any) HTMLAudio {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3845,7 +3845,7 @@ func (e *htmlAudio) ID(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) IDf(format string, v ...any) HTMLAudio {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3855,7 +3855,7 @@ func (e *htmlAudio) Lang(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) Langf(format string, v ...any) HTMLAudio {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3875,7 +3875,7 @@ func (e *htmlAudio) Preload(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) Preloadf(format string, v ...any) HTMLAudio {
-	e.setAttr("preload", FormatString(format, v...))
+	e.setAttr("preload", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3885,7 +3885,7 @@ func (e *htmlAudio) Role(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) Rolef(format string, v ...any) HTMLAudio {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3905,7 +3905,7 @@ func (e *htmlAudio) Src(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) Srcf(format string, v ...any) HTMLAudio {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3937,7 +3937,7 @@ func (e *htmlAudio) Title(v string) HTMLAudio {
 }
 
 func (e *htmlAudio) Titlef(format string, v ...any) HTMLAudio {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4432,12 +4432,12 @@ func (e *htmlB) AccessKey(v string) HTMLB {
 }
 
 func (e *htmlB) AccessKeyf(format string, v ...any) HTMLB {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlB) Aria(k string, v any) HTMLB {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4457,7 +4457,7 @@ func (e *htmlB) ContentEditable(v bool) HTMLB {
 }
 
 func (e *htmlB) DataSet(k string, v any) HTMLB {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4474,7 +4474,7 @@ func (e *htmlB) Dir(v string) HTMLB {
 }
 
 func (e *htmlB) Dirf(format string, v ...any) HTMLB {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4494,7 +4494,7 @@ func (e *htmlB) ID(v string) HTMLB {
 }
 
 func (e *htmlB) IDf(format string, v ...any) HTMLB {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4504,7 +4504,7 @@ func (e *htmlB) Lang(v string) HTMLB {
 }
 
 func (e *htmlB) Langf(format string, v ...any) HTMLB {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4514,7 +4514,7 @@ func (e *htmlB) Role(v string) HTMLB {
 }
 
 func (e *htmlB) Rolef(format string, v ...any) HTMLB {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4556,7 +4556,7 @@ func (e *htmlB) Title(v string) HTMLB {
 }
 
 func (e *htmlB) Titlef(format string, v ...any) HTMLB {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4950,12 +4950,12 @@ func (e *htmlBase) AccessKey(v string) HTMLBase {
 }
 
 func (e *htmlBase) AccessKeyf(format string, v ...any) HTMLBase {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlBase) Aria(k string, v any) HTMLBase {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4975,7 +4975,7 @@ func (e *htmlBase) ContentEditable(v bool) HTMLBase {
 }
 
 func (e *htmlBase) DataSet(k string, v any) HTMLBase {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4992,7 +4992,7 @@ func (e *htmlBase) Dir(v string) HTMLBase {
 }
 
 func (e *htmlBase) Dirf(format string, v ...any) HTMLBase {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5012,7 +5012,7 @@ func (e *htmlBase) Href(v string) HTMLBase {
 }
 
 func (e *htmlBase) Hreff(format string, v ...any) HTMLBase {
-	e.setAttr("href", FormatString(format, v...))
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5022,7 +5022,7 @@ func (e *htmlBase) ID(v string) HTMLBase {
 }
 
 func (e *htmlBase) IDf(format string, v ...any) HTMLBase {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5032,7 +5032,7 @@ func (e *htmlBase) Lang(v string) HTMLBase {
 }
 
 func (e *htmlBase) Langf(format string, v ...any) HTMLBase {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5042,7 +5042,7 @@ func (e *htmlBase) Role(v string) HTMLBase {
 }
 
 func (e *htmlBase) Rolef(format string, v ...any) HTMLBase {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5084,7 +5084,7 @@ func (e *htmlBase) Target(v string) HTMLBase {
 }
 
 func (e *htmlBase) Targetf(format string, v ...any) HTMLBase {
-	e.setAttr("target", FormatString(format, v...))
+	e.setAttr("target", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5094,7 +5094,7 @@ func (e *htmlBase) Title(v string) HTMLBase {
 }
 
 func (e *htmlBase) Titlef(format string, v ...any) HTMLBase {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5497,12 +5497,12 @@ func (e *htmlBdi) AccessKey(v string) HTMLBdi {
 }
 
 func (e *htmlBdi) AccessKeyf(format string, v ...any) HTMLBdi {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlBdi) Aria(k string, v any) HTMLBdi {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -5522,7 +5522,7 @@ func (e *htmlBdi) ContentEditable(v bool) HTMLBdi {
 }
 
 func (e *htmlBdi) DataSet(k string, v any) HTMLBdi {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -5539,7 +5539,7 @@ func (e *htmlBdi) Dir(v string) HTMLBdi {
 }
 
 func (e *htmlBdi) Dirf(format string, v ...any) HTMLBdi {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5559,7 +5559,7 @@ func (e *htmlBdi) ID(v string) HTMLBdi {
 }
 
 func (e *htmlBdi) IDf(format string, v ...any) HTMLBdi {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5569,7 +5569,7 @@ func (e *htmlBdi) Lang(v string) HTMLBdi {
 }
 
 func (e *htmlBdi) Langf(format string, v ...any) HTMLBdi {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5579,7 +5579,7 @@ func (e *htmlBdi) Role(v string) HTMLBdi {
 }
 
 func (e *htmlBdi) Rolef(format string, v ...any) HTMLBdi {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5621,7 +5621,7 @@ func (e *htmlBdi) Title(v string) HTMLBdi {
 }
 
 func (e *htmlBdi) Titlef(format string, v ...any) HTMLBdi {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6024,12 +6024,12 @@ func (e *htmlBdo) AccessKey(v string) HTMLBdo {
 }
 
 func (e *htmlBdo) AccessKeyf(format string, v ...any) HTMLBdo {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlBdo) Aria(k string, v any) HTMLBdo {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6049,7 +6049,7 @@ func (e *htmlBdo) ContentEditable(v bool) HTMLBdo {
 }
 
 func (e *htmlBdo) DataSet(k string, v any) HTMLBdo {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6066,7 +6066,7 @@ func (e *htmlBdo) Dir(v string) HTMLBdo {
 }
 
 func (e *htmlBdo) Dirf(format string, v ...any) HTMLBdo {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6086,7 +6086,7 @@ func (e *htmlBdo) ID(v string) HTMLBdo {
 }
 
 func (e *htmlBdo) IDf(format string, v ...any) HTMLBdo {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6096,7 +6096,7 @@ func (e *htmlBdo) Lang(v string) HTMLBdo {
 }
 
 func (e *htmlBdo) Langf(format string, v ...any) HTMLBdo {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6106,7 +6106,7 @@ func (e *htmlBdo) Role(v string) HTMLBdo {
 }
 
 func (e *htmlBdo) Rolef(format string, v ...any) HTMLBdo {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6148,7 +6148,7 @@ func (e *htmlBdo) Title(v string) HTMLBdo {
 }
 
 func (e *htmlBdo) Titlef(format string, v ...any) HTMLBdo {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6557,12 +6557,12 @@ func (e *htmlBlockquote) AccessKey(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) AccessKeyf(format string, v ...any) HTMLBlockquote {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlBlockquote) Aria(k string, v any) HTMLBlockquote {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6577,7 +6577,7 @@ func (e *htmlBlockquote) Cite(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Citef(format string, v ...any) HTMLBlockquote {
-	e.setAttr("cite", FormatString(format, v...))
+	e.setAttr("cite", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6592,7 +6592,7 @@ func (e *htmlBlockquote) ContentEditable(v bool) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) DataSet(k string, v any) HTMLBlockquote {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6609,7 +6609,7 @@ func (e *htmlBlockquote) Dir(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Dirf(format string, v ...any) HTMLBlockquote {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6629,7 +6629,7 @@ func (e *htmlBlockquote) ID(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) IDf(format string, v ...any) HTMLBlockquote {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6639,7 +6639,7 @@ func (e *htmlBlockquote) Lang(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Langf(format string, v ...any) HTMLBlockquote {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6649,7 +6649,7 @@ func (e *htmlBlockquote) Role(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Rolef(format string, v ...any) HTMLBlockquote {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6691,7 +6691,7 @@ func (e *htmlBlockquote) Title(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Titlef(format string, v ...any) HTMLBlockquote {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7124,12 +7124,12 @@ func (e *htmlBody) AccessKey(v string) HTMLBody {
 }
 
 func (e *htmlBody) AccessKeyf(format string, v ...any) HTMLBody {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlBody) Aria(k string, v any) HTMLBody {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7149,7 +7149,7 @@ func (e *htmlBody) ContentEditable(v bool) HTMLBody {
 }
 
 func (e *htmlBody) DataSet(k string, v any) HTMLBody {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7166,7 +7166,7 @@ func (e *htmlBody) Dir(v string) HTMLBody {
 }
 
 func (e *htmlBody) Dirf(format string, v ...any) HTMLBody {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7186,7 +7186,7 @@ func (e *htmlBody) ID(v string) HTMLBody {
 }
 
 func (e *htmlBody) IDf(format string, v ...any) HTMLBody {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7196,7 +7196,7 @@ func (e *htmlBody) Lang(v string) HTMLBody {
 }
 
 func (e *htmlBody) Langf(format string, v ...any) HTMLBody {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7206,7 +7206,7 @@ func (e *htmlBody) Role(v string) HTMLBody {
 }
 
 func (e *htmlBody) Rolef(format string, v ...any) HTMLBody {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7248,7 +7248,7 @@ func (e *htmlBody) Title(v string) HTMLBody {
 }
 
 func (e *htmlBody) Titlef(format string, v ...any) HTMLBody {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7690,12 +7690,12 @@ func (e *htmlBr) AccessKey(v string) HTMLBr {
 }
 
 func (e *htmlBr) AccessKeyf(format string, v ...any) HTMLBr {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlBr) Aria(k string, v any) HTMLBr {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7715,7 +7715,7 @@ func (e *htmlBr) ContentEditable(v bool) HTMLBr {
 }
 
 func (e *htmlBr) DataSet(k string, v any) HTMLBr {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7732,7 +7732,7 @@ func (e *htmlBr) Dir(v string) HTMLBr {
 }
 
 func (e *htmlBr) Dirf(format string, v ...any) HTMLBr {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7752,7 +7752,7 @@ func (e *htmlBr) ID(v string) HTMLBr {
 }
 
 func (e *htmlBr) IDf(format string, v ...any) HTMLBr {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7762,7 +7762,7 @@ func (e *htmlBr) Lang(v string) HTMLBr {
 }
 
 func (e *htmlBr) Langf(format string, v ...any) HTMLBr {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7772,7 +7772,7 @@ func (e *htmlBr) Role(v string) HTMLBr {
 }
 
 func (e *htmlBr) Rolef(format string, v ...any) HTMLBr {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7814,7 +7814,7 @@ func (e *htmlBr) Title(v string) HTMLBr {
 }
 
 func (e *htmlBr) Titlef(format string, v ...any) HTMLBr {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8271,12 +8271,12 @@ func (e *htmlButton) AccessKey(v string) HTMLButton {
 }
 
 func (e *htmlButton) AccessKeyf(format string, v ...any) HTMLButton {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlButton) Aria(k string, v any) HTMLButton {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8301,7 +8301,7 @@ func (e *htmlButton) ContentEditable(v bool) HTMLButton {
 }
 
 func (e *htmlButton) DataSet(k string, v any) HTMLButton {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8318,7 +8318,7 @@ func (e *htmlButton) Dir(v string) HTMLButton {
 }
 
 func (e *htmlButton) Dirf(format string, v ...any) HTMLButton {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8338,7 +8338,7 @@ func (e *htmlButton) Form(v string) HTMLButton {
 }
 
 func (e *htmlButton) Formf(format string, v ...any) HTMLButton {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8348,7 +8348,7 @@ func (e *htmlButton) FormAction(v string) HTMLButton {
 }
 
 func (e *htmlButton) FormActionf(format string, v ...any) HTMLButton {
-	e.setAttr("formaction", FormatString(format, v...))
+	e.setAttr("formaction", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8358,7 +8358,7 @@ func (e *htmlButton) FormEncType(v string) HTMLButton {
 }
 
 func (e *htmlButton) FormEncTypef(format string, v ...any) HTMLButton {
-	e.setAttr("formenctype", FormatString(format, v...))
+	e.setAttr("formenctype", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8368,7 +8368,7 @@ func (e *htmlButton) FormMethod(v string) HTMLButton {
 }
 
 func (e *htmlButton) FormMethodf(format string, v ...any) HTMLButton {
-	e.setAttr("formmethod", FormatString(format, v...))
+	e.setAttr("formmethod", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8383,7 +8383,7 @@ func (e *htmlButton) FormTarget(v string) HTMLButton {
 }
 
 func (e *htmlButton) FormTargetf(format string, v ...any) HTMLButton {
-	e.setAttr("formtarget", FormatString(format, v...))
+	e.setAttr("formtarget", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8398,7 +8398,7 @@ func (e *htmlButton) ID(v string) HTMLButton {
 }
 
 func (e *htmlButton) IDf(format string, v ...any) HTMLButton {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8408,7 +8408,7 @@ func (e *htmlButton) Lang(v string) HTMLButton {
 }
 
 func (e *htmlButton) Langf(format string, v ...any) HTMLButton {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8418,7 +8418,7 @@ func (e *htmlButton) Name(v string) HTMLButton {
 }
 
 func (e *htmlButton) Namef(format string, v ...any) HTMLButton {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8428,7 +8428,7 @@ func (e *htmlButton) Role(v string) HTMLButton {
 }
 
 func (e *htmlButton) Rolef(format string, v ...any) HTMLButton {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8470,7 +8470,7 @@ func (e *htmlButton) Title(v string) HTMLButton {
 }
 
 func (e *htmlButton) Titlef(format string, v ...any) HTMLButton {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8480,7 +8480,7 @@ func (e *htmlButton) Type(v string) HTMLButton {
 }
 
 func (e *htmlButton) Typef(format string, v ...any) HTMLButton {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8894,12 +8894,12 @@ func (e *htmlCanvas) AccessKey(v string) HTMLCanvas {
 }
 
 func (e *htmlCanvas) AccessKeyf(format string, v ...any) HTMLCanvas {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlCanvas) Aria(k string, v any) HTMLCanvas {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8919,7 +8919,7 @@ func (e *htmlCanvas) ContentEditable(v bool) HTMLCanvas {
 }
 
 func (e *htmlCanvas) DataSet(k string, v any) HTMLCanvas {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8936,7 +8936,7 @@ func (e *htmlCanvas) Dir(v string) HTMLCanvas {
 }
 
 func (e *htmlCanvas) Dirf(format string, v ...any) HTMLCanvas {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8961,7 +8961,7 @@ func (e *htmlCanvas) ID(v string) HTMLCanvas {
 }
 
 func (e *htmlCanvas) IDf(format string, v ...any) HTMLCanvas {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8971,7 +8971,7 @@ func (e *htmlCanvas) Lang(v string) HTMLCanvas {
 }
 
 func (e *htmlCanvas) Langf(format string, v ...any) HTMLCanvas {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8981,7 +8981,7 @@ func (e *htmlCanvas) Role(v string) HTMLCanvas {
 }
 
 func (e *htmlCanvas) Rolef(format string, v ...any) HTMLCanvas {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9023,7 +9023,7 @@ func (e *htmlCanvas) Title(v string) HTMLCanvas {
 }
 
 func (e *htmlCanvas) Titlef(format string, v ...any) HTMLCanvas {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9431,12 +9431,12 @@ func (e *htmlCaption) AccessKey(v string) HTMLCaption {
 }
 
 func (e *htmlCaption) AccessKeyf(format string, v ...any) HTMLCaption {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlCaption) Aria(k string, v any) HTMLCaption {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9456,7 +9456,7 @@ func (e *htmlCaption) ContentEditable(v bool) HTMLCaption {
 }
 
 func (e *htmlCaption) DataSet(k string, v any) HTMLCaption {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9473,7 +9473,7 @@ func (e *htmlCaption) Dir(v string) HTMLCaption {
 }
 
 func (e *htmlCaption) Dirf(format string, v ...any) HTMLCaption {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9493,7 +9493,7 @@ func (e *htmlCaption) ID(v string) HTMLCaption {
 }
 
 func (e *htmlCaption) IDf(format string, v ...any) HTMLCaption {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9503,7 +9503,7 @@ func (e *htmlCaption) Lang(v string) HTMLCaption {
 }
 
 func (e *htmlCaption) Langf(format string, v ...any) HTMLCaption {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9513,7 +9513,7 @@ func (e *htmlCaption) Role(v string) HTMLCaption {
 }
 
 func (e *htmlCaption) Rolef(format string, v ...any) HTMLCaption {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9555,7 +9555,7 @@ func (e *htmlCaption) Title(v string) HTMLCaption {
 }
 
 func (e *htmlCaption) Titlef(format string, v ...any) HTMLCaption {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9958,12 +9958,12 @@ func (e *htmlCite) AccessKey(v string) HTMLCite {
 }
 
 func (e *htmlCite) AccessKeyf(format string, v ...any) HTMLCite {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlCite) Aria(k string, v any) HTMLCite {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9983,7 +9983,7 @@ func (e *htmlCite) ContentEditable(v bool) HTMLCite {
 }
 
 func (e *htmlCite) DataSet(k string, v any) HTMLCite {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -10000,7 +10000,7 @@ func (e *htmlCite) Dir(v string) HTMLCite {
 }
 
 func (e *htmlCite) Dirf(format string, v ...any) HTMLCite {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10020,7 +10020,7 @@ func (e *htmlCite) ID(v string) HTMLCite {
 }
 
 func (e *htmlCite) IDf(format string, v ...any) HTMLCite {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10030,7 +10030,7 @@ func (e *htmlCite) Lang(v string) HTMLCite {
 }
 
 func (e *htmlCite) Langf(format string, v ...any) HTMLCite {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10040,7 +10040,7 @@ func (e *htmlCite) Role(v string) HTMLCite {
 }
 
 func (e *htmlCite) Rolef(format string, v ...any) HTMLCite {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10082,7 +10082,7 @@ func (e *htmlCite) Title(v string) HTMLCite {
 }
 
 func (e *htmlCite) Titlef(format string, v ...any) HTMLCite {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10485,12 +10485,12 @@ func (e *htmlCode) AccessKey(v string) HTMLCode {
 }
 
 func (e *htmlCode) AccessKeyf(format string, v ...any) HTMLCode {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlCode) Aria(k string, v any) HTMLCode {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -10510,7 +10510,7 @@ func (e *htmlCode) ContentEditable(v bool) HTMLCode {
 }
 
 func (e *htmlCode) DataSet(k string, v any) HTMLCode {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -10527,7 +10527,7 @@ func (e *htmlCode) Dir(v string) HTMLCode {
 }
 
 func (e *htmlCode) Dirf(format string, v ...any) HTMLCode {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10547,7 +10547,7 @@ func (e *htmlCode) ID(v string) HTMLCode {
 }
 
 func (e *htmlCode) IDf(format string, v ...any) HTMLCode {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10557,7 +10557,7 @@ func (e *htmlCode) Lang(v string) HTMLCode {
 }
 
 func (e *htmlCode) Langf(format string, v ...any) HTMLCode {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10567,7 +10567,7 @@ func (e *htmlCode) Role(v string) HTMLCode {
 }
 
 func (e *htmlCode) Rolef(format string, v ...any) HTMLCode {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10609,7 +10609,7 @@ func (e *htmlCode) Title(v string) HTMLCode {
 }
 
 func (e *htmlCode) Titlef(format string, v ...any) HTMLCode {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10994,12 +10994,12 @@ func (e *htmlCol) AccessKey(v string) HTMLCol {
 }
 
 func (e *htmlCol) AccessKeyf(format string, v ...any) HTMLCol {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlCol) Aria(k string, v any) HTMLCol {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11019,7 +11019,7 @@ func (e *htmlCol) ContentEditable(v bool) HTMLCol {
 }
 
 func (e *htmlCol) DataSet(k string, v any) HTMLCol {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11036,7 +11036,7 @@ func (e *htmlCol) Dir(v string) HTMLCol {
 }
 
 func (e *htmlCol) Dirf(format string, v ...any) HTMLCol {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11056,7 +11056,7 @@ func (e *htmlCol) ID(v string) HTMLCol {
 }
 
 func (e *htmlCol) IDf(format string, v ...any) HTMLCol {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11066,7 +11066,7 @@ func (e *htmlCol) Lang(v string) HTMLCol {
 }
 
 func (e *htmlCol) Langf(format string, v ...any) HTMLCol {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11076,7 +11076,7 @@ func (e *htmlCol) Role(v string) HTMLCol {
 }
 
 func (e *htmlCol) Rolef(format string, v ...any) HTMLCol {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11123,7 +11123,7 @@ func (e *htmlCol) Title(v string) HTMLCol {
 }
 
 func (e *htmlCol) Titlef(format string, v ...any) HTMLCol {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11529,12 +11529,12 @@ func (e *htmlColGroup) AccessKey(v string) HTMLColGroup {
 }
 
 func (e *htmlColGroup) AccessKeyf(format string, v ...any) HTMLColGroup {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlColGroup) Aria(k string, v any) HTMLColGroup {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11554,7 +11554,7 @@ func (e *htmlColGroup) ContentEditable(v bool) HTMLColGroup {
 }
 
 func (e *htmlColGroup) DataSet(k string, v any) HTMLColGroup {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11571,7 +11571,7 @@ func (e *htmlColGroup) Dir(v string) HTMLColGroup {
 }
 
 func (e *htmlColGroup) Dirf(format string, v ...any) HTMLColGroup {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11591,7 +11591,7 @@ func (e *htmlColGroup) ID(v string) HTMLColGroup {
 }
 
 func (e *htmlColGroup) IDf(format string, v ...any) HTMLColGroup {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11601,7 +11601,7 @@ func (e *htmlColGroup) Lang(v string) HTMLColGroup {
 }
 
 func (e *htmlColGroup) Langf(format string, v ...any) HTMLColGroup {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11611,7 +11611,7 @@ func (e *htmlColGroup) Role(v string) HTMLColGroup {
 }
 
 func (e *htmlColGroup) Rolef(format string, v ...any) HTMLColGroup {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11658,7 +11658,7 @@ func (e *htmlColGroup) Title(v string) HTMLColGroup {
 }
 
 func (e *htmlColGroup) Titlef(format string, v ...any) HTMLColGroup {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11962,12 +11962,12 @@ func (e *htmlData) AccessKey(v string) HTMLData {
 }
 
 func (e *htmlData) AccessKeyf(format string, v ...any) HTMLData {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlData) Aria(k string, v any) HTMLData {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11987,7 +11987,7 @@ func (e *htmlData) ContentEditable(v bool) HTMLData {
 }
 
 func (e *htmlData) DataSet(k string, v any) HTMLData {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12004,7 +12004,7 @@ func (e *htmlData) Dir(v string) HTMLData {
 }
 
 func (e *htmlData) Dirf(format string, v ...any) HTMLData {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12024,7 +12024,7 @@ func (e *htmlData) ID(v string) HTMLData {
 }
 
 func (e *htmlData) IDf(format string, v ...any) HTMLData {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12034,7 +12034,7 @@ func (e *htmlData) Lang(v string) HTMLData {
 }
 
 func (e *htmlData) Langf(format string, v ...any) HTMLData {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12044,7 +12044,7 @@ func (e *htmlData) Role(v string) HTMLData {
 }
 
 func (e *htmlData) Rolef(format string, v ...any) HTMLData {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12086,7 +12086,7 @@ func (e *htmlData) Title(v string) HTMLData {
 }
 
 func (e *htmlData) Titlef(format string, v ...any) HTMLData {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12358,12 +12358,12 @@ func (e *htmlDataList) AccessKey(v string) HTMLDataList {
 }
 
 func (e *htmlDataList) AccessKeyf(format string, v ...any) HTMLDataList {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDataList) Aria(k string, v any) HTMLDataList {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12383,7 +12383,7 @@ func (e *htmlDataList) ContentEditable(v bool) HTMLDataList {
 }
 
 func (e *htmlDataList) DataSet(k string, v any) HTMLDataList {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12400,7 +12400,7 @@ func (e *htmlDataList) Dir(v string) HTMLDataList {
 }
 
 func (e *htmlDataList) Dirf(format string, v ...any) HTMLDataList {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12420,7 +12420,7 @@ func (e *htmlDataList) ID(v string) HTMLDataList {
 }
 
 func (e *htmlDataList) IDf(format string, v ...any) HTMLDataList {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12430,7 +12430,7 @@ func (e *htmlDataList) Lang(v string) HTMLDataList {
 }
 
 func (e *htmlDataList) Langf(format string, v ...any) HTMLDataList {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12440,7 +12440,7 @@ func (e *htmlDataList) Role(v string) HTMLDataList {
 }
 
 func (e *htmlDataList) Rolef(format string, v ...any) HTMLDataList {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12482,7 +12482,7 @@ func (e *htmlDataList) Title(v string) HTMLDataList {
 }
 
 func (e *htmlDataList) Titlef(format string, v ...any) HTMLDataList {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12885,12 +12885,12 @@ func (e *htmlDd) AccessKey(v string) HTMLDd {
 }
 
 func (e *htmlDd) AccessKeyf(format string, v ...any) HTMLDd {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDd) Aria(k string, v any) HTMLDd {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12910,7 +12910,7 @@ func (e *htmlDd) ContentEditable(v bool) HTMLDd {
 }
 
 func (e *htmlDd) DataSet(k string, v any) HTMLDd {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12927,7 +12927,7 @@ func (e *htmlDd) Dir(v string) HTMLDd {
 }
 
 func (e *htmlDd) Dirf(format string, v ...any) HTMLDd {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12947,7 +12947,7 @@ func (e *htmlDd) ID(v string) HTMLDd {
 }
 
 func (e *htmlDd) IDf(format string, v ...any) HTMLDd {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12957,7 +12957,7 @@ func (e *htmlDd) Lang(v string) HTMLDd {
 }
 
 func (e *htmlDd) Langf(format string, v ...any) HTMLDd {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12967,7 +12967,7 @@ func (e *htmlDd) Role(v string) HTMLDd {
 }
 
 func (e *htmlDd) Rolef(format string, v ...any) HTMLDd {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13009,7 +13009,7 @@ func (e *htmlDd) Title(v string) HTMLDd {
 }
 
 func (e *htmlDd) Titlef(format string, v ...any) HTMLDd {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13424,12 +13424,12 @@ func (e *htmlDel) AccessKey(v string) HTMLDel {
 }
 
 func (e *htmlDel) AccessKeyf(format string, v ...any) HTMLDel {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDel) Aria(k string, v any) HTMLDel {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13444,7 +13444,7 @@ func (e *htmlDel) Cite(v string) HTMLDel {
 }
 
 func (e *htmlDel) Citef(format string, v ...any) HTMLDel {
-	e.setAttr("cite", FormatString(format, v...))
+	e.setAttr("cite", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13459,7 +13459,7 @@ func (e *htmlDel) ContentEditable(v bool) HTMLDel {
 }
 
 func (e *htmlDel) DataSet(k string, v any) HTMLDel {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13476,7 +13476,7 @@ func (e *htmlDel) DateTime(v string) HTMLDel {
 }
 
 func (e *htmlDel) DateTimef(format string, v ...any) HTMLDel {
-	e.setAttr("datetime", FormatString(format, v...))
+	e.setAttr("datetime", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13486,7 +13486,7 @@ func (e *htmlDel) Dir(v string) HTMLDel {
 }
 
 func (e *htmlDel) Dirf(format string, v ...any) HTMLDel {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13506,7 +13506,7 @@ func (e *htmlDel) ID(v string) HTMLDel {
 }
 
 func (e *htmlDel) IDf(format string, v ...any) HTMLDel {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13516,7 +13516,7 @@ func (e *htmlDel) Lang(v string) HTMLDel {
 }
 
 func (e *htmlDel) Langf(format string, v ...any) HTMLDel {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13526,7 +13526,7 @@ func (e *htmlDel) Role(v string) HTMLDel {
 }
 
 func (e *htmlDel) Rolef(format string, v ...any) HTMLDel {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13568,7 +13568,7 @@ func (e *htmlDel) Title(v string) HTMLDel {
 }
 
 func (e *htmlDel) Titlef(format string, v ...any) HTMLDel {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13977,12 +13977,12 @@ func (e *htmlDetails) AccessKey(v string) HTMLDetails {
 }
 
 func (e *htmlDetails) AccessKeyf(format string, v ...any) HTMLDetails {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDetails) Aria(k string, v any) HTMLDetails {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14002,7 +14002,7 @@ func (e *htmlDetails) ContentEditable(v bool) HTMLDetails {
 }
 
 func (e *htmlDetails) DataSet(k string, v any) HTMLDetails {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14019,7 +14019,7 @@ func (e *htmlDetails) Dir(v string) HTMLDetails {
 }
 
 func (e *htmlDetails) Dirf(format string, v ...any) HTMLDetails {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14039,7 +14039,7 @@ func (e *htmlDetails) ID(v string) HTMLDetails {
 }
 
 func (e *htmlDetails) IDf(format string, v ...any) HTMLDetails {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14049,7 +14049,7 @@ func (e *htmlDetails) Lang(v string) HTMLDetails {
 }
 
 func (e *htmlDetails) Langf(format string, v ...any) HTMLDetails {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14064,7 +14064,7 @@ func (e *htmlDetails) Role(v string) HTMLDetails {
 }
 
 func (e *htmlDetails) Rolef(format string, v ...any) HTMLDetails {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14106,7 +14106,7 @@ func (e *htmlDetails) Title(v string) HTMLDetails {
 }
 
 func (e *htmlDetails) Titlef(format string, v ...any) HTMLDetails {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14513,12 +14513,12 @@ func (e *htmlDfn) AccessKey(v string) HTMLDfn {
 }
 
 func (e *htmlDfn) AccessKeyf(format string, v ...any) HTMLDfn {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDfn) Aria(k string, v any) HTMLDfn {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14538,7 +14538,7 @@ func (e *htmlDfn) ContentEditable(v bool) HTMLDfn {
 }
 
 func (e *htmlDfn) DataSet(k string, v any) HTMLDfn {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14555,7 +14555,7 @@ func (e *htmlDfn) Dir(v string) HTMLDfn {
 }
 
 func (e *htmlDfn) Dirf(format string, v ...any) HTMLDfn {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14575,7 +14575,7 @@ func (e *htmlDfn) ID(v string) HTMLDfn {
 }
 
 func (e *htmlDfn) IDf(format string, v ...any) HTMLDfn {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14585,7 +14585,7 @@ func (e *htmlDfn) Lang(v string) HTMLDfn {
 }
 
 func (e *htmlDfn) Langf(format string, v ...any) HTMLDfn {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14595,7 +14595,7 @@ func (e *htmlDfn) Role(v string) HTMLDfn {
 }
 
 func (e *htmlDfn) Rolef(format string, v ...any) HTMLDfn {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14637,7 +14637,7 @@ func (e *htmlDfn) Title(v string) HTMLDfn {
 }
 
 func (e *htmlDfn) Titlef(format string, v ...any) HTMLDfn {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15043,12 +15043,12 @@ func (e *htmlDialog) AccessKey(v string) HTMLDialog {
 }
 
 func (e *htmlDialog) AccessKeyf(format string, v ...any) HTMLDialog {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDialog) Aria(k string, v any) HTMLDialog {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15068,7 +15068,7 @@ func (e *htmlDialog) ContentEditable(v bool) HTMLDialog {
 }
 
 func (e *htmlDialog) DataSet(k string, v any) HTMLDialog {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15085,7 +15085,7 @@ func (e *htmlDialog) Dir(v string) HTMLDialog {
 }
 
 func (e *htmlDialog) Dirf(format string, v ...any) HTMLDialog {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15105,7 +15105,7 @@ func (e *htmlDialog) ID(v string) HTMLDialog {
 }
 
 func (e *htmlDialog) IDf(format string, v ...any) HTMLDialog {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15115,7 +15115,7 @@ func (e *htmlDialog) Lang(v string) HTMLDialog {
 }
 
 func (e *htmlDialog) Langf(format string, v ...any) HTMLDialog {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15130,7 +15130,7 @@ func (e *htmlDialog) Role(v string) HTMLDialog {
 }
 
 func (e *htmlDialog) Rolef(format string, v ...any) HTMLDialog {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15172,7 +15172,7 @@ func (e *htmlDialog) Title(v string) HTMLDialog {
 }
 
 func (e *htmlDialog) Titlef(format string, v ...any) HTMLDialog {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15575,12 +15575,12 @@ func (e *htmlDiv) AccessKey(v string) HTMLDiv {
 }
 
 func (e *htmlDiv) AccessKeyf(format string, v ...any) HTMLDiv {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDiv) Aria(k string, v any) HTMLDiv {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15600,7 +15600,7 @@ func (e *htmlDiv) ContentEditable(v bool) HTMLDiv {
 }
 
 func (e *htmlDiv) DataSet(k string, v any) HTMLDiv {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15617,7 +15617,7 @@ func (e *htmlDiv) Dir(v string) HTMLDiv {
 }
 
 func (e *htmlDiv) Dirf(format string, v ...any) HTMLDiv {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15637,7 +15637,7 @@ func (e *htmlDiv) ID(v string) HTMLDiv {
 }
 
 func (e *htmlDiv) IDf(format string, v ...any) HTMLDiv {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15647,7 +15647,7 @@ func (e *htmlDiv) Lang(v string) HTMLDiv {
 }
 
 func (e *htmlDiv) Langf(format string, v ...any) HTMLDiv {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15657,7 +15657,7 @@ func (e *htmlDiv) Role(v string) HTMLDiv {
 }
 
 func (e *htmlDiv) Rolef(format string, v ...any) HTMLDiv {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15699,7 +15699,7 @@ func (e *htmlDiv) Title(v string) HTMLDiv {
 }
 
 func (e *htmlDiv) Titlef(format string, v ...any) HTMLDiv {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16102,12 +16102,12 @@ func (e *htmlDl) AccessKey(v string) HTMLDl {
 }
 
 func (e *htmlDl) AccessKeyf(format string, v ...any) HTMLDl {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDl) Aria(k string, v any) HTMLDl {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16127,7 +16127,7 @@ func (e *htmlDl) ContentEditable(v bool) HTMLDl {
 }
 
 func (e *htmlDl) DataSet(k string, v any) HTMLDl {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16144,7 +16144,7 @@ func (e *htmlDl) Dir(v string) HTMLDl {
 }
 
 func (e *htmlDl) Dirf(format string, v ...any) HTMLDl {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16164,7 +16164,7 @@ func (e *htmlDl) ID(v string) HTMLDl {
 }
 
 func (e *htmlDl) IDf(format string, v ...any) HTMLDl {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16174,7 +16174,7 @@ func (e *htmlDl) Lang(v string) HTMLDl {
 }
 
 func (e *htmlDl) Langf(format string, v ...any) HTMLDl {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16184,7 +16184,7 @@ func (e *htmlDl) Role(v string) HTMLDl {
 }
 
 func (e *htmlDl) Rolef(format string, v ...any) HTMLDl {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16226,7 +16226,7 @@ func (e *htmlDl) Title(v string) HTMLDl {
 }
 
 func (e *htmlDl) Titlef(format string, v ...any) HTMLDl {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16629,12 +16629,12 @@ func (e *htmlDt) AccessKey(v string) HTMLDt {
 }
 
 func (e *htmlDt) AccessKeyf(format string, v ...any) HTMLDt {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlDt) Aria(k string, v any) HTMLDt {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16654,7 +16654,7 @@ func (e *htmlDt) ContentEditable(v bool) HTMLDt {
 }
 
 func (e *htmlDt) DataSet(k string, v any) HTMLDt {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16671,7 +16671,7 @@ func (e *htmlDt) Dir(v string) HTMLDt {
 }
 
 func (e *htmlDt) Dirf(format string, v ...any) HTMLDt {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16691,7 +16691,7 @@ func (e *htmlDt) ID(v string) HTMLDt {
 }
 
 func (e *htmlDt) IDf(format string, v ...any) HTMLDt {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16701,7 +16701,7 @@ func (e *htmlDt) Lang(v string) HTMLDt {
 }
 
 func (e *htmlDt) Langf(format string, v ...any) HTMLDt {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16711,7 +16711,7 @@ func (e *htmlDt) Role(v string) HTMLDt {
 }
 
 func (e *htmlDt) Rolef(format string, v ...any) HTMLDt {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16753,7 +16753,7 @@ func (e *htmlDt) Title(v string) HTMLDt {
 }
 
 func (e *htmlDt) Titlef(format string, v ...any) HTMLDt {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17159,12 +17159,12 @@ func (e *htmlElem) AccessKey(v string) HTMLElem {
 }
 
 func (e *htmlElem) AccessKeyf(format string, v ...any) HTMLElem {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlElem) Aria(k string, v any) HTMLElem {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17184,7 +17184,7 @@ func (e *htmlElem) ContentEditable(v bool) HTMLElem {
 }
 
 func (e *htmlElem) DataSet(k string, v any) HTMLElem {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17201,7 +17201,7 @@ func (e *htmlElem) Dir(v string) HTMLElem {
 }
 
 func (e *htmlElem) Dirf(format string, v ...any) HTMLElem {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17221,7 +17221,7 @@ func (e *htmlElem) ID(v string) HTMLElem {
 }
 
 func (e *htmlElem) IDf(format string, v ...any) HTMLElem {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17231,7 +17231,7 @@ func (e *htmlElem) Lang(v string) HTMLElem {
 }
 
 func (e *htmlElem) Langf(format string, v ...any) HTMLElem {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17241,7 +17241,7 @@ func (e *htmlElem) Role(v string) HTMLElem {
 }
 
 func (e *htmlElem) Rolef(format string, v ...any) HTMLElem {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17283,7 +17283,7 @@ func (e *htmlElem) Title(v string) HTMLElem {
 }
 
 func (e *htmlElem) Titlef(format string, v ...any) HTMLElem {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17673,12 +17673,12 @@ func (e *htmlElemSelfClosing) AccessKey(v string) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) AccessKeyf(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlElemSelfClosing) Aria(k string, v any) HTMLElemSelfClosing {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17698,7 +17698,7 @@ func (e *htmlElemSelfClosing) ContentEditable(v bool) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) DataSet(k string, v any) HTMLElemSelfClosing {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17715,7 +17715,7 @@ func (e *htmlElemSelfClosing) Dir(v string) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) Dirf(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17735,7 +17735,7 @@ func (e *htmlElemSelfClosing) ID(v string) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) IDf(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17745,7 +17745,7 @@ func (e *htmlElemSelfClosing) Lang(v string) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) Langf(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17755,7 +17755,7 @@ func (e *htmlElemSelfClosing) Role(v string) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) Rolef(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17797,7 +17797,7 @@ func (e *htmlElemSelfClosing) Title(v string) HTMLElemSelfClosing {
 }
 
 func (e *htmlElemSelfClosing) Titlef(format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18205,12 +18205,12 @@ func (e *htmlEm) AccessKey(v string) HTMLEm {
 }
 
 func (e *htmlEm) AccessKeyf(format string, v ...any) HTMLEm {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlEm) Aria(k string, v any) HTMLEm {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18230,7 +18230,7 @@ func (e *htmlEm) ContentEditable(v bool) HTMLEm {
 }
 
 func (e *htmlEm) DataSet(k string, v any) HTMLEm {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18247,7 +18247,7 @@ func (e *htmlEm) Dir(v string) HTMLEm {
 }
 
 func (e *htmlEm) Dirf(format string, v ...any) HTMLEm {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18267,7 +18267,7 @@ func (e *htmlEm) ID(v string) HTMLEm {
 }
 
 func (e *htmlEm) IDf(format string, v ...any) HTMLEm {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18277,7 +18277,7 @@ func (e *htmlEm) Lang(v string) HTMLEm {
 }
 
 func (e *htmlEm) Langf(format string, v ...any) HTMLEm {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18287,7 +18287,7 @@ func (e *htmlEm) Role(v string) HTMLEm {
 }
 
 func (e *htmlEm) Rolef(format string, v ...any) HTMLEm {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18329,7 +18329,7 @@ func (e *htmlEm) Title(v string) HTMLEm {
 }
 
 func (e *htmlEm) Titlef(format string, v ...any) HTMLEm {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18798,12 +18798,12 @@ func (e *htmlEmbed) AccessKey(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) AccessKeyf(format string, v ...any) HTMLEmbed {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlEmbed) Aria(k string, v any) HTMLEmbed {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18823,7 +18823,7 @@ func (e *htmlEmbed) ContentEditable(v bool) HTMLEmbed {
 }
 
 func (e *htmlEmbed) DataSet(k string, v any) HTMLEmbed {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18840,7 +18840,7 @@ func (e *htmlEmbed) Dir(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Dirf(format string, v ...any) HTMLEmbed {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18865,7 +18865,7 @@ func (e *htmlEmbed) ID(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) IDf(format string, v ...any) HTMLEmbed {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18875,7 +18875,7 @@ func (e *htmlEmbed) Lang(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Langf(format string, v ...any) HTMLEmbed {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18885,7 +18885,7 @@ func (e *htmlEmbed) Role(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Rolef(format string, v ...any) HTMLEmbed {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18905,7 +18905,7 @@ func (e *htmlEmbed) Src(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Srcf(format string, v ...any) HTMLEmbed {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18937,7 +18937,7 @@ func (e *htmlEmbed) Title(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Titlef(format string, v ...any) HTMLEmbed {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18947,7 +18947,7 @@ func (e *htmlEmbed) Type(v string) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Typef(format string, v ...any) HTMLEmbed {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19462,12 +19462,12 @@ func (e *htmlFieldSet) AccessKey(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) AccessKeyf(format string, v ...any) HTMLFieldSet {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlFieldSet) Aria(k string, v any) HTMLFieldSet {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19487,7 +19487,7 @@ func (e *htmlFieldSet) ContentEditable(v bool) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) DataSet(k string, v any) HTMLFieldSet {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19504,7 +19504,7 @@ func (e *htmlFieldSet) Dir(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) Dirf(format string, v ...any) HTMLFieldSet {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19524,7 +19524,7 @@ func (e *htmlFieldSet) Form(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) Formf(format string, v ...any) HTMLFieldSet {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19539,7 +19539,7 @@ func (e *htmlFieldSet) ID(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) IDf(format string, v ...any) HTMLFieldSet {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19549,7 +19549,7 @@ func (e *htmlFieldSet) Lang(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) Langf(format string, v ...any) HTMLFieldSet {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19559,7 +19559,7 @@ func (e *htmlFieldSet) Name(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) Namef(format string, v ...any) HTMLFieldSet {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19569,7 +19569,7 @@ func (e *htmlFieldSet) Role(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) Rolef(format string, v ...any) HTMLFieldSet {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19611,7 +19611,7 @@ func (e *htmlFieldSet) Title(v string) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) Titlef(format string, v ...any) HTMLFieldSet {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20014,12 +20014,12 @@ func (e *htmlFigCaption) AccessKey(v string) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) AccessKeyf(format string, v ...any) HTMLFigCaption {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlFigCaption) Aria(k string, v any) HTMLFigCaption {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20039,7 +20039,7 @@ func (e *htmlFigCaption) ContentEditable(v bool) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) DataSet(k string, v any) HTMLFigCaption {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20056,7 +20056,7 @@ func (e *htmlFigCaption) Dir(v string) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) Dirf(format string, v ...any) HTMLFigCaption {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20076,7 +20076,7 @@ func (e *htmlFigCaption) ID(v string) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) IDf(format string, v ...any) HTMLFigCaption {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20086,7 +20086,7 @@ func (e *htmlFigCaption) Lang(v string) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) Langf(format string, v ...any) HTMLFigCaption {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20096,7 +20096,7 @@ func (e *htmlFigCaption) Role(v string) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) Rolef(format string, v ...any) HTMLFigCaption {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20138,7 +20138,7 @@ func (e *htmlFigCaption) Title(v string) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) Titlef(format string, v ...any) HTMLFigCaption {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20541,12 +20541,12 @@ func (e *htmlFigure) AccessKey(v string) HTMLFigure {
 }
 
 func (e *htmlFigure) AccessKeyf(format string, v ...any) HTMLFigure {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlFigure) Aria(k string, v any) HTMLFigure {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20566,7 +20566,7 @@ func (e *htmlFigure) ContentEditable(v bool) HTMLFigure {
 }
 
 func (e *htmlFigure) DataSet(k string, v any) HTMLFigure {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20583,7 +20583,7 @@ func (e *htmlFigure) Dir(v string) HTMLFigure {
 }
 
 func (e *htmlFigure) Dirf(format string, v ...any) HTMLFigure {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20603,7 +20603,7 @@ func (e *htmlFigure) ID(v string) HTMLFigure {
 }
 
 func (e *htmlFigure) IDf(format string, v ...any) HTMLFigure {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20613,7 +20613,7 @@ func (e *htmlFigure) Lang(v string) HTMLFigure {
 }
 
 func (e *htmlFigure) Langf(format string, v ...any) HTMLFigure {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20623,7 +20623,7 @@ func (e *htmlFigure) Role(v string) HTMLFigure {
 }
 
 func (e *htmlFigure) Rolef(format string, v ...any) HTMLFigure {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20665,7 +20665,7 @@ func (e *htmlFigure) Title(v string) HTMLFigure {
 }
 
 func (e *htmlFigure) Titlef(format string, v ...any) HTMLFigure {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21068,12 +21068,12 @@ func (e *htmlFooter) AccessKey(v string) HTMLFooter {
 }
 
 func (e *htmlFooter) AccessKeyf(format string, v ...any) HTMLFooter {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlFooter) Aria(k string, v any) HTMLFooter {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21093,7 +21093,7 @@ func (e *htmlFooter) ContentEditable(v bool) HTMLFooter {
 }
 
 func (e *htmlFooter) DataSet(k string, v any) HTMLFooter {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21110,7 +21110,7 @@ func (e *htmlFooter) Dir(v string) HTMLFooter {
 }
 
 func (e *htmlFooter) Dirf(format string, v ...any) HTMLFooter {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21130,7 +21130,7 @@ func (e *htmlFooter) ID(v string) HTMLFooter {
 }
 
 func (e *htmlFooter) IDf(format string, v ...any) HTMLFooter {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21140,7 +21140,7 @@ func (e *htmlFooter) Lang(v string) HTMLFooter {
 }
 
 func (e *htmlFooter) Langf(format string, v ...any) HTMLFooter {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21150,7 +21150,7 @@ func (e *htmlFooter) Role(v string) HTMLFooter {
 }
 
 func (e *htmlFooter) Rolef(format string, v ...any) HTMLFooter {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21192,7 +21192,7 @@ func (e *htmlFooter) Title(v string) HTMLFooter {
 }
 
 func (e *htmlFooter) Titlef(format string, v ...any) HTMLFooter {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21637,7 +21637,7 @@ func (e *htmlForm) AcceptCharset(v string) HTMLForm {
 }
 
 func (e *htmlForm) AcceptCharsetf(format string, v ...any) HTMLForm {
-	e.setAttr("accept-charset", FormatString(format, v...))
+	e.setAttr("accept-charset", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21647,7 +21647,7 @@ func (e *htmlForm) AccessKey(v string) HTMLForm {
 }
 
 func (e *htmlForm) AccessKeyf(format string, v ...any) HTMLForm {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21657,12 +21657,12 @@ func (e *htmlForm) Action(v string) HTMLForm {
 }
 
 func (e *htmlForm) Actionf(format string, v ...any) HTMLForm {
-	e.setAttr("action", FormatString(format, v...))
+	e.setAttr("action", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlForm) Aria(k string, v any) HTMLForm {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21692,7 +21692,7 @@ func (e *htmlForm) ContentEditable(v bool) HTMLForm {
 }
 
 func (e *htmlForm) DataSet(k string, v any) HTMLForm {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21709,7 +21709,7 @@ func (e *htmlForm) Dir(v string) HTMLForm {
 }
 
 func (e *htmlForm) Dirf(format string, v ...any) HTMLForm {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21724,7 +21724,7 @@ func (e *htmlForm) EncType(v string) HTMLForm {
 }
 
 func (e *htmlForm) EncTypef(format string, v ...any) HTMLForm {
-	e.setAttr("enctype", FormatString(format, v...))
+	e.setAttr("enctype", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21739,7 +21739,7 @@ func (e *htmlForm) ID(v string) HTMLForm {
 }
 
 func (e *htmlForm) IDf(format string, v ...any) HTMLForm {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21749,7 +21749,7 @@ func (e *htmlForm) Lang(v string) HTMLForm {
 }
 
 func (e *htmlForm) Langf(format string, v ...any) HTMLForm {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21759,7 +21759,7 @@ func (e *htmlForm) Method(v string) HTMLForm {
 }
 
 func (e *htmlForm) Methodf(format string, v ...any) HTMLForm {
-	e.setAttr("method", FormatString(format, v...))
+	e.setAttr("method", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21769,7 +21769,7 @@ func (e *htmlForm) Name(v string) HTMLForm {
 }
 
 func (e *htmlForm) Namef(format string, v ...any) HTMLForm {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21784,7 +21784,7 @@ func (e *htmlForm) Role(v string) HTMLForm {
 }
 
 func (e *htmlForm) Rolef(format string, v ...any) HTMLForm {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21826,7 +21826,7 @@ func (e *htmlForm) Target(v string) HTMLForm {
 }
 
 func (e *htmlForm) Targetf(format string, v ...any) HTMLForm {
-	e.setAttr("target", FormatString(format, v...))
+	e.setAttr("target", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21836,7 +21836,7 @@ func (e *htmlForm) Title(v string) HTMLForm {
 }
 
 func (e *htmlForm) Titlef(format string, v ...any) HTMLForm {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22239,12 +22239,12 @@ func (e *htmlH1) AccessKey(v string) HTMLH1 {
 }
 
 func (e *htmlH1) AccessKeyf(format string, v ...any) HTMLH1 {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlH1) Aria(k string, v any) HTMLH1 {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22264,7 +22264,7 @@ func (e *htmlH1) ContentEditable(v bool) HTMLH1 {
 }
 
 func (e *htmlH1) DataSet(k string, v any) HTMLH1 {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22281,7 +22281,7 @@ func (e *htmlH1) Dir(v string) HTMLH1 {
 }
 
 func (e *htmlH1) Dirf(format string, v ...any) HTMLH1 {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22301,7 +22301,7 @@ func (e *htmlH1) ID(v string) HTMLH1 {
 }
 
 func (e *htmlH1) IDf(format string, v ...any) HTMLH1 {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22311,7 +22311,7 @@ func (e *htmlH1) Lang(v string) HTMLH1 {
 }
 
 func (e *htmlH1) Langf(format string, v ...any) HTMLH1 {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22321,7 +22321,7 @@ func (e *htmlH1) Role(v string) HTMLH1 {
 }
 
 func (e *htmlH1) Rolef(format string, v ...any) HTMLH1 {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22363,7 +22363,7 @@ func (e *htmlH1) Title(v string) HTMLH1 {
 }
 
 func (e *htmlH1) Titlef(format string, v ...any) HTMLH1 {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22766,12 +22766,12 @@ func (e *htmlH2) AccessKey(v string) HTMLH2 {
 }
 
 func (e *htmlH2) AccessKeyf(format string, v ...any) HTMLH2 {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlH2) Aria(k string, v any) HTMLH2 {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22791,7 +22791,7 @@ func (e *htmlH2) ContentEditable(v bool) HTMLH2 {
 }
 
 func (e *htmlH2) DataSet(k string, v any) HTMLH2 {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22808,7 +22808,7 @@ func (e *htmlH2) Dir(v string) HTMLH2 {
 }
 
 func (e *htmlH2) Dirf(format string, v ...any) HTMLH2 {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22828,7 +22828,7 @@ func (e *htmlH2) ID(v string) HTMLH2 {
 }
 
 func (e *htmlH2) IDf(format string, v ...any) HTMLH2 {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22838,7 +22838,7 @@ func (e *htmlH2) Lang(v string) HTMLH2 {
 }
 
 func (e *htmlH2) Langf(format string, v ...any) HTMLH2 {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22848,7 +22848,7 @@ func (e *htmlH2) Role(v string) HTMLH2 {
 }
 
 func (e *htmlH2) Rolef(format string, v ...any) HTMLH2 {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22890,7 +22890,7 @@ func (e *htmlH2) Title(v string) HTMLH2 {
 }
 
 func (e *htmlH2) Titlef(format string, v ...any) HTMLH2 {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23293,12 +23293,12 @@ func (e *htmlH3) AccessKey(v string) HTMLH3 {
 }
 
 func (e *htmlH3) AccessKeyf(format string, v ...any) HTMLH3 {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlH3) Aria(k string, v any) HTMLH3 {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23318,7 +23318,7 @@ func (e *htmlH3) ContentEditable(v bool) HTMLH3 {
 }
 
 func (e *htmlH3) DataSet(k string, v any) HTMLH3 {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23335,7 +23335,7 @@ func (e *htmlH3) Dir(v string) HTMLH3 {
 }
 
 func (e *htmlH3) Dirf(format string, v ...any) HTMLH3 {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23355,7 +23355,7 @@ func (e *htmlH3) ID(v string) HTMLH3 {
 }
 
 func (e *htmlH3) IDf(format string, v ...any) HTMLH3 {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23365,7 +23365,7 @@ func (e *htmlH3) Lang(v string) HTMLH3 {
 }
 
 func (e *htmlH3) Langf(format string, v ...any) HTMLH3 {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23375,7 +23375,7 @@ func (e *htmlH3) Role(v string) HTMLH3 {
 }
 
 func (e *htmlH3) Rolef(format string, v ...any) HTMLH3 {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23417,7 +23417,7 @@ func (e *htmlH3) Title(v string) HTMLH3 {
 }
 
 func (e *htmlH3) Titlef(format string, v ...any) HTMLH3 {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23820,12 +23820,12 @@ func (e *htmlH4) AccessKey(v string) HTMLH4 {
 }
 
 func (e *htmlH4) AccessKeyf(format string, v ...any) HTMLH4 {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlH4) Aria(k string, v any) HTMLH4 {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23845,7 +23845,7 @@ func (e *htmlH4) ContentEditable(v bool) HTMLH4 {
 }
 
 func (e *htmlH4) DataSet(k string, v any) HTMLH4 {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23862,7 +23862,7 @@ func (e *htmlH4) Dir(v string) HTMLH4 {
 }
 
 func (e *htmlH4) Dirf(format string, v ...any) HTMLH4 {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23882,7 +23882,7 @@ func (e *htmlH4) ID(v string) HTMLH4 {
 }
 
 func (e *htmlH4) IDf(format string, v ...any) HTMLH4 {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23892,7 +23892,7 @@ func (e *htmlH4) Lang(v string) HTMLH4 {
 }
 
 func (e *htmlH4) Langf(format string, v ...any) HTMLH4 {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23902,7 +23902,7 @@ func (e *htmlH4) Role(v string) HTMLH4 {
 }
 
 func (e *htmlH4) Rolef(format string, v ...any) HTMLH4 {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23944,7 +23944,7 @@ func (e *htmlH4) Title(v string) HTMLH4 {
 }
 
 func (e *htmlH4) Titlef(format string, v ...any) HTMLH4 {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24347,12 +24347,12 @@ func (e *htmlH5) AccessKey(v string) HTMLH5 {
 }
 
 func (e *htmlH5) AccessKeyf(format string, v ...any) HTMLH5 {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlH5) Aria(k string, v any) HTMLH5 {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24372,7 +24372,7 @@ func (e *htmlH5) ContentEditable(v bool) HTMLH5 {
 }
 
 func (e *htmlH5) DataSet(k string, v any) HTMLH5 {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24389,7 +24389,7 @@ func (e *htmlH5) Dir(v string) HTMLH5 {
 }
 
 func (e *htmlH5) Dirf(format string, v ...any) HTMLH5 {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24409,7 +24409,7 @@ func (e *htmlH5) ID(v string) HTMLH5 {
 }
 
 func (e *htmlH5) IDf(format string, v ...any) HTMLH5 {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24419,7 +24419,7 @@ func (e *htmlH5) Lang(v string) HTMLH5 {
 }
 
 func (e *htmlH5) Langf(format string, v ...any) HTMLH5 {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24429,7 +24429,7 @@ func (e *htmlH5) Role(v string) HTMLH5 {
 }
 
 func (e *htmlH5) Rolef(format string, v ...any) HTMLH5 {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24471,7 +24471,7 @@ func (e *htmlH5) Title(v string) HTMLH5 {
 }
 
 func (e *htmlH5) Titlef(format string, v ...any) HTMLH5 {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24874,12 +24874,12 @@ func (e *htmlH6) AccessKey(v string) HTMLH6 {
 }
 
 func (e *htmlH6) AccessKeyf(format string, v ...any) HTMLH6 {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlH6) Aria(k string, v any) HTMLH6 {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24899,7 +24899,7 @@ func (e *htmlH6) ContentEditable(v bool) HTMLH6 {
 }
 
 func (e *htmlH6) DataSet(k string, v any) HTMLH6 {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24916,7 +24916,7 @@ func (e *htmlH6) Dir(v string) HTMLH6 {
 }
 
 func (e *htmlH6) Dirf(format string, v ...any) HTMLH6 {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24936,7 +24936,7 @@ func (e *htmlH6) ID(v string) HTMLH6 {
 }
 
 func (e *htmlH6) IDf(format string, v ...any) HTMLH6 {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24946,7 +24946,7 @@ func (e *htmlH6) Lang(v string) HTMLH6 {
 }
 
 func (e *htmlH6) Langf(format string, v ...any) HTMLH6 {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24956,7 +24956,7 @@ func (e *htmlH6) Role(v string) HTMLH6 {
 }
 
 func (e *htmlH6) Rolef(format string, v ...any) HTMLH6 {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24998,7 +24998,7 @@ func (e *htmlH6) Title(v string) HTMLH6 {
 }
 
 func (e *htmlH6) Titlef(format string, v ...any) HTMLH6 {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25299,12 +25299,12 @@ func (e *htmlHead) AccessKey(v string) HTMLHead {
 }
 
 func (e *htmlHead) AccessKeyf(format string, v ...any) HTMLHead {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlHead) Aria(k string, v any) HTMLHead {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25324,7 +25324,7 @@ func (e *htmlHead) ContentEditable(v bool) HTMLHead {
 }
 
 func (e *htmlHead) DataSet(k string, v any) HTMLHead {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25341,7 +25341,7 @@ func (e *htmlHead) Dir(v string) HTMLHead {
 }
 
 func (e *htmlHead) Dirf(format string, v ...any) HTMLHead {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25361,7 +25361,7 @@ func (e *htmlHead) ID(v string) HTMLHead {
 }
 
 func (e *htmlHead) IDf(format string, v ...any) HTMLHead {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25371,7 +25371,7 @@ func (e *htmlHead) Lang(v string) HTMLHead {
 }
 
 func (e *htmlHead) Langf(format string, v ...any) HTMLHead {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25381,7 +25381,7 @@ func (e *htmlHead) Role(v string) HTMLHead {
 }
 
 func (e *htmlHead) Rolef(format string, v ...any) HTMLHead {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25423,7 +25423,7 @@ func (e *htmlHead) Title(v string) HTMLHead {
 }
 
 func (e *htmlHead) Titlef(format string, v ...any) HTMLHead {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25690,12 +25690,12 @@ func (e *htmlHeader) AccessKey(v string) HTMLHeader {
 }
 
 func (e *htmlHeader) AccessKeyf(format string, v ...any) HTMLHeader {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlHeader) Aria(k string, v any) HTMLHeader {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25715,7 +25715,7 @@ func (e *htmlHeader) ContentEditable(v bool) HTMLHeader {
 }
 
 func (e *htmlHeader) DataSet(k string, v any) HTMLHeader {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25732,7 +25732,7 @@ func (e *htmlHeader) Dir(v string) HTMLHeader {
 }
 
 func (e *htmlHeader) Dirf(format string, v ...any) HTMLHeader {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25752,7 +25752,7 @@ func (e *htmlHeader) ID(v string) HTMLHeader {
 }
 
 func (e *htmlHeader) IDf(format string, v ...any) HTMLHeader {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25762,7 +25762,7 @@ func (e *htmlHeader) Lang(v string) HTMLHeader {
 }
 
 func (e *htmlHeader) Langf(format string, v ...any) HTMLHeader {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25772,7 +25772,7 @@ func (e *htmlHeader) Role(v string) HTMLHeader {
 }
 
 func (e *htmlHeader) Rolef(format string, v ...any) HTMLHeader {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25814,7 +25814,7 @@ func (e *htmlHeader) Title(v string) HTMLHeader {
 }
 
 func (e *htmlHeader) Titlef(format string, v ...any) HTMLHeader {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26196,12 +26196,12 @@ func (e *htmlHr) AccessKey(v string) HTMLHr {
 }
 
 func (e *htmlHr) AccessKeyf(format string, v ...any) HTMLHr {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlHr) Aria(k string, v any) HTMLHr {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26221,7 +26221,7 @@ func (e *htmlHr) ContentEditable(v bool) HTMLHr {
 }
 
 func (e *htmlHr) DataSet(k string, v any) HTMLHr {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26238,7 +26238,7 @@ func (e *htmlHr) Dir(v string) HTMLHr {
 }
 
 func (e *htmlHr) Dirf(format string, v ...any) HTMLHr {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26258,7 +26258,7 @@ func (e *htmlHr) ID(v string) HTMLHr {
 }
 
 func (e *htmlHr) IDf(format string, v ...any) HTMLHr {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26268,7 +26268,7 @@ func (e *htmlHr) Lang(v string) HTMLHr {
 }
 
 func (e *htmlHr) Langf(format string, v ...any) HTMLHr {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26278,7 +26278,7 @@ func (e *htmlHr) Role(v string) HTMLHr {
 }
 
 func (e *htmlHr) Rolef(format string, v ...any) HTMLHr {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26320,7 +26320,7 @@ func (e *htmlHr) Title(v string) HTMLHr {
 }
 
 func (e *htmlHr) Titlef(format string, v ...any) HTMLHr {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26606,12 +26606,12 @@ func (e *htmlHtml) AccessKey(v string) HTMLHtml {
 }
 
 func (e *htmlHtml) AccessKeyf(format string, v ...any) HTMLHtml {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlHtml) Aria(k string, v any) HTMLHtml {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26631,7 +26631,7 @@ func (e *htmlHtml) ContentEditable(v bool) HTMLHtml {
 }
 
 func (e *htmlHtml) DataSet(k string, v any) HTMLHtml {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26648,7 +26648,7 @@ func (e *htmlHtml) Dir(v string) HTMLHtml {
 }
 
 func (e *htmlHtml) Dirf(format string, v ...any) HTMLHtml {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26668,7 +26668,7 @@ func (e *htmlHtml) ID(v string) HTMLHtml {
 }
 
 func (e *htmlHtml) IDf(format string, v ...any) HTMLHtml {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26678,7 +26678,7 @@ func (e *htmlHtml) Lang(v string) HTMLHtml {
 }
 
 func (e *htmlHtml) Langf(format string, v ...any) HTMLHtml {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26688,7 +26688,7 @@ func (e *htmlHtml) Role(v string) HTMLHtml {
 }
 
 func (e *htmlHtml) Rolef(format string, v ...any) HTMLHtml {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26730,7 +26730,7 @@ func (e *htmlHtml) Title(v string) HTMLHtml {
 }
 
 func (e *htmlHtml) Titlef(format string, v ...any) HTMLHtml {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26997,12 +26997,12 @@ func (e *htmlI) AccessKey(v string) HTMLI {
 }
 
 func (e *htmlI) AccessKeyf(format string, v ...any) HTMLI {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlI) Aria(k string, v any) HTMLI {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27022,7 +27022,7 @@ func (e *htmlI) ContentEditable(v bool) HTMLI {
 }
 
 func (e *htmlI) DataSet(k string, v any) HTMLI {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27039,7 +27039,7 @@ func (e *htmlI) Dir(v string) HTMLI {
 }
 
 func (e *htmlI) Dirf(format string, v ...any) HTMLI {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27059,7 +27059,7 @@ func (e *htmlI) ID(v string) HTMLI {
 }
 
 func (e *htmlI) IDf(format string, v ...any) HTMLI {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27069,7 +27069,7 @@ func (e *htmlI) Lang(v string) HTMLI {
 }
 
 func (e *htmlI) Langf(format string, v ...any) HTMLI {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27079,7 +27079,7 @@ func (e *htmlI) Role(v string) HTMLI {
 }
 
 func (e *htmlI) Rolef(format string, v ...any) HTMLI {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27121,7 +27121,7 @@ func (e *htmlI) Title(v string) HTMLI {
 }
 
 func (e *htmlI) Titlef(format string, v ...any) HTMLI {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27581,7 +27581,7 @@ func (e *htmlIFrame) AccessKey(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) AccessKeyf(format string, v ...any) HTMLIFrame {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27591,7 +27591,7 @@ func (e *htmlIFrame) Allow(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Allowf(format string, v ...any) HTMLIFrame {
-	e.setAttr("allow", FormatString(format, v...))
+	e.setAttr("allow", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27616,7 +27616,7 @@ func (e *htmlIFrame) AllowPaymentRequest(v bool) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Aria(k string, v any) HTMLIFrame {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27636,7 +27636,7 @@ func (e *htmlIFrame) ContentEditable(v bool) HTMLIFrame {
 }
 
 func (e *htmlIFrame) DataSet(k string, v any) HTMLIFrame {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27653,7 +27653,7 @@ func (e *htmlIFrame) Dir(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Dirf(format string, v ...any) HTMLIFrame {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27678,7 +27678,7 @@ func (e *htmlIFrame) ID(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) IDf(format string, v ...any) HTMLIFrame {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27688,7 +27688,7 @@ func (e *htmlIFrame) Lang(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Langf(format string, v ...any) HTMLIFrame {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27698,7 +27698,7 @@ func (e *htmlIFrame) Loading(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Loadingf(format string, v ...any) HTMLIFrame {
-	e.setAttr("loading", FormatString(format, v...))
+	e.setAttr("loading", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27708,7 +27708,7 @@ func (e *htmlIFrame) Name(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Namef(format string, v ...any) HTMLIFrame {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27718,7 +27718,7 @@ func (e *htmlIFrame) ReferrerPolicy(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) ReferrerPolicyf(format string, v ...any) HTMLIFrame {
-	e.setAttr("referrerpolicy", FormatString(format, v...))
+	e.setAttr("referrerpolicy", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27728,7 +27728,7 @@ func (e *htmlIFrame) Role(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Rolef(format string, v ...any) HTMLIFrame {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27738,7 +27738,7 @@ func (e *htmlIFrame) Sandbox(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Sandboxf(format string, v ...any) HTMLIFrame {
-	e.setAttr("sandbox", FormatString(format, v...))
+	e.setAttr("sandbox", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27758,7 +27758,7 @@ func (e *htmlIFrame) Src(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Srcf(format string, v ...any) HTMLIFrame {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27768,7 +27768,7 @@ func (e *htmlIFrame) SrcDoc(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) SrcDocf(format string, v ...any) HTMLIFrame {
-	e.setAttr("srcdoc", FormatString(format, v...))
+	e.setAttr("srcdoc", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27800,7 +27800,7 @@ func (e *htmlIFrame) Title(v string) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Titlef(format string, v ...any) HTMLIFrame {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28320,7 +28320,7 @@ func (e *htmlImg) AccessKey(v string) HTMLImg {
 }
 
 func (e *htmlImg) AccessKeyf(format string, v ...any) HTMLImg {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28330,12 +28330,12 @@ func (e *htmlImg) Alt(v string) HTMLImg {
 }
 
 func (e *htmlImg) Altf(format string, v ...any) HTMLImg {
-	e.setAttr("alt", FormatString(format, v...))
+	e.setAttr("alt", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlImg) Aria(k string, v any) HTMLImg {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -28360,12 +28360,12 @@ func (e *htmlImg) CrossOrigin(v string) HTMLImg {
 }
 
 func (e *htmlImg) CrossOriginf(format string, v ...any) HTMLImg {
-	e.setAttr("crossorigin", FormatString(format, v...))
+	e.setAttr("crossorigin", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlImg) DataSet(k string, v any) HTMLImg {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -28382,7 +28382,7 @@ func (e *htmlImg) Dir(v string) HTMLImg {
 }
 
 func (e *htmlImg) Dirf(format string, v ...any) HTMLImg {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28397,7 +28397,7 @@ func (e *htmlImg) FetchPriority(v string) HTMLImg {
 }
 
 func (e *htmlImg) FetchPriorityf(format string, v ...any) HTMLImg {
-	e.setAttr("fetchpriority", FormatString(format, v...))
+	e.setAttr("fetchpriority", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28417,7 +28417,7 @@ func (e *htmlImg) ID(v string) HTMLImg {
 }
 
 func (e *htmlImg) IDf(format string, v ...any) HTMLImg {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28432,7 +28432,7 @@ func (e *htmlImg) Lang(v string) HTMLImg {
 }
 
 func (e *htmlImg) Langf(format string, v ...any) HTMLImg {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28442,7 +28442,7 @@ func (e *htmlImg) Loading(v string) HTMLImg {
 }
 
 func (e *htmlImg) Loadingf(format string, v ...any) HTMLImg {
-	e.setAttr("loading", FormatString(format, v...))
+	e.setAttr("loading", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28452,7 +28452,7 @@ func (e *htmlImg) Role(v string) HTMLImg {
 }
 
 func (e *htmlImg) Rolef(format string, v ...any) HTMLImg {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28462,7 +28462,7 @@ func (e *htmlImg) Sizes(v string) HTMLImg {
 }
 
 func (e *htmlImg) Sizesf(format string, v ...any) HTMLImg {
-	e.setAttr("sizes", FormatString(format, v...))
+	e.setAttr("sizes", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28482,7 +28482,7 @@ func (e *htmlImg) Src(v string) HTMLImg {
 }
 
 func (e *htmlImg) Srcf(format string, v ...any) HTMLImg {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28492,7 +28492,7 @@ func (e *htmlImg) SrcSet(v string) HTMLImg {
 }
 
 func (e *htmlImg) SrcSetf(format string, v ...any) HTMLImg {
-	e.setAttr("srcset", FormatString(format, v...))
+	e.setAttr("srcset", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28524,7 +28524,7 @@ func (e *htmlImg) Title(v string) HTMLImg {
 }
 
 func (e *htmlImg) Titlef(format string, v ...any) HTMLImg {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28534,7 +28534,7 @@ func (e *htmlImg) UseMap(v string) HTMLImg {
 }
 
 func (e *htmlImg) UseMapf(format string, v ...any) HTMLImg {
-	e.setAttr("usemap", FormatString(format, v...))
+	e.setAttr("usemap", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29158,7 +29158,7 @@ func (e *htmlInput) Accept(v string) HTMLInput {
 }
 
 func (e *htmlInput) Acceptf(format string, v ...any) HTMLInput {
-	e.setAttr("accept", FormatString(format, v...))
+	e.setAttr("accept", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29168,7 +29168,7 @@ func (e *htmlInput) AccessKey(v string) HTMLInput {
 }
 
 func (e *htmlInput) AccessKeyf(format string, v ...any) HTMLInput {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29178,12 +29178,12 @@ func (e *htmlInput) Alt(v string) HTMLInput {
 }
 
 func (e *htmlInput) Altf(format string, v ...any) HTMLInput {
-	e.setAttr("alt", FormatString(format, v...))
+	e.setAttr("alt", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlInput) Aria(k string, v any) HTMLInput {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29213,7 +29213,7 @@ func (e *htmlInput) Capture(v string) HTMLInput {
 }
 
 func (e *htmlInput) Capturef(format string, v ...any) HTMLInput {
-	e.setAttr("capture", FormatString(format, v...))
+	e.setAttr("capture", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29233,7 +29233,7 @@ func (e *htmlInput) ContentEditable(v bool) HTMLInput {
 }
 
 func (e *htmlInput) DataSet(k string, v any) HTMLInput {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29250,7 +29250,7 @@ func (e *htmlInput) Dir(v string) HTMLInput {
 }
 
 func (e *htmlInput) Dirf(format string, v ...any) HTMLInput {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29260,7 +29260,7 @@ func (e *htmlInput) DirName(v string) HTMLInput {
 }
 
 func (e *htmlInput) DirNamef(format string, v ...any) HTMLInput {
-	e.setAttr("dirname", FormatString(format, v...))
+	e.setAttr("dirname", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29280,7 +29280,7 @@ func (e *htmlInput) Form(v string) HTMLInput {
 }
 
 func (e *htmlInput) Formf(format string, v ...any) HTMLInput {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29290,7 +29290,7 @@ func (e *htmlInput) FormAction(v string) HTMLInput {
 }
 
 func (e *htmlInput) FormActionf(format string, v ...any) HTMLInput {
-	e.setAttr("formaction", FormatString(format, v...))
+	e.setAttr("formaction", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29300,7 +29300,7 @@ func (e *htmlInput) FormEncType(v string) HTMLInput {
 }
 
 func (e *htmlInput) FormEncTypef(format string, v ...any) HTMLInput {
-	e.setAttr("formenctype", FormatString(format, v...))
+	e.setAttr("formenctype", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29310,7 +29310,7 @@ func (e *htmlInput) FormMethod(v string) HTMLInput {
 }
 
 func (e *htmlInput) FormMethodf(format string, v ...any) HTMLInput {
-	e.setAttr("formmethod", FormatString(format, v...))
+	e.setAttr("formmethod", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29325,7 +29325,7 @@ func (e *htmlInput) FormTarget(v string) HTMLInput {
 }
 
 func (e *htmlInput) FormTargetf(format string, v ...any) HTMLInput {
-	e.setAttr("formtarget", FormatString(format, v...))
+	e.setAttr("formtarget", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29345,7 +29345,7 @@ func (e *htmlInput) ID(v string) HTMLInput {
 }
 
 func (e *htmlInput) IDf(format string, v ...any) HTMLInput {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29355,7 +29355,7 @@ func (e *htmlInput) Lang(v string) HTMLInput {
 }
 
 func (e *htmlInput) Langf(format string, v ...any) HTMLInput {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29365,7 +29365,7 @@ func (e *htmlInput) List(v string) HTMLInput {
 }
 
 func (e *htmlInput) Listf(format string, v ...any) HTMLInput {
-	e.setAttr("list", FormatString(format, v...))
+	e.setAttr("list", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29395,7 +29395,7 @@ func (e *htmlInput) Name(v string) HTMLInput {
 }
 
 func (e *htmlInput) Namef(format string, v ...any) HTMLInput {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29405,7 +29405,7 @@ func (e *htmlInput) Pattern(v string) HTMLInput {
 }
 
 func (e *htmlInput) Patternf(format string, v ...any) HTMLInput {
-	e.setAttr("pattern", FormatString(format, v...))
+	e.setAttr("pattern", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29415,7 +29415,7 @@ func (e *htmlInput) Placeholder(v string) HTMLInput {
 }
 
 func (e *htmlInput) Placeholderf(format string, v ...any) HTMLInput {
-	e.setAttr("placeholder", FormatString(format, v...))
+	e.setAttr("placeholder", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29435,7 +29435,7 @@ func (e *htmlInput) Role(v string) HTMLInput {
 }
 
 func (e *htmlInput) Rolef(format string, v ...any) HTMLInput {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29460,7 +29460,7 @@ func (e *htmlInput) Src(v string) HTMLInput {
 }
 
 func (e *htmlInput) Srcf(format string, v ...any) HTMLInput {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29497,7 +29497,7 @@ func (e *htmlInput) Title(v string) HTMLInput {
 }
 
 func (e *htmlInput) Titlef(format string, v ...any) HTMLInput {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29507,7 +29507,7 @@ func (e *htmlInput) Type(v string) HTMLInput {
 }
 
 func (e *htmlInput) Typef(format string, v ...any) HTMLInput {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29924,12 +29924,12 @@ func (e *htmlIns) AccessKey(v string) HTMLIns {
 }
 
 func (e *htmlIns) AccessKeyf(format string, v ...any) HTMLIns {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlIns) Aria(k string, v any) HTMLIns {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29949,7 +29949,7 @@ func (e *htmlIns) ContentEditable(v bool) HTMLIns {
 }
 
 func (e *htmlIns) DataSet(k string, v any) HTMLIns {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29966,7 +29966,7 @@ func (e *htmlIns) Dir(v string) HTMLIns {
 }
 
 func (e *htmlIns) Dirf(format string, v ...any) HTMLIns {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29986,7 +29986,7 @@ func (e *htmlIns) ID(v string) HTMLIns {
 }
 
 func (e *htmlIns) IDf(format string, v ...any) HTMLIns {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29996,7 +29996,7 @@ func (e *htmlIns) Lang(v string) HTMLIns {
 }
 
 func (e *htmlIns) Langf(format string, v ...any) HTMLIns {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30006,7 +30006,7 @@ func (e *htmlIns) Role(v string) HTMLIns {
 }
 
 func (e *htmlIns) Rolef(format string, v ...any) HTMLIns {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30048,7 +30048,7 @@ func (e *htmlIns) Title(v string) HTMLIns {
 }
 
 func (e *htmlIns) Titlef(format string, v ...any) HTMLIns {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30451,12 +30451,12 @@ func (e *htmlKbd) AccessKey(v string) HTMLKbd {
 }
 
 func (e *htmlKbd) AccessKeyf(format string, v ...any) HTMLKbd {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlKbd) Aria(k string, v any) HTMLKbd {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30476,7 +30476,7 @@ func (e *htmlKbd) ContentEditable(v bool) HTMLKbd {
 }
 
 func (e *htmlKbd) DataSet(k string, v any) HTMLKbd {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30493,7 +30493,7 @@ func (e *htmlKbd) Dir(v string) HTMLKbd {
 }
 
 func (e *htmlKbd) Dirf(format string, v ...any) HTMLKbd {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30513,7 +30513,7 @@ func (e *htmlKbd) ID(v string) HTMLKbd {
 }
 
 func (e *htmlKbd) IDf(format string, v ...any) HTMLKbd {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30523,7 +30523,7 @@ func (e *htmlKbd) Lang(v string) HTMLKbd {
 }
 
 func (e *htmlKbd) Langf(format string, v ...any) HTMLKbd {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30533,7 +30533,7 @@ func (e *htmlKbd) Role(v string) HTMLKbd {
 }
 
 func (e *htmlKbd) Rolef(format string, v ...any) HTMLKbd {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30575,7 +30575,7 @@ func (e *htmlKbd) Title(v string) HTMLKbd {
 }
 
 func (e *htmlKbd) Titlef(format string, v ...any) HTMLKbd {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30990,12 +30990,12 @@ func (e *htmlLabel) AccessKey(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) AccessKeyf(format string, v ...any) HTMLLabel {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlLabel) Aria(k string, v any) HTMLLabel {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31015,7 +31015,7 @@ func (e *htmlLabel) ContentEditable(v bool) HTMLLabel {
 }
 
 func (e *htmlLabel) DataSet(k string, v any) HTMLLabel {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31032,7 +31032,7 @@ func (e *htmlLabel) Dir(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) Dirf(format string, v ...any) HTMLLabel {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31047,7 +31047,7 @@ func (e *htmlLabel) For(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) Forf(format string, v ...any) HTMLLabel {
-	e.setAttr("for", FormatString(format, v...))
+	e.setAttr("for", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31057,7 +31057,7 @@ func (e *htmlLabel) Form(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) Formf(format string, v ...any) HTMLLabel {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31072,7 +31072,7 @@ func (e *htmlLabel) ID(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) IDf(format string, v ...any) HTMLLabel {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31082,7 +31082,7 @@ func (e *htmlLabel) Lang(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) Langf(format string, v ...any) HTMLLabel {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31092,7 +31092,7 @@ func (e *htmlLabel) Role(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) Rolef(format string, v ...any) HTMLLabel {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31134,7 +31134,7 @@ func (e *htmlLabel) Title(v string) HTMLLabel {
 }
 
 func (e *htmlLabel) Titlef(format string, v ...any) HTMLLabel {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31537,12 +31537,12 @@ func (e *htmlLegend) AccessKey(v string) HTMLLegend {
 }
 
 func (e *htmlLegend) AccessKeyf(format string, v ...any) HTMLLegend {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlLegend) Aria(k string, v any) HTMLLegend {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31562,7 +31562,7 @@ func (e *htmlLegend) ContentEditable(v bool) HTMLLegend {
 }
 
 func (e *htmlLegend) DataSet(k string, v any) HTMLLegend {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31579,7 +31579,7 @@ func (e *htmlLegend) Dir(v string) HTMLLegend {
 }
 
 func (e *htmlLegend) Dirf(format string, v ...any) HTMLLegend {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31599,7 +31599,7 @@ func (e *htmlLegend) ID(v string) HTMLLegend {
 }
 
 func (e *htmlLegend) IDf(format string, v ...any) HTMLLegend {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31609,7 +31609,7 @@ func (e *htmlLegend) Lang(v string) HTMLLegend {
 }
 
 func (e *htmlLegend) Langf(format string, v ...any) HTMLLegend {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31619,7 +31619,7 @@ func (e *htmlLegend) Role(v string) HTMLLegend {
 }
 
 func (e *htmlLegend) Rolef(format string, v ...any) HTMLLegend {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31661,7 +31661,7 @@ func (e *htmlLegend) Title(v string) HTMLLegend {
 }
 
 func (e *htmlLegend) Titlef(format string, v ...any) HTMLLegend {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32067,12 +32067,12 @@ func (e *htmlLi) AccessKey(v string) HTMLLi {
 }
 
 func (e *htmlLi) AccessKeyf(format string, v ...any) HTMLLi {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlLi) Aria(k string, v any) HTMLLi {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -32092,7 +32092,7 @@ func (e *htmlLi) ContentEditable(v bool) HTMLLi {
 }
 
 func (e *htmlLi) DataSet(k string, v any) HTMLLi {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -32109,7 +32109,7 @@ func (e *htmlLi) Dir(v string) HTMLLi {
 }
 
 func (e *htmlLi) Dirf(format string, v ...any) HTMLLi {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32129,7 +32129,7 @@ func (e *htmlLi) ID(v string) HTMLLi {
 }
 
 func (e *htmlLi) IDf(format string, v ...any) HTMLLi {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32139,7 +32139,7 @@ func (e *htmlLi) Lang(v string) HTMLLi {
 }
 
 func (e *htmlLi) Langf(format string, v ...any) HTMLLi {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32149,7 +32149,7 @@ func (e *htmlLi) Role(v string) HTMLLi {
 }
 
 func (e *htmlLi) Rolef(format string, v ...any) HTMLLi {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32191,7 +32191,7 @@ func (e *htmlLi) Title(v string) HTMLLi {
 }
 
 func (e *htmlLi) Titlef(format string, v ...any) HTMLLi {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32635,12 +32635,12 @@ func (e *htmlLink) AccessKey(v string) HTMLLink {
 }
 
 func (e *htmlLink) AccessKeyf(format string, v ...any) HTMLLink {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlLink) Aria(k string, v any) HTMLLink {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -32650,7 +32650,7 @@ func (e *htmlLink) As(v string) HTMLLink {
 }
 
 func (e *htmlLink) Asf(format string, v ...any) HTMLLink {
-	e.setAttr("as", FormatString(format, v...))
+	e.setAttr("as", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32675,12 +32675,12 @@ func (e *htmlLink) CrossOrigin(v string) HTMLLink {
 }
 
 func (e *htmlLink) CrossOriginf(format string, v ...any) HTMLLink {
-	e.setAttr("crossorigin", FormatString(format, v...))
+	e.setAttr("crossorigin", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlLink) DataSet(k string, v any) HTMLLink {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -32697,7 +32697,7 @@ func (e *htmlLink) Dir(v string) HTMLLink {
 }
 
 func (e *htmlLink) Dirf(format string, v ...any) HTMLLink {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32712,7 +32712,7 @@ func (e *htmlLink) FetchPriority(v string) HTMLLink {
 }
 
 func (e *htmlLink) FetchPriorityf(format string, v ...any) HTMLLink {
-	e.setAttr("fetchpriority", FormatString(format, v...))
+	e.setAttr("fetchpriority", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32727,7 +32727,7 @@ func (e *htmlLink) Href(v string) HTMLLink {
 }
 
 func (e *htmlLink) Hreff(format string, v ...any) HTMLLink {
-	e.setAttr("href", FormatString(format, v...))
+	e.setAttr("href", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32737,7 +32737,7 @@ func (e *htmlLink) HrefLang(v string) HTMLLink {
 }
 
 func (e *htmlLink) HrefLangf(format string, v ...any) HTMLLink {
-	e.setAttr("hreflang", FormatString(format, v...))
+	e.setAttr("hreflang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32747,7 +32747,7 @@ func (e *htmlLink) ID(v string) HTMLLink {
 }
 
 func (e *htmlLink) IDf(format string, v ...any) HTMLLink {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32757,7 +32757,7 @@ func (e *htmlLink) Lang(v string) HTMLLink {
 }
 
 func (e *htmlLink) Langf(format string, v ...any) HTMLLink {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32767,7 +32767,7 @@ func (e *htmlLink) Media(v string) HTMLLink {
 }
 
 func (e *htmlLink) Mediaf(format string, v ...any) HTMLLink {
-	e.setAttr("media", FormatString(format, v...))
+	e.setAttr("media", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32777,7 +32777,7 @@ func (e *htmlLink) Rel(v string) HTMLLink {
 }
 
 func (e *htmlLink) Relf(format string, v ...any) HTMLLink {
-	e.setAttr("rel", FormatString(format, v...))
+	e.setAttr("rel", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32787,7 +32787,7 @@ func (e *htmlLink) Role(v string) HTMLLink {
 }
 
 func (e *htmlLink) Rolef(format string, v ...any) HTMLLink {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32797,7 +32797,7 @@ func (e *htmlLink) Sizes(v string) HTMLLink {
 }
 
 func (e *htmlLink) Sizesf(format string, v ...any) HTMLLink {
-	e.setAttr("sizes", FormatString(format, v...))
+	e.setAttr("sizes", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32839,7 +32839,7 @@ func (e *htmlLink) Title(v string) HTMLLink {
 }
 
 func (e *htmlLink) Titlef(format string, v ...any) HTMLLink {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32849,7 +32849,7 @@ func (e *htmlLink) Type(v string) HTMLLink {
 }
 
 func (e *htmlLink) Typef(format string, v ...any) HTMLLink {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33256,12 +33256,12 @@ func (e *htmlMain) AccessKey(v string) HTMLMain {
 }
 
 func (e *htmlMain) AccessKeyf(format string, v ...any) HTMLMain {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlMain) Aria(k string, v any) HTMLMain {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -33281,7 +33281,7 @@ func (e *htmlMain) ContentEditable(v bool) HTMLMain {
 }
 
 func (e *htmlMain) DataSet(k string, v any) HTMLMain {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -33298,7 +33298,7 @@ func (e *htmlMain) Dir(v string) HTMLMain {
 }
 
 func (e *htmlMain) Dirf(format string, v ...any) HTMLMain {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33318,7 +33318,7 @@ func (e *htmlMain) ID(v string) HTMLMain {
 }
 
 func (e *htmlMain) IDf(format string, v ...any) HTMLMain {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33328,7 +33328,7 @@ func (e *htmlMain) Lang(v string) HTMLMain {
 }
 
 func (e *htmlMain) Langf(format string, v ...any) HTMLMain {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33338,7 +33338,7 @@ func (e *htmlMain) Role(v string) HTMLMain {
 }
 
 func (e *htmlMain) Rolef(format string, v ...any) HTMLMain {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33380,7 +33380,7 @@ func (e *htmlMain) Title(v string) HTMLMain {
 }
 
 func (e *htmlMain) Titlef(format string, v ...any) HTMLMain {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33789,12 +33789,12 @@ func (e *htmlMap) AccessKey(v string) HTMLMap {
 }
 
 func (e *htmlMap) AccessKeyf(format string, v ...any) HTMLMap {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlMap) Aria(k string, v any) HTMLMap {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -33814,7 +33814,7 @@ func (e *htmlMap) ContentEditable(v bool) HTMLMap {
 }
 
 func (e *htmlMap) DataSet(k string, v any) HTMLMap {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -33831,7 +33831,7 @@ func (e *htmlMap) Dir(v string) HTMLMap {
 }
 
 func (e *htmlMap) Dirf(format string, v ...any) HTMLMap {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33851,7 +33851,7 @@ func (e *htmlMap) ID(v string) HTMLMap {
 }
 
 func (e *htmlMap) IDf(format string, v ...any) HTMLMap {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33861,7 +33861,7 @@ func (e *htmlMap) Lang(v string) HTMLMap {
 }
 
 func (e *htmlMap) Langf(format string, v ...any) HTMLMap {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33871,7 +33871,7 @@ func (e *htmlMap) Name(v string) HTMLMap {
 }
 
 func (e *htmlMap) Namef(format string, v ...any) HTMLMap {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33881,7 +33881,7 @@ func (e *htmlMap) Role(v string) HTMLMap {
 }
 
 func (e *htmlMap) Rolef(format string, v ...any) HTMLMap {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33923,7 +33923,7 @@ func (e *htmlMap) Title(v string) HTMLMap {
 }
 
 func (e *htmlMap) Titlef(format string, v ...any) HTMLMap {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34326,12 +34326,12 @@ func (e *htmlMark) AccessKey(v string) HTMLMark {
 }
 
 func (e *htmlMark) AccessKeyf(format string, v ...any) HTMLMark {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlMark) Aria(k string, v any) HTMLMark {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -34351,7 +34351,7 @@ func (e *htmlMark) ContentEditable(v bool) HTMLMark {
 }
 
 func (e *htmlMark) DataSet(k string, v any) HTMLMark {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -34368,7 +34368,7 @@ func (e *htmlMark) Dir(v string) HTMLMark {
 }
 
 func (e *htmlMark) Dirf(format string, v ...any) HTMLMark {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34388,7 +34388,7 @@ func (e *htmlMark) ID(v string) HTMLMark {
 }
 
 func (e *htmlMark) IDf(format string, v ...any) HTMLMark {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34398,7 +34398,7 @@ func (e *htmlMark) Lang(v string) HTMLMark {
 }
 
 func (e *htmlMark) Langf(format string, v ...any) HTMLMark {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34408,7 +34408,7 @@ func (e *htmlMark) Role(v string) HTMLMark {
 }
 
 func (e *htmlMark) Rolef(format string, v ...any) HTMLMark {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34450,7 +34450,7 @@ func (e *htmlMark) Title(v string) HTMLMark {
 }
 
 func (e *htmlMark) Titlef(format string, v ...any) HTMLMark {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34760,12 +34760,12 @@ func (e *htmlMeta) AccessKey(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) AccessKeyf(format string, v ...any) HTMLMeta {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlMeta) Aria(k string, v any) HTMLMeta {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -34780,7 +34780,7 @@ func (e *htmlMeta) Charset(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Charsetf(format string, v ...any) HTMLMeta {
-	e.setAttr("charset", FormatString(format, v...))
+	e.setAttr("charset", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34795,7 +34795,7 @@ func (e *htmlMeta) Content(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Contentf(format string, v ...any) HTMLMeta {
-	e.setAttr("content", FormatString(format, v...))
+	e.setAttr("content", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34805,7 +34805,7 @@ func (e *htmlMeta) ContentEditable(v bool) HTMLMeta {
 }
 
 func (e *htmlMeta) DataSet(k string, v any) HTMLMeta {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -34822,7 +34822,7 @@ func (e *htmlMeta) Dir(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Dirf(format string, v ...any) HTMLMeta {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34837,7 +34837,7 @@ func (e *htmlMeta) HTTPEquiv(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) HTTPEquivf(format string, v ...any) HTMLMeta {
-	e.setAttr("http-equiv", FormatString(format, v...))
+	e.setAttr("http-equiv", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34852,7 +34852,7 @@ func (e *htmlMeta) ID(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) IDf(format string, v ...any) HTMLMeta {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34862,7 +34862,7 @@ func (e *htmlMeta) Lang(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Langf(format string, v ...any) HTMLMeta {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34872,7 +34872,7 @@ func (e *htmlMeta) Name(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Namef(format string, v ...any) HTMLMeta {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34882,7 +34882,7 @@ func (e *htmlMeta) Property(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Propertyf(format string, v ...any) HTMLMeta {
-	e.setAttr("property", FormatString(format, v...))
+	e.setAttr("property", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34892,7 +34892,7 @@ func (e *htmlMeta) Role(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Rolef(format string, v ...any) HTMLMeta {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34934,7 +34934,7 @@ func (e *htmlMeta) Title(v string) HTMLMeta {
 }
 
 func (e *htmlMeta) Titlef(format string, v ...any) HTMLMeta {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35225,12 +35225,12 @@ func (e *htmlMeter) AccessKey(v string) HTMLMeter {
 }
 
 func (e *htmlMeter) AccessKeyf(format string, v ...any) HTMLMeter {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlMeter) Aria(k string, v any) HTMLMeter {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -35250,7 +35250,7 @@ func (e *htmlMeter) ContentEditable(v bool) HTMLMeter {
 }
 
 func (e *htmlMeter) DataSet(k string, v any) HTMLMeter {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -35267,7 +35267,7 @@ func (e *htmlMeter) Dir(v string) HTMLMeter {
 }
 
 func (e *htmlMeter) Dirf(format string, v ...any) HTMLMeter {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35282,7 +35282,7 @@ func (e *htmlMeter) Form(v string) HTMLMeter {
 }
 
 func (e *htmlMeter) Formf(format string, v ...any) HTMLMeter {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35302,7 +35302,7 @@ func (e *htmlMeter) ID(v string) HTMLMeter {
 }
 
 func (e *htmlMeter) IDf(format string, v ...any) HTMLMeter {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35312,7 +35312,7 @@ func (e *htmlMeter) Lang(v string) HTMLMeter {
 }
 
 func (e *htmlMeter) Langf(format string, v ...any) HTMLMeter {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35342,7 +35342,7 @@ func (e *htmlMeter) Role(v string) HTMLMeter {
 }
 
 func (e *htmlMeter) Rolef(format string, v ...any) HTMLMeter {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35384,7 +35384,7 @@ func (e *htmlMeter) Title(v string) HTMLMeter {
 }
 
 func (e *htmlMeter) Titlef(format string, v ...any) HTMLMeter {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35792,12 +35792,12 @@ func (e *htmlNav) AccessKey(v string) HTMLNav {
 }
 
 func (e *htmlNav) AccessKeyf(format string, v ...any) HTMLNav {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlNav) Aria(k string, v any) HTMLNav {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -35817,7 +35817,7 @@ func (e *htmlNav) ContentEditable(v bool) HTMLNav {
 }
 
 func (e *htmlNav) DataSet(k string, v any) HTMLNav {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -35834,7 +35834,7 @@ func (e *htmlNav) Dir(v string) HTMLNav {
 }
 
 func (e *htmlNav) Dirf(format string, v ...any) HTMLNav {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35854,7 +35854,7 @@ func (e *htmlNav) ID(v string) HTMLNav {
 }
 
 func (e *htmlNav) IDf(format string, v ...any) HTMLNav {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35864,7 +35864,7 @@ func (e *htmlNav) Lang(v string) HTMLNav {
 }
 
 func (e *htmlNav) Langf(format string, v ...any) HTMLNav {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35874,7 +35874,7 @@ func (e *htmlNav) Role(v string) HTMLNav {
 }
 
 func (e *htmlNav) Rolef(format string, v ...any) HTMLNav {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35916,7 +35916,7 @@ func (e *htmlNav) Title(v string) HTMLNav {
 }
 
 func (e *htmlNav) Titlef(format string, v ...any) HTMLNav {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36217,12 +36217,12 @@ func (e *htmlNoScript) AccessKey(v string) HTMLNoScript {
 }
 
 func (e *htmlNoScript) AccessKeyf(format string, v ...any) HTMLNoScript {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlNoScript) Aria(k string, v any) HTMLNoScript {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -36242,7 +36242,7 @@ func (e *htmlNoScript) ContentEditable(v bool) HTMLNoScript {
 }
 
 func (e *htmlNoScript) DataSet(k string, v any) HTMLNoScript {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -36259,7 +36259,7 @@ func (e *htmlNoScript) Dir(v string) HTMLNoScript {
 }
 
 func (e *htmlNoScript) Dirf(format string, v ...any) HTMLNoScript {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36279,7 +36279,7 @@ func (e *htmlNoScript) ID(v string) HTMLNoScript {
 }
 
 func (e *htmlNoScript) IDf(format string, v ...any) HTMLNoScript {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36289,7 +36289,7 @@ func (e *htmlNoScript) Lang(v string) HTMLNoScript {
 }
 
 func (e *htmlNoScript) Langf(format string, v ...any) HTMLNoScript {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36299,7 +36299,7 @@ func (e *htmlNoScript) Role(v string) HTMLNoScript {
 }
 
 func (e *htmlNoScript) Rolef(format string, v ...any) HTMLNoScript {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36341,7 +36341,7 @@ func (e *htmlNoScript) Title(v string) HTMLNoScript {
 }
 
 func (e *htmlNoScript) Titlef(format string, v ...any) HTMLNoScript {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36713,12 +36713,12 @@ func (e *htmlObject) AccessKey(v string) HTMLObject {
 }
 
 func (e *htmlObject) AccessKeyf(format string, v ...any) HTMLObject {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlObject) Aria(k string, v any) HTMLObject {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -36743,12 +36743,12 @@ func (e *htmlObject) Data(v string) HTMLObject {
 }
 
 func (e *htmlObject) Dataf(format string, v ...any) HTMLObject {
-	e.setAttr("data", FormatString(format, v...))
+	e.setAttr("data", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlObject) DataSet(k string, v any) HTMLObject {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -36765,7 +36765,7 @@ func (e *htmlObject) Dir(v string) HTMLObject {
 }
 
 func (e *htmlObject) Dirf(format string, v ...any) HTMLObject {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36780,7 +36780,7 @@ func (e *htmlObject) Form(v string) HTMLObject {
 }
 
 func (e *htmlObject) Formf(format string, v ...any) HTMLObject {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36800,7 +36800,7 @@ func (e *htmlObject) ID(v string) HTMLObject {
 }
 
 func (e *htmlObject) IDf(format string, v ...any) HTMLObject {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36810,7 +36810,7 @@ func (e *htmlObject) Lang(v string) HTMLObject {
 }
 
 func (e *htmlObject) Langf(format string, v ...any) HTMLObject {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36820,7 +36820,7 @@ func (e *htmlObject) Name(v string) HTMLObject {
 }
 
 func (e *htmlObject) Namef(format string, v ...any) HTMLObject {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36830,7 +36830,7 @@ func (e *htmlObject) Role(v string) HTMLObject {
 }
 
 func (e *htmlObject) Rolef(format string, v ...any) HTMLObject {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36872,7 +36872,7 @@ func (e *htmlObject) Title(v string) HTMLObject {
 }
 
 func (e *htmlObject) Titlef(format string, v ...any) HTMLObject {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36882,7 +36882,7 @@ func (e *htmlObject) Type(v string) HTMLObject {
 }
 
 func (e *htmlObject) Typef(format string, v ...any) HTMLObject {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36892,7 +36892,7 @@ func (e *htmlObject) UseMap(v string) HTMLObject {
 }
 
 func (e *htmlObject) UseMapf(format string, v ...any) HTMLObject {
-	e.setAttr("usemap", FormatString(format, v...))
+	e.setAttr("usemap", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37404,12 +37404,12 @@ func (e *htmlOl) AccessKey(v string) HTMLOl {
 }
 
 func (e *htmlOl) AccessKeyf(format string, v ...any) HTMLOl {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlOl) Aria(k string, v any) HTMLOl {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -37429,7 +37429,7 @@ func (e *htmlOl) ContentEditable(v bool) HTMLOl {
 }
 
 func (e *htmlOl) DataSet(k string, v any) HTMLOl {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -37446,7 +37446,7 @@ func (e *htmlOl) Dir(v string) HTMLOl {
 }
 
 func (e *htmlOl) Dirf(format string, v ...any) HTMLOl {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37466,7 +37466,7 @@ func (e *htmlOl) ID(v string) HTMLOl {
 }
 
 func (e *htmlOl) IDf(format string, v ...any) HTMLOl {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37476,7 +37476,7 @@ func (e *htmlOl) Lang(v string) HTMLOl {
 }
 
 func (e *htmlOl) Langf(format string, v ...any) HTMLOl {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37491,7 +37491,7 @@ func (e *htmlOl) Role(v string) HTMLOl {
 }
 
 func (e *htmlOl) Rolef(format string, v ...any) HTMLOl {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37538,7 +37538,7 @@ func (e *htmlOl) Title(v string) HTMLOl {
 }
 
 func (e *htmlOl) Titlef(format string, v ...any) HTMLOl {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37548,7 +37548,7 @@ func (e *htmlOl) Type(v string) HTMLOl {
 }
 
 func (e *htmlOl) Typef(format string, v ...any) HTMLOl {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37960,12 +37960,12 @@ func (e *htmlOptGroup) AccessKey(v string) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) AccessKeyf(format string, v ...any) HTMLOptGroup {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlOptGroup) Aria(k string, v any) HTMLOptGroup {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -37985,7 +37985,7 @@ func (e *htmlOptGroup) ContentEditable(v bool) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) DataSet(k string, v any) HTMLOptGroup {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -38002,7 +38002,7 @@ func (e *htmlOptGroup) Dir(v string) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) Dirf(format string, v ...any) HTMLOptGroup {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38027,7 +38027,7 @@ func (e *htmlOptGroup) ID(v string) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) IDf(format string, v ...any) HTMLOptGroup {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38037,7 +38037,7 @@ func (e *htmlOptGroup) Label(v string) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) Labelf(format string, v ...any) HTMLOptGroup {
-	e.setAttr("label", FormatString(format, v...))
+	e.setAttr("label", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38047,7 +38047,7 @@ func (e *htmlOptGroup) Lang(v string) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) Langf(format string, v ...any) HTMLOptGroup {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38057,7 +38057,7 @@ func (e *htmlOptGroup) Role(v string) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) Rolef(format string, v ...any) HTMLOptGroup {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38099,7 +38099,7 @@ func (e *htmlOptGroup) Title(v string) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) Titlef(format string, v ...any) HTMLOptGroup {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38517,12 +38517,12 @@ func (e *htmlOption) AccessKey(v string) HTMLOption {
 }
 
 func (e *htmlOption) AccessKeyf(format string, v ...any) HTMLOption {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlOption) Aria(k string, v any) HTMLOption {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -38542,7 +38542,7 @@ func (e *htmlOption) ContentEditable(v bool) HTMLOption {
 }
 
 func (e *htmlOption) DataSet(k string, v any) HTMLOption {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -38559,7 +38559,7 @@ func (e *htmlOption) Dir(v string) HTMLOption {
 }
 
 func (e *htmlOption) Dirf(format string, v ...any) HTMLOption {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38584,7 +38584,7 @@ func (e *htmlOption) ID(v string) HTMLOption {
 }
 
 func (e *htmlOption) IDf(format string, v ...any) HTMLOption {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38594,7 +38594,7 @@ func (e *htmlOption) Label(v string) HTMLOption {
 }
 
 func (e *htmlOption) Labelf(format string, v ...any) HTMLOption {
-	e.setAttr("label", FormatString(format, v...))
+	e.setAttr("label", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38604,7 +38604,7 @@ func (e *htmlOption) Lang(v string) HTMLOption {
 }
 
 func (e *htmlOption) Langf(format string, v ...any) HTMLOption {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38614,7 +38614,7 @@ func (e *htmlOption) Role(v string) HTMLOption {
 }
 
 func (e *htmlOption) Rolef(format string, v ...any) HTMLOption {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38661,7 +38661,7 @@ func (e *htmlOption) Title(v string) HTMLOption {
 }
 
 func (e *htmlOption) Titlef(format string, v ...any) HTMLOption {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39087,12 +39087,12 @@ func (e *htmlOutput) AccessKey(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) AccessKeyf(format string, v ...any) HTMLOutput {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlOutput) Aria(k string, v any) HTMLOutput {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -39112,7 +39112,7 @@ func (e *htmlOutput) ContentEditable(v bool) HTMLOutput {
 }
 
 func (e *htmlOutput) DataSet(k string, v any) HTMLOutput {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -39129,7 +39129,7 @@ func (e *htmlOutput) Dir(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) Dirf(format string, v ...any) HTMLOutput {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39144,7 +39144,7 @@ func (e *htmlOutput) For(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) Forf(format string, v ...any) HTMLOutput {
-	e.setAttr("for", FormatString(format, v...))
+	e.setAttr("for", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39154,7 +39154,7 @@ func (e *htmlOutput) Form(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) Formf(format string, v ...any) HTMLOutput {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39169,7 +39169,7 @@ func (e *htmlOutput) ID(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) IDf(format string, v ...any) HTMLOutput {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39179,7 +39179,7 @@ func (e *htmlOutput) Lang(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) Langf(format string, v ...any) HTMLOutput {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39189,7 +39189,7 @@ func (e *htmlOutput) Name(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) Namef(format string, v ...any) HTMLOutput {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39199,7 +39199,7 @@ func (e *htmlOutput) Role(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) Rolef(format string, v ...any) HTMLOutput {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39241,7 +39241,7 @@ func (e *htmlOutput) Title(v string) HTMLOutput {
 }
 
 func (e *htmlOutput) Titlef(format string, v ...any) HTMLOutput {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39644,12 +39644,12 @@ func (e *htmlP) AccessKey(v string) HTMLP {
 }
 
 func (e *htmlP) AccessKeyf(format string, v ...any) HTMLP {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlP) Aria(k string, v any) HTMLP {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -39669,7 +39669,7 @@ func (e *htmlP) ContentEditable(v bool) HTMLP {
 }
 
 func (e *htmlP) DataSet(k string, v any) HTMLP {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -39686,7 +39686,7 @@ func (e *htmlP) Dir(v string) HTMLP {
 }
 
 func (e *htmlP) Dirf(format string, v ...any) HTMLP {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39706,7 +39706,7 @@ func (e *htmlP) ID(v string) HTMLP {
 }
 
 func (e *htmlP) IDf(format string, v ...any) HTMLP {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39716,7 +39716,7 @@ func (e *htmlP) Lang(v string) HTMLP {
 }
 
 func (e *htmlP) Langf(format string, v ...any) HTMLP {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39726,7 +39726,7 @@ func (e *htmlP) Role(v string) HTMLP {
 }
 
 func (e *htmlP) Rolef(format string, v ...any) HTMLP {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39768,7 +39768,7 @@ func (e *htmlP) Title(v string) HTMLP {
 }
 
 func (e *htmlP) Titlef(format string, v ...any) HTMLP {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40159,12 +40159,12 @@ func (e *htmlParam) AccessKey(v string) HTMLParam {
 }
 
 func (e *htmlParam) AccessKeyf(format string, v ...any) HTMLParam {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlParam) Aria(k string, v any) HTMLParam {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -40184,7 +40184,7 @@ func (e *htmlParam) ContentEditable(v bool) HTMLParam {
 }
 
 func (e *htmlParam) DataSet(k string, v any) HTMLParam {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -40201,7 +40201,7 @@ func (e *htmlParam) Dir(v string) HTMLParam {
 }
 
 func (e *htmlParam) Dirf(format string, v ...any) HTMLParam {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40221,7 +40221,7 @@ func (e *htmlParam) ID(v string) HTMLParam {
 }
 
 func (e *htmlParam) IDf(format string, v ...any) HTMLParam {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40231,7 +40231,7 @@ func (e *htmlParam) Lang(v string) HTMLParam {
 }
 
 func (e *htmlParam) Langf(format string, v ...any) HTMLParam {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40241,7 +40241,7 @@ func (e *htmlParam) Name(v string) HTMLParam {
 }
 
 func (e *htmlParam) Namef(format string, v ...any) HTMLParam {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40251,7 +40251,7 @@ func (e *htmlParam) Role(v string) HTMLParam {
 }
 
 func (e *htmlParam) Rolef(format string, v ...any) HTMLParam {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40293,7 +40293,7 @@ func (e *htmlParam) Title(v string) HTMLParam {
 }
 
 func (e *htmlParam) Titlef(format string, v ...any) HTMLParam {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40701,12 +40701,12 @@ func (e *htmlPicture) AccessKey(v string) HTMLPicture {
 }
 
 func (e *htmlPicture) AccessKeyf(format string, v ...any) HTMLPicture {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlPicture) Aria(k string, v any) HTMLPicture {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -40726,7 +40726,7 @@ func (e *htmlPicture) ContentEditable(v bool) HTMLPicture {
 }
 
 func (e *htmlPicture) DataSet(k string, v any) HTMLPicture {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -40743,7 +40743,7 @@ func (e *htmlPicture) Dir(v string) HTMLPicture {
 }
 
 func (e *htmlPicture) Dirf(format string, v ...any) HTMLPicture {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40763,7 +40763,7 @@ func (e *htmlPicture) ID(v string) HTMLPicture {
 }
 
 func (e *htmlPicture) IDf(format string, v ...any) HTMLPicture {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40773,7 +40773,7 @@ func (e *htmlPicture) Lang(v string) HTMLPicture {
 }
 
 func (e *htmlPicture) Langf(format string, v ...any) HTMLPicture {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40783,7 +40783,7 @@ func (e *htmlPicture) Role(v string) HTMLPicture {
 }
 
 func (e *htmlPicture) Rolef(format string, v ...any) HTMLPicture {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40825,7 +40825,7 @@ func (e *htmlPicture) Title(v string) HTMLPicture {
 }
 
 func (e *htmlPicture) Titlef(format string, v ...any) HTMLPicture {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41228,12 +41228,12 @@ func (e *htmlPre) AccessKey(v string) HTMLPre {
 }
 
 func (e *htmlPre) AccessKeyf(format string, v ...any) HTMLPre {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlPre) Aria(k string, v any) HTMLPre {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -41253,7 +41253,7 @@ func (e *htmlPre) ContentEditable(v bool) HTMLPre {
 }
 
 func (e *htmlPre) DataSet(k string, v any) HTMLPre {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -41270,7 +41270,7 @@ func (e *htmlPre) Dir(v string) HTMLPre {
 }
 
 func (e *htmlPre) Dirf(format string, v ...any) HTMLPre {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41290,7 +41290,7 @@ func (e *htmlPre) ID(v string) HTMLPre {
 }
 
 func (e *htmlPre) IDf(format string, v ...any) HTMLPre {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41300,7 +41300,7 @@ func (e *htmlPre) Lang(v string) HTMLPre {
 }
 
 func (e *htmlPre) Langf(format string, v ...any) HTMLPre {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41310,7 +41310,7 @@ func (e *htmlPre) Role(v string) HTMLPre {
 }
 
 func (e *htmlPre) Rolef(format string, v ...any) HTMLPre {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41352,7 +41352,7 @@ func (e *htmlPre) Title(v string) HTMLPre {
 }
 
 func (e *htmlPre) Titlef(format string, v ...any) HTMLPre {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41761,12 +41761,12 @@ func (e *htmlProgress) AccessKey(v string) HTMLProgress {
 }
 
 func (e *htmlProgress) AccessKeyf(format string, v ...any) HTMLProgress {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlProgress) Aria(k string, v any) HTMLProgress {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -41786,7 +41786,7 @@ func (e *htmlProgress) ContentEditable(v bool) HTMLProgress {
 }
 
 func (e *htmlProgress) DataSet(k string, v any) HTMLProgress {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -41803,7 +41803,7 @@ func (e *htmlProgress) Dir(v string) HTMLProgress {
 }
 
 func (e *htmlProgress) Dirf(format string, v ...any) HTMLProgress {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41823,7 +41823,7 @@ func (e *htmlProgress) ID(v string) HTMLProgress {
 }
 
 func (e *htmlProgress) IDf(format string, v ...any) HTMLProgress {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41833,7 +41833,7 @@ func (e *htmlProgress) Lang(v string) HTMLProgress {
 }
 
 func (e *htmlProgress) Langf(format string, v ...any) HTMLProgress {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41848,7 +41848,7 @@ func (e *htmlProgress) Role(v string) HTMLProgress {
 }
 
 func (e *htmlProgress) Rolef(format string, v ...any) HTMLProgress {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41890,7 +41890,7 @@ func (e *htmlProgress) Title(v string) HTMLProgress {
 }
 
 func (e *htmlProgress) Titlef(format string, v ...any) HTMLProgress {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42304,12 +42304,12 @@ func (e *htmlQ) AccessKey(v string) HTMLQ {
 }
 
 func (e *htmlQ) AccessKeyf(format string, v ...any) HTMLQ {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlQ) Aria(k string, v any) HTMLQ {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -42324,7 +42324,7 @@ func (e *htmlQ) Cite(v string) HTMLQ {
 }
 
 func (e *htmlQ) Citef(format string, v ...any) HTMLQ {
-	e.setAttr("cite", FormatString(format, v...))
+	e.setAttr("cite", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42339,7 +42339,7 @@ func (e *htmlQ) ContentEditable(v bool) HTMLQ {
 }
 
 func (e *htmlQ) DataSet(k string, v any) HTMLQ {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -42356,7 +42356,7 @@ func (e *htmlQ) Dir(v string) HTMLQ {
 }
 
 func (e *htmlQ) Dirf(format string, v ...any) HTMLQ {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42376,7 +42376,7 @@ func (e *htmlQ) ID(v string) HTMLQ {
 }
 
 func (e *htmlQ) IDf(format string, v ...any) HTMLQ {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42386,7 +42386,7 @@ func (e *htmlQ) Lang(v string) HTMLQ {
 }
 
 func (e *htmlQ) Langf(format string, v ...any) HTMLQ {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42396,7 +42396,7 @@ func (e *htmlQ) Role(v string) HTMLQ {
 }
 
 func (e *htmlQ) Rolef(format string, v ...any) HTMLQ {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42438,7 +42438,7 @@ func (e *htmlQ) Title(v string) HTMLQ {
 }
 
 func (e *htmlQ) Titlef(format string, v ...any) HTMLQ {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42841,12 +42841,12 @@ func (e *htmlRp) AccessKey(v string) HTMLRp {
 }
 
 func (e *htmlRp) AccessKeyf(format string, v ...any) HTMLRp {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlRp) Aria(k string, v any) HTMLRp {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -42866,7 +42866,7 @@ func (e *htmlRp) ContentEditable(v bool) HTMLRp {
 }
 
 func (e *htmlRp) DataSet(k string, v any) HTMLRp {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -42883,7 +42883,7 @@ func (e *htmlRp) Dir(v string) HTMLRp {
 }
 
 func (e *htmlRp) Dirf(format string, v ...any) HTMLRp {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42903,7 +42903,7 @@ func (e *htmlRp) ID(v string) HTMLRp {
 }
 
 func (e *htmlRp) IDf(format string, v ...any) HTMLRp {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42913,7 +42913,7 @@ func (e *htmlRp) Lang(v string) HTMLRp {
 }
 
 func (e *htmlRp) Langf(format string, v ...any) HTMLRp {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42923,7 +42923,7 @@ func (e *htmlRp) Role(v string) HTMLRp {
 }
 
 func (e *htmlRp) Rolef(format string, v ...any) HTMLRp {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42965,7 +42965,7 @@ func (e *htmlRp) Title(v string) HTMLRp {
 }
 
 func (e *htmlRp) Titlef(format string, v ...any) HTMLRp {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43368,12 +43368,12 @@ func (e *htmlRt) AccessKey(v string) HTMLRt {
 }
 
 func (e *htmlRt) AccessKeyf(format string, v ...any) HTMLRt {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlRt) Aria(k string, v any) HTMLRt {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -43393,7 +43393,7 @@ func (e *htmlRt) ContentEditable(v bool) HTMLRt {
 }
 
 func (e *htmlRt) DataSet(k string, v any) HTMLRt {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -43410,7 +43410,7 @@ func (e *htmlRt) Dir(v string) HTMLRt {
 }
 
 func (e *htmlRt) Dirf(format string, v ...any) HTMLRt {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43430,7 +43430,7 @@ func (e *htmlRt) ID(v string) HTMLRt {
 }
 
 func (e *htmlRt) IDf(format string, v ...any) HTMLRt {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43440,7 +43440,7 @@ func (e *htmlRt) Lang(v string) HTMLRt {
 }
 
 func (e *htmlRt) Langf(format string, v ...any) HTMLRt {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43450,7 +43450,7 @@ func (e *htmlRt) Role(v string) HTMLRt {
 }
 
 func (e *htmlRt) Rolef(format string, v ...any) HTMLRt {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43492,7 +43492,7 @@ func (e *htmlRt) Title(v string) HTMLRt {
 }
 
 func (e *htmlRt) Titlef(format string, v ...any) HTMLRt {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43895,12 +43895,12 @@ func (e *htmlRuby) AccessKey(v string) HTMLRuby {
 }
 
 func (e *htmlRuby) AccessKeyf(format string, v ...any) HTMLRuby {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlRuby) Aria(k string, v any) HTMLRuby {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -43920,7 +43920,7 @@ func (e *htmlRuby) ContentEditable(v bool) HTMLRuby {
 }
 
 func (e *htmlRuby) DataSet(k string, v any) HTMLRuby {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -43937,7 +43937,7 @@ func (e *htmlRuby) Dir(v string) HTMLRuby {
 }
 
 func (e *htmlRuby) Dirf(format string, v ...any) HTMLRuby {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43957,7 +43957,7 @@ func (e *htmlRuby) ID(v string) HTMLRuby {
 }
 
 func (e *htmlRuby) IDf(format string, v ...any) HTMLRuby {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43967,7 +43967,7 @@ func (e *htmlRuby) Lang(v string) HTMLRuby {
 }
 
 func (e *htmlRuby) Langf(format string, v ...any) HTMLRuby {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43977,7 +43977,7 @@ func (e *htmlRuby) Role(v string) HTMLRuby {
 }
 
 func (e *htmlRuby) Rolef(format string, v ...any) HTMLRuby {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44019,7 +44019,7 @@ func (e *htmlRuby) Title(v string) HTMLRuby {
 }
 
 func (e *htmlRuby) Titlef(format string, v ...any) HTMLRuby {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44422,12 +44422,12 @@ func (e *htmlS) AccessKey(v string) HTMLS {
 }
 
 func (e *htmlS) AccessKeyf(format string, v ...any) HTMLS {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlS) Aria(k string, v any) HTMLS {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -44447,7 +44447,7 @@ func (e *htmlS) ContentEditable(v bool) HTMLS {
 }
 
 func (e *htmlS) DataSet(k string, v any) HTMLS {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -44464,7 +44464,7 @@ func (e *htmlS) Dir(v string) HTMLS {
 }
 
 func (e *htmlS) Dirf(format string, v ...any) HTMLS {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44484,7 +44484,7 @@ func (e *htmlS) ID(v string) HTMLS {
 }
 
 func (e *htmlS) IDf(format string, v ...any) HTMLS {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44494,7 +44494,7 @@ func (e *htmlS) Lang(v string) HTMLS {
 }
 
 func (e *htmlS) Langf(format string, v ...any) HTMLS {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44504,7 +44504,7 @@ func (e *htmlS) Role(v string) HTMLS {
 }
 
 func (e *htmlS) Rolef(format string, v ...any) HTMLS {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44546,7 +44546,7 @@ func (e *htmlS) Title(v string) HTMLS {
 }
 
 func (e *htmlS) Titlef(format string, v ...any) HTMLS {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44949,12 +44949,12 @@ func (e *htmlSamp) AccessKey(v string) HTMLSamp {
 }
 
 func (e *htmlSamp) AccessKeyf(format string, v ...any) HTMLSamp {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSamp) Aria(k string, v any) HTMLSamp {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -44974,7 +44974,7 @@ func (e *htmlSamp) ContentEditable(v bool) HTMLSamp {
 }
 
 func (e *htmlSamp) DataSet(k string, v any) HTMLSamp {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -44991,7 +44991,7 @@ func (e *htmlSamp) Dir(v string) HTMLSamp {
 }
 
 func (e *htmlSamp) Dirf(format string, v ...any) HTMLSamp {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45011,7 +45011,7 @@ func (e *htmlSamp) ID(v string) HTMLSamp {
 }
 
 func (e *htmlSamp) IDf(format string, v ...any) HTMLSamp {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45021,7 +45021,7 @@ func (e *htmlSamp) Lang(v string) HTMLSamp {
 }
 
 func (e *htmlSamp) Langf(format string, v ...any) HTMLSamp {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45031,7 +45031,7 @@ func (e *htmlSamp) Role(v string) HTMLSamp {
 }
 
 func (e *htmlSamp) Rolef(format string, v ...any) HTMLSamp {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45073,7 +45073,7 @@ func (e *htmlSamp) Title(v string) HTMLSamp {
 }
 
 func (e *htmlSamp) Titlef(format string, v ...any) HTMLSamp {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45407,12 +45407,12 @@ func (e *htmlScript) AccessKey(v string) HTMLScript {
 }
 
 func (e *htmlScript) AccessKeyf(format string, v ...any) HTMLScript {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlScript) Aria(k string, v any) HTMLScript {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -45432,7 +45432,7 @@ func (e *htmlScript) Charset(v string) HTMLScript {
 }
 
 func (e *htmlScript) Charsetf(format string, v ...any) HTMLScript {
-	e.setAttr("charset", FormatString(format, v...))
+	e.setAttr("charset", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45452,12 +45452,12 @@ func (e *htmlScript) CrossOrigin(v string) HTMLScript {
 }
 
 func (e *htmlScript) CrossOriginf(format string, v ...any) HTMLScript {
-	e.setAttr("crossorigin", FormatString(format, v...))
+	e.setAttr("crossorigin", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlScript) DataSet(k string, v any) HTMLScript {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -45479,7 +45479,7 @@ func (e *htmlScript) Dir(v string) HTMLScript {
 }
 
 func (e *htmlScript) Dirf(format string, v ...any) HTMLScript {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45499,7 +45499,7 @@ func (e *htmlScript) ID(v string) HTMLScript {
 }
 
 func (e *htmlScript) IDf(format string, v ...any) HTMLScript {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45509,7 +45509,7 @@ func (e *htmlScript) Lang(v string) HTMLScript {
 }
 
 func (e *htmlScript) Langf(format string, v ...any) HTMLScript {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45519,7 +45519,7 @@ func (e *htmlScript) Role(v string) HTMLScript {
 }
 
 func (e *htmlScript) Rolef(format string, v ...any) HTMLScript {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45539,7 +45539,7 @@ func (e *htmlScript) Src(v string) HTMLScript {
 }
 
 func (e *htmlScript) Srcf(format string, v ...any) HTMLScript {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45571,7 +45571,7 @@ func (e *htmlScript) Title(v string) HTMLScript {
 }
 
 func (e *htmlScript) Titlef(format string, v ...any) HTMLScript {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45581,7 +45581,7 @@ func (e *htmlScript) Type(v string) HTMLScript {
 }
 
 func (e *htmlScript) Typef(format string, v ...any) HTMLScript {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45852,12 +45852,12 @@ func (e *htmlSection) AccessKey(v string) HTMLSection {
 }
 
 func (e *htmlSection) AccessKeyf(format string, v ...any) HTMLSection {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSection) Aria(k string, v any) HTMLSection {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -45877,7 +45877,7 @@ func (e *htmlSection) ContentEditable(v bool) HTMLSection {
 }
 
 func (e *htmlSection) DataSet(k string, v any) HTMLSection {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -45894,7 +45894,7 @@ func (e *htmlSection) Dir(v string) HTMLSection {
 }
 
 func (e *htmlSection) Dirf(format string, v ...any) HTMLSection {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45914,7 +45914,7 @@ func (e *htmlSection) ID(v string) HTMLSection {
 }
 
 func (e *htmlSection) IDf(format string, v ...any) HTMLSection {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45924,7 +45924,7 @@ func (e *htmlSection) Lang(v string) HTMLSection {
 }
 
 func (e *htmlSection) Langf(format string, v ...any) HTMLSection {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45934,7 +45934,7 @@ func (e *htmlSection) Role(v string) HTMLSection {
 }
 
 func (e *htmlSection) Rolef(format string, v ...any) HTMLSection {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45976,7 +45976,7 @@ func (e *htmlSection) Title(v string) HTMLSection {
 }
 
 func (e *htmlSection) Titlef(format string, v ...any) HTMLSection {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46406,12 +46406,12 @@ func (e *htmlSelect) AccessKey(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) AccessKeyf(format string, v ...any) HTMLSelect {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSelect) Aria(k string, v any) HTMLSelect {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -46436,7 +46436,7 @@ func (e *htmlSelect) ContentEditable(v bool) HTMLSelect {
 }
 
 func (e *htmlSelect) DataSet(k string, v any) HTMLSelect {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -46453,7 +46453,7 @@ func (e *htmlSelect) Dir(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) Dirf(format string, v ...any) HTMLSelect {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46473,7 +46473,7 @@ func (e *htmlSelect) Form(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) Formf(format string, v ...any) HTMLSelect {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46488,7 +46488,7 @@ func (e *htmlSelect) ID(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) IDf(format string, v ...any) HTMLSelect {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46498,7 +46498,7 @@ func (e *htmlSelect) Lang(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) Langf(format string, v ...any) HTMLSelect {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46513,7 +46513,7 @@ func (e *htmlSelect) Name(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) Namef(format string, v ...any) HTMLSelect {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46528,7 +46528,7 @@ func (e *htmlSelect) Role(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) Rolef(format string, v ...any) HTMLSelect {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46575,7 +46575,7 @@ func (e *htmlSelect) Title(v string) HTMLSelect {
 }
 
 func (e *htmlSelect) Titlef(format string, v ...any) HTMLSelect {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46978,12 +46978,12 @@ func (e *htmlSmall) AccessKey(v string) HTMLSmall {
 }
 
 func (e *htmlSmall) AccessKeyf(format string, v ...any) HTMLSmall {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSmall) Aria(k string, v any) HTMLSmall {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -47003,7 +47003,7 @@ func (e *htmlSmall) ContentEditable(v bool) HTMLSmall {
 }
 
 func (e *htmlSmall) DataSet(k string, v any) HTMLSmall {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -47020,7 +47020,7 @@ func (e *htmlSmall) Dir(v string) HTMLSmall {
 }
 
 func (e *htmlSmall) Dirf(format string, v ...any) HTMLSmall {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47040,7 +47040,7 @@ func (e *htmlSmall) ID(v string) HTMLSmall {
 }
 
 func (e *htmlSmall) IDf(format string, v ...any) HTMLSmall {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47050,7 +47050,7 @@ func (e *htmlSmall) Lang(v string) HTMLSmall {
 }
 
 func (e *htmlSmall) Langf(format string, v ...any) HTMLSmall {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47060,7 +47060,7 @@ func (e *htmlSmall) Role(v string) HTMLSmall {
 }
 
 func (e *htmlSmall) Rolef(format string, v ...any) HTMLSmall {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47102,7 +47102,7 @@ func (e *htmlSmall) Title(v string) HTMLSmall {
 }
 
 func (e *htmlSmall) Titlef(format string, v ...any) HTMLSmall {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47514,12 +47514,12 @@ func (e *htmlSource) AccessKey(v string) HTMLSource {
 }
 
 func (e *htmlSource) AccessKeyf(format string, v ...any) HTMLSource {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSource) Aria(k string, v any) HTMLSource {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -47539,7 +47539,7 @@ func (e *htmlSource) ContentEditable(v bool) HTMLSource {
 }
 
 func (e *htmlSource) DataSet(k string, v any) HTMLSource {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -47556,7 +47556,7 @@ func (e *htmlSource) Dir(v string) HTMLSource {
 }
 
 func (e *htmlSource) Dirf(format string, v ...any) HTMLSource {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47576,7 +47576,7 @@ func (e *htmlSource) ID(v string) HTMLSource {
 }
 
 func (e *htmlSource) IDf(format string, v ...any) HTMLSource {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47586,7 +47586,7 @@ func (e *htmlSource) Lang(v string) HTMLSource {
 }
 
 func (e *htmlSource) Langf(format string, v ...any) HTMLSource {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47596,7 +47596,7 @@ func (e *htmlSource) Media(v string) HTMLSource {
 }
 
 func (e *htmlSource) Mediaf(format string, v ...any) HTMLSource {
-	e.setAttr("media", FormatString(format, v...))
+	e.setAttr("media", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47606,7 +47606,7 @@ func (e *htmlSource) Role(v string) HTMLSource {
 }
 
 func (e *htmlSource) Rolef(format string, v ...any) HTMLSource {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47616,7 +47616,7 @@ func (e *htmlSource) Sizes(v string) HTMLSource {
 }
 
 func (e *htmlSource) Sizesf(format string, v ...any) HTMLSource {
-	e.setAttr("sizes", FormatString(format, v...))
+	e.setAttr("sizes", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47636,7 +47636,7 @@ func (e *htmlSource) Src(v string) HTMLSource {
 }
 
 func (e *htmlSource) Srcf(format string, v ...any) HTMLSource {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47646,7 +47646,7 @@ func (e *htmlSource) SrcSet(v string) HTMLSource {
 }
 
 func (e *htmlSource) SrcSetf(format string, v ...any) HTMLSource {
-	e.setAttr("srcset", FormatString(format, v...))
+	e.setAttr("srcset", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47678,7 +47678,7 @@ func (e *htmlSource) Title(v string) HTMLSource {
 }
 
 func (e *htmlSource) Titlef(format string, v ...any) HTMLSource {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47688,7 +47688,7 @@ func (e *htmlSource) Type(v string) HTMLSource {
 }
 
 func (e *htmlSource) Typef(format string, v ...any) HTMLSource {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48091,12 +48091,12 @@ func (e *htmlSpan) AccessKey(v string) HTMLSpan {
 }
 
 func (e *htmlSpan) AccessKeyf(format string, v ...any) HTMLSpan {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSpan) Aria(k string, v any) HTMLSpan {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -48116,7 +48116,7 @@ func (e *htmlSpan) ContentEditable(v bool) HTMLSpan {
 }
 
 func (e *htmlSpan) DataSet(k string, v any) HTMLSpan {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -48133,7 +48133,7 @@ func (e *htmlSpan) Dir(v string) HTMLSpan {
 }
 
 func (e *htmlSpan) Dirf(format string, v ...any) HTMLSpan {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48153,7 +48153,7 @@ func (e *htmlSpan) ID(v string) HTMLSpan {
 }
 
 func (e *htmlSpan) IDf(format string, v ...any) HTMLSpan {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48163,7 +48163,7 @@ func (e *htmlSpan) Lang(v string) HTMLSpan {
 }
 
 func (e *htmlSpan) Langf(format string, v ...any) HTMLSpan {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48173,7 +48173,7 @@ func (e *htmlSpan) Role(v string) HTMLSpan {
 }
 
 func (e *htmlSpan) Rolef(format string, v ...any) HTMLSpan {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48215,7 +48215,7 @@ func (e *htmlSpan) Title(v string) HTMLSpan {
 }
 
 func (e *htmlSpan) Titlef(format string, v ...any) HTMLSpan {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48618,12 +48618,12 @@ func (e *htmlStrong) AccessKey(v string) HTMLStrong {
 }
 
 func (e *htmlStrong) AccessKeyf(format string, v ...any) HTMLStrong {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlStrong) Aria(k string, v any) HTMLStrong {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -48643,7 +48643,7 @@ func (e *htmlStrong) ContentEditable(v bool) HTMLStrong {
 }
 
 func (e *htmlStrong) DataSet(k string, v any) HTMLStrong {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -48660,7 +48660,7 @@ func (e *htmlStrong) Dir(v string) HTMLStrong {
 }
 
 func (e *htmlStrong) Dirf(format string, v ...any) HTMLStrong {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48680,7 +48680,7 @@ func (e *htmlStrong) ID(v string) HTMLStrong {
 }
 
 func (e *htmlStrong) IDf(format string, v ...any) HTMLStrong {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48690,7 +48690,7 @@ func (e *htmlStrong) Lang(v string) HTMLStrong {
 }
 
 func (e *htmlStrong) Langf(format string, v ...any) HTMLStrong {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48700,7 +48700,7 @@ func (e *htmlStrong) Role(v string) HTMLStrong {
 }
 
 func (e *htmlStrong) Rolef(format string, v ...any) HTMLStrong {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48742,7 +48742,7 @@ func (e *htmlStrong) Title(v string) HTMLStrong {
 }
 
 func (e *htmlStrong) Titlef(format string, v ...any) HTMLStrong {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49160,12 +49160,12 @@ func (e *htmlStyle) AccessKey(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) AccessKeyf(format string, v ...any) HTMLStyle {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlStyle) Aria(k string, v any) HTMLStyle {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -49185,7 +49185,7 @@ func (e *htmlStyle) ContentEditable(v bool) HTMLStyle {
 }
 
 func (e *htmlStyle) DataSet(k string, v any) HTMLStyle {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -49202,7 +49202,7 @@ func (e *htmlStyle) Dir(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) Dirf(format string, v ...any) HTMLStyle {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49222,7 +49222,7 @@ func (e *htmlStyle) ID(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) IDf(format string, v ...any) HTMLStyle {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49232,7 +49232,7 @@ func (e *htmlStyle) Lang(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) Langf(format string, v ...any) HTMLStyle {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49242,7 +49242,7 @@ func (e *htmlStyle) Media(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) Mediaf(format string, v ...any) HTMLStyle {
-	e.setAttr("media", FormatString(format, v...))
+	e.setAttr("media", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49252,7 +49252,7 @@ func (e *htmlStyle) Role(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) Rolef(format string, v ...any) HTMLStyle {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49294,7 +49294,7 @@ func (e *htmlStyle) Title(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) Titlef(format string, v ...any) HTMLStyle {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49304,7 +49304,7 @@ func (e *htmlStyle) Type(v string) HTMLStyle {
 }
 
 func (e *htmlStyle) Typef(format string, v ...any) HTMLStyle {
-	e.setAttr("type", FormatString(format, v...))
+	e.setAttr("type", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49711,12 +49711,12 @@ func (e *htmlSub) AccessKey(v string) HTMLSub {
 }
 
 func (e *htmlSub) AccessKeyf(format string, v ...any) HTMLSub {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSub) Aria(k string, v any) HTMLSub {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -49736,7 +49736,7 @@ func (e *htmlSub) ContentEditable(v bool) HTMLSub {
 }
 
 func (e *htmlSub) DataSet(k string, v any) HTMLSub {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -49753,7 +49753,7 @@ func (e *htmlSub) Dir(v string) HTMLSub {
 }
 
 func (e *htmlSub) Dirf(format string, v ...any) HTMLSub {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49773,7 +49773,7 @@ func (e *htmlSub) ID(v string) HTMLSub {
 }
 
 func (e *htmlSub) IDf(format string, v ...any) HTMLSub {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49783,7 +49783,7 @@ func (e *htmlSub) Lang(v string) HTMLSub {
 }
 
 func (e *htmlSub) Langf(format string, v ...any) HTMLSub {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49793,7 +49793,7 @@ func (e *htmlSub) Role(v string) HTMLSub {
 }
 
 func (e *htmlSub) Rolef(format string, v ...any) HTMLSub {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49835,7 +49835,7 @@ func (e *htmlSub) Title(v string) HTMLSub {
 }
 
 func (e *htmlSub) Titlef(format string, v ...any) HTMLSub {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50238,12 +50238,12 @@ func (e *htmlSummary) AccessKey(v string) HTMLSummary {
 }
 
 func (e *htmlSummary) AccessKeyf(format string, v ...any) HTMLSummary {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSummary) Aria(k string, v any) HTMLSummary {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -50263,7 +50263,7 @@ func (e *htmlSummary) ContentEditable(v bool) HTMLSummary {
 }
 
 func (e *htmlSummary) DataSet(k string, v any) HTMLSummary {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -50280,7 +50280,7 @@ func (e *htmlSummary) Dir(v string) HTMLSummary {
 }
 
 func (e *htmlSummary) Dirf(format string, v ...any) HTMLSummary {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50300,7 +50300,7 @@ func (e *htmlSummary) ID(v string) HTMLSummary {
 }
 
 func (e *htmlSummary) IDf(format string, v ...any) HTMLSummary {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50310,7 +50310,7 @@ func (e *htmlSummary) Lang(v string) HTMLSummary {
 }
 
 func (e *htmlSummary) Langf(format string, v ...any) HTMLSummary {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50320,7 +50320,7 @@ func (e *htmlSummary) Role(v string) HTMLSummary {
 }
 
 func (e *htmlSummary) Rolef(format string, v ...any) HTMLSummary {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50362,7 +50362,7 @@ func (e *htmlSummary) Title(v string) HTMLSummary {
 }
 
 func (e *htmlSummary) Titlef(format string, v ...any) HTMLSummary {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50765,12 +50765,12 @@ func (e *htmlSup) AccessKey(v string) HTMLSup {
 }
 
 func (e *htmlSup) AccessKeyf(format string, v ...any) HTMLSup {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlSup) Aria(k string, v any) HTMLSup {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -50790,7 +50790,7 @@ func (e *htmlSup) ContentEditable(v bool) HTMLSup {
 }
 
 func (e *htmlSup) DataSet(k string, v any) HTMLSup {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -50807,7 +50807,7 @@ func (e *htmlSup) Dir(v string) HTMLSup {
 }
 
 func (e *htmlSup) Dirf(format string, v ...any) HTMLSup {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50827,7 +50827,7 @@ func (e *htmlSup) ID(v string) HTMLSup {
 }
 
 func (e *htmlSup) IDf(format string, v ...any) HTMLSup {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50837,7 +50837,7 @@ func (e *htmlSup) Lang(v string) HTMLSup {
 }
 
 func (e *htmlSup) Langf(format string, v ...any) HTMLSup {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50847,7 +50847,7 @@ func (e *htmlSup) Role(v string) HTMLSup {
 }
 
 func (e *htmlSup) Rolef(format string, v ...any) HTMLSup {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50889,7 +50889,7 @@ func (e *htmlSup) Title(v string) HTMLSup {
 }
 
 func (e *htmlSup) Titlef(format string, v ...any) HTMLSup {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51292,12 +51292,12 @@ func (e *htmlTable) AccessKey(v string) HTMLTable {
 }
 
 func (e *htmlTable) AccessKeyf(format string, v ...any) HTMLTable {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTable) Aria(k string, v any) HTMLTable {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -51317,7 +51317,7 @@ func (e *htmlTable) ContentEditable(v bool) HTMLTable {
 }
 
 func (e *htmlTable) DataSet(k string, v any) HTMLTable {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -51334,7 +51334,7 @@ func (e *htmlTable) Dir(v string) HTMLTable {
 }
 
 func (e *htmlTable) Dirf(format string, v ...any) HTMLTable {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51354,7 +51354,7 @@ func (e *htmlTable) ID(v string) HTMLTable {
 }
 
 func (e *htmlTable) IDf(format string, v ...any) HTMLTable {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51364,7 +51364,7 @@ func (e *htmlTable) Lang(v string) HTMLTable {
 }
 
 func (e *htmlTable) Langf(format string, v ...any) HTMLTable {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51374,7 +51374,7 @@ func (e *htmlTable) Role(v string) HTMLTable {
 }
 
 func (e *htmlTable) Rolef(format string, v ...any) HTMLTable {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51416,7 +51416,7 @@ func (e *htmlTable) Title(v string) HTMLTable {
 }
 
 func (e *htmlTable) Titlef(format string, v ...any) HTMLTable {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51819,12 +51819,12 @@ func (e *htmlTBody) AccessKey(v string) HTMLTBody {
 }
 
 func (e *htmlTBody) AccessKeyf(format string, v ...any) HTMLTBody {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTBody) Aria(k string, v any) HTMLTBody {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -51844,7 +51844,7 @@ func (e *htmlTBody) ContentEditable(v bool) HTMLTBody {
 }
 
 func (e *htmlTBody) DataSet(k string, v any) HTMLTBody {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -51861,7 +51861,7 @@ func (e *htmlTBody) Dir(v string) HTMLTBody {
 }
 
 func (e *htmlTBody) Dirf(format string, v ...any) HTMLTBody {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51881,7 +51881,7 @@ func (e *htmlTBody) ID(v string) HTMLTBody {
 }
 
 func (e *htmlTBody) IDf(format string, v ...any) HTMLTBody {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51891,7 +51891,7 @@ func (e *htmlTBody) Lang(v string) HTMLTBody {
 }
 
 func (e *htmlTBody) Langf(format string, v ...any) HTMLTBody {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51901,7 +51901,7 @@ func (e *htmlTBody) Role(v string) HTMLTBody {
 }
 
 func (e *htmlTBody) Rolef(format string, v ...any) HTMLTBody {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51943,7 +51943,7 @@ func (e *htmlTBody) Title(v string) HTMLTBody {
 }
 
 func (e *htmlTBody) Titlef(format string, v ...any) HTMLTBody {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52358,12 +52358,12 @@ func (e *htmlTd) AccessKey(v string) HTMLTd {
 }
 
 func (e *htmlTd) AccessKeyf(format string, v ...any) HTMLTd {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTd) Aria(k string, v any) HTMLTd {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -52388,7 +52388,7 @@ func (e *htmlTd) ContentEditable(v bool) HTMLTd {
 }
 
 func (e *htmlTd) DataSet(k string, v any) HTMLTd {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -52405,7 +52405,7 @@ func (e *htmlTd) Dir(v string) HTMLTd {
 }
 
 func (e *htmlTd) Dirf(format string, v ...any) HTMLTd {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52420,7 +52420,7 @@ func (e *htmlTd) Headers(v string) HTMLTd {
 }
 
 func (e *htmlTd) Headersf(format string, v ...any) HTMLTd {
-	e.setAttr("headers", FormatString(format, v...))
+	e.setAttr("headers", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52435,7 +52435,7 @@ func (e *htmlTd) ID(v string) HTMLTd {
 }
 
 func (e *htmlTd) IDf(format string, v ...any) HTMLTd {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52445,7 +52445,7 @@ func (e *htmlTd) Lang(v string) HTMLTd {
 }
 
 func (e *htmlTd) Langf(format string, v ...any) HTMLTd {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52455,7 +52455,7 @@ func (e *htmlTd) Role(v string) HTMLTd {
 }
 
 func (e *htmlTd) Rolef(format string, v ...any) HTMLTd {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52502,7 +52502,7 @@ func (e *htmlTd) Title(v string) HTMLTd {
 }
 
 func (e *htmlTd) Titlef(format string, v ...any) HTMLTd {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52803,12 +52803,12 @@ func (e *htmlTemplate) AccessKey(v string) HTMLTemplate {
 }
 
 func (e *htmlTemplate) AccessKeyf(format string, v ...any) HTMLTemplate {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTemplate) Aria(k string, v any) HTMLTemplate {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -52828,7 +52828,7 @@ func (e *htmlTemplate) ContentEditable(v bool) HTMLTemplate {
 }
 
 func (e *htmlTemplate) DataSet(k string, v any) HTMLTemplate {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -52845,7 +52845,7 @@ func (e *htmlTemplate) Dir(v string) HTMLTemplate {
 }
 
 func (e *htmlTemplate) Dirf(format string, v ...any) HTMLTemplate {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52865,7 +52865,7 @@ func (e *htmlTemplate) ID(v string) HTMLTemplate {
 }
 
 func (e *htmlTemplate) IDf(format string, v ...any) HTMLTemplate {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52875,7 +52875,7 @@ func (e *htmlTemplate) Lang(v string) HTMLTemplate {
 }
 
 func (e *htmlTemplate) Langf(format string, v ...any) HTMLTemplate {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52885,7 +52885,7 @@ func (e *htmlTemplate) Role(v string) HTMLTemplate {
 }
 
 func (e *htmlTemplate) Rolef(format string, v ...any) HTMLTemplate {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52927,7 +52927,7 @@ func (e *htmlTemplate) Title(v string) HTMLTemplate {
 }
 
 func (e *htmlTemplate) Titlef(format string, v ...any) HTMLTemplate {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53237,7 +53237,7 @@ func (e *htmlTextarea) Text(v any) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Textf(format string, v ...any) HTMLTextarea {
-	e.setAttr("value", FormatString(format, v...))
+	e.setAttr("value", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53247,12 +53247,12 @@ func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) AccessKeyf(format string, v ...any) HTMLTextarea {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTextarea) Aria(k string, v any) HTMLTextarea {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -53282,7 +53282,7 @@ func (e *htmlTextarea) ContentEditable(v bool) HTMLTextarea {
 }
 
 func (e *htmlTextarea) DataSet(k string, v any) HTMLTextarea {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -53299,7 +53299,7 @@ func (e *htmlTextarea) Dir(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Dirf(format string, v ...any) HTMLTextarea {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53309,7 +53309,7 @@ func (e *htmlTextarea) DirName(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) DirNamef(format string, v ...any) HTMLTextarea {
-	e.setAttr("dirname", FormatString(format, v...))
+	e.setAttr("dirname", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53329,7 +53329,7 @@ func (e *htmlTextarea) Form(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Formf(format string, v ...any) HTMLTextarea {
-	e.setAttr("form", FormatString(format, v...))
+	e.setAttr("form", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53344,7 +53344,7 @@ func (e *htmlTextarea) ID(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) IDf(format string, v ...any) HTMLTextarea {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53354,7 +53354,7 @@ func (e *htmlTextarea) Lang(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Langf(format string, v ...any) HTMLTextarea {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53369,7 +53369,7 @@ func (e *htmlTextarea) Name(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Namef(format string, v ...any) HTMLTextarea {
-	e.setAttr("name", FormatString(format, v...))
+	e.setAttr("name", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53379,7 +53379,7 @@ func (e *htmlTextarea) Placeholder(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Placeholderf(format string, v ...any) HTMLTextarea {
-	e.setAttr("placeholder", FormatString(format, v...))
+	e.setAttr("placeholder", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53399,7 +53399,7 @@ func (e *htmlTextarea) Role(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Rolef(format string, v ...any) HTMLTextarea {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53446,7 +53446,7 @@ func (e *htmlTextarea) Title(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Titlef(format string, v ...any) HTMLTextarea {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53456,7 +53456,7 @@ func (e *htmlTextarea) Wrap(v string) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Wrapf(format string, v ...any) HTMLTextarea {
-	e.setAttr("wrap", FormatString(format, v...))
+	e.setAttr("wrap", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53859,12 +53859,12 @@ func (e *htmlTFoot) AccessKey(v string) HTMLTFoot {
 }
 
 func (e *htmlTFoot) AccessKeyf(format string, v ...any) HTMLTFoot {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTFoot) Aria(k string, v any) HTMLTFoot {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -53884,7 +53884,7 @@ func (e *htmlTFoot) ContentEditable(v bool) HTMLTFoot {
 }
 
 func (e *htmlTFoot) DataSet(k string, v any) HTMLTFoot {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -53901,7 +53901,7 @@ func (e *htmlTFoot) Dir(v string) HTMLTFoot {
 }
 
 func (e *htmlTFoot) Dirf(format string, v ...any) HTMLTFoot {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53921,7 +53921,7 @@ func (e *htmlTFoot) ID(v string) HTMLTFoot {
 }
 
 func (e *htmlTFoot) IDf(format string, v ...any) HTMLTFoot {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53931,7 +53931,7 @@ func (e *htmlTFoot) Lang(v string) HTMLTFoot {
 }
 
 func (e *htmlTFoot) Langf(format string, v ...any) HTMLTFoot {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53941,7 +53941,7 @@ func (e *htmlTFoot) Role(v string) HTMLTFoot {
 }
 
 func (e *htmlTFoot) Rolef(format string, v ...any) HTMLTFoot {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53983,7 +53983,7 @@ func (e *htmlTFoot) Title(v string) HTMLTFoot {
 }
 
 func (e *htmlTFoot) Titlef(format string, v ...any) HTMLTFoot {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54410,7 +54410,7 @@ func (e *htmlTh) Abbr(v string) HTMLTh {
 }
 
 func (e *htmlTh) Abbrf(format string, v ...any) HTMLTh {
-	e.setAttr("abbr", FormatString(format, v...))
+	e.setAttr("abbr", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54420,12 +54420,12 @@ func (e *htmlTh) AccessKey(v string) HTMLTh {
 }
 
 func (e *htmlTh) AccessKeyf(format string, v ...any) HTMLTh {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTh) Aria(k string, v any) HTMLTh {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -54450,7 +54450,7 @@ func (e *htmlTh) ContentEditable(v bool) HTMLTh {
 }
 
 func (e *htmlTh) DataSet(k string, v any) HTMLTh {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -54467,7 +54467,7 @@ func (e *htmlTh) Dir(v string) HTMLTh {
 }
 
 func (e *htmlTh) Dirf(format string, v ...any) HTMLTh {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54482,7 +54482,7 @@ func (e *htmlTh) Headers(v string) HTMLTh {
 }
 
 func (e *htmlTh) Headersf(format string, v ...any) HTMLTh {
-	e.setAttr("headers", FormatString(format, v...))
+	e.setAttr("headers", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54497,7 +54497,7 @@ func (e *htmlTh) ID(v string) HTMLTh {
 }
 
 func (e *htmlTh) IDf(format string, v ...any) HTMLTh {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54507,7 +54507,7 @@ func (e *htmlTh) Lang(v string) HTMLTh {
 }
 
 func (e *htmlTh) Langf(format string, v ...any) HTMLTh {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54517,7 +54517,7 @@ func (e *htmlTh) Role(v string) HTMLTh {
 }
 
 func (e *htmlTh) Rolef(format string, v ...any) HTMLTh {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54532,7 +54532,7 @@ func (e *htmlTh) Scope(v string) HTMLTh {
 }
 
 func (e *htmlTh) Scopef(format string, v ...any) HTMLTh {
-	e.setAttr("scope", FormatString(format, v...))
+	e.setAttr("scope", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54574,7 +54574,7 @@ func (e *htmlTh) Title(v string) HTMLTh {
 }
 
 func (e *htmlTh) Titlef(format string, v ...any) HTMLTh {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54977,12 +54977,12 @@ func (e *htmlTHead) AccessKey(v string) HTMLTHead {
 }
 
 func (e *htmlTHead) AccessKeyf(format string, v ...any) HTMLTHead {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTHead) Aria(k string, v any) HTMLTHead {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -55002,7 +55002,7 @@ func (e *htmlTHead) ContentEditable(v bool) HTMLTHead {
 }
 
 func (e *htmlTHead) DataSet(k string, v any) HTMLTHead {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -55019,7 +55019,7 @@ func (e *htmlTHead) Dir(v string) HTMLTHead {
 }
 
 func (e *htmlTHead) Dirf(format string, v ...any) HTMLTHead {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55039,7 +55039,7 @@ func (e *htmlTHead) ID(v string) HTMLTHead {
 }
 
 func (e *htmlTHead) IDf(format string, v ...any) HTMLTHead {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55049,7 +55049,7 @@ func (e *htmlTHead) Lang(v string) HTMLTHead {
 }
 
 func (e *htmlTHead) Langf(format string, v ...any) HTMLTHead {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55059,7 +55059,7 @@ func (e *htmlTHead) Role(v string) HTMLTHead {
 }
 
 func (e *htmlTHead) Rolef(format string, v ...any) HTMLTHead {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55101,7 +55101,7 @@ func (e *htmlTHead) Title(v string) HTMLTHead {
 }
 
 func (e *htmlTHead) Titlef(format string, v ...any) HTMLTHead {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55510,12 +55510,12 @@ func (e *htmlTime) AccessKey(v string) HTMLTime {
 }
 
 func (e *htmlTime) AccessKeyf(format string, v ...any) HTMLTime {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTime) Aria(k string, v any) HTMLTime {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -55535,7 +55535,7 @@ func (e *htmlTime) ContentEditable(v bool) HTMLTime {
 }
 
 func (e *htmlTime) DataSet(k string, v any) HTMLTime {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -55552,7 +55552,7 @@ func (e *htmlTime) DateTime(v string) HTMLTime {
 }
 
 func (e *htmlTime) DateTimef(format string, v ...any) HTMLTime {
-	e.setAttr("datetime", FormatString(format, v...))
+	e.setAttr("datetime", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55562,7 +55562,7 @@ func (e *htmlTime) Dir(v string) HTMLTime {
 }
 
 func (e *htmlTime) Dirf(format string, v ...any) HTMLTime {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55582,7 +55582,7 @@ func (e *htmlTime) ID(v string) HTMLTime {
 }
 
 func (e *htmlTime) IDf(format string, v ...any) HTMLTime {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55592,7 +55592,7 @@ func (e *htmlTime) Lang(v string) HTMLTime {
 }
 
 func (e *htmlTime) Langf(format string, v ...any) HTMLTime {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55602,7 +55602,7 @@ func (e *htmlTime) Role(v string) HTMLTime {
 }
 
 func (e *htmlTime) Rolef(format string, v ...any) HTMLTime {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55644,7 +55644,7 @@ func (e *htmlTime) Title(v string) HTMLTime {
 }
 
 func (e *htmlTime) Titlef(format string, v ...any) HTMLTime {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55945,12 +55945,12 @@ func (e *htmlTitle) AccessKey(v string) HTMLTitle {
 }
 
 func (e *htmlTitle) AccessKeyf(format string, v ...any) HTMLTitle {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTitle) Aria(k string, v any) HTMLTitle {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -55970,7 +55970,7 @@ func (e *htmlTitle) ContentEditable(v bool) HTMLTitle {
 }
 
 func (e *htmlTitle) DataSet(k string, v any) HTMLTitle {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -55987,7 +55987,7 @@ func (e *htmlTitle) Dir(v string) HTMLTitle {
 }
 
 func (e *htmlTitle) Dirf(format string, v ...any) HTMLTitle {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56007,7 +56007,7 @@ func (e *htmlTitle) ID(v string) HTMLTitle {
 }
 
 func (e *htmlTitle) IDf(format string, v ...any) HTMLTitle {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56017,7 +56017,7 @@ func (e *htmlTitle) Lang(v string) HTMLTitle {
 }
 
 func (e *htmlTitle) Langf(format string, v ...any) HTMLTitle {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56027,7 +56027,7 @@ func (e *htmlTitle) Role(v string) HTMLTitle {
 }
 
 func (e *htmlTitle) Rolef(format string, v ...any) HTMLTitle {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56069,7 +56069,7 @@ func (e *htmlTitle) Title(v string) HTMLTitle {
 }
 
 func (e *htmlTitle) Titlef(format string, v ...any) HTMLTitle {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56336,12 +56336,12 @@ func (e *htmlTr) AccessKey(v string) HTMLTr {
 }
 
 func (e *htmlTr) AccessKeyf(format string, v ...any) HTMLTr {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlTr) Aria(k string, v any) HTMLTr {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -56361,7 +56361,7 @@ func (e *htmlTr) ContentEditable(v bool) HTMLTr {
 }
 
 func (e *htmlTr) DataSet(k string, v any) HTMLTr {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -56378,7 +56378,7 @@ func (e *htmlTr) Dir(v string) HTMLTr {
 }
 
 func (e *htmlTr) Dirf(format string, v ...any) HTMLTr {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56398,7 +56398,7 @@ func (e *htmlTr) ID(v string) HTMLTr {
 }
 
 func (e *htmlTr) IDf(format string, v ...any) HTMLTr {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56408,7 +56408,7 @@ func (e *htmlTr) Lang(v string) HTMLTr {
 }
 
 func (e *htmlTr) Langf(format string, v ...any) HTMLTr {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56418,7 +56418,7 @@ func (e *htmlTr) Role(v string) HTMLTr {
 }
 
 func (e *htmlTr) Rolef(format string, v ...any) HTMLTr {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56460,7 +56460,7 @@ func (e *htmlTr) Title(v string) HTMLTr {
 }
 
 func (e *htmlTr) Titlef(format string, v ...any) HTMLTr {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56863,12 +56863,12 @@ func (e *htmlU) AccessKey(v string) HTMLU {
 }
 
 func (e *htmlU) AccessKeyf(format string, v ...any) HTMLU {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlU) Aria(k string, v any) HTMLU {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -56888,7 +56888,7 @@ func (e *htmlU) ContentEditable(v bool) HTMLU {
 }
 
 func (e *htmlU) DataSet(k string, v any) HTMLU {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -56905,7 +56905,7 @@ func (e *htmlU) Dir(v string) HTMLU {
 }
 
 func (e *htmlU) Dirf(format string, v ...any) HTMLU {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56925,7 +56925,7 @@ func (e *htmlU) ID(v string) HTMLU {
 }
 
 func (e *htmlU) IDf(format string, v ...any) HTMLU {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56935,7 +56935,7 @@ func (e *htmlU) Lang(v string) HTMLU {
 }
 
 func (e *htmlU) Langf(format string, v ...any) HTMLU {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56945,7 +56945,7 @@ func (e *htmlU) Role(v string) HTMLU {
 }
 
 func (e *htmlU) Rolef(format string, v ...any) HTMLU {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56987,7 +56987,7 @@ func (e *htmlU) Title(v string) HTMLU {
 }
 
 func (e *htmlU) Titlef(format string, v ...any) HTMLU {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57390,12 +57390,12 @@ func (e *htmlUl) AccessKey(v string) HTMLUl {
 }
 
 func (e *htmlUl) AccessKeyf(format string, v ...any) HTMLUl {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlUl) Aria(k string, v any) HTMLUl {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -57415,7 +57415,7 @@ func (e *htmlUl) ContentEditable(v bool) HTMLUl {
 }
 
 func (e *htmlUl) DataSet(k string, v any) HTMLUl {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -57432,7 +57432,7 @@ func (e *htmlUl) Dir(v string) HTMLUl {
 }
 
 func (e *htmlUl) Dirf(format string, v ...any) HTMLUl {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57452,7 +57452,7 @@ func (e *htmlUl) ID(v string) HTMLUl {
 }
 
 func (e *htmlUl) IDf(format string, v ...any) HTMLUl {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57462,7 +57462,7 @@ func (e *htmlUl) Lang(v string) HTMLUl {
 }
 
 func (e *htmlUl) Langf(format string, v ...any) HTMLUl {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57472,7 +57472,7 @@ func (e *htmlUl) Role(v string) HTMLUl {
 }
 
 func (e *htmlUl) Rolef(format string, v ...any) HTMLUl {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57514,7 +57514,7 @@ func (e *htmlUl) Title(v string) HTMLUl {
 }
 
 func (e *htmlUl) Titlef(format string, v ...any) HTMLUl {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57917,12 +57917,12 @@ func (e *htmlVar) AccessKey(v string) HTMLVar {
 }
 
 func (e *htmlVar) AccessKeyf(format string, v ...any) HTMLVar {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlVar) Aria(k string, v any) HTMLVar {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -57942,7 +57942,7 @@ func (e *htmlVar) ContentEditable(v bool) HTMLVar {
 }
 
 func (e *htmlVar) DataSet(k string, v any) HTMLVar {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -57959,7 +57959,7 @@ func (e *htmlVar) Dir(v string) HTMLVar {
 }
 
 func (e *htmlVar) Dirf(format string, v ...any) HTMLVar {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57979,7 +57979,7 @@ func (e *htmlVar) ID(v string) HTMLVar {
 }
 
 func (e *htmlVar) IDf(format string, v ...any) HTMLVar {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57989,7 +57989,7 @@ func (e *htmlVar) Lang(v string) HTMLVar {
 }
 
 func (e *htmlVar) Langf(format string, v ...any) HTMLVar {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57999,7 +57999,7 @@ func (e *htmlVar) Role(v string) HTMLVar {
 }
 
 func (e *htmlVar) Rolef(format string, v ...any) HTMLVar {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58041,7 +58041,7 @@ func (e *htmlVar) Title(v string) HTMLVar {
 }
 
 func (e *htmlVar) Titlef(format string, v ...any) HTMLVar {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58555,12 +58555,12 @@ func (e *htmlVideo) AccessKey(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) AccessKeyf(format string, v ...any) HTMLVideo {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlVideo) Aria(k string, v any) HTMLVideo {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -58595,12 +58595,12 @@ func (e *htmlVideo) CrossOrigin(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) CrossOriginf(format string, v ...any) HTMLVideo {
-	e.setAttr("crossorigin", FormatString(format, v...))
+	e.setAttr("crossorigin", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlVideo) DataSet(k string, v any) HTMLVideo {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -58617,7 +58617,7 @@ func (e *htmlVideo) Dir(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) Dirf(format string, v ...any) HTMLVideo {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58642,7 +58642,7 @@ func (e *htmlVideo) ID(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) IDf(format string, v ...any) HTMLVideo {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58652,7 +58652,7 @@ func (e *htmlVideo) Lang(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) Langf(format string, v ...any) HTMLVideo {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58672,7 +58672,7 @@ func (e *htmlVideo) Poster(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) Posterf(format string, v ...any) HTMLVideo {
-	e.setAttr("poster", FormatString(format, v...))
+	e.setAttr("poster", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58682,7 +58682,7 @@ func (e *htmlVideo) Preload(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) Preloadf(format string, v ...any) HTMLVideo {
-	e.setAttr("preload", FormatString(format, v...))
+	e.setAttr("preload", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58692,7 +58692,7 @@ func (e *htmlVideo) Role(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) Rolef(format string, v ...any) HTMLVideo {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58712,7 +58712,7 @@ func (e *htmlVideo) Src(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) Srcf(format string, v ...any) HTMLVideo {
-	e.setAttr("src", FormatString(format, v...))
+	e.setAttr("src", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58744,7 +58744,7 @@ func (e *htmlVideo) Title(v string) HTMLVideo {
 }
 
 func (e *htmlVideo) Titlef(format string, v ...any) HTMLVideo {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -59244,12 +59244,12 @@ func (e *htmlWbr) AccessKey(v string) HTMLWbr {
 }
 
 func (e *htmlWbr) AccessKeyf(format string, v ...any) HTMLWbr {
-	e.setAttr("accesskey", FormatString(format, v...))
+	e.setAttr("accesskey", fmt.Sprintf(format, v...))
 	return e
 }
 
 func (e *htmlWbr) Aria(k string, v any) HTMLWbr {
-	e.setAttr("aria-"+k, FormatString("%v", v))
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -59269,7 +59269,7 @@ func (e *htmlWbr) ContentEditable(v bool) HTMLWbr {
 }
 
 func (e *htmlWbr) DataSet(k string, v any) HTMLWbr {
-	e.setAttr("data-"+k, FormatString("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -59286,7 +59286,7 @@ func (e *htmlWbr) Dir(v string) HTMLWbr {
 }
 
 func (e *htmlWbr) Dirf(format string, v ...any) HTMLWbr {
-	e.setAttr("dir", FormatString(format, v...))
+	e.setAttr("dir", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -59306,7 +59306,7 @@ func (e *htmlWbr) ID(v string) HTMLWbr {
 }
 
 func (e *htmlWbr) IDf(format string, v ...any) HTMLWbr {
-	e.setAttr("id", FormatString(format, v...))
+	e.setAttr("id", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -59316,7 +59316,7 @@ func (e *htmlWbr) Lang(v string) HTMLWbr {
 }
 
 func (e *htmlWbr) Langf(format string, v ...any) HTMLWbr {
-	e.setAttr("lang", FormatString(format, v...))
+	e.setAttr("lang", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -59326,7 +59326,7 @@ func (e *htmlWbr) Role(v string) HTMLWbr {
 }
 
 func (e *htmlWbr) Rolef(format string, v ...any) HTMLWbr {
-	e.setAttr("role", FormatString(format, v...))
+	e.setAttr("role", fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -59368,7 +59368,7 @@ func (e *htmlWbr) Title(v string) HTMLWbr {
 }
 
 func (e *htmlWbr) Titlef(format string, v ...any) HTMLWbr {
-	e.setAttr("title", FormatString(format, v...))
+	e.setAttr("title", fmt.Sprintf(format, v...))
 	return e
 }
 

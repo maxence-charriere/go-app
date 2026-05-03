@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 )
@@ -122,7 +123,7 @@ func (p *requestPage) SetTitle(v string) {
 }
 
 func (p *requestPage) SetTitlef(format string, v ...any) {
-	p.SetTitle(FormatString(format, v...))
+	p.SetTitle(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Lang() string {
@@ -142,7 +143,7 @@ func (p *requestPage) SetDescription(v string) {
 }
 
 func (p *requestPage) SetDescriptionf(format string, v ...any) {
-	p.SetDescription(FormatString(format, v...))
+	p.SetDescription(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Author() string {
@@ -154,7 +155,7 @@ func (p *requestPage) SetAuthor(v string) {
 }
 
 func (p *requestPage) SetAuthorf(format string, v ...any) {
-	p.SetAuthor(FormatString(format, v...))
+	p.SetAuthor(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Keywords() string {
@@ -181,7 +182,7 @@ func (p *requestPage) SetLoadingLabel(v string) {
 }
 
 func (p *requestPage) SetLoadingLabelf(format string, v ...any) {
-	p.SetLoadingLabel(FormatString(format, v...))
+	p.SetLoadingLabel(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Image() string {
@@ -195,7 +196,7 @@ func (p *requestPage) SetImage(v string) {
 }
 
 func (p *requestPage) SetImagef(format string, v ...any) {
-	p.SetImage(FormatString(format, v...))
+	p.SetImage(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) URL() *url.URL {
@@ -222,7 +223,7 @@ func (p *requestPage) SetCanonicalLink(v string) {
 }
 
 func (p *requestPage) SetCanonicalLinkf(format string, v ...any) {
-	p.SetCanonicalLink(FormatString(format, v...))
+	p.SetCanonicalLink(fmt.Sprintf(format, v...))
 }
 
 type browserPage struct {
@@ -246,7 +247,7 @@ func (p browserPage) SetTitle(v string) {
 }
 
 func (p browserPage) SetTitlef(format string, v ...any) {
-	p.SetTitle(FormatString(format, v...))
+	p.SetTitle(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Lang() string {
@@ -274,7 +275,7 @@ func (p browserPage) SetDescription(v string) {
 }
 
 func (p browserPage) SetDescriptionf(format string, v ...any) {
-	p.SetDescription(FormatString(format, v...))
+	p.SetDescription(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Author() string {
@@ -286,7 +287,7 @@ func (p browserPage) SetAuthor(v string) {
 }
 
 func (p browserPage) SetAuthorf(format string, v ...any) {
-	p.SetAuthor(FormatString(format, v...))
+	p.SetAuthor(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Keywords() string {
@@ -301,7 +302,7 @@ func (p browserPage) SetLoadingLabel(v string) {
 }
 
 func (p browserPage) SetLoadingLabelf(format string, v ...any) {
-	p.SetLoadingLabel(FormatString(format, v...))
+	p.SetLoadingLabel(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Preloads() []Preload {
@@ -322,7 +323,7 @@ func (p browserPage) SetImage(v string) {
 }
 
 func (p browserPage) SetImagef(format string, v ...any) {
-	p.SetImage(FormatString(format, v...))
+	p.SetImage(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) URL() *url.URL {
@@ -357,7 +358,7 @@ func (p browserPage) SetCanonicalLink(v string) {
 }
 
 func (p browserPage) SetCanonicalLinkf(format string, v ...any) {
-	p.SetCanonicalLink(FormatString(format, v...))
+	p.SetCanonicalLink(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) metaByName(v string) Value {
