@@ -1,52 +1,90 @@
 name: Build
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   code:
     name: Code Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
-      - name: Setup Go
-        uses: actions/setup-go@v3
+      - name: Checkout code
+        uses: actions/checkout@v6
         with:
-          go-version: "1.25"
-      - name: Checkout Code
-        uses: actions/checkout@v3
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+          cache-dependency-path: go.sum
+
       - name: Vet
-        run: |
-          go vet ./...
+        run: go vet ./...
 
   server:
     name: Unit Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
-      - name: Setup Go
-        uses: actions/setup-go@v3
+      - name: Checkout code
+        uses: actions/checkout@v6
         with:
-          go-version: "1.25"
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Run Unit Tests
-        run: |
-          go test -race ./...
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: Run unit tests
+        run: go test -race ./...
 
   client:
     name: WebAssembly Unit Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GOOS: js
+      GOARCH: wasm
+
     steps:
-      - name: Setup Go
-        uses: actions/setup-go@v3
+      - name: Checkout code
+        uses: actions/checkout@v6
         with:
-          go-version: "1.25"
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Install WASM Browser Test
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: Install WASM browser test runner
         run: |
+          GOBIN="$(go env GOPATH)/bin"
           go install github.com/agnivade/wasmbrowsertest@latest
-          mv `go env GOPATH`/bin/wasmbrowsertest `go env GOPATH`/bin/go_js_wasm_exec
-      - name: Run Unit Tests
+          mv "${GOBIN}/wasmbrowsertest" "${GOBIN}/go_js_wasm_exec"
+
+      - name: Run WebAssembly unit tests
         run: |
-          GOARCH=wasm GOOS=js go test ./pkg/app
-          GOARCH=wasm GOOS=js go test ./pkg/errors
-          GOARCH=wasm GOOS=js go test ./pkg/logs
+          go test ./pkg/app
+          go test ./pkg/errors
+          go test ./pkg/logs
