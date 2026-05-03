@@ -621,12 +621,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	origin.Scheme = "http"
 
 	page := makeRequestPage(&origin, h.Resources.Resolve)
-	page.SetTitle(h.Title)
+	page.SetTitle("%s", h.Title)
 	page.SetLang(h.Lang)
-	page.SetDescription(h.Description)
-	page.SetAuthor(h.Author)
+	page.SetDescription("%s", h.Description)
+	page.SetAuthor("%s", h.Author)
 	page.SetKeywords(h.Keywords...)
-	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
+	page.SetLoadingLabel("%s", strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
 
 	engine := newEngine(ctx,

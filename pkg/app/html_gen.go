@@ -345,7 +345,7 @@ func (e *htmlA) Style(k, format string, v ...any) HTMLA {
 
 func (e *htmlA) Styles(s map[string]string) HTMLA {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -826,7 +826,7 @@ func (e *htmlAbbr) Style(k, format string, v ...any) HTMLAbbr {
 
 func (e *htmlAbbr) Styles(s map[string]string) HTMLAbbr {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -1297,7 +1297,7 @@ func (e *htmlAddress) Style(k, format string, v ...any) HTMLAddress {
 
 func (e *htmlAddress) Styles(s map[string]string) HTMLAddress {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -1817,7 +1817,7 @@ func (e *htmlArea) Style(k, format string, v ...any) HTMLArea {
 
 func (e *htmlArea) Styles(s map[string]string) HTMLArea {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -2298,7 +2298,7 @@ func (e *htmlArticle) Style(k, format string, v ...any) HTMLArticle {
 
 func (e *htmlArticle) Styles(s map[string]string) HTMLArticle {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -2769,7 +2769,7 @@ func (e *htmlAside) Style(k, format string, v ...any) HTMLAside {
 
 func (e *htmlAside) Styles(s map[string]string) HTMLAside {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -3365,7 +3365,7 @@ func (e *htmlAudio) Style(k, format string, v ...any) HTMLAudio {
 
 func (e *htmlAudio) Styles(s map[string]string) HTMLAudio {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -3928,7 +3928,7 @@ func (e *htmlB) Style(k, format string, v ...any) HTMLB {
 
 func (e *htmlB) Styles(s map[string]string) HTMLB {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -4389,7 +4389,7 @@ func (e *htmlBase) Style(k, format string, v ...any) HTMLBase {
 
 func (e *htmlBase) Styles(s map[string]string) HTMLBase {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -4865,7 +4865,7 @@ func (e *htmlBdi) Style(k, format string, v ...any) HTMLBdi {
 
 func (e *htmlBdi) Styles(s map[string]string) HTMLBdi {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -5336,7 +5336,7 @@ func (e *htmlBdo) Style(k, format string, v ...any) HTMLBdo {
 
 func (e *htmlBdo) Styles(s map[string]string) HTMLBdo {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -5815,7 +5815,7 @@ func (e *htmlBlockquote) Style(k, format string, v ...any) HTMLBlockquote {
 
 func (e *htmlBlockquote) Styles(s map[string]string) HTMLBlockquote {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -6316,7 +6316,7 @@ func (e *htmlBody) Style(k, format string, v ...any) HTMLBody {
 
 func (e *htmlBody) Styles(s map[string]string) HTMLBody {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -6826,7 +6826,7 @@ func (e *htmlBr) Style(k, format string, v ...any) HTMLBr {
 
 func (e *htmlBr) Styles(s map[string]string) HTMLBr {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -7375,7 +7375,7 @@ func (e *htmlButton) Style(k, format string, v ...any) HTMLButton {
 
 func (e *htmlButton) Styles(s map[string]string) HTMLButton {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -7867,7 +7867,7 @@ func (e *htmlCanvas) Style(k, format string, v ...any) HTMLCanvas {
 
 func (e *htmlCanvas) Styles(s map[string]string) HTMLCanvas {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -8343,7 +8343,7 @@ func (e *htmlCaption) Style(k, format string, v ...any) HTMLCaption {
 
 func (e *htmlCaption) Styles(s map[string]string) HTMLCaption {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -8814,7 +8814,7 @@ func (e *htmlCite) Style(k, format string, v ...any) HTMLCite {
 
 func (e *htmlCite) Styles(s map[string]string) HTMLCite {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -9285,7 +9285,7 @@ func (e *htmlCode) Style(k, format string, v ...any) HTMLCode {
 
 func (e *htmlCode) Styles(s map[string]string) HTMLCode {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -9743,7 +9743,7 @@ func (e *htmlCol) Style(k, format string, v ...any) HTMLCol {
 
 func (e *htmlCol) Styles(s map[string]string) HTMLCol {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -10222,7 +10222,7 @@ func (e *htmlColGroup) Style(k, format string, v ...any) HTMLColGroup {
 
 func (e *htmlColGroup) Styles(s map[string]string) HTMLColGroup {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -10594,7 +10594,7 @@ func (e *htmlData) Style(k, format string, v ...any) HTMLData {
 
 func (e *htmlData) Styles(s map[string]string) HTMLData {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -10934,7 +10934,7 @@ func (e *htmlDataList) Style(k, format string, v ...any) HTMLDataList {
 
 func (e *htmlDataList) Styles(s map[string]string) HTMLDataList {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -11405,7 +11405,7 @@ func (e *htmlDd) Style(k, format string, v ...any) HTMLDd {
 
 func (e *htmlDd) Styles(s map[string]string) HTMLDd {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -11892,7 +11892,7 @@ func (e *htmlDel) Style(k, format string, v ...any) HTMLDel {
 
 func (e *htmlDel) Styles(s map[string]string) HTMLDel {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -12374,7 +12374,7 @@ func (e *htmlDetails) Style(k, format string, v ...any) HTMLDetails {
 
 func (e *htmlDetails) Styles(s map[string]string) HTMLDetails {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -12849,7 +12849,7 @@ func (e *htmlDfn) Style(k, format string, v ...any) HTMLDfn {
 
 func (e *htmlDfn) Styles(s map[string]string) HTMLDfn {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -13328,7 +13328,7 @@ func (e *htmlDialog) Style(k, format string, v ...any) HTMLDialog {
 
 func (e *htmlDialog) Styles(s map[string]string) HTMLDialog {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -13799,7 +13799,7 @@ func (e *htmlDiv) Style(k, format string, v ...any) HTMLDiv {
 
 func (e *htmlDiv) Styles(s map[string]string) HTMLDiv {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -14270,7 +14270,7 @@ func (e *htmlDl) Style(k, format string, v ...any) HTMLDl {
 
 func (e *htmlDl) Styles(s map[string]string) HTMLDl {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -14741,7 +14741,7 @@ func (e *htmlDt) Style(k, format string, v ...any) HTMLDt {
 
 func (e *htmlDt) Styles(s map[string]string) HTMLDt {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -15215,7 +15215,7 @@ func (e *htmlElem) Style(k, format string, v ...any) HTMLElem {
 
 func (e *htmlElem) Styles(s map[string]string) HTMLElem {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -15673,7 +15673,7 @@ func (e *htmlElemSelfClosing) Style(k, format string, v ...any) HTMLElemSelfClos
 
 func (e *htmlElemSelfClosing) Styles(s map[string]string) HTMLElemSelfClosing {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -16149,7 +16149,7 @@ func (e *htmlEm) Style(k, format string, v ...any) HTMLEm {
 
 func (e *htmlEm) Styles(s map[string]string) HTMLEm {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -16690,7 +16690,7 @@ func (e *htmlEmbed) Style(k, format string, v ...any) HTMLEmbed {
 
 func (e *htmlEmbed) Styles(s map[string]string) HTMLEmbed {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -17287,7 +17287,7 @@ func (e *htmlFieldSet) Style(k, format string, v ...any) HTMLFieldSet {
 
 func (e *htmlFieldSet) Styles(s map[string]string) HTMLFieldSet {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -17758,7 +17758,7 @@ func (e *htmlFigCaption) Style(k, format string, v ...any) HTMLFigCaption {
 
 func (e *htmlFigCaption) Styles(s map[string]string) HTMLFigCaption {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -18229,7 +18229,7 @@ func (e *htmlFigure) Style(k, format string, v ...any) HTMLFigure {
 
 func (e *htmlFigure) Styles(s map[string]string) HTMLFigure {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -18700,7 +18700,7 @@ func (e *htmlFooter) Style(k, format string, v ...any) HTMLFooter {
 
 func (e *htmlFooter) Styles(s map[string]string) HTMLFooter {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -19235,7 +19235,7 @@ func (e *htmlForm) Style(k, format string, v ...any) HTMLForm {
 
 func (e *htmlForm) Styles(s map[string]string) HTMLForm {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -19711,7 +19711,7 @@ func (e *htmlH1) Style(k, format string, v ...any) HTMLH1 {
 
 func (e *htmlH1) Styles(s map[string]string) HTMLH1 {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -20182,7 +20182,7 @@ func (e *htmlH2) Style(k, format string, v ...any) HTMLH2 {
 
 func (e *htmlH2) Styles(s map[string]string) HTMLH2 {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -20653,7 +20653,7 @@ func (e *htmlH3) Style(k, format string, v ...any) HTMLH3 {
 
 func (e *htmlH3) Styles(s map[string]string) HTMLH3 {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -21124,7 +21124,7 @@ func (e *htmlH4) Style(k, format string, v ...any) HTMLH4 {
 
 func (e *htmlH4) Styles(s map[string]string) HTMLH4 {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -21595,7 +21595,7 @@ func (e *htmlH5) Style(k, format string, v ...any) HTMLH5 {
 
 func (e *htmlH5) Styles(s map[string]string) HTMLH5 {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -22066,7 +22066,7 @@ func (e *htmlH6) Style(k, format string, v ...any) HTMLH6 {
 
 func (e *htmlH6) Styles(s map[string]string) HTMLH6 {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -22435,7 +22435,7 @@ func (e *htmlHead) Style(k, format string, v ...any) HTMLHead {
 
 func (e *htmlHead) Styles(s map[string]string) HTMLHead {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -22770,7 +22770,7 @@ func (e *htmlHeader) Style(k, format string, v ...any) HTMLHeader {
 
 func (e *htmlHeader) Styles(s map[string]string) HTMLHeader {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -23220,7 +23220,7 @@ func (e *htmlHr) Style(k, format string, v ...any) HTMLHr {
 
 func (e *htmlHr) Styles(s map[string]string) HTMLHr {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -23574,7 +23574,7 @@ func (e *htmlHtml) Style(k, format string, v ...any) HTMLHtml {
 
 func (e *htmlHtml) Styles(s map[string]string) HTMLHtml {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -23909,7 +23909,7 @@ func (e *htmlI) Style(k, format string, v ...any) HTMLI {
 
 func (e *htmlI) Styles(s map[string]string) HTMLI {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -24476,7 +24476,7 @@ func (e *htmlIFrame) Style(k, format string, v ...any) HTMLIFrame {
 
 func (e *htmlIFrame) Styles(s map[string]string) HTMLIFrame {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -25085,7 +25085,7 @@ func (e *htmlImg) Style(k, format string, v ...any) HTMLImg {
 
 func (e *htmlImg) Styles(s map[string]string) HTMLImg {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -25882,7 +25882,7 @@ func (e *htmlInput) Style(k, format string, v ...any) HTMLInput {
 
 func (e *htmlInput) Styles(s map[string]string) HTMLInput {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -26372,7 +26372,7 @@ func (e *htmlIns) Style(k, format string, v ...any) HTMLIns {
 
 func (e *htmlIns) Styles(s map[string]string) HTMLIns {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -26843,7 +26843,7 @@ func (e *htmlKbd) Style(k, format string, v ...any) HTMLKbd {
 
 func (e *htmlKbd) Styles(s map[string]string) HTMLKbd {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -27330,7 +27330,7 @@ func (e *htmlLabel) Style(k, format string, v ...any) HTMLLabel {
 
 func (e *htmlLabel) Styles(s map[string]string) HTMLLabel {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -27801,7 +27801,7 @@ func (e *htmlLegend) Style(k, format string, v ...any) HTMLLegend {
 
 func (e *htmlLegend) Styles(s map[string]string) HTMLLegend {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -28275,7 +28275,7 @@ func (e *htmlLi) Style(k, format string, v ...any) HTMLLi {
 
 func (e *htmlLi) Styles(s map[string]string) HTMLLi {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -28800,7 +28800,7 @@ func (e *htmlLink) Style(k, format string, v ...any) HTMLLink {
 
 func (e *htmlLink) Styles(s map[string]string) HTMLLink {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -29280,7 +29280,7 @@ func (e *htmlMain) Style(k, format string, v ...any) HTMLMain {
 
 func (e *htmlMain) Styles(s map[string]string) HTMLMain {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -29759,7 +29759,7 @@ func (e *htmlMap) Style(k, format string, v ...any) HTMLMap {
 
 func (e *htmlMap) Styles(s map[string]string) HTMLMap {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -30230,7 +30230,7 @@ func (e *htmlMark) Style(k, format string, v ...any) HTMLMark {
 
 func (e *htmlMark) Styles(s map[string]string) HTMLMark {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -30618,7 +30618,7 @@ func (e *htmlMeta) Style(k, format string, v ...any) HTMLMeta {
 
 func (e *htmlMeta) Styles(s map[string]string) HTMLMeta {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -31004,7 +31004,7 @@ func (e *htmlMeter) Style(k, format string, v ...any) HTMLMeter {
 
 func (e *htmlMeter) Styles(s map[string]string) HTMLMeter {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -31480,7 +31480,7 @@ func (e *htmlNav) Style(k, format string, v ...any) HTMLNav {
 
 func (e *htmlNav) Styles(s map[string]string) HTMLNav {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -31849,7 +31849,7 @@ func (e *htmlNoScript) Style(k, format string, v ...any) HTMLNoScript {
 
 func (e *htmlNoScript) Styles(s map[string]string) HTMLNoScript {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -32294,7 +32294,7 @@ func (e *htmlObject) Style(k, format string, v ...any) HTMLObject {
 
 func (e *htmlObject) Styles(s map[string]string) HTMLObject {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -32891,7 +32891,7 @@ func (e *htmlOl) Style(k, format string, v ...any) HTMLOl {
 
 func (e *htmlOl) Styles(s map[string]string) HTMLOl {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -33383,7 +33383,7 @@ func (e *htmlOptGroup) Style(k, format string, v ...any) HTMLOptGroup {
 
 func (e *htmlOptGroup) Styles(s map[string]string) HTMLOptGroup {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -33881,7 +33881,7 @@ func (e *htmlOption) Style(k, format string, v ...any) HTMLOption {
 
 func (e *htmlOption) Styles(s map[string]string) HTMLOption {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -34381,7 +34381,7 @@ func (e *htmlOutput) Style(k, format string, v ...any) HTMLOutput {
 
 func (e *htmlOutput) Styles(s map[string]string) HTMLOutput {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -34852,7 +34852,7 @@ func (e *htmlP) Style(k, format string, v ...any) HTMLP {
 
 func (e *htmlP) Styles(s map[string]string) HTMLP {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -35313,7 +35313,7 @@ func (e *htmlParam) Style(k, format string, v ...any) HTMLParam {
 
 func (e *htmlParam) Styles(s map[string]string) HTMLParam {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -35789,7 +35789,7 @@ func (e *htmlPicture) Style(k, format string, v ...any) HTMLPicture {
 
 func (e *htmlPicture) Styles(s map[string]string) HTMLPicture {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -36260,7 +36260,7 @@ func (e *htmlPre) Style(k, format string, v ...any) HTMLPre {
 
 func (e *htmlPre) Styles(s map[string]string) HTMLPre {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -36742,7 +36742,7 @@ func (e *htmlProgress) Style(k, format string, v ...any) HTMLProgress {
 
 func (e *htmlProgress) Styles(s map[string]string) HTMLProgress {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -37226,7 +37226,7 @@ func (e *htmlQ) Style(k, format string, v ...any) HTMLQ {
 
 func (e *htmlQ) Styles(s map[string]string) HTMLQ {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -37697,7 +37697,7 @@ func (e *htmlRp) Style(k, format string, v ...any) HTMLRp {
 
 func (e *htmlRp) Styles(s map[string]string) HTMLRp {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -38168,7 +38168,7 @@ func (e *htmlRt) Style(k, format string, v ...any) HTMLRt {
 
 func (e *htmlRt) Styles(s map[string]string) HTMLRt {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -38639,7 +38639,7 @@ func (e *htmlRuby) Style(k, format string, v ...any) HTMLRuby {
 
 func (e *htmlRuby) Styles(s map[string]string) HTMLRuby {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -39110,7 +39110,7 @@ func (e *htmlS) Style(k, format string, v ...any) HTMLS {
 
 func (e *htmlS) Styles(s map[string]string) HTMLS {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -39581,7 +39581,7 @@ func (e *htmlSamp) Style(k, format string, v ...any) HTMLSamp {
 
 func (e *htmlSamp) Styles(s map[string]string) HTMLSamp {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -39996,7 +39996,7 @@ func (e *htmlScript) Style(k, format string, v ...any) HTMLScript {
 
 func (e *htmlScript) Styles(s map[string]string) HTMLScript {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -40340,7 +40340,7 @@ func (e *htmlSection) Style(k, format string, v ...any) HTMLSection {
 
 func (e *htmlSection) Styles(s map[string]string) HTMLSection {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -40867,7 +40867,7 @@ func (e *htmlSelect) Style(k, format string, v ...any) HTMLSelect {
 
 func (e *htmlSelect) Styles(s map[string]string) HTMLSelect {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -41338,7 +41338,7 @@ func (e *htmlSmall) Style(k, format string, v ...any) HTMLSmall {
 
 func (e *htmlSmall) Styles(s map[string]string) HTMLSmall {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -41823,7 +41823,7 @@ func (e *htmlSource) Style(k, format string, v ...any) HTMLSource {
 
 func (e *htmlSource) Styles(s map[string]string) HTMLSource {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -42299,7 +42299,7 @@ func (e *htmlSpan) Style(k, format string, v ...any) HTMLSpan {
 
 func (e *htmlSpan) Styles(s map[string]string) HTMLSpan {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -42770,7 +42770,7 @@ func (e *htmlStrong) Style(k, format string, v ...any) HTMLStrong {
 
 func (e *htmlStrong) Styles(s map[string]string) HTMLStrong {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -43255,7 +43255,7 @@ func (e *htmlStyle) Style(k, format string, v ...any) HTMLStyle {
 
 func (e *htmlStyle) Styles(s map[string]string) HTMLStyle {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -43735,7 +43735,7 @@ func (e *htmlSub) Style(k, format string, v ...any) HTMLSub {
 
 func (e *htmlSub) Styles(s map[string]string) HTMLSub {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -44206,7 +44206,7 @@ func (e *htmlSummary) Style(k, format string, v ...any) HTMLSummary {
 
 func (e *htmlSummary) Styles(s map[string]string) HTMLSummary {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -44677,7 +44677,7 @@ func (e *htmlSup) Style(k, format string, v ...any) HTMLSup {
 
 func (e *htmlSup) Styles(s map[string]string) HTMLSup {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -45148,7 +45148,7 @@ func (e *htmlTable) Style(k, format string, v ...any) HTMLTable {
 
 func (e *htmlTable) Styles(s map[string]string) HTMLTable {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -45619,7 +45619,7 @@ func (e *htmlTBody) Style(k, format string, v ...any) HTMLTBody {
 
 func (e *htmlTBody) Styles(s map[string]string) HTMLTBody {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -46114,7 +46114,7 @@ func (e *htmlTd) Style(k, format string, v ...any) HTMLTd {
 
 func (e *htmlTd) Styles(s map[string]string) HTMLTd {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -46483,7 +46483,7 @@ func (e *htmlTemplate) Style(k, format string, v ...any) HTMLTemplate {
 
 func (e *htmlTemplate) Styles(s map[string]string) HTMLTemplate {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -46911,7 +46911,7 @@ func (e *htmlTextarea) Style(k, format string, v ...any) HTMLTextarea {
 
 func (e *htmlTextarea) Styles(s map[string]string) HTMLTextarea {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -47387,7 +47387,7 @@ func (e *htmlTFoot) Style(k, format string, v ...any) HTMLTFoot {
 
 func (e *htmlTFoot) Styles(s map[string]string) HTMLTFoot {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -47898,7 +47898,7 @@ func (e *htmlTh) Style(k, format string, v ...any) HTMLTh {
 
 func (e *htmlTh) Styles(s map[string]string) HTMLTh {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -48369,7 +48369,7 @@ func (e *htmlTHead) Style(k, format string, v ...any) HTMLTHead {
 
 func (e *htmlTHead) Styles(s map[string]string) HTMLTHead {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -48848,7 +48848,7 @@ func (e *htmlTime) Style(k, format string, v ...any) HTMLTime {
 
 func (e *htmlTime) Styles(s map[string]string) HTMLTime {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -49217,7 +49217,7 @@ func (e *htmlTitle) Style(k, format string, v ...any) HTMLTitle {
 
 func (e *htmlTitle) Styles(s map[string]string) HTMLTitle {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -49552,7 +49552,7 @@ func (e *htmlTr) Style(k, format string, v ...any) HTMLTr {
 
 func (e *htmlTr) Styles(s map[string]string) HTMLTr {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -50023,7 +50023,7 @@ func (e *htmlU) Style(k, format string, v ...any) HTMLU {
 
 func (e *htmlU) Styles(s map[string]string) HTMLU {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -50494,7 +50494,7 @@ func (e *htmlUl) Style(k, format string, v ...any) HTMLUl {
 
 func (e *htmlUl) Styles(s map[string]string) HTMLUl {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -50965,7 +50965,7 @@ func (e *htmlVar) Style(k, format string, v ...any) HTMLVar {
 
 func (e *htmlVar) Styles(s map[string]string) HTMLVar {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -51580,7 +51580,7 @@ func (e *htmlVideo) Style(k, format string, v ...any) HTMLVideo {
 
 func (e *htmlVideo) Styles(s map[string]string) HTMLVideo {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
@@ -52148,7 +52148,7 @@ func (e *htmlWbr) Style(k, format string, v ...any) HTMLWbr {
 
 func (e *htmlWbr) Styles(s map[string]string) HTMLWbr {
 	for k, v := range s {
-		e.Style(k, v)
+		e.Style(k, "%s", v)
 	}
 	return e
 }
