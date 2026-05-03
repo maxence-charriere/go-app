@@ -29,23 +29,32 @@ func TestBrowserPage(t *testing.T) {
 func testPage(t *testing.T, p Page) {
 	p.SetTitle("go-app")
 	require.Equal(t, "go-app", p.Title())
+	p.SetTitlef("%s %d", "go-app", 10)
+	require.Equal(t, "go-app 10", p.Title())
 
 	p.SetLang("fr")
 	require.Equal(t, "fr", p.Lang())
 
 	p.SetDescription("test")
 	require.Equal(t, "test", p.Description())
+	p.SetDescriptionf("%s %d", "test", 10)
+	require.Equal(t, "test 10", p.Description())
 
 	p.SetAuthor("Maxence")
 	require.Equal(t, "Maxence", p.Author())
+	p.SetAuthorf("%s %d", "Maxence", 10)
+	require.Equal(t, "Maxence 10", p.Author())
 
 	p.SetKeywords("go", "app")
 	require.Equal(t, "go, app", p.Keywords())
 
 	p.SetLoadingLabel("loading test")
+	p.SetLoadingLabelf("loading %d", 10)
 
 	p.SetImage("image")
 	require.Equal(t, "image", p.Image())
+	p.SetImagef("image-%d", 10)
+	require.Equal(t, "image-10", p.Image())
 
 	u := p.URL()
 	u.Path = "/test"
@@ -58,4 +67,5 @@ func testPage(t *testing.T, p Page) {
 
 	p.SetTwitterCard(TwitterCard{Card: "summary"})
 	p.SetCanonicalLink("/canon")
+	p.SetCanonicalLinkf("/%s", "canon")
 }
