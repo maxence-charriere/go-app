@@ -645,7 +645,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	var b bytes.Buffer
 	err := engine.Encode(&b, h.HTML().
-		Lang(page.Lang()).
+		Lang("%s", page.Lang()).
 		privateBody(
 			Head().Body(
 				Meta().Charset("UTF-8"),
