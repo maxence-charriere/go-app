@@ -154,15 +154,15 @@ func New(msg string) Error {
 // Newf returns an error with the given formatted message that can be enriched
 // with a type and tags.
 func Newf(msgFormat string, v ...any) Error {
-	return makeError(msgFormat, v...)
+	return makeError(fmt.Sprintf(msgFormat, v...))
 }
 
-func makeError(msgFormat string, v ...any) Error {
+func makeError(v string) Error {
 	_, filename, line, _ := runtime.Caller(2)
 
 	err := Error{
 		Line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
-		Message: fmt.Sprintf(msgFormat, v...),
+		Message: v,
 	}
 	return err
 }
