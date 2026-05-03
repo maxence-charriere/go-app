@@ -2126,6 +2126,7 @@ func generateHTMLGo() {
 	fmt.Fprintln(f, `
 import (
 	"strings"
+	"fmt"
 )
 		`)
 
@@ -2223,6 +2224,13 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
 
+		if alternateAttr, ok := alternateAttr(a); ok {
+			fmt.Fprintf(w, "// %s\n", a.Doc)
+			writeAttrFunction(w, alternateAttr, t, true)
+			fmt.Fprintln(w)
+			fmt.Fprintln(w)
+		}
+
 		fmt.Fprintf(w, "// %s\n", a.Doc)
 		writeAttrFunction(w, a, t, true)
 	}
@@ -2244,6 +2252,18 @@ func writeInterface(w io.Writer, t tag) {
 
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, "}")
+}
+
+func alternateAttr(a attr) (attr, bool) {
+	alternate := a
+	switch a.Type {
+	case "fmt":
+		alternate.Type = "string"
+
+	case "style":
+		alternate.Type = "style|fmt"
+	}
+	return alternate, alternate.Type != a.Type
 }
 
 func writeStruct(w io.Writer, t tag) {
@@ -2317,6 +2337,12 @@ func writeStruct(w io.Writer, t tag) {
 	for _, a := range t.Attrs {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
+
+		if alternateAttr, ok := alternateAttr(a); ok {
+			writeAttrFunction(w, alternateAttr, t, false)
+			fmt.Fprintln(w)
+			fmt.Fprintln(w)
+		}
 
 		writeAttrFunction(w, a, t, false)
 	}
@@ -2434,10 +2460,19 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "style":
-		fmt.Fprintf(w, `%s(k, format string, v ...any) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(k, v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("style", k+":"+FormatString(format, v...))
+				e.setAttr("style", k+":"+v)
+				return e
+			}`)
+		}
+
+	case "style|fmt":
+		fmt.Fprintf(w, `%sf(k, format string, v ...any) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 				return e
 			}`)
 		}
@@ -2500,7 +2535,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "fmt":
-		fmt.Fprintf(w, `%s(format string, v ...any) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%sf(format string, v ...any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", FormatString(format, v...))
@@ -2517,6 +2552,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, attrName)
 		}
 	}
+
 }
 
 func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
@@ -2570,48 +2606,59 @@ import (
 		fmt.Fprintln(f, `elem.setParent(nil)`)
 		fmt.Fprintln(f, `elem.setBody(nil)`)
 
-		for _, a := range t.Attrs {
-			fmt.Fprintf(f, `elem.%s(`, a.Name)
-
+		generateTestFunc := func(a attr) {
 			switch a.Type {
 			case "data|value", "aria|value", "attr|value":
-				fmt.Fprintln(f, `"foo", "bar")`)
+				fmt.Fprintf(f, `elem.%s("foo", "bar")`, a.Name)
 
 			case "data|map":
-				fmt.Fprintln(f, `map[string]any{"foo": "bar"})`)
+				fmt.Fprintf(f, `elem.%s(map[string]any{"foo": "bar"})`, a.Name)
 
 			case "style":
-				fmt.Fprintln(f, `"margin", "%vpx", 42)`)
+				fmt.Fprintf(f, `elem.%s("margin", "42px")`, a.Name)
+
+			case "style|fmt":
+				fmt.Fprintf(f, `elem.%sf("margin", "%%vpx", 42)`, a.Name)
 
 			case "style|map":
-				fmt.Fprintln(f, `map[string]string{"color": "pink"})`)
+				fmt.Fprintf(f, `elem.%s(map[string]string{"color": "pink"})`, a.Name)
 
 			case "bool", "bool|force", "on/off":
-				fmt.Fprintln(f, `true)`)
-				fmt.Fprintf(f, `elem.%s(false)`, a.Name)
+				fmt.Fprintf(f, `elem.%s(true)`, a.Name)
 				fmt.Fprintln(f)
+				fmt.Fprintf(f, `elem.%s(false)`, a.Name)
 
 			case "int":
-				fmt.Fprintln(f, `42)`)
+				fmt.Fprintf(f, `elem.%s(42)`, a.Name)
 
 			case "string":
-				fmt.Fprintln(f, `"foo")`)
-
-			case "url":
-				fmt.Fprintln(f, `"http://foo.com")`)
-
-			case "string|class":
-				fmt.Fprintln(f, `"foo bar")`)
-
-			case "xmlns":
-				fmt.Fprintln(f, `"http://www.w3.org/2000/svg")`)
+				fmt.Fprintf(f, `elem.%s("foo")`, a.Name)
 
 			case "fmt":
-				fmt.Fprintln(f, `"hello %v", 42)`)
+				fmt.Fprintf(f, `elem.%sf("hello %%v", 42)`, a.Name)
+
+			case "url":
+				fmt.Fprintf(f, `elem.%s(http://foo.com")`, a.Name)
+
+			case "string|class":
+				fmt.Fprintf(f, `elem.%s("foo bar")`, a.Name)
+
+			case "xmlns":
+				fmt.Fprintf(f, `elem.%s("http://www.w3.org/2000/svg")`, a.Name)
 
 			default:
-				fmt.Fprintln(f, `42)`)
+				fmt.Fprintf(f, `elem.%s(42)`, a.Name)
 			}
+
+			fmt.Fprintln(f)
+		}
+
+		for _, a := range t.Attrs {
+			if astring := a; astring.Type == "fmt" {
+				astring.Type = "string"
+				generateTestFunc(astring)
+			}
+			generateTestFunc(a)
 		}
 
 		fmt.Fprint(f, `
