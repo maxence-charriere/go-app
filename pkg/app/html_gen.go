@@ -114,10 +114,10 @@ type HTMLA interface {
 	Spellcheck(v bool) HTMLA
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLA
+	Style(k, v string) HTMLA
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLA
+	Stylef(k, format string, v ...any) HTMLA
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLA
@@ -439,13 +439,13 @@ func (e *htmlA) Spellcheck(v bool) HTMLA {
 	return e
 }
 
-func (e *htmlA) Stylef(k, format string, v ...any) HTMLA {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlA) Style(k, v string) HTMLA {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlA) Style(k, v string) HTMLA {
-	e.setAttr("style", k+":"+v)
+func (e *htmlA) Stylef(k, format string, v ...any) HTMLA {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -733,10 +733,10 @@ type HTMLAbbr interface {
 	Spellcheck(v bool) HTMLAbbr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLAbbr
+	Style(k, v string) HTMLAbbr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLAbbr
+	Stylef(k, format string, v ...any) HTMLAbbr
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLAbbr
@@ -986,13 +986,13 @@ func (e *htmlAbbr) Spellcheck(v bool) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) Stylef(k, format string, v ...any) HTMLAbbr {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlAbbr) Style(k, v string) HTMLAbbr {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlAbbr) Style(k, v string) HTMLAbbr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAbbr) Stylef(k, format string, v ...any) HTMLAbbr {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1260,10 +1260,10 @@ type HTMLAddress interface {
 	Spellcheck(v bool) HTMLAddress
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLAddress
+	Style(k, v string) HTMLAddress
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLAddress
+	Stylef(k, format string, v ...any) HTMLAddress
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLAddress
@@ -1513,13 +1513,13 @@ func (e *htmlAddress) Spellcheck(v bool) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) Stylef(k, format string, v ...any) HTMLAddress {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlAddress) Style(k, v string) HTMLAddress {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlAddress) Style(k, v string) HTMLAddress {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAddress) Stylef(k, format string, v ...any) HTMLAddress {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -1826,10 +1826,10 @@ type HTMLArea interface {
 	Spellcheck(v bool) HTMLArea
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLArea
+	Style(k, v string) HTMLArea
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLArea
+	Stylef(k, format string, v ...any) HTMLArea
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLArea
@@ -2159,13 +2159,13 @@ func (e *htmlArea) Spellcheck(v bool) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Stylef(k, format string, v ...any) HTMLArea {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlArea) Style(k, v string) HTMLArea {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlArea) Style(k, v string) HTMLArea {
-	e.setAttr("style", k+":"+v)
+func (e *htmlArea) Stylef(k, format string, v ...any) HTMLArea {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2453,10 +2453,10 @@ type HTMLArticle interface {
 	Spellcheck(v bool) HTMLArticle
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLArticle
+	Style(k, v string) HTMLArticle
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLArticle
+	Stylef(k, format string, v ...any) HTMLArticle
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLArticle
@@ -2706,13 +2706,13 @@ func (e *htmlArticle) Spellcheck(v bool) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) Stylef(k, format string, v ...any) HTMLArticle {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlArticle) Style(k, v string) HTMLArticle {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlArticle) Style(k, v string) HTMLArticle {
-	e.setAttr("style", k+":"+v)
+func (e *htmlArticle) Stylef(k, format string, v ...any) HTMLArticle {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -2980,10 +2980,10 @@ type HTMLAside interface {
 	Spellcheck(v bool) HTMLAside
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLAside
+	Style(k, v string) HTMLAside
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLAside
+	Stylef(k, format string, v ...any) HTMLAside
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLAside
@@ -3233,13 +3233,13 @@ func (e *htmlAside) Spellcheck(v bool) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) Stylef(k, format string, v ...any) HTMLAside {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlAside) Style(k, v string) HTMLAside {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlAside) Style(k, v string) HTMLAside {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAside) Stylef(k, format string, v ...any) HTMLAside {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -3537,10 +3537,10 @@ type HTMLAudio interface {
 	Srcf(format string, v ...any) HTMLAudio
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLAudio
+	Style(k, v string) HTMLAudio
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLAudio
+	Stylef(k, format string, v ...any) HTMLAudio
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLAudio
@@ -3909,13 +3909,13 @@ func (e *htmlAudio) Srcf(format string, v ...any) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Stylef(k, format string, v ...any) HTMLAudio {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlAudio) Style(k, v string) HTMLAudio {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlAudio) Style(k, v string) HTMLAudio {
-	e.setAttr("style", k+":"+v)
+func (e *htmlAudio) Stylef(k, format string, v ...any) HTMLAudio {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4275,10 +4275,10 @@ type HTMLB interface {
 	Spellcheck(v bool) HTMLB
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLB
+	Style(k, v string) HTMLB
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLB
+	Stylef(k, format string, v ...any) HTMLB
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLB
@@ -4528,13 +4528,13 @@ func (e *htmlB) Spellcheck(v bool) HTMLB {
 	return e
 }
 
-func (e *htmlB) Stylef(k, format string, v ...any) HTMLB {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlB) Style(k, v string) HTMLB {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlB) Style(k, v string) HTMLB {
-	e.setAttr("style", k+":"+v)
+func (e *htmlB) Stylef(k, format string, v ...any) HTMLB {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -4799,10 +4799,10 @@ type HTMLBase interface {
 	Spellcheck(v bool) HTMLBase
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLBase
+	Style(k, v string) HTMLBase
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLBase
+	Stylef(k, format string, v ...any) HTMLBase
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLBase
@@ -5056,13 +5056,13 @@ func (e *htmlBase) Spellcheck(v bool) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Stylef(k, format string, v ...any) HTMLBase {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlBase) Style(k, v string) HTMLBase {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlBase) Style(k, v string) HTMLBase {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBase) Stylef(k, format string, v ...any) HTMLBase {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5340,10 +5340,10 @@ type HTMLBdi interface {
 	Spellcheck(v bool) HTMLBdi
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLBdi
+	Style(k, v string) HTMLBdi
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLBdi
+	Stylef(k, format string, v ...any) HTMLBdi
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLBdi
@@ -5593,13 +5593,13 @@ func (e *htmlBdi) Spellcheck(v bool) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) Stylef(k, format string, v ...any) HTMLBdi {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlBdi) Style(k, v string) HTMLBdi {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlBdi) Style(k, v string) HTMLBdi {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBdi) Stylef(k, format string, v ...any) HTMLBdi {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -5867,10 +5867,10 @@ type HTMLBdo interface {
 	Spellcheck(v bool) HTMLBdo
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLBdo
+	Style(k, v string) HTMLBdo
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLBdo
+	Stylef(k, format string, v ...any) HTMLBdo
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLBdo
@@ -6120,13 +6120,13 @@ func (e *htmlBdo) Spellcheck(v bool) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) Stylef(k, format string, v ...any) HTMLBdo {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlBdo) Style(k, v string) HTMLBdo {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlBdo) Style(k, v string) HTMLBdo {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBdo) Stylef(k, format string, v ...any) HTMLBdo {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6400,10 +6400,10 @@ type HTMLBlockquote interface {
 	Spellcheck(v bool) HTMLBlockquote
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLBlockquote
+	Style(k, v string) HTMLBlockquote
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLBlockquote
+	Stylef(k, format string, v ...any) HTMLBlockquote
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLBlockquote
@@ -6663,13 +6663,13 @@ func (e *htmlBlockquote) Spellcheck(v bool) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Stylef(k, format string, v ...any) HTMLBlockquote {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlBlockquote) Style(k, v string) HTMLBlockquote {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlBlockquote) Style(k, v string) HTMLBlockquote {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBlockquote) Stylef(k, format string, v ...any) HTMLBlockquote {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -6930,10 +6930,10 @@ type HTMLBody interface {
 	Spellcheck(v bool) HTMLBody
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLBody
+	Style(k, v string) HTMLBody
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLBody
+	Stylef(k, format string, v ...any) HTMLBody
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLBody
@@ -7220,13 +7220,13 @@ func (e *htmlBody) Spellcheck(v bool) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) Stylef(k, format string, v ...any) HTMLBody {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlBody) Style(k, v string) HTMLBody {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlBody) Style(k, v string) HTMLBody {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBody) Stylef(k, format string, v ...any) HTMLBody {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -7545,10 +7545,10 @@ type HTMLBr interface {
 	Spellcheck(v bool) HTMLBr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLBr
+	Style(k, v string) HTMLBr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLBr
+	Stylef(k, format string, v ...any) HTMLBr
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLBr
@@ -7786,13 +7786,13 @@ func (e *htmlBr) Spellcheck(v bool) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) Stylef(k, format string, v ...any) HTMLBr {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlBr) Style(k, v string) HTMLBr {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlBr) Style(k, v string) HTMLBr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlBr) Stylef(k, format string, v ...any) HTMLBr {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8105,10 +8105,10 @@ type HTMLButton interface {
 	Spellcheck(v bool) HTMLButton
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLButton
+	Style(k, v string) HTMLButton
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLButton
+	Stylef(k, format string, v ...any) HTMLButton
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLButton
@@ -8442,13 +8442,13 @@ func (e *htmlButton) Spellcheck(v bool) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Stylef(k, format string, v ...any) HTMLButton {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlButton) Style(k, v string) HTMLButton {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlButton) Style(k, v string) HTMLButton {
-	e.setAttr("style", k+":"+v)
+func (e *htmlButton) Stylef(k, format string, v ...any) HTMLButton {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -8734,10 +8734,10 @@ type HTMLCanvas interface {
 	Spellcheck(v bool) HTMLCanvas
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLCanvas
+	Style(k, v string) HTMLCanvas
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLCanvas
+	Stylef(k, format string, v ...any) HTMLCanvas
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLCanvas
@@ -8995,13 +8995,13 @@ func (e *htmlCanvas) Spellcheck(v bool) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) Stylef(k, format string, v ...any) HTMLCanvas {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlCanvas) Style(k, v string) HTMLCanvas {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlCanvas) Style(k, v string) HTMLCanvas {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCanvas) Stylef(k, format string, v ...any) HTMLCanvas {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9274,10 +9274,10 @@ type HTMLCaption interface {
 	Spellcheck(v bool) HTMLCaption
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLCaption
+	Style(k, v string) HTMLCaption
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLCaption
+	Stylef(k, format string, v ...any) HTMLCaption
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLCaption
@@ -9527,13 +9527,13 @@ func (e *htmlCaption) Spellcheck(v bool) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) Stylef(k, format string, v ...any) HTMLCaption {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlCaption) Style(k, v string) HTMLCaption {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlCaption) Style(k, v string) HTMLCaption {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCaption) Stylef(k, format string, v ...any) HTMLCaption {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -9801,10 +9801,10 @@ type HTMLCite interface {
 	Spellcheck(v bool) HTMLCite
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLCite
+	Style(k, v string) HTMLCite
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLCite
+	Stylef(k, format string, v ...any) HTMLCite
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLCite
@@ -10054,13 +10054,13 @@ func (e *htmlCite) Spellcheck(v bool) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) Stylef(k, format string, v ...any) HTMLCite {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlCite) Style(k, v string) HTMLCite {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlCite) Style(k, v string) HTMLCite {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCite) Stylef(k, format string, v ...any) HTMLCite {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10328,10 +10328,10 @@ type HTMLCode interface {
 	Spellcheck(v bool) HTMLCode
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLCode
+	Style(k, v string) HTMLCode
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLCode
+	Stylef(k, format string, v ...any) HTMLCode
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLCode
@@ -10581,13 +10581,13 @@ func (e *htmlCode) Spellcheck(v bool) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) Stylef(k, format string, v ...any) HTMLCode {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlCode) Style(k, v string) HTMLCode {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlCode) Style(k, v string) HTMLCode {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCode) Stylef(k, format string, v ...any) HTMLCode {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -10849,10 +10849,10 @@ type HTMLCol interface {
 	Spellcheck(v bool) HTMLCol
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLCol
+	Style(k, v string) HTMLCol
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLCol
+	Stylef(k, format string, v ...any) HTMLCol
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLCol
@@ -11095,13 +11095,13 @@ func (e *htmlCol) Spellcheck(v bool) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) Stylef(k, format string, v ...any) HTMLCol {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlCol) Style(k, v string) HTMLCol {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlCol) Style(k, v string) HTMLCol {
-	e.setAttr("style", k+":"+v)
+func (e *htmlCol) Stylef(k, format string, v ...any) HTMLCol {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11372,10 +11372,10 @@ type HTMLColGroup interface {
 	Spellcheck(v bool) HTMLColGroup
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLColGroup
+	Style(k, v string) HTMLColGroup
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLColGroup
+	Stylef(k, format string, v ...any) HTMLColGroup
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLColGroup
@@ -11630,13 +11630,13 @@ func (e *htmlColGroup) Spellcheck(v bool) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) Stylef(k, format string, v ...any) HTMLColGroup {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlColGroup) Style(k, v string) HTMLColGroup {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlColGroup) Style(k, v string) HTMLColGroup {
-	e.setAttr("style", k+":"+v)
+func (e *htmlColGroup) Stylef(k, format string, v ...any) HTMLColGroup {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -11904,10 +11904,10 @@ type HTMLData interface {
 	Spellcheck(v bool) HTMLData
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLData
+	Style(k, v string) HTMLData
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLData
+	Stylef(k, format string, v ...any) HTMLData
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLData
@@ -12058,13 +12058,13 @@ func (e *htmlData) Spellcheck(v bool) HTMLData {
 	return e
 }
 
-func (e *htmlData) Stylef(k, format string, v ...any) HTMLData {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlData) Style(k, v string) HTMLData {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlData) Style(k, v string) HTMLData {
-	e.setAttr("style", k+":"+v)
+func (e *htmlData) Stylef(k, format string, v ...any) HTMLData {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12201,10 +12201,10 @@ type HTMLDataList interface {
 	Spellcheck(v bool) HTMLDataList
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDataList
+	Style(k, v string) HTMLDataList
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDataList
+	Stylef(k, format string, v ...any) HTMLDataList
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDataList
@@ -12454,13 +12454,13 @@ func (e *htmlDataList) Spellcheck(v bool) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) Stylef(k, format string, v ...any) HTMLDataList {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDataList) Style(k, v string) HTMLDataList {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDataList) Style(k, v string) HTMLDataList {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDataList) Stylef(k, format string, v ...any) HTMLDataList {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -12728,10 +12728,10 @@ type HTMLDd interface {
 	Spellcheck(v bool) HTMLDd
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDd
+	Style(k, v string) HTMLDd
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDd
+	Stylef(k, format string, v ...any) HTMLDd
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDd
@@ -12981,13 +12981,13 @@ func (e *htmlDd) Spellcheck(v bool) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) Stylef(k, format string, v ...any) HTMLDd {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDd) Style(k, v string) HTMLDd {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDd) Style(k, v string) HTMLDd {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDd) Stylef(k, format string, v ...any) HTMLDd {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13267,10 +13267,10 @@ type HTMLDel interface {
 	Spellcheck(v bool) HTMLDel
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDel
+	Style(k, v string) HTMLDel
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDel
+	Stylef(k, format string, v ...any) HTMLDel
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDel
@@ -13540,13 +13540,13 @@ func (e *htmlDel) Spellcheck(v bool) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) Stylef(k, format string, v ...any) HTMLDel {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDel) Style(k, v string) HTMLDel {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDel) Style(k, v string) HTMLDel {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDel) Stylef(k, format string, v ...any) HTMLDel {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -13817,10 +13817,10 @@ type HTMLDetails interface {
 	Spellcheck(v bool) HTMLDetails
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDetails
+	Style(k, v string) HTMLDetails
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDetails
+	Stylef(k, format string, v ...any) HTMLDetails
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDetails
@@ -14078,13 +14078,13 @@ func (e *htmlDetails) Spellcheck(v bool) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) Stylef(k, format string, v ...any) HTMLDetails {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDetails) Style(k, v string) HTMLDetails {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDetails) Style(k, v string) HTMLDetails {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDetails) Stylef(k, format string, v ...any) HTMLDetails {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14356,10 +14356,10 @@ type HTMLDfn interface {
 	Spellcheck(v bool) HTMLDfn
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDfn
+	Style(k, v string) HTMLDfn
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDfn
+	Stylef(k, format string, v ...any) HTMLDfn
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDfn
@@ -14609,13 +14609,13 @@ func (e *htmlDfn) Spellcheck(v bool) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) Stylef(k, format string, v ...any) HTMLDfn {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDfn) Style(k, v string) HTMLDfn {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDfn) Style(k, v string) HTMLDfn {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDfn) Stylef(k, format string, v ...any) HTMLDfn {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -14886,10 +14886,10 @@ type HTMLDialog interface {
 	Spellcheck(v bool) HTMLDialog
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDialog
+	Style(k, v string) HTMLDialog
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDialog
+	Stylef(k, format string, v ...any) HTMLDialog
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDialog
@@ -15144,13 +15144,13 @@ func (e *htmlDialog) Spellcheck(v bool) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) Stylef(k, format string, v ...any) HTMLDialog {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDialog) Style(k, v string) HTMLDialog {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDialog) Style(k, v string) HTMLDialog {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDialog) Stylef(k, format string, v ...any) HTMLDialog {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15418,10 +15418,10 @@ type HTMLDiv interface {
 	Spellcheck(v bool) HTMLDiv
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDiv
+	Style(k, v string) HTMLDiv
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDiv
+	Stylef(k, format string, v ...any) HTMLDiv
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDiv
@@ -15671,13 +15671,13 @@ func (e *htmlDiv) Spellcheck(v bool) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) Stylef(k, format string, v ...any) HTMLDiv {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDiv) Style(k, v string) HTMLDiv {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDiv) Style(k, v string) HTMLDiv {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDiv) Stylef(k, format string, v ...any) HTMLDiv {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -15945,10 +15945,10 @@ type HTMLDl interface {
 	Spellcheck(v bool) HTMLDl
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDl
+	Style(k, v string) HTMLDl
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDl
+	Stylef(k, format string, v ...any) HTMLDl
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDl
@@ -16198,13 +16198,13 @@ func (e *htmlDl) Spellcheck(v bool) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) Stylef(k, format string, v ...any) HTMLDl {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDl) Style(k, v string) HTMLDl {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDl) Style(k, v string) HTMLDl {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDl) Stylef(k, format string, v ...any) HTMLDl {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16472,10 +16472,10 @@ type HTMLDt interface {
 	Spellcheck(v bool) HTMLDt
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLDt
+	Style(k, v string) HTMLDt
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLDt
+	Stylef(k, format string, v ...any) HTMLDt
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLDt
@@ -16725,13 +16725,13 @@ func (e *htmlDt) Spellcheck(v bool) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) Stylef(k, format string, v ...any) HTMLDt {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlDt) Style(k, v string) HTMLDt {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlDt) Style(k, v string) HTMLDt {
-	e.setAttr("style", k+":"+v)
+func (e *htmlDt) Stylef(k, format string, v ...any) HTMLDt {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -16999,10 +16999,10 @@ type HTMLElem interface {
 	Spellcheck(v bool) HTMLElem
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLElem
+	Style(k, v string) HTMLElem
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLElem
+	Stylef(k, format string, v ...any) HTMLElem
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLElem
@@ -17255,13 +17255,13 @@ func (e *htmlElem) Spellcheck(v bool) HTMLElem {
 	return e
 }
 
-func (e *htmlElem) Stylef(k, format string, v ...any) HTMLElem {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlElem) Style(k, v string) HTMLElem {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlElem) Style(k, v string) HTMLElem {
-	e.setAttr("style", k+":"+v)
+func (e *htmlElem) Stylef(k, format string, v ...any) HTMLElem {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -17525,10 +17525,10 @@ type HTMLElemSelfClosing interface {
 	Spellcheck(v bool) HTMLElemSelfClosing
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLElemSelfClosing
+	Style(k, v string) HTMLElemSelfClosing
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLElemSelfClosing
+	Stylef(k, format string, v ...any) HTMLElemSelfClosing
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLElemSelfClosing
@@ -17769,13 +17769,13 @@ func (e *htmlElemSelfClosing) Spellcheck(v bool) HTMLElemSelfClosing {
 	return e
 }
 
-func (e *htmlElemSelfClosing) Stylef(k, format string, v ...any) HTMLElemSelfClosing {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlElemSelfClosing) Style(k, v string) HTMLElemSelfClosing {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlElemSelfClosing) Style(k, v string) HTMLElemSelfClosing {
-	e.setAttr("style", k+":"+v)
+func (e *htmlElemSelfClosing) Stylef(k, format string, v ...any) HTMLElemSelfClosing {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18048,10 +18048,10 @@ type HTMLEm interface {
 	Spellcheck(v bool) HTMLEm
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLEm
+	Style(k, v string) HTMLEm
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLEm
+	Stylef(k, format string, v ...any) HTMLEm
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLEm
@@ -18301,13 +18301,13 @@ func (e *htmlEm) Spellcheck(v bool) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) Stylef(k, format string, v ...any) HTMLEm {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlEm) Style(k, v string) HTMLEm {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlEm) Style(k, v string) HTMLEm {
-	e.setAttr("style", k+":"+v)
+func (e *htmlEm) Stylef(k, format string, v ...any) HTMLEm {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -18575,10 +18575,10 @@ type HTMLEmbed interface {
 	Srcf(format string, v ...any) HTMLEmbed
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLEmbed
+	Style(k, v string) HTMLEmbed
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLEmbed
+	Stylef(k, format string, v ...any) HTMLEmbed
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLEmbed
@@ -18909,13 +18909,13 @@ func (e *htmlEmbed) Srcf(format string, v ...any) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Stylef(k, format string, v ...any) HTMLEmbed {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlEmbed) Style(k, v string) HTMLEmbed {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlEmbed) Style(k, v string) HTMLEmbed {
-	e.setAttr("style", k+":"+v)
+func (e *htmlEmbed) Stylef(k, format string, v ...any) HTMLEmbed {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19305,10 +19305,10 @@ type HTMLFieldSet interface {
 	Spellcheck(v bool) HTMLFieldSet
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLFieldSet
+	Style(k, v string) HTMLFieldSet
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLFieldSet
+	Stylef(k, format string, v ...any) HTMLFieldSet
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLFieldSet
@@ -19583,13 +19583,13 @@ func (e *htmlFieldSet) Spellcheck(v bool) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Stylef(k, format string, v ...any) HTMLFieldSet {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlFieldSet) Style(k, v string) HTMLFieldSet {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlFieldSet) Style(k, v string) HTMLFieldSet {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFieldSet) Stylef(k, format string, v ...any) HTMLFieldSet {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -19857,10 +19857,10 @@ type HTMLFigCaption interface {
 	Spellcheck(v bool) HTMLFigCaption
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLFigCaption
+	Style(k, v string) HTMLFigCaption
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLFigCaption
+	Stylef(k, format string, v ...any) HTMLFigCaption
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLFigCaption
@@ -20110,13 +20110,13 @@ func (e *htmlFigCaption) Spellcheck(v bool) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) Stylef(k, format string, v ...any) HTMLFigCaption {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlFigCaption) Style(k, v string) HTMLFigCaption {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlFigCaption) Style(k, v string) HTMLFigCaption {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFigCaption) Stylef(k, format string, v ...any) HTMLFigCaption {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20384,10 +20384,10 @@ type HTMLFigure interface {
 	Spellcheck(v bool) HTMLFigure
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLFigure
+	Style(k, v string) HTMLFigure
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLFigure
+	Stylef(k, format string, v ...any) HTMLFigure
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLFigure
@@ -20637,13 +20637,13 @@ func (e *htmlFigure) Spellcheck(v bool) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) Stylef(k, format string, v ...any) HTMLFigure {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlFigure) Style(k, v string) HTMLFigure {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlFigure) Style(k, v string) HTMLFigure {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFigure) Stylef(k, format string, v ...any) HTMLFigure {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -20911,10 +20911,10 @@ type HTMLFooter interface {
 	Spellcheck(v bool) HTMLFooter
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLFooter
+	Style(k, v string) HTMLFooter
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLFooter
+	Stylef(k, format string, v ...any) HTMLFooter
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLFooter
@@ -21164,13 +21164,13 @@ func (e *htmlFooter) Spellcheck(v bool) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) Stylef(k, format string, v ...any) HTMLFooter {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlFooter) Style(k, v string) HTMLFooter {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlFooter) Style(k, v string) HTMLFooter {
-	e.setAttr("style", k+":"+v)
+func (e *htmlFooter) Stylef(k, format string, v ...any) HTMLFooter {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -21474,10 +21474,10 @@ type HTMLForm interface {
 	Spellcheck(v bool) HTMLForm
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLForm
+	Style(k, v string) HTMLForm
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLForm
+	Stylef(k, format string, v ...any) HTMLForm
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLForm
@@ -21798,13 +21798,13 @@ func (e *htmlForm) Spellcheck(v bool) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Stylef(k, format string, v ...any) HTMLForm {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlForm) Style(k, v string) HTMLForm {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlForm) Style(k, v string) HTMLForm {
-	e.setAttr("style", k+":"+v)
+func (e *htmlForm) Stylef(k, format string, v ...any) HTMLForm {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22082,10 +22082,10 @@ type HTMLH1 interface {
 	Spellcheck(v bool) HTMLH1
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLH1
+	Style(k, v string) HTMLH1
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLH1
+	Stylef(k, format string, v ...any) HTMLH1
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLH1
@@ -22335,13 +22335,13 @@ func (e *htmlH1) Spellcheck(v bool) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) Stylef(k, format string, v ...any) HTMLH1 {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlH1) Style(k, v string) HTMLH1 {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlH1) Style(k, v string) HTMLH1 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH1) Stylef(k, format string, v ...any) HTMLH1 {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -22609,10 +22609,10 @@ type HTMLH2 interface {
 	Spellcheck(v bool) HTMLH2
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLH2
+	Style(k, v string) HTMLH2
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLH2
+	Stylef(k, format string, v ...any) HTMLH2
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLH2
@@ -22862,13 +22862,13 @@ func (e *htmlH2) Spellcheck(v bool) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) Stylef(k, format string, v ...any) HTMLH2 {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlH2) Style(k, v string) HTMLH2 {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlH2) Style(k, v string) HTMLH2 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH2) Stylef(k, format string, v ...any) HTMLH2 {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23136,10 +23136,10 @@ type HTMLH3 interface {
 	Spellcheck(v bool) HTMLH3
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLH3
+	Style(k, v string) HTMLH3
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLH3
+	Stylef(k, format string, v ...any) HTMLH3
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLH3
@@ -23389,13 +23389,13 @@ func (e *htmlH3) Spellcheck(v bool) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) Stylef(k, format string, v ...any) HTMLH3 {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlH3) Style(k, v string) HTMLH3 {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlH3) Style(k, v string) HTMLH3 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH3) Stylef(k, format string, v ...any) HTMLH3 {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -23663,10 +23663,10 @@ type HTMLH4 interface {
 	Spellcheck(v bool) HTMLH4
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLH4
+	Style(k, v string) HTMLH4
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLH4
+	Stylef(k, format string, v ...any) HTMLH4
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLH4
@@ -23916,13 +23916,13 @@ func (e *htmlH4) Spellcheck(v bool) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) Stylef(k, format string, v ...any) HTMLH4 {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlH4) Style(k, v string) HTMLH4 {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlH4) Style(k, v string) HTMLH4 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH4) Stylef(k, format string, v ...any) HTMLH4 {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24190,10 +24190,10 @@ type HTMLH5 interface {
 	Spellcheck(v bool) HTMLH5
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLH5
+	Style(k, v string) HTMLH5
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLH5
+	Stylef(k, format string, v ...any) HTMLH5
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLH5
@@ -24443,13 +24443,13 @@ func (e *htmlH5) Spellcheck(v bool) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) Stylef(k, format string, v ...any) HTMLH5 {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlH5) Style(k, v string) HTMLH5 {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlH5) Style(k, v string) HTMLH5 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH5) Stylef(k, format string, v ...any) HTMLH5 {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -24717,10 +24717,10 @@ type HTMLH6 interface {
 	Spellcheck(v bool) HTMLH6
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLH6
+	Style(k, v string) HTMLH6
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLH6
+	Stylef(k, format string, v ...any) HTMLH6
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLH6
@@ -24970,13 +24970,13 @@ func (e *htmlH6) Spellcheck(v bool) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) Stylef(k, format string, v ...any) HTMLH6 {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlH6) Style(k, v string) HTMLH6 {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlH6) Style(k, v string) HTMLH6 {
-	e.setAttr("style", k+":"+v)
+func (e *htmlH6) Stylef(k, format string, v ...any) HTMLH6 {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25244,10 +25244,10 @@ type HTMLHead interface {
 	Spellcheck(v bool) HTMLHead
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLHead
+	Style(k, v string) HTMLHead
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLHead
+	Stylef(k, format string, v ...any) HTMLHead
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLHead
@@ -25395,13 +25395,13 @@ func (e *htmlHead) Spellcheck(v bool) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) Stylef(k, format string, v ...any) HTMLHead {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlHead) Style(k, v string) HTMLHead {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlHead) Style(k, v string) HTMLHead {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHead) Stylef(k, format string, v ...any) HTMLHead {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -25533,10 +25533,10 @@ type HTMLHeader interface {
 	Spellcheck(v bool) HTMLHeader
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLHeader
+	Style(k, v string) HTMLHeader
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLHeader
+	Stylef(k, format string, v ...any) HTMLHeader
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLHeader
@@ -25786,13 +25786,13 @@ func (e *htmlHeader) Spellcheck(v bool) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) Stylef(k, format string, v ...any) HTMLHeader {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlHeader) Style(k, v string) HTMLHeader {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlHeader) Style(k, v string) HTMLHeader {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHeader) Stylef(k, format string, v ...any) HTMLHeader {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26051,10 +26051,10 @@ type HTMLHr interface {
 	Spellcheck(v bool) HTMLHr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLHr
+	Style(k, v string) HTMLHr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLHr
+	Stylef(k, format string, v ...any) HTMLHr
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLHr
@@ -26292,13 +26292,13 @@ func (e *htmlHr) Spellcheck(v bool) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) Stylef(k, format string, v ...any) HTMLHr {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlHr) Style(k, v string) HTMLHr {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlHr) Style(k, v string) HTMLHr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHr) Stylef(k, format string, v ...any) HTMLHr {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26559,10 +26559,10 @@ type HTMLHtml interface {
 	Spellcheck(v bool) HTMLHtml
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLHtml
+	Style(k, v string) HTMLHtml
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLHtml
+	Stylef(k, format string, v ...any) HTMLHtml
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLHtml
@@ -26702,13 +26702,13 @@ func (e *htmlHtml) Spellcheck(v bool) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) Stylef(k, format string, v ...any) HTMLHtml {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlHtml) Style(k, v string) HTMLHtml {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlHtml) Style(k, v string) HTMLHtml {
-	e.setAttr("style", k+":"+v)
+func (e *htmlHtml) Stylef(k, format string, v ...any) HTMLHtml {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -26840,10 +26840,10 @@ type HTMLI interface {
 	Spellcheck(v bool) HTMLI
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLI
+	Style(k, v string) HTMLI
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLI
+	Stylef(k, format string, v ...any) HTMLI
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLI
@@ -27093,13 +27093,13 @@ func (e *htmlI) Spellcheck(v bool) HTMLI {
 	return e
 }
 
-func (e *htmlI) Stylef(k, format string, v ...any) HTMLI {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlI) Style(k, v string) HTMLI {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlI) Style(k, v string) HTMLI {
-	e.setAttr("style", k+":"+v)
+func (e *htmlI) Stylef(k, format string, v ...any) HTMLI {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -27418,10 +27418,10 @@ type HTMLIFrame interface {
 	SrcDocf(format string, v ...any) HTMLIFrame
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLIFrame
+	Style(k, v string) HTMLIFrame
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLIFrame
+	Stylef(k, format string, v ...any) HTMLIFrame
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLIFrame
@@ -27772,13 +27772,13 @@ func (e *htmlIFrame) SrcDocf(format string, v ...any) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Stylef(k, format string, v ...any) HTMLIFrame {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlIFrame) Style(k, v string) HTMLIFrame {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlIFrame) Style(k, v string) HTMLIFrame {
-	e.setAttr("style", k+":"+v)
+func (e *htmlIFrame) Stylef(k, format string, v ...any) HTMLIFrame {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28094,10 +28094,10 @@ type HTMLImg interface {
 	SrcSetf(format string, v ...any) HTMLImg
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLImg
+	Style(k, v string) HTMLImg
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLImg
+	Stylef(k, format string, v ...any) HTMLImg
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLImg
@@ -28496,13 +28496,13 @@ func (e *htmlImg) SrcSetf(format string, v ...any) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Stylef(k, format string, v ...any) HTMLImg {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlImg) Style(k, v string) HTMLImg {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlImg) Style(k, v string) HTMLImg {
-	e.setAttr("style", k+":"+v)
+func (e *htmlImg) Stylef(k, format string, v ...any) HTMLImg {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -28998,10 +28998,10 @@ type HTMLInput interface {
 	Step(v float64) HTMLInput
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLInput
+	Style(k, v string) HTMLInput
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLInput
+	Stylef(k, format string, v ...any) HTMLInput
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLInput
@@ -29469,13 +29469,13 @@ func (e *htmlInput) Step(v float64) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Stylef(k, format string, v ...any) HTMLInput {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlInput) Style(k, v string) HTMLInput {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlInput) Style(k, v string) HTMLInput {
-	e.setAttr("style", k+":"+v)
+func (e *htmlInput) Stylef(k, format string, v ...any) HTMLInput {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -29767,10 +29767,10 @@ type HTMLIns interface {
 	Spellcheck(v bool) HTMLIns
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLIns
+	Style(k, v string) HTMLIns
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLIns
+	Stylef(k, format string, v ...any) HTMLIns
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLIns
@@ -30020,13 +30020,13 @@ func (e *htmlIns) Spellcheck(v bool) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) Stylef(k, format string, v ...any) HTMLIns {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlIns) Style(k, v string) HTMLIns {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlIns) Style(k, v string) HTMLIns {
-	e.setAttr("style", k+":"+v)
+func (e *htmlIns) Stylef(k, format string, v ...any) HTMLIns {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30294,10 +30294,10 @@ type HTMLKbd interface {
 	Spellcheck(v bool) HTMLKbd
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLKbd
+	Style(k, v string) HTMLKbd
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLKbd
+	Stylef(k, format string, v ...any) HTMLKbd
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLKbd
@@ -30547,13 +30547,13 @@ func (e *htmlKbd) Spellcheck(v bool) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) Stylef(k, format string, v ...any) HTMLKbd {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlKbd) Style(k, v string) HTMLKbd {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlKbd) Style(k, v string) HTMLKbd {
-	e.setAttr("style", k+":"+v)
+func (e *htmlKbd) Stylef(k, format string, v ...any) HTMLKbd {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -30833,10 +30833,10 @@ type HTMLLabel interface {
 	Spellcheck(v bool) HTMLLabel
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLLabel
+	Style(k, v string) HTMLLabel
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLLabel
+	Stylef(k, format string, v ...any) HTMLLabel
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLLabel
@@ -31106,13 +31106,13 @@ func (e *htmlLabel) Spellcheck(v bool) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) Stylef(k, format string, v ...any) HTMLLabel {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlLabel) Style(k, v string) HTMLLabel {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlLabel) Style(k, v string) HTMLLabel {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLabel) Stylef(k, format string, v ...any) HTMLLabel {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31380,10 +31380,10 @@ type HTMLLegend interface {
 	Spellcheck(v bool) HTMLLegend
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLLegend
+	Style(k, v string) HTMLLegend
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLLegend
+	Stylef(k, format string, v ...any) HTMLLegend
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLLegend
@@ -31633,13 +31633,13 @@ func (e *htmlLegend) Spellcheck(v bool) HTMLLegend {
 	return e
 }
 
-func (e *htmlLegend) Stylef(k, format string, v ...any) HTMLLegend {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlLegend) Style(k, v string) HTMLLegend {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlLegend) Style(k, v string) HTMLLegend {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLegend) Stylef(k, format string, v ...any) HTMLLegend {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -31907,10 +31907,10 @@ type HTMLLi interface {
 	Spellcheck(v bool) HTMLLi
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLLi
+	Style(k, v string) HTMLLi
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLLi
+	Stylef(k, format string, v ...any) HTMLLi
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLLi
@@ -32163,13 +32163,13 @@ func (e *htmlLi) Spellcheck(v bool) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) Stylef(k, format string, v ...any) HTMLLi {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlLi) Style(k, v string) HTMLLi {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlLi) Style(k, v string) HTMLLi {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLi) Stylef(k, format string, v ...any) HTMLLi {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -32481,10 +32481,10 @@ type HTMLLink interface {
 	Spellcheck(v bool) HTMLLink
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLLink
+	Style(k, v string) HTMLLink
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLLink
+	Stylef(k, format string, v ...any) HTMLLink
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLLink
@@ -32811,13 +32811,13 @@ func (e *htmlLink) Spellcheck(v bool) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Stylef(k, format string, v ...any) HTMLLink {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlLink) Style(k, v string) HTMLLink {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlLink) Style(k, v string) HTMLLink {
-	e.setAttr("style", k+":"+v)
+func (e *htmlLink) Stylef(k, format string, v ...any) HTMLLink {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33099,10 +33099,10 @@ type HTMLMain interface {
 	Spellcheck(v bool) HTMLMain
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLMain
+	Style(k, v string) HTMLMain
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLMain
+	Stylef(k, format string, v ...any) HTMLMain
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLMain
@@ -33352,13 +33352,13 @@ func (e *htmlMain) Spellcheck(v bool) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) Stylef(k, format string, v ...any) HTMLMain {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlMain) Style(k, v string) HTMLMain {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlMain) Style(k, v string) HTMLMain {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMain) Stylef(k, format string, v ...any) HTMLMain {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -33632,10 +33632,10 @@ type HTMLMap interface {
 	Spellcheck(v bool) HTMLMap
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLMap
+	Style(k, v string) HTMLMap
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLMap
+	Stylef(k, format string, v ...any) HTMLMap
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLMap
@@ -33895,13 +33895,13 @@ func (e *htmlMap) Spellcheck(v bool) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) Stylef(k, format string, v ...any) HTMLMap {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlMap) Style(k, v string) HTMLMap {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlMap) Style(k, v string) HTMLMap {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMap) Stylef(k, format string, v ...any) HTMLMap {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34169,10 +34169,10 @@ type HTMLMark interface {
 	Spellcheck(v bool) HTMLMark
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLMark
+	Style(k, v string) HTMLMark
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLMark
+	Stylef(k, format string, v ...any) HTMLMark
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLMark
@@ -34422,13 +34422,13 @@ func (e *htmlMark) Spellcheck(v bool) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) Stylef(k, format string, v ...any) HTMLMark {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlMark) Style(k, v string) HTMLMark {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlMark) Style(k, v string) HTMLMark {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMark) Stylef(k, format string, v ...any) HTMLMark {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -34717,10 +34717,10 @@ type HTMLMeta interface {
 	Spellcheck(v bool) HTMLMeta
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLMeta
+	Style(k, v string) HTMLMeta
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLMeta
+	Stylef(k, format string, v ...any) HTMLMeta
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLMeta
@@ -34906,13 +34906,13 @@ func (e *htmlMeta) Spellcheck(v bool) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Stylef(k, format string, v ...any) HTMLMeta {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlMeta) Style(k, v string) HTMLMeta {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlMeta) Style(k, v string) HTMLMeta {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMeta) Stylef(k, format string, v ...any) HTMLMeta {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35065,10 +35065,10 @@ type HTMLMeter interface {
 	Spellcheck(v bool) HTMLMeter
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLMeter
+	Style(k, v string) HTMLMeter
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLMeter
+	Stylef(k, format string, v ...any) HTMLMeter
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLMeter
@@ -35356,13 +35356,13 @@ func (e *htmlMeter) Spellcheck(v bool) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Stylef(k, format string, v ...any) HTMLMeter {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlMeter) Style(k, v string) HTMLMeter {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlMeter) Style(k, v string) HTMLMeter {
-	e.setAttr("style", k+":"+v)
+func (e *htmlMeter) Stylef(k, format string, v ...any) HTMLMeter {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -35635,10 +35635,10 @@ type HTMLNav interface {
 	Spellcheck(v bool) HTMLNav
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLNav
+	Style(k, v string) HTMLNav
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLNav
+	Stylef(k, format string, v ...any) HTMLNav
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLNav
@@ -35888,13 +35888,13 @@ func (e *htmlNav) Spellcheck(v bool) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) Stylef(k, format string, v ...any) HTMLNav {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlNav) Style(k, v string) HTMLNav {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlNav) Style(k, v string) HTMLNav {
-	e.setAttr("style", k+":"+v)
+func (e *htmlNav) Stylef(k, format string, v ...any) HTMLNav {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36162,10 +36162,10 @@ type HTMLNoScript interface {
 	Spellcheck(v bool) HTMLNoScript
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLNoScript
+	Style(k, v string) HTMLNoScript
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLNoScript
+	Stylef(k, format string, v ...any) HTMLNoScript
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLNoScript
@@ -36313,13 +36313,13 @@ func (e *htmlNoScript) Spellcheck(v bool) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) Stylef(k, format string, v ...any) HTMLNoScript {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlNoScript) Style(k, v string) HTMLNoScript {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlNoScript) Style(k, v string) HTMLNoScript {
-	e.setAttr("style", k+":"+v)
+func (e *htmlNoScript) Stylef(k, format string, v ...any) HTMLNoScript {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -36472,10 +36472,10 @@ type HTMLObject interface {
 	Spellcheck(v bool) HTMLObject
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLObject
+	Style(k, v string) HTMLObject
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLObject
+	Stylef(k, format string, v ...any) HTMLObject
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLObject
@@ -36844,13 +36844,13 @@ func (e *htmlObject) Spellcheck(v bool) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Stylef(k, format string, v ...any) HTMLObject {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlObject) Style(k, v string) HTMLObject {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlObject) Style(k, v string) HTMLObject {
-	e.setAttr("style", k+":"+v)
+func (e *htmlObject) Stylef(k, format string, v ...any) HTMLObject {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37241,10 +37241,10 @@ type HTMLOl interface {
 	Start(v int) HTMLOl
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLOl
+	Style(k, v string) HTMLOl
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLOl
+	Stylef(k, format string, v ...any) HTMLOl
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLOl
@@ -37510,13 +37510,13 @@ func (e *htmlOl) Start(v int) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Stylef(k, format string, v ...any) HTMLOl {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlOl) Style(k, v string) HTMLOl {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlOl) Style(k, v string) HTMLOl {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOl) Stylef(k, format string, v ...any) HTMLOl {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -37803,10 +37803,10 @@ type HTMLOptGroup interface {
 	Spellcheck(v bool) HTMLOptGroup
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLOptGroup
+	Style(k, v string) HTMLOptGroup
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLOptGroup
+	Stylef(k, format string, v ...any) HTMLOptGroup
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLOptGroup
@@ -38071,13 +38071,13 @@ func (e *htmlOptGroup) Spellcheck(v bool) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) Stylef(k, format string, v ...any) HTMLOptGroup {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlOptGroup) Style(k, v string) HTMLOptGroup {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlOptGroup) Style(k, v string) HTMLOptGroup {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOptGroup) Stylef(k, format string, v ...any) HTMLOptGroup {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38357,10 +38357,10 @@ type HTMLOption interface {
 	Spellcheck(v bool) HTMLOption
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLOption
+	Style(k, v string) HTMLOption
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLOption
+	Stylef(k, format string, v ...any) HTMLOption
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLOption
@@ -38633,13 +38633,13 @@ func (e *htmlOption) Spellcheck(v bool) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) Stylef(k, format string, v ...any) HTMLOption {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlOption) Style(k, v string) HTMLOption {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlOption) Style(k, v string) HTMLOption {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOption) Stylef(k, format string, v ...any) HTMLOption {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -38930,10 +38930,10 @@ type HTMLOutput interface {
 	Spellcheck(v bool) HTMLOutput
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLOutput
+	Style(k, v string) HTMLOutput
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLOutput
+	Stylef(k, format string, v ...any) HTMLOutput
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLOutput
@@ -39213,13 +39213,13 @@ func (e *htmlOutput) Spellcheck(v bool) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) Stylef(k, format string, v ...any) HTMLOutput {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlOutput) Style(k, v string) HTMLOutput {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlOutput) Style(k, v string) HTMLOutput {
-	e.setAttr("style", k+":"+v)
+func (e *htmlOutput) Stylef(k, format string, v ...any) HTMLOutput {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -39487,10 +39487,10 @@ type HTMLP interface {
 	Spellcheck(v bool) HTMLP
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLP
+	Style(k, v string) HTMLP
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLP
+	Stylef(k, format string, v ...any) HTMLP
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLP
@@ -39740,13 +39740,13 @@ func (e *htmlP) Spellcheck(v bool) HTMLP {
 	return e
 }
 
-func (e *htmlP) Stylef(k, format string, v ...any) HTMLP {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlP) Style(k, v string) HTMLP {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlP) Style(k, v string) HTMLP {
-	e.setAttr("style", k+":"+v)
+func (e *htmlP) Stylef(k, format string, v ...any) HTMLP {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40011,10 +40011,10 @@ type HTMLParam interface {
 	Spellcheck(v bool) HTMLParam
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLParam
+	Style(k, v string) HTMLParam
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLParam
+	Stylef(k, format string, v ...any) HTMLParam
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLParam
@@ -40265,13 +40265,13 @@ func (e *htmlParam) Spellcheck(v bool) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) Stylef(k, format string, v ...any) HTMLParam {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlParam) Style(k, v string) HTMLParam {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlParam) Style(k, v string) HTMLParam {
-	e.setAttr("style", k+":"+v)
+func (e *htmlParam) Stylef(k, format string, v ...any) HTMLParam {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -40544,10 +40544,10 @@ type HTMLPicture interface {
 	Spellcheck(v bool) HTMLPicture
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLPicture
+	Style(k, v string) HTMLPicture
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLPicture
+	Stylef(k, format string, v ...any) HTMLPicture
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLPicture
@@ -40797,13 +40797,13 @@ func (e *htmlPicture) Spellcheck(v bool) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) Stylef(k, format string, v ...any) HTMLPicture {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlPicture) Style(k, v string) HTMLPicture {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlPicture) Style(k, v string) HTMLPicture {
-	e.setAttr("style", k+":"+v)
+func (e *htmlPicture) Stylef(k, format string, v ...any) HTMLPicture {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41071,10 +41071,10 @@ type HTMLPre interface {
 	Spellcheck(v bool) HTMLPre
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLPre
+	Style(k, v string) HTMLPre
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLPre
+	Stylef(k, format string, v ...any) HTMLPre
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLPre
@@ -41324,13 +41324,13 @@ func (e *htmlPre) Spellcheck(v bool) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) Stylef(k, format string, v ...any) HTMLPre {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlPre) Style(k, v string) HTMLPre {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlPre) Style(k, v string) HTMLPre {
-	e.setAttr("style", k+":"+v)
+func (e *htmlPre) Stylef(k, format string, v ...any) HTMLPre {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -41601,10 +41601,10 @@ type HTMLProgress interface {
 	Spellcheck(v bool) HTMLProgress
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLProgress
+	Style(k, v string) HTMLProgress
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLProgress
+	Stylef(k, format string, v ...any) HTMLProgress
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLProgress
@@ -41862,13 +41862,13 @@ func (e *htmlProgress) Spellcheck(v bool) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Stylef(k, format string, v ...any) HTMLProgress {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlProgress) Style(k, v string) HTMLProgress {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlProgress) Style(k, v string) HTMLProgress {
-	e.setAttr("style", k+":"+v)
+func (e *htmlProgress) Stylef(k, format string, v ...any) HTMLProgress {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42147,10 +42147,10 @@ type HTMLQ interface {
 	Spellcheck(v bool) HTMLQ
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLQ
+	Style(k, v string) HTMLQ
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLQ
+	Stylef(k, format string, v ...any) HTMLQ
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLQ
@@ -42410,13 +42410,13 @@ func (e *htmlQ) Spellcheck(v bool) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Stylef(k, format string, v ...any) HTMLQ {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlQ) Style(k, v string) HTMLQ {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlQ) Style(k, v string) HTMLQ {
-	e.setAttr("style", k+":"+v)
+func (e *htmlQ) Stylef(k, format string, v ...any) HTMLQ {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -42684,10 +42684,10 @@ type HTMLRp interface {
 	Spellcheck(v bool) HTMLRp
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLRp
+	Style(k, v string) HTMLRp
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLRp
+	Stylef(k, format string, v ...any) HTMLRp
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLRp
@@ -42937,13 +42937,13 @@ func (e *htmlRp) Spellcheck(v bool) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) Stylef(k, format string, v ...any) HTMLRp {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlRp) Style(k, v string) HTMLRp {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlRp) Style(k, v string) HTMLRp {
-	e.setAttr("style", k+":"+v)
+func (e *htmlRp) Stylef(k, format string, v ...any) HTMLRp {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43211,10 +43211,10 @@ type HTMLRt interface {
 	Spellcheck(v bool) HTMLRt
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLRt
+	Style(k, v string) HTMLRt
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLRt
+	Stylef(k, format string, v ...any) HTMLRt
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLRt
@@ -43464,13 +43464,13 @@ func (e *htmlRt) Spellcheck(v bool) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) Stylef(k, format string, v ...any) HTMLRt {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlRt) Style(k, v string) HTMLRt {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlRt) Style(k, v string) HTMLRt {
-	e.setAttr("style", k+":"+v)
+func (e *htmlRt) Stylef(k, format string, v ...any) HTMLRt {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -43738,10 +43738,10 @@ type HTMLRuby interface {
 	Spellcheck(v bool) HTMLRuby
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLRuby
+	Style(k, v string) HTMLRuby
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLRuby
+	Stylef(k, format string, v ...any) HTMLRuby
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLRuby
@@ -43991,13 +43991,13 @@ func (e *htmlRuby) Spellcheck(v bool) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) Stylef(k, format string, v ...any) HTMLRuby {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlRuby) Style(k, v string) HTMLRuby {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlRuby) Style(k, v string) HTMLRuby {
-	e.setAttr("style", k+":"+v)
+func (e *htmlRuby) Stylef(k, format string, v ...any) HTMLRuby {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44265,10 +44265,10 @@ type HTMLS interface {
 	Spellcheck(v bool) HTMLS
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLS
+	Style(k, v string) HTMLS
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLS
+	Stylef(k, format string, v ...any) HTMLS
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLS
@@ -44518,13 +44518,13 @@ func (e *htmlS) Spellcheck(v bool) HTMLS {
 	return e
 }
 
-func (e *htmlS) Stylef(k, format string, v ...any) HTMLS {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlS) Style(k, v string) HTMLS {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlS) Style(k, v string) HTMLS {
-	e.setAttr("style", k+":"+v)
+func (e *htmlS) Stylef(k, format string, v ...any) HTMLS {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -44792,10 +44792,10 @@ type HTMLSamp interface {
 	Spellcheck(v bool) HTMLSamp
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSamp
+	Style(k, v string) HTMLSamp
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSamp
+	Stylef(k, format string, v ...any) HTMLSamp
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSamp
@@ -45045,13 +45045,13 @@ func (e *htmlSamp) Spellcheck(v bool) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) Stylef(k, format string, v ...any) HTMLSamp {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSamp) Style(k, v string) HTMLSamp {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSamp) Style(k, v string) HTMLSamp {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSamp) Stylef(k, format string, v ...any) HTMLSamp {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45343,10 +45343,10 @@ type HTMLScript interface {
 	Srcf(format string, v ...any) HTMLScript
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLScript
+	Style(k, v string) HTMLScript
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLScript
+	Stylef(k, format string, v ...any) HTMLScript
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLScript
@@ -45543,13 +45543,13 @@ func (e *htmlScript) Srcf(format string, v ...any) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Stylef(k, format string, v ...any) HTMLScript {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlScript) Style(k, v string) HTMLScript {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlScript) Style(k, v string) HTMLScript {
-	e.setAttr("style", k+":"+v)
+func (e *htmlScript) Stylef(k, format string, v ...any) HTMLScript {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -45695,10 +45695,10 @@ type HTMLSection interface {
 	Spellcheck(v bool) HTMLSection
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSection
+	Style(k, v string) HTMLSection
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSection
+	Stylef(k, format string, v ...any) HTMLSection
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSection
@@ -45948,13 +45948,13 @@ func (e *htmlSection) Spellcheck(v bool) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) Stylef(k, format string, v ...any) HTMLSection {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSection) Style(k, v string) HTMLSection {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSection) Style(k, v string) HTMLSection {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSection) Stylef(k, format string, v ...any) HTMLSection {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46249,10 +46249,10 @@ type HTMLSelect interface {
 	Spellcheck(v bool) HTMLSelect
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSelect
+	Style(k, v string) HTMLSelect
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSelect
+	Stylef(k, format string, v ...any) HTMLSelect
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSelect
@@ -46547,13 +46547,13 @@ func (e *htmlSelect) Spellcheck(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Stylef(k, format string, v ...any) HTMLSelect {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSelect) Style(k, v string) HTMLSelect {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSelect) Style(k, v string) HTMLSelect {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSelect) Stylef(k, format string, v ...any) HTMLSelect {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -46821,10 +46821,10 @@ type HTMLSmall interface {
 	Spellcheck(v bool) HTMLSmall
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSmall
+	Style(k, v string) HTMLSmall
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSmall
+	Stylef(k, format string, v ...any) HTMLSmall
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSmall
@@ -47074,13 +47074,13 @@ func (e *htmlSmall) Spellcheck(v bool) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) Stylef(k, format string, v ...any) HTMLSmall {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSmall) Style(k, v string) HTMLSmall {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSmall) Style(k, v string) HTMLSmall {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSmall) Stylef(k, format string, v ...any) HTMLSmall {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47363,10 +47363,10 @@ type HTMLSource interface {
 	SrcSetf(format string, v ...any) HTMLSource
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSource
+	Style(k, v string) HTMLSource
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSource
+	Stylef(k, format string, v ...any) HTMLSource
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSource
@@ -47650,13 +47650,13 @@ func (e *htmlSource) SrcSetf(format string, v ...any) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Stylef(k, format string, v ...any) HTMLSource {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSource) Style(k, v string) HTMLSource {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSource) Style(k, v string) HTMLSource {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSource) Stylef(k, format string, v ...any) HTMLSource {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -47934,10 +47934,10 @@ type HTMLSpan interface {
 	Spellcheck(v bool) HTMLSpan
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSpan
+	Style(k, v string) HTMLSpan
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSpan
+	Stylef(k, format string, v ...any) HTMLSpan
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSpan
@@ -48187,13 +48187,13 @@ func (e *htmlSpan) Spellcheck(v bool) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) Stylef(k, format string, v ...any) HTMLSpan {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSpan) Style(k, v string) HTMLSpan {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSpan) Style(k, v string) HTMLSpan {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSpan) Stylef(k, format string, v ...any) HTMLSpan {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48461,10 +48461,10 @@ type HTMLStrong interface {
 	Spellcheck(v bool) HTMLStrong
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLStrong
+	Style(k, v string) HTMLStrong
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLStrong
+	Stylef(k, format string, v ...any) HTMLStrong
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLStrong
@@ -48714,13 +48714,13 @@ func (e *htmlStrong) Spellcheck(v bool) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) Stylef(k, format string, v ...any) HTMLStrong {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlStrong) Style(k, v string) HTMLStrong {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlStrong) Style(k, v string) HTMLStrong {
-	e.setAttr("style", k+":"+v)
+func (e *htmlStrong) Stylef(k, format string, v ...any) HTMLStrong {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -48994,10 +48994,10 @@ type HTMLStyle interface {
 	Spellcheck(v bool) HTMLStyle
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLStyle
+	Style(k, v string) HTMLStyle
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLStyle
+	Stylef(k, format string, v ...any) HTMLStyle
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLStyle
@@ -49266,13 +49266,13 @@ func (e *htmlStyle) Spellcheck(v bool) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) Stylef(k, format string, v ...any) HTMLStyle {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlStyle) Style(k, v string) HTMLStyle {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlStyle) Style(k, v string) HTMLStyle {
-	e.setAttr("style", k+":"+v)
+func (e *htmlStyle) Stylef(k, format string, v ...any) HTMLStyle {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -49554,10 +49554,10 @@ type HTMLSub interface {
 	Spellcheck(v bool) HTMLSub
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSub
+	Style(k, v string) HTMLSub
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSub
+	Stylef(k, format string, v ...any) HTMLSub
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSub
@@ -49807,13 +49807,13 @@ func (e *htmlSub) Spellcheck(v bool) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) Stylef(k, format string, v ...any) HTMLSub {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSub) Style(k, v string) HTMLSub {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSub) Style(k, v string) HTMLSub {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSub) Stylef(k, format string, v ...any) HTMLSub {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50081,10 +50081,10 @@ type HTMLSummary interface {
 	Spellcheck(v bool) HTMLSummary
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSummary
+	Style(k, v string) HTMLSummary
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSummary
+	Stylef(k, format string, v ...any) HTMLSummary
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSummary
@@ -50334,13 +50334,13 @@ func (e *htmlSummary) Spellcheck(v bool) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) Stylef(k, format string, v ...any) HTMLSummary {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSummary) Style(k, v string) HTMLSummary {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSummary) Style(k, v string) HTMLSummary {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSummary) Stylef(k, format string, v ...any) HTMLSummary {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -50608,10 +50608,10 @@ type HTMLSup interface {
 	Spellcheck(v bool) HTMLSup
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLSup
+	Style(k, v string) HTMLSup
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLSup
+	Stylef(k, format string, v ...any) HTMLSup
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLSup
@@ -50861,13 +50861,13 @@ func (e *htmlSup) Spellcheck(v bool) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) Stylef(k, format string, v ...any) HTMLSup {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlSup) Style(k, v string) HTMLSup {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSup) Style(k, v string) HTMLSup {
-	e.setAttr("style", k+":"+v)
+func (e *htmlSup) Stylef(k, format string, v ...any) HTMLSup {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51135,10 +51135,10 @@ type HTMLTable interface {
 	Spellcheck(v bool) HTMLTable
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTable
+	Style(k, v string) HTMLTable
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTable
+	Stylef(k, format string, v ...any) HTMLTable
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTable
@@ -51388,13 +51388,13 @@ func (e *htmlTable) Spellcheck(v bool) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) Stylef(k, format string, v ...any) HTMLTable {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTable) Style(k, v string) HTMLTable {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTable) Style(k, v string) HTMLTable {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTable) Stylef(k, format string, v ...any) HTMLTable {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -51662,10 +51662,10 @@ type HTMLTBody interface {
 	Spellcheck(v bool) HTMLTBody
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTBody
+	Style(k, v string) HTMLTBody
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTBody
+	Stylef(k, format string, v ...any) HTMLTBody
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTBody
@@ -51915,13 +51915,13 @@ func (e *htmlTBody) Spellcheck(v bool) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) Stylef(k, format string, v ...any) HTMLTBody {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTBody) Style(k, v string) HTMLTBody {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTBody) Style(k, v string) HTMLTBody {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTBody) Stylef(k, format string, v ...any) HTMLTBody {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52201,10 +52201,10 @@ type HTMLTd interface {
 	Spellcheck(v bool) HTMLTd
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTd
+	Style(k, v string) HTMLTd
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTd
+	Stylef(k, format string, v ...any) HTMLTd
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTd
@@ -52474,13 +52474,13 @@ func (e *htmlTd) Spellcheck(v bool) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Stylef(k, format string, v ...any) HTMLTd {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTd) Style(k, v string) HTMLTd {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTd) Style(k, v string) HTMLTd {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTd) Stylef(k, format string, v ...any) HTMLTd {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -52748,10 +52748,10 @@ type HTMLTemplate interface {
 	Spellcheck(v bool) HTMLTemplate
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTemplate
+	Style(k, v string) HTMLTemplate
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTemplate
+	Stylef(k, format string, v ...any) HTMLTemplate
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTemplate
@@ -52899,13 +52899,13 @@ func (e *htmlTemplate) Spellcheck(v bool) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) Stylef(k, format string, v ...any) HTMLTemplate {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTemplate) Style(k, v string) HTMLTemplate {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTemplate) Style(k, v string) HTMLTemplate {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTemplate) Stylef(k, format string, v ...any) HTMLTemplate {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53082,10 +53082,10 @@ type HTMLTextarea interface {
 	Spellcheck(v bool) HTMLTextarea
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTextarea
+	Style(k, v string) HTMLTextarea
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTextarea
+	Stylef(k, format string, v ...any) HTMLTextarea
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTextarea
@@ -53418,13 +53418,13 @@ func (e *htmlTextarea) Spellcheck(v bool) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Stylef(k, format string, v ...any) HTMLTextarea {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTextarea) Style(k, v string) HTMLTextarea {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTextarea) Style(k, v string) HTMLTextarea {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTextarea) Stylef(k, format string, v ...any) HTMLTextarea {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -53702,10 +53702,10 @@ type HTMLTFoot interface {
 	Spellcheck(v bool) HTMLTFoot
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTFoot
+	Style(k, v string) HTMLTFoot
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTFoot
+	Stylef(k, format string, v ...any) HTMLTFoot
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTFoot
@@ -53955,13 +53955,13 @@ func (e *htmlTFoot) Spellcheck(v bool) HTMLTFoot {
 	return e
 }
 
-func (e *htmlTFoot) Stylef(k, format string, v ...any) HTMLTFoot {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTFoot) Style(k, v string) HTMLTFoot {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTFoot) Style(k, v string) HTMLTFoot {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTFoot) Stylef(k, format string, v ...any) HTMLTFoot {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54253,10 +54253,10 @@ type HTMLTh interface {
 	Spellcheck(v bool) HTMLTh
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTh
+	Style(k, v string) HTMLTh
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTh
+	Stylef(k, format string, v ...any) HTMLTh
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTh
@@ -54546,13 +54546,13 @@ func (e *htmlTh) Spellcheck(v bool) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Stylef(k, format string, v ...any) HTMLTh {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTh) Style(k, v string) HTMLTh {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTh) Style(k, v string) HTMLTh {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTh) Stylef(k, format string, v ...any) HTMLTh {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -54820,10 +54820,10 @@ type HTMLTHead interface {
 	Spellcheck(v bool) HTMLTHead
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTHead
+	Style(k, v string) HTMLTHead
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTHead
+	Stylef(k, format string, v ...any) HTMLTHead
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTHead
@@ -55073,13 +55073,13 @@ func (e *htmlTHead) Spellcheck(v bool) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) Stylef(k, format string, v ...any) HTMLTHead {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTHead) Style(k, v string) HTMLTHead {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTHead) Style(k, v string) HTMLTHead {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTHead) Stylef(k, format string, v ...any) HTMLTHead {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55353,10 +55353,10 @@ type HTMLTime interface {
 	Spellcheck(v bool) HTMLTime
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTime
+	Style(k, v string) HTMLTime
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTime
+	Stylef(k, format string, v ...any) HTMLTime
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTime
@@ -55616,13 +55616,13 @@ func (e *htmlTime) Spellcheck(v bool) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) Stylef(k, format string, v ...any) HTMLTime {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTime) Style(k, v string) HTMLTime {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTime) Style(k, v string) HTMLTime {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTime) Stylef(k, format string, v ...any) HTMLTime {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -55890,10 +55890,10 @@ type HTMLTitle interface {
 	Spellcheck(v bool) HTMLTitle
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTitle
+	Style(k, v string) HTMLTitle
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTitle
+	Stylef(k, format string, v ...any) HTMLTitle
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTitle
@@ -56041,13 +56041,13 @@ func (e *htmlTitle) Spellcheck(v bool) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) Stylef(k, format string, v ...any) HTMLTitle {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTitle) Style(k, v string) HTMLTitle {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTitle) Style(k, v string) HTMLTitle {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTitle) Stylef(k, format string, v ...any) HTMLTitle {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56179,10 +56179,10 @@ type HTMLTr interface {
 	Spellcheck(v bool) HTMLTr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLTr
+	Style(k, v string) HTMLTr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLTr
+	Stylef(k, format string, v ...any) HTMLTr
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLTr
@@ -56432,13 +56432,13 @@ func (e *htmlTr) Spellcheck(v bool) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) Stylef(k, format string, v ...any) HTMLTr {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlTr) Style(k, v string) HTMLTr {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTr) Style(k, v string) HTMLTr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlTr) Stylef(k, format string, v ...any) HTMLTr {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -56706,10 +56706,10 @@ type HTMLU interface {
 	Spellcheck(v bool) HTMLU
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLU
+	Style(k, v string) HTMLU
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLU
+	Stylef(k, format string, v ...any) HTMLU
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLU
@@ -56959,13 +56959,13 @@ func (e *htmlU) Spellcheck(v bool) HTMLU {
 	return e
 }
 
-func (e *htmlU) Stylef(k, format string, v ...any) HTMLU {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlU) Style(k, v string) HTMLU {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlU) Style(k, v string) HTMLU {
-	e.setAttr("style", k+":"+v)
+func (e *htmlU) Stylef(k, format string, v ...any) HTMLU {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57233,10 +57233,10 @@ type HTMLUl interface {
 	Spellcheck(v bool) HTMLUl
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLUl
+	Style(k, v string) HTMLUl
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLUl
+	Stylef(k, format string, v ...any) HTMLUl
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLUl
@@ -57486,13 +57486,13 @@ func (e *htmlUl) Spellcheck(v bool) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) Stylef(k, format string, v ...any) HTMLUl {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlUl) Style(k, v string) HTMLUl {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlUl) Style(k, v string) HTMLUl {
-	e.setAttr("style", k+":"+v)
+func (e *htmlUl) Stylef(k, format string, v ...any) HTMLUl {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -57760,10 +57760,10 @@ type HTMLVar interface {
 	Spellcheck(v bool) HTMLVar
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLVar
+	Style(k, v string) HTMLVar
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLVar
+	Stylef(k, format string, v ...any) HTMLVar
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLVar
@@ -58013,13 +58013,13 @@ func (e *htmlVar) Spellcheck(v bool) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) Stylef(k, format string, v ...any) HTMLVar {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlVar) Style(k, v string) HTMLVar {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlVar) Style(k, v string) HTMLVar {
-	e.setAttr("style", k+":"+v)
+func (e *htmlVar) Stylef(k, format string, v ...any) HTMLVar {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -58326,10 +58326,10 @@ type HTMLVideo interface {
 	Srcf(format string, v ...any) HTMLVideo
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLVideo
+	Style(k, v string) HTMLVideo
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLVideo
+	Stylef(k, format string, v ...any) HTMLVideo
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLVideo
@@ -58716,13 +58716,13 @@ func (e *htmlVideo) Srcf(format string, v ...any) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Stylef(k, format string, v ...any) HTMLVideo {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlVideo) Style(k, v string) HTMLVideo {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlVideo) Style(k, v string) HTMLVideo {
-	e.setAttr("style", k+":"+v)
+func (e *htmlVideo) Stylef(k, format string, v ...any) HTMLVideo {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
@@ -59087,10 +59087,10 @@ type HTMLWbr interface {
 	Spellcheck(v bool) HTMLWbr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Stylef(k, format string, v ...any) HTMLWbr
+	Style(k, v string) HTMLWbr
 
 	// Assigns inline CSS styling to an element. Can be called multiple times to set multiple CSS styles.
-	Style(k, v string) HTMLWbr
+	Stylef(k, format string, v ...any) HTMLWbr
 
 	// Allocates multiple CSS styles to an element. Accepts multiple styling definitions.
 	Styles(s map[string]string) HTMLWbr
@@ -59340,13 +59340,13 @@ func (e *htmlWbr) Spellcheck(v bool) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) Stylef(k, format string, v ...any) HTMLWbr {
-	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
+func (e *htmlWbr) Style(k, v string) HTMLWbr {
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlWbr) Style(k, v string) HTMLWbr {
-	e.setAttr("style", k+":"+v)
+func (e *htmlWbr) Stylef(k, format string, v ...any) HTMLWbr {
+	e.setAttr("style", k+":"+fmt.Sprintf(format, v...))
 	return e
 }
 
