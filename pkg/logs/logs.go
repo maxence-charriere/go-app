@@ -53,15 +53,15 @@ func New(v string) Entry {
 
 // Newf returns a log with the given formatted description that can be tagged.
 func Newf(msgFormat string, v ...any) Entry {
-	return makeEntry(msgFormat, v...)
+	return makeEntry(fmt.Sprintf(msgFormat, v...))
 }
 
-func makeEntry(msgFormat string, v ...any) Entry {
+func makeEntry(v string) Entry {
 	_, filename, line, _ := runtime.Caller(2)
 
 	return Entry{
 		Line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
-		Message: fmt.Sprintf(msgFormat, v...),
+		Message: v,
 	}
 }
 

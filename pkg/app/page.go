@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 )
@@ -11,7 +12,10 @@ type Page interface {
 	Title() string
 
 	// Sets the page title.
-	SetTitle(format string, v ...any)
+	SetTitle(v string)
+
+	// Sets the page title using a format specifier.
+	SetTitlef(format string, v ...any)
 
 	// Returns the page language.
 	Lang() string
@@ -23,13 +27,19 @@ type Page interface {
 	Description() string
 
 	// Sets the page description.
-	SetDescription(format string, v ...any)
+	SetDescription(v string)
+
+	// Sets the page description using a format specifier.
+	SetDescriptionf(format string, v ...any)
 
 	// Returns the page author.
 	Author() string
 
 	// Sets the page author.
-	SetAuthor(format string, v ...any)
+	SetAuthor(v string)
+
+	// Sets the page author using a format specifier.
+	SetAuthorf(format string, v ...any)
 
 	// Returns the page keywords.
 	Keywords() string
@@ -44,13 +54,19 @@ type Page interface {
 	SetPreloads(v ...Preload)
 
 	// Set the page loading label.
-	SetLoadingLabel(format string, v ...any)
+	SetLoadingLabel(v string)
+
+	// Sets the page loading label using a format specifier.
+	SetLoadingLabelf(format string, v ...any)
 
 	// Returns the image used by social networks when linking the page.
 	Image() string
 
 	// Set the image used by social networks when linking the page.
 	SetImage(v string)
+
+	// Sets the image used by social networks when linking the page using a format specifier.
+	SetImagef(format string, v ...any)
 
 	// Returns the page URL.
 	URL() *url.URL
@@ -67,7 +83,10 @@ type Page interface {
 	SetTwitterCard(v TwitterCard)
 
 	// Set the page's canonical link.
-	SetCanonicalLink(format string, v ...any)
+	SetCanonicalLink(v string)
+
+	// Sets the page's canonical link using a format specifier.
+	SetCanonicalLinkf(format string, v ...any)
 }
 
 type requestPage struct {
@@ -99,8 +118,12 @@ func (p *requestPage) Title() string {
 	return p.title
 }
 
-func (p *requestPage) SetTitle(format string, v ...any) {
-	p.title = FormatString(format, v...)
+func (p *requestPage) SetTitle(v string) {
+	p.title = v
+}
+
+func (p *requestPage) SetTitlef(format string, v ...any) {
+	p.SetTitle(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Lang() string {
@@ -115,16 +138,24 @@ func (p *requestPage) Description() string {
 	return p.description
 }
 
-func (p *requestPage) SetDescription(format string, v ...any) {
-	p.description = FormatString(format, v...)
+func (p *requestPage) SetDescription(v string) {
+	p.description = v
+}
+
+func (p *requestPage) SetDescriptionf(format string, v ...any) {
+	p.SetDescription(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Author() string {
 	return p.author
 }
 
-func (p *requestPage) SetAuthor(format string, v ...any) {
-	p.author = FormatString(format, v...)
+func (p *requestPage) SetAuthor(v string) {
+	p.author = v
+}
+
+func (p *requestPage) SetAuthorf(format string, v ...any) {
+	p.SetAuthor(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Keywords() string {
@@ -146,8 +177,12 @@ func (p *requestPage) SetPreloads(v ...Preload) {
 	p.preloads = v
 }
 
-func (p *requestPage) SetLoadingLabel(format string, v ...any) {
-	p.loadingLabel = FormatString(format, v...)
+func (p *requestPage) SetLoadingLabel(v string) {
+	p.loadingLabel = v
+}
+
+func (p *requestPage) SetLoadingLabelf(format string, v ...any) {
+	p.SetLoadingLabel(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) Image() string {
@@ -158,6 +193,10 @@ func (p *requestPage) SetImage(v string) {
 	if v != "" {
 		p.image = p.resolveURL(v)
 	}
+}
+
+func (p *requestPage) SetImagef(format string, v ...any) {
+	p.SetImage(fmt.Sprintf(format, v...))
 }
 
 func (p *requestPage) URL() *url.URL {
@@ -177,10 +216,14 @@ func (p *requestPage) SetTwitterCard(v TwitterCard) {
 	p.twitterCardMap = v.toMap()
 }
 
-func (p *requestPage) SetCanonicalLink(format string, v ...any) {
-	if canonicalLink := FormatString(format, v...); canonicalLink != "" {
-		p.canonicalLink = p.resolveURL(canonicalLink)
+func (p *requestPage) SetCanonicalLink(v string) {
+	if v != "" {
+		p.canonicalLink = p.resolveURL(v)
 	}
+}
+
+func (p *requestPage) SetCanonicalLinkf(format string, v ...any) {
+	p.SetCanonicalLink(fmt.Sprintf(format, v...))
 }
 
 type browserPage struct {
@@ -198,10 +241,13 @@ func (p browserPage) Title() string {
 		String()
 }
 
-func (p browserPage) SetTitle(format string, v ...any) {
-	title := FormatString(format, v...)
-	Window().Get("document").Set("title", title)
-	p.metaByProperty("og:title").setAttr("content", title)
+func (p browserPage) SetTitle(v string) {
+	Window().Get("document").Set("title", v)
+	p.metaByProperty("og:title").setAttr("content", v)
+}
+
+func (p browserPage) SetTitlef(format string, v ...any) {
+	p.SetTitle(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Lang() string {
@@ -223,18 +269,25 @@ func (p browserPage) Description() string {
 	return p.metaByName("description").getAttr("content")
 }
 
-func (p browserPage) SetDescription(format string, v ...any) {
-	description := FormatString(format, v...)
-	p.metaByName("description").setAttr("content", description)
-	p.metaByProperty("og:description").setAttr("content", description)
+func (p browserPage) SetDescription(v string) {
+	p.metaByName("description").setAttr("content", v)
+	p.metaByProperty("og:description").setAttr("content", v)
+}
+
+func (p browserPage) SetDescriptionf(format string, v ...any) {
+	p.SetDescription(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Author() string {
 	return p.metaByName("author").getAttr("content")
 }
 
-func (p browserPage) SetAuthor(format string, v ...any) {
-	p.metaByName("author").setAttr("content", FormatString(format, v...))
+func (p browserPage) SetAuthor(v string) {
+	p.metaByName("author").setAttr("content", v)
+}
+
+func (p browserPage) SetAuthorf(format string, v ...any) {
+	p.SetAuthor(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Keywords() string {
@@ -245,7 +298,11 @@ func (p browserPage) SetKeywords(v ...string) {
 	p.metaByName("keywords").setAttr("content", strings.Join(v, ", "))
 }
 
-func (p browserPage) SetLoadingLabel(format string, v ...any) {
+func (p browserPage) SetLoadingLabel(v string) {
+}
+
+func (p browserPage) SetLoadingLabelf(format string, v ...any) {
+	p.SetLoadingLabel(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) Preloads() []Preload {
@@ -263,6 +320,10 @@ func (p browserPage) SetImage(v string) {
 	if v != "" {
 		p.metaByProperty("og:image").setAttr("content", p.resolveURL(v))
 	}
+}
+
+func (p browserPage) SetImagef(format string, v ...any) {
+	p.SetImage(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) URL() *url.URL {
@@ -293,7 +354,11 @@ func (p browserPage) SetTwitterCard(v TwitterCard) {
 	}
 }
 
-func (p browserPage) SetCanonicalLink(format string, v ...any) {
+func (p browserPage) SetCanonicalLink(v string) {
+}
+
+func (p browserPage) SetCanonicalLinkf(format string, v ...any) {
+	p.SetCanonicalLink(fmt.Sprintf(format, v...))
 }
 
 func (p browserPage) metaByName(v string) Value {

@@ -1,0 +1,95 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+env:
+  BASE_VERSION: v11.0.0
+
+jobs:
+  release:
+    name: Publish Release
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+          cache-dependency-path: go.sum
+
+      - name: Install release build tools
+        run: go install golang.org/x/tools/cmd/godoc@latest
+
+      - name: Build GitHub Pages assets
+        run: make github
+
+      - name: Compute Version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --tags origin
+
+          LAST_TAG="$(git tag -l "${BASE_VERSION%.*}.*" --sort=-v:refname | head -n1 || true)"
+          if [[ -z "$LAST_TAG" ]]; then
+            NEXT_TAG="${BASE_VERSION}"
+          else
+            IFS='.' read -r MAJOR MINOR PATCH <<<"${LAST_TAG#v}"
+            PATCH=$((PATCH+1))
+            NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          fi
+
+          if git ls-remote --tags origin "refs/tags/${NEXT_TAG}" | grep -q .; then
+            echo "Tag ${NEXT_TAG} already exists on remote. Exiting to avoid mismatch."
+            exit 1
+          fi
+
+          echo "next=${NEXT_TAG}" >> "$GITHUB_OUTPUT"
+          echo "sha_tag=sha-${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
+          echo "VERSION=${NEXT_TAG}" >> "$GITHUB_ENV"
+
+      - name: Create and push tag
+        env:
+          TAG: ${{ steps.version.outputs.next }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "${TAG}" "${{ github.event.workflow_run.head_sha }}"
+          git push origin "refs/tags/${TAG}"
+
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version.outputs.next }}
+        run: |
+          gh release create "${TAG}" \
+            --verify-tag \
+            --latest \
+            --generate-notes \
+            --title "${TAG}"
