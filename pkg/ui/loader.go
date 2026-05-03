@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v10/pkg/app"
+	"github.com/maxence-charriere/go-app/v11/pkg/app"
 )
 
 const (
