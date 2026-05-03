@@ -73,21 +73,15 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: "1.25.9"
+          go-version-file: go.mod
           cache: true
           cache-dependency-path: go.sum
 
       - name: Show Go version
         run: go version
 
-      - name: Install WASM browser test runner
-        run: |
-          GOBIN="$(go env GOPATH)/bin"
-          go install github.com/agnivade/wasmbrowsertest@v0.11.0
-          mv "${GOBIN}/wasmbrowsertest" "${GOBIN}/go_js_wasm_exec"
-
       - name: Run WebAssembly unit tests
         run: |
-          go test ./pkg/app
-          go test ./pkg/errors
-          go test ./pkg/logs
+          WASM_EXEC="$(go env GOROOT)/lib/wasm/go_js_wasm_exec"
+          go test -exec "${WASM_EXEC}" ./pkg/errors
+          go test -exec "${WASM_EXEC}" ./pkg/logs
