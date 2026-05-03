@@ -148,7 +148,7 @@ type Error struct {
 // New returns an error with the given message that can be enriched with a type
 // and tags.
 func New(msg string) Error {
-	return makeError(msg)
+	return makeError("%s", msg)
 }
 
 // Newf returns an error with the given formatted message that can be enriched

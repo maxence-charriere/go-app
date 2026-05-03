@@ -48,7 +48,7 @@ type Entry struct {
 
 // New returns a log with the given description that can be tagged.
 func New(v string) Entry {
-	return Newf("%s", v)
+	return makeEntry("%s", v)
 }
 
 // Newf returns a log with the given formatted description that can be tagged.
