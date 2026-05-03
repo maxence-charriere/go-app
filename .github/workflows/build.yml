@@ -77,10 +77,13 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
+      - name: Show Go version
+        run: go version
+
       - name: Install WASM browser test runner
         run: |
           GOBIN="$(go env GOPATH)/bin"
-          go install github.com/agnivade/wasmbrowsertest@latest
+          go install github.com/agnivade/wasmbrowsertest@v0.11.0
           mv "${GOBIN}/wasmbrowsertest" "${GOBIN}/go_js_wasm_exec"
 
       - name: Run WebAssembly unit tests
