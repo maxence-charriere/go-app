@@ -1,4 +1,4 @@
-module github.com/maxence-charriere/go-app/v10
+module github.com/maxence-charriere/go-app/v11
 
 go 1.26.0
 

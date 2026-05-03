@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/v10/pkg/errors"
+	"github.com/maxence-charriere/go-app/v11/pkg/errors"
 )
 
 type value struct {

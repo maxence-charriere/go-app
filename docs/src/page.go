@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/maxence-charriere/go-app/v10/pkg/app"
-	"github.com/maxence-charriere/go-app/v10/pkg/ui"
+	"github.com/maxence-charriere/go-app/v11/pkg/app"
+	"github.com/maxence-charriere/go-app/v11/pkg/ui"
 )
 
 const (

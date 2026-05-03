@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v10/pkg/errors"
+	"github.com/maxence-charriere/go-app/v11/pkg/errors"
 )
 
 var (
