@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -643,6 +644,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		icon = h.Icon.Default
 	}
 
+	routeComposer := routes.routes[page.URL().Path]
+	var components []Composer
+	components = getAllChildCompnents(components, routeComposer())
+	var addedComponentLinks = make(map[string]string)
+
 	var b bytes.Buffer
 	err := engine.Encode(&b, h.HTML().
 		Lang(page.Lang()).
@@ -765,6 +771,23 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Range(h.RawHeaders).Slice(func(i int) UI {
 					return Raw(h.RawHeaders[i])
 				}),
+				Range(components).Slice(func(i int) UI {
+					componentName := strings.ToLower(reflect.TypeOf(components[i]).Elem().Name())
+					linkHref := fmt.Sprintf("lazy-css-%s", componentName)
+					_, isAdded := addedComponentLinks[componentName]
+
+					if !isAdded {
+						if resource := parseHTTPResource(components[i].GetLazyCSSPath()); resource.URL != "" {
+							addedComponentLinks[componentName] = linkHref
+							return resource.toLink().
+								Type("text/css").
+								Rel("stylesheet").
+								ID(linkHref)
+						}
+						return nil
+					}
+					return nil
+				}),
 			),
 			h.Body().privateBody(
 				Aside().
@@ -792,6 +815,32 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")
 	w.Write(b.Bytes())
+}
+
+func getAllChildCompnents(components []Composer, v UI) []Composer {
+
+	var children []UI
+	switch n := v.(type) {
+	case Composer:
+		children = FilterUIElems(n.Render())
+		if n.GetLazyCSSPath() != "" {
+			components = append(components, n)
+		}
+	case HTML:
+		children = FilterUIElems(n.body()...)
+	default:
+		return components
+	}
+
+	if len(children) == 0 {
+		return components
+	}
+
+	for _, c := range children {
+		components = getAllChildCompnents(components, c)
+	}
+
+	return components
 }
 
 func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library []byte) {
