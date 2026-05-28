@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strconv"
 )
 
 func init() {
@@ -157,7 +158,7 @@ func makeError(v string) Error {
 	_, filename, line, _ := runtime.Caller(2)
 
 	err := Error{
-		Line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
+		Line:    filepath.Base(filename) + ":" + strconv.Itoa(line),
 		Message: v,
 	}
 	return err
