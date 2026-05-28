@@ -2,6 +2,8 @@ package errors
 
 import (
 	"fmt"
+	"io"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -315,5 +317,119 @@ func TestUIError(t *testing.T) {
 
 	t.Run("returns empty string for nil", func(t *testing.T) {
 		require.Empty(t, UIError(nil))
+	})
+}
+
+func BenchmarkIs(b *testing.B) {
+	b.Run("plain enriched error", func(b *testing.B) {
+		err := New("err")
+		target := err
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !Is(err, target) {
+				b.Fatal("expected match")
+			}
+		}
+	})
+
+	b.Run("tagged enriched error", func(b *testing.B) {
+		err := New("err").
+			WithTag("method", "GET").
+			WithTag("path", "/cookies").
+			WithTag("code", 401)
+		target := err
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !Is(err, target) {
+				b.Fatal("expected match")
+			}
+		}
+	})
+
+	b.Run("tagged enriched error with reflect type", func(b *testing.B) {
+		err := New("err").
+			WithTag("method", "GET").
+			WithTag("receiver-type", reflect.TypeOf(Error{})).
+			WithTag("code", 401)
+		target := err
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !Is(err, target) {
+				b.Fatal("expected match")
+			}
+		}
+	})
+
+	b.Run("wrapped enriched error", func(b *testing.B) {
+		wrapped := New("wrapped").WithType("wrapped-code")
+		err := New("err").Wrap(wrapped)
+		target := wrapped
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !Is(err, target) {
+				b.Fatal("expected match")
+			}
+		}
+	})
+}
+
+func BenchmarkErrorIs(b *testing.B) {
+	b.Run("plain enriched error", func(b *testing.B) {
+		err := New("err")
+		target := err
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !err.Is(target) {
+				b.Fatal("expected match")
+			}
+		}
+	})
+
+	b.Run("tagged enriched error", func(b *testing.B) {
+		err := New("err").
+			WithTag("method", "GET").
+			WithTag("path", "/cookies").
+			WithTag("code", 401)
+		target := err
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !err.Is(target) {
+				b.Fatal("expected match")
+			}
+		}
+	})
+
+	b.Run("tagged enriched error with reflect type", func(b *testing.B) {
+		err := New("err").
+			WithTag("method", "GET").
+			WithTag("receiver-type", reflect.TypeOf(Error{})).
+			WithTag("code", 401)
+		target := err
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !err.Is(target) {
+				b.Fatal("expected match")
+			}
+		}
+	})
+
+	b.Run("wrapped enriched error", func(b *testing.B) {
+		wrapped := io.EOF
+		err := New("err").Wrap(wrapped)
+		target := err
+
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			if !err.Is(target) {
+				b.Fatal("expected match")
+			}
+		}
 	})
 }
