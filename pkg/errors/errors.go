@@ -265,19 +265,7 @@ func makeJSONError(err Error) jsonError {
 		wrappedErr = err.WrappedErr.Error()
 	}
 
-	var tags map[string]any
-	if l := len(err.Tags); l != 0 {
-		tags = make(map[string]any, l)
-		for k, v := range err.Tags {
-			switch v := v.(type) {
-			case reflect.Type:
-				tags[k] = v.String()
-
-			default:
-				tags[k] = v
-			}
-		}
-	}
+	tags := makeJSONTags(err.Tags)
 
 	return jsonError{
 		Line:        err.Line,
@@ -287,4 +275,35 @@ func makeJSONError(err Error) jsonError {
 		Tags:        tags,
 		WrappedErr:  wrappedErr,
 	}
+}
+
+func makeJSONTags(tags map[string]any) map[string]any {
+	if len(tags) == 0 {
+		return nil
+	}
+
+	requiresNormalization := false
+normalizationLoop:
+	for _, v := range tags {
+		switch v.(type) {
+		case reflect.Type:
+			requiresNormalization = true
+			break normalizationLoop
+		}
+	}
+	if !requiresNormalization {
+		return tags
+	}
+
+	jsonTags := make(map[string]any, len(tags))
+	for k, v := range tags {
+		switch v := v.(type) {
+		case reflect.Type:
+			jsonTags[k] = v.String()
+
+		default:
+			jsonTags[k] = v
+		}
+	}
+	return jsonTags
 }
