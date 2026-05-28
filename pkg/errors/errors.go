@@ -116,8 +116,8 @@ func UIError(err error) string {
 // The chain consists of err itself followed by the sequence of errors obtained
 // by repeatedly calling Unwrap.
 //
-// An error has a tag when it has a method Tag(string) string such that Tag(k)
-// returns a non-empty string value.
+// An error has a tag when it has a method Tag(string) any such that Tag(k)
+// returns a non-nil value.
 func Tag(err error, k string) any {
 	for {
 		if err, ok := err.(interface{ Tag(string) any }); ok {
@@ -164,11 +164,16 @@ func makeError(v string) Error {
 	return err
 }
 
+// WithType sets the application-defined type of the error.
 func (e Error) WithType(v string) Error {
 	e.DefinedType = v
 	return e
 }
 
+// Type returns the application-defined type of the error.
+//
+// When no explicit type is set, the wrapped error type is returned if present.
+// Otherwise, it returns the Go type of Error.
 func (e Error) Type() string {
 	if e.DefinedType != "" {
 		return e.DefinedType
@@ -181,6 +186,7 @@ func (e Error) Type() string {
 	return reflect.TypeOf(e).String()
 }
 
+// WithTag sets the named tag with the given value.
 func (e Error) WithTag(k string, v any) Error {
 	if e.Tags == nil {
 		e.Tags = make(map[string]any)
@@ -190,28 +196,34 @@ func (e Error) WithTag(k string, v any) Error {
 	return e
 }
 
+// Tag returns the value associated with the given tag key.
 func (e Error) Tag(k string) any {
 	return e.Tags[k]
 }
 
+// WithUIError sets the message intended to be displayed in the UI.
 func (e Error) WithUIError(msg string) Error {
 	e.UIMessage = msg
 	return e
 }
 
+// UIError returns the message intended to be displayed in the UI.
 func (e Error) UIError() string {
 	return e.UIMessage
 }
 
+// Wrap sets the wrapped error.
 func (e Error) Wrap(err error) Error {
 	e.WrappedErr = err
 	return e
 }
 
+// Unwrap returns the wrapped error.
 func (e Error) Unwrap() error {
 	return e.WrappedErr
 }
 
+// Error returns the string representation of the error.
 func (e Error) Error() string {
 	s, err := getEncoder()(makeJSONError(e))
 	if err != nil {
@@ -220,10 +232,12 @@ func (e Error) Error() string {
 	return string(s)
 }
 
+// MarshalJSON returns the JSON representation of the error.
 func (e Error) MarshalJSON() ([]byte, error) {
 	return getEncoder()(makeJSONError(e))
 }
 
+// Is reports whether err matches the receiver.
 func (e Error) Is(err error) bool {
 	rerr, ok := err.(Error)
 	if !ok {
