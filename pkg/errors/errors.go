@@ -212,7 +212,7 @@ func (e Error) Unwrap() error {
 }
 
 func (e Error) Error() string {
-	s, err := getEncoder()(e)
+	s, err := getEncoder()(makeJSONError(e))
 	if err != nil {
 		return fmt.Sprintf(`{"message": "encoding error failed: %s"}`, err)
 	}
@@ -220,40 +220,7 @@ func (e Error) Error() string {
 }
 
 func (e Error) MarshalJSON() ([]byte, error) {
-	var wrappedErr any = e.WrappedErr
-	if _, ok := e.WrappedErr.(Error); !ok && e.WrappedErr != nil {
-		wrappedErr = e.WrappedErr.Error()
-	}
-
-	var tags map[string]any
-	if l := len(e.Tags); l != 0 {
-		tags = make(map[string]any, l)
-		for k, v := range e.Tags {
-			switch v := v.(type) {
-			case reflect.Type:
-				tags[k] = v.String()
-
-			default:
-				tags[k] = v
-			}
-		}
-	}
-
-	return getEncoder()(struct {
-		Line        string         `json:"line,omitempty"`
-		Message     string         `json:"message"`
-		UIMessage   string         `json:"ui,omitempty"`
-		DefinedType string         `json:"type,omitempty"`
-		Tags        map[string]any `json:"tags,omitempty"`
-		WrappedErr  any            `json:"wrap,omitempty"`
-	}{
-		Line:        e.Line,
-		Message:     e.Message,
-		UIMessage:   e.UIMessage,
-		DefinedType: e.DefinedType,
-		Tags:        tags,
-		WrappedErr:  wrappedErr,
-	})
+	return getEncoder()(makeJSONError(e))
 }
 
 func (e Error) Is(err error) bool {
@@ -281,4 +248,43 @@ func isSameErr(a, b error) bool {
 	}
 
 	return a == b
+}
+
+type jsonError struct {
+	Line        string         `json:"line,omitempty"`
+	Message     string         `json:"message"`
+	UIMessage   string         `json:"ui,omitempty"`
+	DefinedType string         `json:"type,omitempty"`
+	Tags        map[string]any `json:"tags,omitempty"`
+	WrappedErr  any            `json:"wrap,omitempty"`
+}
+
+func makeJSONError(err Error) jsonError {
+	var wrappedErr any = err.WrappedErr
+	if _, ok := err.WrappedErr.(Error); !ok && err.WrappedErr != nil {
+		wrappedErr = err.WrappedErr.Error()
+	}
+
+	var tags map[string]any
+	if l := len(err.Tags); l != 0 {
+		tags = make(map[string]any, l)
+		for k, v := range err.Tags {
+			switch v := v.(type) {
+			case reflect.Type:
+				tags[k] = v.String()
+
+			default:
+				tags[k] = v
+			}
+		}
+	}
+
+	return jsonError{
+		Line:        err.Line,
+		Message:     err.Message,
+		UIMessage:   err.UIMessage,
+		DefinedType: err.DefinedType,
+		Tags:        tags,
+		WrappedErr:  wrappedErr,
+	}
 }
