@@ -127,6 +127,23 @@ func HasType(err error, v string) bool {
 	}
 }
 
+// UIError returns the UI message attached to err if present in the error chain.
+// Otherwise it returns the default error string.
+func UIError(err error) string {
+	if err == nil {
+		return ""
+	}
+
+	for current := err; current != nil; current = Unwrap(current) {
+		if err, ok := current.(interface{ UIError() string }); ok {
+			return err.UIError()
+		}
+	}
+
+	return err.Error()
+
+}
+
 // Tag returns the first tag value in err's chain that matches the given key.
 //
 // The chain consists of err itself followed by the sequence of errors obtained
@@ -153,6 +170,7 @@ type Error struct {
 	Line        string
 	Message     string
 	DefinedType string
+	UIMessage   string
 	Tags        map[string]any
 	WrappedErr  error
 }
@@ -209,6 +227,15 @@ func (e Error) Tag(k string) any {
 	return e.Tags[k]
 }
 
+func (e Error) WithUIError(msg string) Error {
+	e.UIMessage = msg
+	return e
+}
+
+func (e Error) UIError() string {
+	return e.UIMessage
+}
+
 func (e Error) Wrap(err error) Error {
 	e.WrappedErr = err
 	return e
@@ -249,12 +276,14 @@ func (e Error) MarshalJSON() ([]byte, error) {
 	return getEncoder()(struct {
 		Line        string         `json:"line,omitempty"`
 		Message     string         `json:"message"`
+		UIMessage   string         `json:"ui,omitempty"`
 		DefinedType string         `json:"type,omitempty"`
 		Tags        map[string]any `json:"tags,omitempty"`
 		WrappedErr  any            `json:"wrap,omitempty"`
 	}{
 		Line:        e.Line,
 		Message:     e.Message,
+		UIMessage:   e.UIMessage,
 		DefinedType: e.DefinedType,
 		Tags:        tags,
 		WrappedErr:  wrappedErr,

@@ -15,18 +15,28 @@ func (e nonComparableError) Error() string {
 	return "bad"
 }
 
+type uiErr string
+
+func (e uiErr) Error() string {
+	return "internal error"
+}
+
+func (e uiErr) UIError() string {
+	return string(e)
+}
+
 func TestNew(t *testing.T) {
 	t.Run("new error", func(t *testing.T) {
 		err := New("hello")
 		require.Equal(t, "hello", err.Message)
-		require.Equal(t, "errors_test.go:20", err.Line)
+		require.Equal(t, "errors_test.go:30", err.Line)
 		t.Log(err)
 	})
 
 	t.Run("new error with format", func(t *testing.T) {
 		err := Newf("hello %v", 42)
 		require.Equal(t, "hello 42", err.Message)
-		require.Equal(t, "errors_test.go:27", err.Line)
+		require.Equal(t, "errors_test.go:37", err.Line)
 		t.Log(err)
 	})
 }
@@ -197,11 +207,13 @@ func TestError(t *testing.T) {
 	t.Run("stringify an enriched error wrapped in an enriched error", func(t *testing.T) {
 		err := New("err").
 			WithTag("foo", "bar").
+			WithUIError("something went wrong").
 			Wrap(New("werr").WithType("boo")).
 			Error()
 		require.Contains(t, err, "err")
 		require.Contains(t, err, "werr")
 		require.Contains(t, err, "boo")
+		require.Contains(t, err, "something went wrong")
 		t.Log(err)
 	})
 
@@ -245,5 +257,40 @@ func TestSetEncoder(t *testing.T) {
 		require.PanicsWithValue(t, "errors: nil encoder", func() {
 			SetEncoder(nil)
 		})
+	})
+}
+
+func TestUIError(t *testing.T) {
+	t.Run("returns ui message from enriched error", func(t *testing.T) {
+		err := New("internal error").WithUIError("something went wrong")
+		require.Equal(t, "something went wrong", UIError(err))
+	})
+
+	t.Run("returns ui message from wrapped enriched error", func(t *testing.T) {
+		err := fmt.Errorf("request failed: %w", New("internal error").WithUIError("something went wrong"))
+		require.Equal(t, "something went wrong", UIError(err))
+	})
+
+	t.Run("returns ui message from any error implementing the interface", func(t *testing.T) {
+		require.Equal(t, "something went wrong", UIError(uiErr("something went wrong")))
+	})
+
+	t.Run("returns empty string when enriched error ui message is not set", func(t *testing.T) {
+		err := New("internal error")
+		require.Empty(t, UIError(err))
+	})
+
+	t.Run("returns empty string when wrapped enriched error ui message is not set", func(t *testing.T) {
+		err := fmt.Errorf("request failed: %w", New("internal error"))
+		require.Empty(t, UIError(err))
+	})
+
+	t.Run("falls back to error string for non enriched errors", func(t *testing.T) {
+		err := fmt.Errorf("internal error")
+		require.Equal(t, err.Error(), UIError(err))
+	})
+
+	t.Run("returns empty string for nil", func(t *testing.T) {
+		require.Empty(t, UIError(nil))
 	})
 }
