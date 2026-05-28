@@ -7,18 +7,26 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type nonComparableError struct {
+	items []string
+}
+
+func (e nonComparableError) Error() string {
+	return "bad"
+}
+
 func TestNew(t *testing.T) {
 	t.Run("new error", func(t *testing.T) {
 		err := New("hello")
 		require.Equal(t, "hello", err.Message)
-		require.Equal(t, "errors_test.go:12", err.Line)
+		require.Equal(t, "errors_test.go:20", err.Line)
 		t.Log(err)
 	})
 
 	t.Run("new error with format", func(t *testing.T) {
 		err := Newf("hello %v", 42)
 		require.Equal(t, "hello 42", err.Message)
-		require.Equal(t, "errors_test.go:19", err.Line)
+		require.Equal(t, "errors_test.go:27", err.Line)
 		t.Log(err)
 	})
 }
@@ -69,6 +77,15 @@ func TestIs(t *testing.T) {
 		werr := fmt.Errorf("werr")
 		err := New("err").Wrap(fmt.Errorf("werr"))
 		require.False(t, Is(err, werr))
+	})
+
+	t.Run("is does not panic with non comparable wrapped errors", func(t *testing.T) {
+		a := New("err").Wrap(nonComparableError{items: []string{"a"}})
+		b := New("err").Wrap(nonComparableError{items: []string{"a"}})
+
+		require.NotPanics(t, func() {
+			require.False(t, Is(a, b))
+		})
 	})
 }
 

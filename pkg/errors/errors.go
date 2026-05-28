@@ -259,5 +259,19 @@ func (e Error) Is(err error) bool {
 		rerr.Message == e.Message &&
 		rerr.DefinedType == e.DefinedType &&
 		reflect.DeepEqual(rerr.Tags, e.Tags) &&
-		rerr.WrappedErr == e.WrappedErr
+		isSameErr(rerr.WrappedErr, e.WrappedErr)
+}
+
+func isSameErr(a, b error) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+
+	ta := reflect.TypeOf(a)
+	tb := reflect.TypeOf(b)
+	if ta != tb || !ta.Comparable() {
+		return false
+	}
+
+	return a == b
 }
