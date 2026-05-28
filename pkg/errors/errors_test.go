@@ -31,14 +31,14 @@ func TestNew(t *testing.T) {
 	t.Run("new error", func(t *testing.T) {
 		err := New("hello")
 		require.Equal(t, "hello", err.Message)
-		require.Equal(t, "errors_test.go:30", err.Line)
+		require.Equal(t, "errors_test.go:32", err.Line)
 		t.Log(err)
 	})
 
 	t.Run("new error with format", func(t *testing.T) {
 		err := Newf("hello %v", 42)
 		require.Equal(t, "hello 42", err.Message)
-		require.Equal(t, "errors_test.go:37", err.Line)
+		require.Equal(t, "errors_test.go:39", err.Line)
 		t.Log(err)
 	})
 }
@@ -186,6 +186,11 @@ func TestTag(t *testing.T) {
 	t.Run("nested enriched error in non enriched error returns the tag value", func(t *testing.T) {
 		err := fmt.Errorf("err: %w", New("werr").WithTag("foo", "bar"))
 		require.Equal(t, "bar", Tag(err, "foo"))
+	})
+
+	t.Run("pointer enriched error returns the tag value", func(t *testing.T) {
+		err := New("test").WithTag("foo", "bar")
+		require.Equal(t, "bar", Tag(&err, "foo"))
 	})
 
 	t.Run("non enriched error does not returns the tag value", func(t *testing.T) {

@@ -120,7 +120,7 @@ func UIError(err error) string {
 // returns a non-empty string value.
 func Tag(err error, k string) any {
 	for {
-		if err, ok := err.(Error); ok {
+		if err, ok := err.(interface{ Tag(string) any }); ok {
 			if v := err.Tag(k); v != nil {
 				return v
 			}
