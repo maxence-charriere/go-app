@@ -7,29 +7,41 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"sync/atomic"
 )
 
-var (
-	// The function used to encode errors and their tags.
-	Encoder func(any) ([]byte, error)
-)
+type encoderFunc func(any) ([]byte, error)
+
+var encoder atomic.Value
 
 func init() {
 	SetInlineEncoder()
 }
 
+// SetEncoder sets the function used to encode errors and their tags.
+//
+// It is intended to be configured once during program startup, before the
+// package is used concurrently. It should not be changed after concurrent use
+// begins.
+func SetEncoder(fn func(any) ([]byte, error)) {
+	if fn == nil {
+		panic("errors: nil encoder")
+	}
+	encoder.Store(encoderFunc(fn))
+}
+
 // SetInlineEncoder is a helper function that set the error encoder to
 // json.Marshal.
 func SetInlineEncoder() {
-	Encoder = json.Marshal
+	SetEncoder(json.Marshal)
 }
 
 // SetIndentEncoder is a helper function that set the error encoder to a
 // function that uses json.MarshalIndent.
 func SetIndentEncoder() {
-	Encoder = func(v any) ([]byte, error) {
+	SetEncoder(func(v any) ([]byte, error) {
 		return json.MarshalIndent(v, "", "  ")
-	}
+	})
 }
 
 // Unwrap returns the result of calling the Unwrap method on err, if err's type
@@ -207,7 +219,7 @@ func (e Error) Unwrap() error {
 }
 
 func (e Error) Error() string {
-	s, err := Encoder(e)
+	s, err := getEncoder()(e)
 	if err != nil {
 		return fmt.Sprintf(`{"message": "encoding error failed: %s"}`, err)
 	}
@@ -234,7 +246,7 @@ func (e Error) MarshalJSON() ([]byte, error) {
 		}
 	}
 
-	return Encoder(struct {
+	return getEncoder()(struct {
 		Line        string         `json:"line,omitempty"`
 		Message     string         `json:"message"`
 		DefinedType string         `json:"type,omitempty"`
@@ -274,4 +286,8 @@ func isSameErr(a, b error) bool {
 	}
 
 	return a == b
+}
+
+func getEncoder() encoderFunc {
+	return encoder.Load().(encoderFunc)
 }

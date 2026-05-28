@@ -230,3 +230,20 @@ func TestError(t *testing.T) {
 		t.Log(err)
 	})
 }
+
+func TestSetEncoder(t *testing.T) {
+	t.Run("custom encoder is used", func(t *testing.T) {
+		SetEncoder(func(any) ([]byte, error) {
+			return []byte("custom"), nil
+		})
+		defer SetInlineEncoder()
+
+		require.Equal(t, "custom", New("err").Error())
+	})
+
+	t.Run("nil encoder panics", func(t *testing.T) {
+		require.PanicsWithValue(t, "errors: nil encoder", func() {
+			SetEncoder(nil)
+		})
+	})
+}
