@@ -305,14 +305,15 @@ func TestUIError(t *testing.T) {
 		require.Equal(t, "something went wrong", UIError(uiErr("something went wrong")))
 	})
 
-	t.Run("returns empty string when enriched error ui message is not set", func(t *testing.T) {
+	t.Run("falls back to error string when enriched error ui message is not set", func(t *testing.T) {
 		err := New("internal error")
-		require.Empty(t, UIError(err))
+		require.Equal(t, err.Error(), UIError(err))
 	})
 
-	t.Run("returns empty string when wrapped enriched error ui message is not set", func(t *testing.T) {
-		err := fmt.Errorf("request failed: %w", New("internal error"))
-		require.Empty(t, UIError(err))
+	t.Run("falls back to wrapped error string when enriched error ui message is not set", func(t *testing.T) {
+		wrapped := New("internal error")
+		err := fmt.Errorf("request failed: %w", wrapped)
+		require.Equal(t, wrapped.Error(), UIError(err))
 	})
 
 	t.Run("falls back to error string for non enriched errors", func(t *testing.T) {

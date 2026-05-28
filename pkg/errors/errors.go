@@ -209,6 +209,9 @@ func (e Error) WithUIError(msg string) Error {
 
 // UIError returns the message intended to be displayed in the UI.
 func (e Error) UIError() string {
+	if e.UIMessage == "" {
+		return e.Error()
+	}
 	return e.UIMessage
 }
 
