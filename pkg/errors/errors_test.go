@@ -217,6 +217,29 @@ func TestError(t *testing.T) {
 		t.Log(err)
 	})
 
+	t.Run("stringify recursively wrapped enriched errors", func(t *testing.T) {
+		err := New("err").
+			Wrap(New("werr").
+				WithType("boo").
+				Wrap(New("deep").WithUIError("display message"))).
+			Error()
+
+		require.Contains(t, err, `"message": "err"`)
+		require.Contains(t, err, `"message": "werr"`)
+		require.Contains(t, err, `"message": "deep"`)
+		require.Contains(t, err, `"ui": "display message"`)
+		t.Log(err)
+	})
+
+	t.Run("stringify enriched error wrapped by pointer", func(t *testing.T) {
+		werr := New("werr").WithType("boo")
+		err := New("err").Wrap(&werr).Error()
+
+		require.Contains(t, err, `"message": "werr"`)
+		require.Contains(t, err, `"type": "boo"`)
+		t.Log(err)
+	})
+
 	t.Run("stringify a non enriched error wrapped in an enriched error", func(t *testing.T) {
 		err := New("err").
 			WithTag("foo", "bar").

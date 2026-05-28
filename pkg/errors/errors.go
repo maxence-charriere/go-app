@@ -261,11 +261,6 @@ type jsonError struct {
 }
 
 func makeJSONError(err Error) jsonError {
-	var wrappedErr any = err.WrappedErr
-	if _, ok := err.WrappedErr.(Error); !ok && err.WrappedErr != nil {
-		wrappedErr = err.WrappedErr.Error()
-	}
-
 	tags := makeJSONTags(err.Tags)
 
 	return jsonError{
@@ -274,7 +269,26 @@ func makeJSONError(err Error) jsonError {
 		UIMessage:   err.UIMessage,
 		DefinedType: err.DefinedType,
 		Tags:        tags,
-		WrappedErr:  wrappedErr,
+		WrappedErr:  makeJSONWrappedErr(err.WrappedErr),
+	}
+}
+
+func makeJSONWrappedErr(err error) any {
+	switch err := err.(type) {
+	case nil:
+		return nil
+
+	case Error:
+		return makeJSONError(err)
+
+	case *Error:
+		if err == nil {
+			return nil
+		}
+		return makeJSONError(*err)
+
+	default:
+		return err.Error()
 	}
 }
 
