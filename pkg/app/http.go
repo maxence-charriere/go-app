@@ -644,9 +644,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		icon = h.Icon.Default
 	}
 
-	routeComposer := routes.routes[page.URL().Path]
+	composer, ok := routes.createComponent(page.URL().Path)
 	var components []Composer
-	components = getAllChildCompnents(components, routeComposer())
+	if ok {
+		components = getAllChildCompnents(components, composer)
+	}
 	var addedComponentLinks = make(map[string]string)
 
 	var b bytes.Buffer
