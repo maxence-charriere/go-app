@@ -99,9 +99,9 @@ func (e *engineX) baseContext() Context {
 }
 
 // Navigate directs the engine to the specified URL destination, which might be
-// an internal page within the app, an external link outside the app, or a
-// mailto link. If the 'updateHistory' flag is true, the destination is added to
-// the browser's history.
+// an internal page within the app, an external link outside the app, a mailto
+// link, or a tel link. If the 'updateHistory' flag is true, the destination is
+// added to the browser's history.
 func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 	if destination.Host == "" {
 		destination.Host = e.originPage.URL().Host
@@ -109,7 +109,8 @@ func (e *engineX) Navigate(destination *url.URL, updateHistory bool) {
 
 	switch {
 	case e.internalURL(destination),
-		e.mailTo(destination):
+		e.mailTo(destination),
+		e.tel(destination):
 		Window().Get("location").Set("href", destination.String())
 		return
 
@@ -174,6 +175,10 @@ func (e *engineX) externalNavigation(v *url.URL) bool {
 
 func (e *engineX) mailTo(v *url.URL) bool {
 	return v.Scheme == "mailto"
+}
+
+func (e *engineX) tel(v *url.URL) bool {
+	return v.Scheme == "tel"
 }
 
 func (e *engineX) internalURL(v *url.URL) bool {

@@ -89,6 +89,12 @@ func TestEngineNavigate(t *testing.T) {
 		e.Navigate(destination, true)
 	})
 
+	t.Run("tel is loaded", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("tel:+18005551234")
+		e.Navigate(destination, true)
+	})
+
 	t.Run("external url is opened", func(t *testing.T) {
 		e := newTestEngine()
 		destination, _ := url.Parse("https://murlok.io")
@@ -178,6 +184,20 @@ func TestEngineMailTo(t *testing.T) {
 		e := newTestEngine()
 		destination, _ := url.Parse("/hello")
 		require.False(t, e.mailTo(destination))
+	})
+}
+
+func TestEngineTel(t *testing.T) {
+	t.Run("destination is tel", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("tel:+18005551234")
+		require.True(t, e.tel(destination))
+	})
+
+	t.Run("destination is not tel", func(t *testing.T) {
+		e := newTestEngine()
+		destination, _ := url.Parse("/hello")
+		require.False(t, e.tel(destination))
 	})
 }
 
