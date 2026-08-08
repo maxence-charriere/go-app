@@ -12,6 +12,33 @@ func TestStringToString(t *testing.T) {
 	require.Equal(t, "hello", s)
 }
 
+func TestStringToBool(t *testing.T) {
+	var b bool
+	err := stringTo("true", &b)
+	require.NoError(t, err)
+	require.Equal(t, true, b)
+
+	err = stringTo("false", &b)
+	require.NoError(t, err)
+	require.Equal(t, false, b)
+
+	err = stringTo("1", &b)
+	require.NoError(t, err)
+	require.Equal(t, true, b)
+
+	err = stringTo("0", &b)
+	require.NoError(t, err)
+	require.Equal(t, false, b)
+
+	err = stringTo("", &b)
+	require.NoError(t, err)
+	require.Equal(t, false, b)
+
+	err = stringTo("bogus", &b)
+	require.NoError(t, err)
+	require.Equal(t, false, b)
+}
+
 func TestStringToInt(t *testing.T) {
 	var i int
 	var i8 int8

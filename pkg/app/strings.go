@@ -86,6 +86,10 @@ func stringTo(s string, v any) error {
 		f, _ := strconv.ParseFloat(s, 32)
 		val.SetFloat(f)
 
+	case reflect.Bool:
+		b, _ := strconv.ParseBool(s)
+		val.SetBool(b)
+
 	default:
 		return errors.New("string cannot be converted to receiver type").
 			WithTag("string", s).
