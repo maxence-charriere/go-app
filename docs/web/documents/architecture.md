@@ -87,4 +87,4 @@ By default served by the server, the `web` directory can also be located on a re
 
 ## Next
 
-- [Reference](/reference)
+- [Components](/components)
