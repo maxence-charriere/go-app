@@ -90,6 +90,7 @@ func (e *engineX) baseContext() Context {
 		handleAction:          e.actions.Handle,
 		postAction:            e.actions.Post,
 		observeState:          e.states.Observe,
+		unObserveState:        e.states.UnObserve,
 		getState:              e.states.Get,
 		setState:              e.states.Set,
 		delState:              e.states.Delete,
