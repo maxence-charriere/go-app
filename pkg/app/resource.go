@@ -74,6 +74,10 @@ func (r remoteResourceResolver) Resolve(location string) string {
 // will be resolved as "/assets/web/main.css".
 func PrefixedLocation(prefix string) ResourceResolver {
 	return prefixedResourceResolver{
+		localResourceResolver: localResourceResolver{
+			Handler:   http.FileServer(http.Dir("")),
+			directory: "",
+		},
 		prefix: prefix,
 	}
 }
