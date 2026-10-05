@@ -1,6 +1,6 @@
 # Code audit roadmap
 
-Audit date: 2026-10-05. This is a review checklist; no implementation changes have been made.
+Audit date: 2026-10-05. This checklist records the original audit findings and tracks implementation below.
 
 ## Scope and evidence
 
@@ -16,11 +16,15 @@ Validation on Go 1.26.2, darwin/arm64:
 - The `pkg/app` test binary compiled for `GOOS=js GOARCH=wasm`. Browser/WASM runtime tests were not executed; native tests skip some browser behavior.
 - Temporary external programs and Go test overlays reproduced the specific failures described in the checklist. HTML was parsed with `golang.org/x/net/html`; a Node probe exercised the unchanged WASM-download wrapper. Temporary probe files and build artifacts were kept outside the repository.
 
-Passing existing tests do not cover the demonstrated edge cases. Performance numbers below describe the current implementation, are indicative local measurements, and are not claims of achieved improvements. No roadmap item has been implemented.
+Passing existing tests did not cover the demonstrated edge cases. Performance numbers below describe the implementation at the time of the audit, are indicative local measurements, and are not claims of achieved improvements.
 
 ## Prioritized checklist
 
-- [ ] **1. Correct HTML attribute escaping and boolean serialization**
+- [x] **1. Correct HTML attribute escaping and boolean serialization**
+
+  **Implemented:** Attribute values are HTML-escaped after resource URL resolution. Presence-based attributes omit `false` and minimize `true`; data, ARIA, and enumerated values remain literal, including `hidden="until-found"`. Browser mounting handles boolean presence consistently while retaining live property updates. Exported APIs and intentional raw HTML are unchanged.
+
+  **Validated:** Full native `pkg/app` suite with the race detector, full browser/WASM suite in headless Chrome, and `go vet` passed. Added parsed-output regression tests, server/browser state comparisons, and attribute-value fuzzing (20 seconds, over 187,000 executions).
 
   **Impact:** Critical.
 

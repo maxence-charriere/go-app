@@ -5,7 +5,6 @@ import (
 	"html"
 	"io"
 	"reflect"
-	"strconv"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v11/pkg/errors"
@@ -478,7 +477,7 @@ func (m nodeManager) updateHTMLAttributes(ctx Context, v HTML, newAttrs attribut
 	}
 
 	for name, value := range newAttrs {
-		if attrs[name] == value {
+		if previous, exists := attrs[name]; exists && previous == value {
 			continue
 		}
 
@@ -737,6 +736,11 @@ func (m nodeManager) encodeHTML(ctx Context, w *bytes.Buffer, depth int, v HTML)
 }
 
 func (m nodeManager) encodeHTMLAttribute(ctx Context, w *bytes.Buffer, name, value string) {
+	boolean := isBooleanAttribute(name)
+	if boolean && value == "false" {
+		return
+	}
+
 	if value == "" {
 		switch name {
 		case "id", "class", "title":
@@ -746,10 +750,14 @@ func (m nodeManager) encodeHTMLAttribute(ctx Context, w *bytes.Buffer, name, val
 
 	w.WriteString(" ")
 	w.WriteString(name)
-	if value != "" && value != "true" {
-		w.WriteString("=")
-		w.WriteString(strconv.Quote(resolveAttributeURLValue(name, value, ctx.ResolveStaticResource)))
+	if boolean && value == "true" {
+		return
 	}
+
+	value = resolveAttributeURLValue(name, value, ctx.ResolveStaticResource)
+	w.WriteString(`="`)
+	w.WriteString(html.EscapeString(value))
+	w.WriteByte('"')
 }
 
 func (m nodeManager) encodeComponent(ctx Context, w *bytes.Buffer, depth int, v Composer) {
