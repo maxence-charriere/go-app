@@ -1,9 +1,6 @@
 package app
 
-import (
-	"strconv"
-	"strings"
-)
+import "strings"
 
 type attributes map[string]string
 
@@ -36,13 +33,53 @@ func (a attributes) Set(name string, value any) {
 		a[name] = v
 
 	default:
-		if v != "" {
+		if v != "" || isBooleanAttribute(name) {
 			a[name] = v
 		}
 	}
 }
 
 type attributeURLResolver func(string) string
+
+// isBooleanAttribute identifies attributes whose true/false values control
+// presence. Hidden also supports this API, but other values (such as
+// "until-found") must be preserved because it is an enumerated attribute.
+func isBooleanAttribute(name string) bool {
+	switch strings.ToLower(name) {
+	case "allowfullscreen",
+		"allowpaymentrequest",
+		"async",
+		"autofocus",
+		"autoplay",
+		"checked",
+		"controls",
+		"default",
+		"defer",
+		"disabled",
+		"disablepictureinpicture",
+		"disableremoteplayback",
+		"formnovalidate",
+		"hidden",
+		"inert",
+		"ismap",
+		"itemscope",
+		"loop",
+		"multiple",
+		"muted",
+		"nomodule",
+		"novalidate",
+		"open",
+		"playsinline",
+		"readonly",
+		"required",
+		"reversed",
+		"selected":
+		return true
+
+	default:
+		return false
+	}
+}
 
 func toAttributeValue(v any) string {
 	return strings.TrimSpace(toString(v))
@@ -69,42 +106,32 @@ func resolveAttributeURLValue(name, value string, resolve attributeURLResolver) 
 }
 
 func setJSAttribute(jsElement Value, name, value string) {
-	toBool := func(v string) bool {
-		b, _ := strconv.ParseBool(v)
-		return b
-	}
-
+	// Update the current value, not only the default value attribute.
 	switch name {
 	case "value":
 		jsElement.Set(name, value)
 
-	case "contenteditable":
-		jsElement.Set("contentEditable", value)
-
-	case "ismap":
-		jsElement.Set("isMap", toBool(value))
-
-	case "readonly":
-		jsElement.Set("readOnly", toBool(value))
-
-	case "async",
-		"autofocus",
-		"autoplay",
-		"checked",
-		"default",
-		"defer",
-		"disabled",
-		"hidden",
-		"loop",
-		"multiple",
+	// Attributes specify defaults; properties update the current state.
+	case "checked",
 		"muted",
-		"open",
-		"required",
-		"reversed",
 		"selected":
-		jsElement.Set(name, toBool(value))
+		jsElement.Set(name, value != "false")
+
+	// Removing the attribute does not clear a new script's force-async flag.
+	case "async":
+		jsElement.Set(name, value != "false")
 
 	default:
+		if isBooleanAttribute(name) {
+			switch value {
+			case "false":
+				deleteJSAttribute(jsElement, name)
+				return
+
+			case "true":
+				value = ""
+			}
+		}
 		jsElement.Call("setAttribute", name, value)
 	}
 }
