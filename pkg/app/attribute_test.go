@@ -259,7 +259,11 @@ func TestEncodeAttributeValues(t *testing.T) {
 		`hello" autofocus onfocus=alert(1) x="`,
 		`"><script>alert(1)</script><input x="`,
 		`quotes " and ' with <tags> &amp; &#34;`,
-		"first\nsecond\tline", "世界 🌍", `back\slash`, "true", "false",
+		"first\nsecond\tline",
+		"世界 🌍",
+		`back\slash`,
+		"true",
+		"false",
 	} {
 		t.Run(value, func(t *testing.T) {
 			var b bytes.Buffer
@@ -272,7 +276,13 @@ func TestEncodeAttributeValues(t *testing.T) {
 }
 
 func TestEncodeResolvedAttributeValues(t *testing.T) {
-	for _, name := range []string{"cite", "data", "href", "src", "srcset"} {
+	for _, name := range []string{
+		"cite",
+		"data",
+		"href",
+		"src",
+		"srcset",
+	} {
 		t.Run(name, func(t *testing.T) {
 			ctx := makeTestContext()
 			ctx.resolveURL = func(value string) string {
@@ -289,14 +299,43 @@ func TestEncodeResolvedAttributeValues(t *testing.T) {
 
 func TestEncodeBooleanAttributes(t *testing.T) {
 	for _, name := range []string{
-		"allowfullscreen", "allowpaymentrequest", "async", "autofocus", "autoplay",
-		"checked", "controls", "default", "defer", "disabled", "disablepictureinpicture",
-		"disableremoteplayback", "formnovalidate", "hidden", "inert", "ismap", "itemscope",
-		"loop", "multiple", "muted", "nomodule", "novalidate", "open", "playsinline",
-		"readonly", "required", "reversed", "selected", "DISABLED",
+		"allowfullscreen",
+		"allowpaymentrequest",
+		"async",
+		"autofocus",
+		"autoplay",
+		"checked",
+		"controls",
+		"default",
+		"defer",
+		"disabled",
+		"disablepictureinpicture",
+		"disableremoteplayback",
+		"formnovalidate",
+		"hidden",
+		"inert",
+		"ismap",
+		"itemscope",
+		"loop",
+		"multiple",
+		"muted",
+		"nomodule",
+		"novalidate",
+		"open",
+		"playsinline",
+		"readonly",
+		"required",
+		"reversed",
+		"selected",
+		"DISABLED",
 	} {
 		t.Run(name, func(t *testing.T) {
-			for _, value := range []string{"true", "false", "", strings.ToLower(name)} {
+			for _, value := range []string{
+				"true",
+				"false",
+				"",
+				strings.ToLower(name),
+			} {
 				var b bytes.Buffer
 				nodeManager{}.Encode(makeTestContext(), &b, Div().Attr(name, value))
 				node := parseEncodedElement(t, b.String())
@@ -315,8 +354,20 @@ func TestEncodeBooleanAttributes(t *testing.T) {
 }
 
 func TestEncodeLiteralAttributes(t *testing.T) {
-	for _, name := range []string{"data-enabled", "aria-hidden", "draggable", "spellcheck", "contenteditable", "title", "value", "custom-flag"} {
-		for _, value := range []string{"true", "false"} {
+	for _, name := range []string{
+		"data-enabled",
+		"aria-hidden",
+		"draggable",
+		"spellcheck",
+		"contenteditable",
+		"title",
+		"value",
+		"custom-flag",
+	} {
+		for _, value := range []string{
+			"true",
+			"false",
+		} {
 			t.Run(name+"/"+value, func(t *testing.T) {
 				var b bytes.Buffer
 				nodeManager{}.Encode(makeTestContext(), &b, Div().Attr(name, value))
@@ -335,7 +386,18 @@ func TestEncodeLiteralAttributes(t *testing.T) {
 }
 
 func FuzzEncodeAttributeValue(f *testing.F) {
-	for _, value := range []string{"", "true", "false", `hello" autofocus onfocus=alert(1) x="`, `"><script>alert(1)</script>`, "a&b'c\\d", "a\r\nb\nc\td", "世界 🌍", "\x00", "\xff"} {
+	for _, value := range []string{
+		"",
+		"true",
+		"false",
+		`hello" autofocus onfocus=alert(1) x="`,
+		`"><script>alert(1)</script>`,
+		"a&b'c\\d",
+		"a\r\nb\nc\td",
+		"世界 🌍",
+		"\x00",
+		"\xff",
+	} {
 		f.Add(value)
 	}
 	f.Fuzz(func(t *testing.T, value string) {
@@ -418,10 +480,20 @@ func TestAttributeServerBrowserParity(t *testing.T) {
 	})
 
 	t.Run("generic boolean values", func(t *testing.T) {
-		for _, name := range []string{"disabled", "checked", "hidden"} {
+		for _, name := range []string{
+			"disabled",
+			"checked",
+			"hidden",
+		} {
 			mounted, err := m.Mount(ctx, 0, Input().Type("checkbox"))
 			require.NoError(t, err)
-			for _, value := range []string{"", "false", name, "true", "false"} {
+			for _, value := range []string{
+				"",
+				"false",
+				name,
+				"true",
+				"false",
+			} {
 				elem := Input().Type("checkbox").Attr(name, value)
 				var b bytes.Buffer
 				m.Encode(ctx, &b, elem)
