@@ -42,43 +42,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Extend encoding tests with parsed attribute comparisons for quotes, apostrophes, ampersands, newlines, Unicode, and resolved URLs; fuzz values and assert no added attributes/nodes. Test true/false `disabled`, `checked`, and `hidden`, plus data, ARIA, `draggable`, `spellcheck`, and `contenteditable`; compare server output with browser DOM behavior.
 
-- [ ] **2. Eliminate circular waits in engine dispatch and deferred queues**
-
-  **Impact:** High.
-
-  **Files:** `pkg/app/engine.go:67–68,293–318,353–358`; lifecycle producers in `pkg/app/node.go:232–237`; engine/context/state tests.
-
-  **Found:** Both queues have capacity 4,096 and unconditional blocking sends. A callback running on the consumer can enqueue enough work to block itself. Server consumption also waits for async workers while it is no longer draining their output queue. Temporary probes reproduced both a callback dispatching 4,097 operations and an SSR async producer filling the queue while the renderer waits.
-
-  **Why it matters:** Large component trees, observer fanout, or bursts of async results can freeze a browser or stall rendering indefinitely.
-
-  **Recommended change:** Introduce an internal FIFO mechanism whose enqueue cannot block its own consumer. Drain server work while tracking async completion. Preserve dispatch ordering, deferred ordering, and frame batching; increasing capacity alone does not resolve the circular wait.
-
-  **Expected benefit:** Robust scheduling under bursts; a dynamically sized queue can also reduce the roughly 64 KiB of eagerly allocated function slots per engine on this native 64-bit build.
-
-  **Risk/difficulty:** Medium–high. Ordering and shutdown are central runtime behavior; avoid changing the public scheduling API.
-
-  **Verification:** Capacity-plus-one dispatch/defer tests, mount-time bursts, observer fanout, async SSR producers, and cancellation tests with bounded deadlines. Run engine/context/state suites and compare engine creation, large-tree rendering, and burst allocation benchmarks.
-
-- [ ] **3. Repair LRU replacement accounting and stale-entry removal**
-
-  **Impact:** High.
-
-  **Files:** `pkg/cache/lru.go:42–60,95–128`; `pkg/cache/lru_test.go:60–75`.
-
-  **Found:** Replacement retains the expired predecessor in the priority slice and counts both values. Later removal of that predecessor unconditionally deletes its key from the lookup map, removing the live replacement. With a ten-byte limit and hour TTL, setting `k="aaaa"`, replacing it with `"bbbb"`, then adding `z="cccc"` caused `Get(k)` to miss while its newer payload remained retained. The existing replacement test expects double-counted size.
-
-  **Why it matters:** Valid cached values disappear, capacity accounting is wrong, and inaccessible payloads remain allocated.
-
-  **Recommended change:** Update or remove the predecessor before replacement capacity accounting. Maintain one active entry per key; if stale entries remain internally, remove map entries only when entry identity matches. Preserve the current frequency-based eviction ordering, fresh replacement TTL, and reset use count rather than substituting a different cache policy.
-
-  **Expected benefit:** Correct lookups, size accounting, and capacity eviction with less retained memory.
-
-  **Risk/difficulty:** Medium. Correct the existing defective test expectation while preserving unaffected TTL and eviction behavior.
-
-  **Verification:** Repeated replacements, increasing/decreasing sizes, capacity pressure, deletion after replacement, and expired-predecessor cleanup. Assert lookup/priority/size invariants and notification counts; benchmark replacement-heavy workloads with allocations.
-
-- [ ] **4. Use the standard signal-context lifecycle**
+- [ ] **2. Use the standard signal-context lifecycle**
 
   **Impact:** High.
 
@@ -96,13 +60,13 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Subprocess tests for delivery and repeated signals; explicit cancellation, already/later-canceled parents, repeated registration/cancellation, and bounded goroutine counts. Keep real signals isolated from the main test process.
 
-- [ ] **5. Synchronize storage reads and cache first-use initialization**
+- [ ] **3. Synchronize storage reads and cache first-use initialization**
 
   **Impact:** High.
 
-  **Files:** `pkg/app/storage.go:62–115`, `pkg/cache/lru.go:28–31,74–92`, `pkg/cache/expire.go:20–23,60–74`; corresponding tests.
+  **Files:** `pkg/app/storage.go:62–115`, `pkg/cache/expire.go:20–23,60–74`; corresponding tests.
 
-  **Found:** Memory storage `Contains` and `ForEach` access a map without its mutex; a public-API concurrency probe reported a race between `Set` and `ForEach`. Both cache types initialize their map outside the mutex, while `Len` reads it without participating in the `sync.Once` barrier. Concurrent first `Set`/`Len` probes reported races in both types.
+  **Found:** Memory storage `Contains` and `ForEach` access a map without its mutex; a public-API concurrency probe reported a race between `Set` and `ForEach`. The expiration cache initializes its map outside the mutex, while `Len` reads it without participating in the `sync.Once` barrier. A concurrent first `Set`/`Len` probe reported a race in the expiration cache.
 
   **Why it matters:** Async application work can race or trigger fatal concurrent-map access; cache zero values are unsafe under concurrent first use.
 
@@ -112,9 +76,9 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Risk/difficulty:** Low. Storage enumeration snapshots allocate proportionally to key count; avoid holding locks around mutating callbacks.
 
-  **Verification:** Race tests mixing storage operations and callbacks that set/delete/clear entries. Race tests for concurrent first `Len`, `Size`, `Get`, `Set`, and `Del` on both cache types. Include empty/zero-value behavior and enumeration allocation benchmarks.
+  **Verification:** Race tests mixing storage operations and callbacks that set/delete/clear entries. Race tests for concurrent first `Len`, `Size`, `Get`, `Set`, and `Del` on the expiration cache. Include empty/zero-value behavior and enumeration allocation benchmarks.
 
-- [ ] **6. Capture a separate context for each async action handler**
+- [ ] **4. Capture a separate context for each async action handler**
 
   **Impact:** High.
 
@@ -132,7 +96,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Delayed real goroutines with mixed global async/component handlers, multiple sources, repeated posts, and source assertions under `-race`. Retain existing synchronous action tests.
 
-- [ ] **7. Move state callbacks and serialization outside manager locks**
+- [ ] **5. Move state callbacks and serialization outside manager locks**
 
   **Impact:** High.
 
@@ -150,7 +114,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Reentrant `While`, marshal/unmarshal, and storage callbacks; replacement during cleanup; concurrent get/set/cleanup under `-race`; large-observer contention benchmarks. Run the existing state suite in full.
 
-- [ ] **8. Remove Host-dependent local proxy fetching and propagate cancellation**
+- [ ] **6. Remove Host-dependent local proxy fetching and propagate cancellation**
 
   **Impact:** High.
 
@@ -168,7 +132,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Host variation must not change local resource selection. Test canceled/slow remote requests, local resources behind a reverse proxy, custom resolver handlers, compressed responses, and cache hits. Benchmark cold local proxy requests and allocations.
 
-- [ ] **9. Serialize HTML without constructing a test engine**
+- [ ] **7. Serialize HTML without constructing a test engine**
 
   **Impact:** High.
 
@@ -186,25 +150,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Existing output tests; `HTMLString`/`PrintHTML` benchmarks on small and large trees with `-benchmem`. Browser tests must show active callback identities and navigation survive serialization.
 
-- [ ] **10. Invoke eviction callbacks after releasing the cache mutex**
-
-  **Impact:** High.
-
-  **Files:** `pkg/cache/lru.go:42–45,63–66,95–112`; LRU tests.
-
-  **Found:** Capacity eviction calls public `OnEvict` inside the cache lock. A callback invoking `Size` reproduced a deadlock; slow callbacks also block unrelated access.
-
-  **Why it matters:** An application callback cannot safely inspect or reuse the cache that invoked it.
-
-  **Recommended change:** Collect notifications while mutating cache state under lock, unlock, then invoke them synchronously before the initiating operation returns. Preserve per-operation order/count and the existing distinction between capacity eviction and expiration/replacement.
-
-  **Expected benefit:** Reentrant callbacks work and lock hold times shrink without adding goroutines.
-
-  **Risk/difficulty:** Medium. Callbacks observe completed mutation, and concurrent operations may interleave notifications; test this explicitly.
-
-  **Verification:** Bounded-time callbacks invoking reads and writes, multiple evictions, notification order/count, and `-race`. Parallel benchmarks with slow callbacks should show unrelated reads can proceed.
-
-- [ ] **11. Fix service-worker lifecycle and cache ownership**
+- [ ] **8. Fix service-worker lifecycle and cache ownership**
 
   **Impact:** High.
 
@@ -222,7 +168,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Delayed/failing population, failed upgrade preserving the old worker, offline reload, activation completion, two registrations plus an unrelated cache, and distinct cached responses for the same URL. Test generated template consistency.
 
-- [ ] **12. Make child filtering linear in input and emitted children**
+- [ ] **9. Make child filtering linear in input and emitted children**
 
   **Impact:** Medium.
 
@@ -240,7 +186,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Existing filtering tests, empty/nil/typed-nil/nested-selector cases, aliasing/order tests, and fuzz comparisons against current valid outputs. Benchmark flat, nil-heavy, and expanding-selector inputs across increasing sizes with allocations.
 
-- [ ] **13. Preserve status, backpressure, and cancellation in WASM downloads**
+- [ ] **10. Preserve status, backpressure, and cancellation in WASM downloads**
 
   **Impact:** Medium.
 
@@ -258,7 +204,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** JS tests for 200/404, invalid/missing lengths, read failure, cancellation, and slow/absent consumers. Browser startup and peak-memory comparisons for large WASM binaries; verify generated script consistency.
 
-- [ ] **14. Encode JavaScript configuration as string literals**
+- [ ] **11. Encode JavaScript configuration as string literals**
 
   **Impact:** Medium.
 
@@ -276,7 +222,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Generate and parse scripts using quotes, backslashes, newlines, Unicode, and resolver URLs. Assert decoded configuration values, retain ordinary-output/resource tests, and exercise application/worker startup in browser fixtures.
 
-- [ ] **15. Bind rendering and delayed work to request cancellation**
+- [ ] **12. Bind rendering and delayed work to request cancellation**
 
   **Impact:** Medium.
 
@@ -286,7 +232,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Why it matters:** Disconnected clients and canceled work retain renderer/component resources and continue consuming time.
 
-  **Recommended change:** Derive rendering from `r.Context()` with explicit render lifetime cleanup. Make delayed work select between a timer and cancellation; make internal enqueue/consumption cancellation-aware alongside item 2. Ensure async bookkeeping completes on every exit. Arbitrary user functions still need to honor their context; they cannot be forcibly stopped.
+  **Recommended change:** Derive rendering from `r.Context()` with explicit render lifetime cleanup. Make delayed work select between a timer and cancellation; make internal enqueue/consumption cancellation-aware. Ensure async bookkeeping completes on every exit. Arbitrary user functions still need to honor their context; they cannot be forcibly stopped.
 
   **Expected benefit:** Earlier release of pending timers and request-bound work, and preserved request context values.
 
@@ -294,7 +240,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Already/mid-wait canceled timers, normal timers, canceled HTTP render contexts and propagated values, pending-worker completion, and bounded goroutine lifetime. Run engine/context/HTTP tests under `-race`.
 
-- [ ] **16. Resolve route factories under lock and invoke them after unlocking**
+- [ ] **13. Resolve route factories under lock and invoke them after unlocking**
 
   **Impact:** Medium.
 
@@ -312,7 +258,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Exact/regexp factories registering routes, concurrent registration/lookup/enumeration under `-race`, and existing routing precedence/static generation tests.
 
-- [ ] **17. Copy request URLs correctly when forwarding normalized paths**
+- [ ] **14. Copy request URLs correctly when forwarding normalized paths**
 
   **Impact:** Medium.
 
@@ -330,7 +276,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Versioned/unversioned static paths, both WASM aliases, escaped paths, queries, and custom/local resolvers. Assert the original request and URL are unchanged after handling.
 
-- [ ] **18. Evaluate conditional requests against the selected representation**
+- [ ] **15. Evaluate conditional requests against the selected representation**
 
   **Impact:** Medium.
 
@@ -348,7 +294,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Unknown routes with validators, changed local files, page changes within one version, GET/HEAD and other methods, ETag lists/weak tags, generated assets, and legacy aliases. Measure any extra dynamic-page work.
 
-- [ ] **19. Retain passive options in mounted event metadata**
+- [ ] **16. Retain passive options in mounted event metadata**
 
   **Impact:** Medium.
 
@@ -366,7 +312,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Both passive transitions and unchanged passive updates; browser listener add/remove counts and cancelable wheel/touch behavior. Compare update allocations and retain existing option/equality tests.
 
-- [ ] **20. Clear retired expiration-queue references**
+- [ ] **17. Clear retired expiration-queue references**
 
   **Impact:** Medium.
 
@@ -384,7 +330,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Inspect full backing slices after partial/full expiration, replacement, and deletion. Benchmark churn with long keys and compare retained heap profiles plus allocation costs.
 
-- [ ] **21. Bound file lifetimes and reject failed static-generation responses**
+- [ ] **18. Bound file lifetimes and reject failed static-generation responses**
 
   **Impact:** Medium.
 
@@ -402,7 +348,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Many-route generation with bounded descriptor usage, injected 404/500/write/close/directory failures, and expected content assertions. Update existing fixtures to register valid pages. Benchmark large route sets and peak memory/descriptors.
 
-- [ ] **22. Validate reflective inputs and propagate CLI decoding failures**
+- [ ] **19. Validate reflective inputs and propagate CLI decoding failures**
 
   **Impact:** Medium.
 
@@ -420,7 +366,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Nil interface/typed-nil source/receiver tables, valid pointer/value state copies, mismatches, and invalid scalar/duration/time/collection/nested environment values. Use isolated environment settings and test overrides and error output.
 
-- [ ] **23. Release promise bridge callbacks on every settlement path**
+- [ ] **20. Release promise bridge callbacks on every settlement path**
 
   **Impact:** Medium.
 
@@ -438,7 +384,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Browser/WASM tests for fulfillment, rejection, callback failure, and many rejected promises; instrument callback registrations/releases and compare retained resources after settlement. Native stub tests cannot establish this improvement.
 
-- [ ] **24. Make performance benchmarks exercise valid, bounded workloads**
+- [ ] **21. Make performance benchmarks exercise valid, bounded workloads**
 
   **Impact:** Medium.
 
@@ -456,7 +402,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Assert route/status/body expectations in setup, report allocations, use representative input sizes, and compare repeated runs on the same toolchain/machine. Ensure memory remains bounded as iteration count grows; use profiles to attribute changes.
 
-- [ ] **25. Traverse modern multi-error trees for metadata lookup**
+- [ ] **22. Traverse modern multi-error trees for metadata lookup**
 
   **Impact:** Low.
 
@@ -474,7 +420,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Nested joins, multiple `%w`, mixed wrappers, competing matches, nil children, and no-match cases; retain the full existing suite.
 
-- [ ] **26. Reset text-node mounted state during dismount**
+- [ ] **23. Reset text-node mounted state during dismount**
 
   **Impact:** Low.
 
