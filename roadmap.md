@@ -86,7 +86,11 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Race tests mixing storage operations and callbacks that set/delete/clear entries. Include empty-storage behavior and enumeration allocation benchmarks.
 
-- [ ] **4. Capture a separate context for each async action handler**
+- [x] **4. Capture a separate context for each async action handler**
+
+  **Implemented:** `Post` copies the context for each handler and assigns its source to that copy. Async closures and UI dispatches use the handler-specific context without changing registration or scheduling APIs.
+
+  **Validated:** Full native `pkg/app` race tests, full browser/WASM tests in headless Chrome, and `go vet ./pkg/app` passed. Regression tests use real goroutines with delayed and concurrent execution, multiple sources, mixed async/UI handlers, repeated posts, and follow-up dispatches. Running the tests against the original implementation reproduced incorrect sources and a data race.
 
   **Impact:** High.
 
