@@ -1,13 +1,128 @@
 package app
 
 import (
+	"strconv"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestMemoryStorage(t *testing.T) {
 	testBrowserStorage(t, newMemoryStorage())
+}
+
+func TestMemoryStorageConcurrentAccess(t *testing.T) {
+	s := newMemoryStorage()
+	start := make(chan struct{})
+	var workers sync.WaitGroup
+	for worker := range 8 {
+		workers.Add(1)
+		go func() {
+			defer workers.Done()
+			<-start
+			for i := range 500 {
+				key := strconv.Itoa(i % 16)
+				if worker%2 == 0 {
+					if err := s.Set(key, i); err != nil {
+						t.Error(err)
+						return
+					}
+					s.Del(strconv.Itoa((i + 1) % 16))
+					if i%16 == 0 {
+						s.Clear()
+					}
+					continue
+				}
+				s.Contains(key)
+				s.Len()
+				s.ForEach(func(key string) {
+					var value int
+					if err := s.Get(key, &value); err != nil {
+						t.Error(err)
+					}
+				})
+			}
+		}()
+	}
+	close(start)
+	done := make(chan struct{})
+	go func() {
+		workers.Wait()
+		close(done)
+	}()
+	select {
+	case <-done:
+	case <-time.After(5 * time.Second):
+		t.Fatal("concurrent storage operations did not finish")
+	}
+}
+
+func TestMemoryStorageForEachSnapshot(t *testing.T) {
+	s := newMemoryStorage()
+	keys := []string{
+		"first",
+		"second",
+		"third",
+	}
+	for _, key := range keys {
+		require.NoError(t, s.Set(key, 42))
+	}
+
+	done := make(chan []string, 1)
+	go func() {
+		var visited []string
+		s.ForEach(func(key string) {
+			visited = append(visited, key)
+			s.Contains(key)
+			var value int
+			if err := s.Get(key, &value); err != nil {
+				t.Error(err)
+			}
+			s.Del(key)
+			s.Clear()
+			if err := s.Set("added", 1); err != nil {
+				t.Error(err)
+			}
+		})
+		done <- visited
+	}()
+
+	select {
+	case visited := <-done:
+		require.ElementsMatch(t, keys, visited)
+	case <-time.After(5 * time.Second):
+		t.Fatal("storage callback could not modify storage")
+	}
+	require.Equal(t, 1, s.Len())
+	require.True(t, s.Contains("added"))
+}
+
+func TestMemoryStorageForEachEmpty(t *testing.T) {
+	s := newMemoryStorage()
+	s.ForEach(func(string) { t.Fatal("empty storage invoked callback") })
+	require.NoError(t, s.Set("key", 1))
+	s.Clear()
+	s.ForEach(func(string) { t.Fatal("cleared storage invoked callback") })
+}
+
+func BenchmarkMemoryStorageForEach(b *testing.B) {
+	for _, size := range []int{0, 10, 1000} {
+		b.Run(strconv.Itoa(size), func(b *testing.B) {
+			s := newMemoryStorage()
+			for i := range size {
+				if err := s.Set(strconv.Itoa(i), i); err != nil {
+					b.Fatal(err)
+				}
+			}
+			b.ReportAllocs()
+			b.ResetTimer()
+			for b.Loop() {
+				s.ForEach(func(string) {})
+			}
+		})
+	}
 }
 
 func TestJSLocalStorage(t *testing.T) {
