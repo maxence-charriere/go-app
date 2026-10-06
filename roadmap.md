@@ -16,7 +16,7 @@ Validation on Go 1.26.2, darwin/arm64:
 - The `pkg/app` test binary compiled for `GOOS=js GOARCH=wasm`. Browser/WASM runtime tests were not executed; native tests skip some browser behavior.
 - Temporary external programs and Go test overlays reproduced the specific failures described in the checklist. HTML was parsed with `golang.org/x/net/html`; a Node probe exercised the unchanged WASM-download wrapper. Temporary probe files and build artifacts were kept outside the repository.
 
-Passing existing tests did not cover the demonstrated edge cases. Performance numbers below describe the implementation at the time of the audit, are indicative local measurements, and are not claims of achieved improvements.
+Passing existing tests did not cover the demonstrated edge cases. Performance numbers below describe the implementation at the time of the audit, are indicative local measurements, and are not claims of achieved improvements. The unused `pkg/cache` package was subsequently removed; its audit-only checklist items have been removed as well.
 
 ## Prioritized checklist
 
@@ -64,23 +64,27 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Subprocess tests for delivery and repeated signals; explicit cancellation, already/later-canceled parents, repeated registration/cancellation, and bounded goroutine counts. Keep real signals isolated from the main test process.
 
-- [ ] **3. Synchronize storage reads and cache first-use initialization**
+- [x] **3. Synchronize memory-storage reads and iteration**
+
+  **Implemented:** `Contains` uses the existing read lock. `ForEach` snapshots keys under the read lock and invokes callbacks after unlocking, allowing callbacks to modify storage safely. The unused expiration cache and remaining `pkg/cache` API were removed instead of retaining the cache initialization work.
+
+  **Validated:** Full native `pkg/app` race tests, full browser/WASM tests in headless Chrome, repository-wide `go vet`, and a repository-wide build passed. Regression tests cover concurrent access, callbacks that read/set/delete/clear storage, snapshot enumeration, and empty storage. The snapshot regression fails against the original implementation. A local darwin/arm64 benchmark measured zero allocations for empty enumeration and one allocation for nonempty snapshots (160 bytes for 10 keys; 16,384 bytes for 1,000 keys).
 
   **Impact:** High.
 
-  **Files:** `pkg/app/storage.go:62–115`, `pkg/cache/expire.go:20–23,60–74`; corresponding tests.
+  **Files:** `pkg/app/storage.go:62–115`; `pkg/app/storage_test.go`.
 
-  **Found:** Memory storage `Contains` and `ForEach` access a map without its mutex; a public-API concurrency probe reported a race between `Set` and `ForEach`. The expiration cache initializes its map outside the mutex, while `Len` reads it without participating in the `sync.Once` barrier. A concurrent first `Set`/`Len` probe reported a race in the expiration cache.
+  **Found:** Memory storage `Contains` and `ForEach` access a map without its mutex; a public-API concurrency probe reported a race between `Set` and `ForEach`.
 
-  **Why it matters:** Async application work can race or trigger fatal concurrent-map access; cache zero values are unsafe under concurrent first use.
+  **Why it matters:** Async application work can race or trigger fatal concurrent-map access.
 
-  **Recommended change:** Lock `Contains`; snapshot enumeration keys under a read lock and invoke `ForEach` callbacks after unlocking. Establish initialization synchronization consistently for cache accessors, using compatible lock ordering and preserving zero-value usability.
+  **Recommended change:** Lock `Contains`; snapshot enumeration keys under a read lock and invoke `ForEach` callbacks after unlocking.
 
-  **Expected benefit:** Safe concurrent map access and initialization without callback deadlocks.
+  **Expected benefit:** Safe concurrent map access without callback deadlocks.
 
   **Risk/difficulty:** Low. Storage enumeration snapshots allocate proportionally to key count; avoid holding locks around mutating callbacks.
 
-  **Verification:** Race tests mixing storage operations and callbacks that set/delete/clear entries. Race tests for concurrent first `Len`, `Size`, `Get`, `Set`, and `Del` on the expiration cache. Include empty/zero-value behavior and enumeration allocation benchmarks.
+  **Verification:** Race tests mixing storage operations and callbacks that set/delete/clear entries. Include empty-storage behavior and enumeration allocation benchmarks.
 
 - [ ] **4. Capture a separate context for each async action handler**
 
@@ -316,25 +320,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Both passive transitions and unchanged passive updates; browser listener add/remove counts and cancelable wheel/touch behavior. Compare update allocations and retain existing option/equality tests.
 
-- [ ] **17. Clear retired expiration-queue references**
-
-  **Impact:** Medium.
-
-  **Files:** `pkg/cache/expire.go:82–100`; expiration tests.
-
-  **Found:** Queue compaction shortens a pointer slice without clearing the vacated backing-array tail. A one-item set/delete probe left a nonnil hidden pointer after queue length became zero. Deleted payloads are cleared separately; this defect retains entry metadata and key strings.
-
-  **Why it matters:** Empty or reduced caches retain avoidable metadata and high-water queue storage.
-
-  **Recommended change:** Clear vacated pointers during compaction. Consider releasing the backing array when empty, with broader shrinking only if measurements justify it. Preserve lazy-expiration/TTL semantics and avoid new background workers.
-
-  **Expected benefit:** Removed entries and long keys become collectible; an empty-cache policy can release queue storage.
-
-  **Risk/difficulty:** Low for clearing; medium for shrinking, which can increase allocations under churn.
-
-  **Verification:** Inspect full backing slices after partial/full expiration, replacement, and deletion. Benchmark churn with long keys and compare retained heap profiles plus allocation costs.
-
-- [ ] **18. Bound file lifetimes and reject failed static-generation responses**
+- [ ] **17. Bound file lifetimes and reject failed static-generation responses**
 
   **Impact:** Medium.
 
@@ -352,7 +338,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Many-route generation with bounded descriptor usage, injected 404/500/write/close/directory failures, and expected content assertions. Update existing fixtures to register valid pages. Benchmark large route sets and peak memory/descriptors.
 
-- [ ] **19. Validate reflective inputs and propagate CLI decoding failures**
+- [ ] **18. Validate reflective inputs and propagate CLI decoding failures**
 
   **Impact:** Medium.
 
@@ -370,7 +356,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Nil interface/typed-nil source/receiver tables, valid pointer/value state copies, mismatches, and invalid scalar/duration/time/collection/nested environment values. Use isolated environment settings and test overrides and error output.
 
-- [ ] **20. Release promise bridge callbacks on every settlement path**
+- [ ] **19. Release promise bridge callbacks on every settlement path**
 
   **Impact:** Medium.
 
@@ -388,7 +374,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Browser/WASM tests for fulfillment, rejection, callback failure, and many rejected promises; instrument callback registrations/releases and compare retained resources after settlement. Native stub tests cannot establish this improvement.
 
-- [ ] **21. Make performance benchmarks exercise valid, bounded workloads**
+- [ ] **20. Make performance benchmarks exercise valid, bounded workloads**
 
   **Impact:** Medium.
 
@@ -406,7 +392,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Assert route/status/body expectations in setup, report allocations, use representative input sizes, and compare repeated runs on the same toolchain/machine. Ensure memory remains bounded as iteration count grows; use profiles to attribute changes.
 
-- [ ] **22. Traverse modern multi-error trees for metadata lookup**
+- [ ] **21. Traverse modern multi-error trees for metadata lookup**
 
   **Impact:** Low.
 
@@ -424,7 +410,7 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Nested joins, multiple `%w`, mixed wrappers, competing matches, nil children, and no-match cases; retain the full existing suite.
 
-- [ ] **23. Reset text-node mounted state during dismount**
+- [ ] **22. Reset text-node mounted state during dismount**
 
   **Impact:** Low.
 
@@ -444,6 +430,6 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
 ## Implementation boundaries
 
-Select checklist items before implementation. Generated fluent HTML APIs should retain their public surface; fix their shared runtime or generator inputs when appropriate. Keep current cache eviction policy, route precedence, scheduling order, and supported resolver behavior unless a separately reviewed bug fix requires a narrowly scoped behavioral correction.
+Select checklist items before implementation. Generated fluent HTML APIs should retain their public surface; fix their shared runtime or generator inputs when appropriate. Keep current route precedence, scheduling order, and supported resolver behavior unless a separately reviewed bug fix requires a narrowly scoped behavioral correction.
 
 The review of `pkg/logs` and `pkg/analytics` did not establish another material, compatibility-preserving first-pass change. Broad rewrites of exported mutable globals, blanket pooling, replacement of reflection, and mass edits of generated methods would need workload or contract evidence beyond this audit. The unused private URL predicates in `pkg/app/http.go` are cleanup candidates, but their removal alone offers little material benefit and is not prioritized.
