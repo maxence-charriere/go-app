@@ -42,7 +42,11 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Extend encoding tests with parsed attribute comparisons for quotes, apostrophes, ampersands, newlines, Unicode, and resolved URLs; fuzz values and assert no added attributes/nodes. Test true/false `disabled`, `checked`, and `hidden`, plus data, ARIA, `draggable`, `spellcheck`, and `contenteditable`; compare server output with browser DOM behavior.
 
-- [ ] **2. Use the standard signal-context lifecycle**
+- [x] **2. Use the standard signal-context lifecycle**
+
+  **Implemented:** `ContextWithSignals` delegates to `signal.NotifyContext` with the existing signature. The returned cancel function unregisters signal delivery; documentation clarifies that it must be called even after signal or parent cancellation and may restore default signal behavior.
+
+  **Validated:** CLI tests passed with the race detector, along with `go vet ./pkg/cli` and a repository-wide build. Regression tests cover explicit and parent cancellation, already-canceled parents, repeated registration/cancellation, and bounded goroutine counts. Signal delivery, repeated signals, zero-signal arguments, and restoration of default interrupt behavior are tested in isolated subprocesses.
 
   **Impact:** High.
 

@@ -120,18 +120,10 @@ func Error(err error) {
 // when one of the specified signals is emitted. If no signals are provided, all
 // incoming signals will cancel the context.
 //
-// Canceling this context releases resources associated with it, so code should
-// call cancel as soon as the operations running in this Context complete.
+// The returned cancel function unregisters signal delivery and releases
+// associated resources. Call it when operations complete, even if a signal or
+// parent cancellation has already canceled the context. This may restore the
+// default behavior for subsequent signals.
 func ContextWithSignals(parent context.Context, sig ...os.Signal) (ctx context.Context, cancel func()) {
-	ctx, cancel = context.WithCancel(parent)
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, sig...)
-
-	go func() {
-		<-c
-		close(c)
-		cancel()
-	}()
-
-	return ctx, cancel
+	return signal.NotifyContext(parent, sig...)
 }
