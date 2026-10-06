@@ -77,17 +77,18 @@ func (m *actionManager) Post(ctx Context, a Action) {
 			delete(m.handlers[a.Name], key)
 			continue
 		}
-		ctx.sourceElement = source
+		handlerCtx := ctx
+		handlerCtx.sourceElement = source
 
 		function := handler.Function
 		if handler.Async {
-			ctx.Async(func() {
-				function(ctx, a)
+			handlerCtx.Async(func() {
+				function(handlerCtx, a)
 			})
 			continue
 		}
 
-		ctx.Dispatch(func(ctx Context) {
+		handlerCtx.Dispatch(func(ctx Context) {
 			function(ctx, a)
 		})
 	}
