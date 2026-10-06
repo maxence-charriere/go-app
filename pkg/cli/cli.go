@@ -1,45 +1,45 @@
 // Package cli is a package to build CLI programs.
 //
 // eg:
-//  func main() {
-//      opts := struct {
-// 	        Foo string `env:"FOO" help:"A simple string."`
-// 		    Bar int    `env:"BAR" help:"A simple integer."`
-//      }{
-// 		    Foo: "foo",
-// 		    Bar: 42,
-//      }
 //
-//      ctx, cancel := cli.ContextWithSignals(context.Background(),
-//          os.Interrupt,
-// 		    syscall.SIGTERM,
-//      )
-//      defer cancel()
+//	 func main() {
+//	     opts := struct {
+//		        Foo string `env:"FOO" help:"A simple string."`
+//			    Bar int    `env:"BAR" help:"A simple integer."`
+//	     }{
+//			    Foo: "foo",
+//			    Bar: 42,
+//	     }
 //
-//      cli.Register().
-// 		    Help("A simple command").
-// 		    Options(&opts)
+//	     ctx, cancel := cli.ContextWithSignals(context.Background(),
+//	         os.Interrupt,
+//			    syscall.SIGTERM,
+//	     )
+//	     defer cancel()
 //
-//      cli.Register("hello").
-// 		    Help("A sub command").
-// 		    Options(&opts)
+//	     cli.Register().
+//			    Help("A simple command").
+//			    Options(&opts)
 //
-//      cli.Register("world").
-// 		    Help("Another sub command").
-// 		    Options(&opts)
+//	     cli.Register("hello").
+//			    Help("A sub command").
+//			    Options(&opts)
 //
-//      switch cli.Load() {
-// 	    case "hello":
-// 		    helloCmd(ctx, opts)
+//	     cli.Register("world").
+//			    Help("Another sub command").
+//			    Options(&opts)
 //
-//      case "world":
-// 		    worldCmd(ctx, opts)
+//	     switch cli.Load() {
+//		    case "hello":
+//			    helloCmd(ctx, opts)
 //
-// 	    default:
-// 		    defaultCmd(ctx, opts)
-// 	    }
-//  }
+//	     case "world":
+//			    worldCmd(ctx, opts)
 //
+//		    default:
+//			    defaultCmd(ctx, opts)
+//		    }
+//	 }
 package cli
 
 import (
