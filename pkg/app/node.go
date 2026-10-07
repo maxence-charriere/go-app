@@ -76,16 +76,20 @@ func FilterUIElems(v ...UI) []UI {
 // HTMLString returns a string that represents the HTML markup for the provided
 // UI element.
 func HTMLString(ui UI) string {
-	engine := NewTestEngine().(*engineX)
-	var b bytes.Buffer
-	engine.nodes.Encode(engine.baseContext(), &b, ui)
-	return b.String()
+	return string(htmlBytes(ui))
 }
 
 // PrintHTML writes the HTML representation of the given UI element into the
 // specified writer.
 func PrintHTML(w io.Writer, ui UI) {
-	w.Write([]byte(HTMLString(ui)))
+	w.Write(htmlBytes(ui))
+}
+
+func htmlBytes(ui UI) []byte {
+	ctx := Context{resolveURL: func(v string) string { return v }}
+	var b bytes.Buffer
+	nodeManager{}.Encode(ctx, &b, ui)
+	return b.Bytes()
 }
 
 // Component events.

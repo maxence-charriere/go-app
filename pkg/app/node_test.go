@@ -3,6 +3,8 @@ package app
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"net/url"
 	"reflect"
 	"sync"
 	"testing"
@@ -156,6 +158,129 @@ func TestPrintHTML(t *testing.T) {
 	var b bytes.Buffer
 	PrintHTML(&b, Div())
 	require.Equal(t, "<div></div>", b.String())
+}
+
+func TestHTMLSerializationOutput(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		ui   UI
+		want string
+	}{
+		{"nil", nil, ""},
+		{"text", Text("hello <world> & friends"), "hello &lt;world&gt; &amp; friends"},
+		{"raw", Raw("<b>raw</b>"), "<b>raw</b>"},
+		{"attribute", Div().Title(`a "quote" & more`), `<div title="a &#34;quote&#34; &amp; more"></div>`},
+		{"local resource", Img().Src("/web/image.png"), `<img src="/web/image.png">`},
+		{"remote resource", Img().Src("https://example.com/image.png"), `<img src="https://example.com/image.png">`},
+		{"resource query", A().Href("/web/file?a=1&b=2"), `<a href="/web/file?a=1&amp;b=2"></a>`},
+		{"boolean", Input().Disabled(true), `<input disabled>`},
+		{"false boolean", Input().Disabled(false), `<input>`},
+		{"indentation", Div().Body(Span().Text("one"), Span().Text("two")), "<div>\n  <span>one</span>\n  <span>two</span>\n</div>"},
+		{"component", &bar{Value: "component"}, "component"},
+		{"nested components", Div().Body(&foo{Bar: "nested"}), "<div>\n  nested\n</div>"},
+		{"empty component", &compoWithNilRendering{}, ""},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			require.Equal(t, test.want, HTMLString(test.ui))
+			var output bytes.Buffer
+			PrintHTML(&output, test.ui)
+			require.Equal(t, test.want, output.String())
+		})
+	}
+}
+
+func TestHTMLSerializationComponentLifecycle(t *testing.T) {
+	component := &bar{Value: "unmounted"}
+	require.Equal(t, "unmounted", HTMLString(component))
+	require.False(t, component.initialized)
+	require.False(t, component.Mounted())
+	require.Nil(t, component.root())
+
+	var nodes nodeManager
+	_, err := nodes.Mount(makeTestContext(), 1, component)
+	require.NoError(t, err)
+	defer nodes.Dismount(component)
+	root := component.root()
+	component.Value = "changed without rendering"
+	// Mounted components serialize their existing root, without rerendering.
+	require.Equal(t, "unmounted", HTMLString(component))
+	var output bytes.Buffer
+	PrintHTML(&output, component)
+	require.Equal(t, "unmounted", output.String())
+	require.Same(t, root, component.root())
+	require.True(t, component.Mounted())
+}
+
+func TestHTMLSerializationPreservesBrowserCallbacks(t *testing.T) {
+	if IsServer {
+		t.Skip("requires browser callbacks")
+	}
+	names := []string{"onclick", "onpopstate", "goappNav", "goappOnUpdate", "goappOnAppInstallChange", "onresize"}
+	previous := make(map[string]Value)
+	for _, name := range names {
+		previous[name] = Window().Get(name)
+	}
+	defer func() {
+		for _, name := range names {
+			Window().Set(name, previous[name])
+		}
+	}()
+
+	ctx := makeTestContext()
+	var destination string
+	ctx.navigate = func(u *url.URL, updateHistory bool) { destination = u.String() }
+	var browser browser
+	browser.HandleEvents(ctx, func(any) {})
+	defer func() {
+		for _, callback := range []Func{browser.anchorClick, browser.popState, browser.navigationFromJS,
+			browser.appUpdate, browser.appInstallChange, browser.appResize} {
+			callback.Release()
+		}
+	}()
+	active := make(map[string]Value)
+	for _, name := range names {
+		active[name] = Window().Get(name)
+	}
+
+	for _, print := range []bool{false, true} {
+		t.Run(fmt.Sprintf("PrintHTML=%v", print), func(t *testing.T) {
+			if print {
+				PrintHTML(io.Discard, Div())
+			} else {
+				HTMLString(Div())
+			}
+			for _, name := range names {
+				require.True(t, active[name].Equal(Window().Get(name)), "%s was replaced", name)
+			}
+			destination = ""
+			Window().Get("goappNav").Invoke("/serialization-test")
+			require.Equal(t, "/serialization-test", destination)
+		})
+	}
+}
+
+var htmlSerializationResult string
+
+func BenchmarkHTMLSerialization(b *testing.B) {
+	for _, count := range []int{1, 1000} {
+		children := make([]UI, count)
+		for i := range children {
+			children[i] = Span().Text("hello")
+		}
+		ui := Div().Body(children...)
+		b.Run(fmt.Sprintf("HTMLString/%d", count), func(b *testing.B) {
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				htmlSerializationResult = HTMLString(ui)
+			}
+		})
+		b.Run(fmt.Sprintf("PrintHTML/%d", count), func(b *testing.B) {
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				PrintHTML(io.Discard, ui)
+			}
+		})
+	}
 }
 
 func TestNodeManagerMount(t *testing.T) {
