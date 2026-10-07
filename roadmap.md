@@ -144,7 +144,11 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Host variation must not change local resource selection. Test canceled/slow remote requests, local resources behind a reverse proxy, custom resolver handlers, compressed responses, and cache hits. Benchmark cold local proxy requests and allocations.
 
-- [ ] **7. Serialize HTML without constructing a test engine**
+- [x] **7. Serialize HTML without constructing a test engine**
+
+  **Implemented:** `HTMLString` and `PrintHTML` share a byte-encoding helper using the existing node manager and an identity URL resolver. Serialization no longer constructs an engine or installs browser callbacks. `PrintHTML` writes the encoded bytes directly. Existing component roots, rendering behavior, escaping, whitespace, and exported signatures are preserved.
+
+  **Validated:** Full native `pkg/app` suite with the race detector, full browser/WASM suite in headless Chrome, and `go vet ./pkg/app` passed. Added exact-output cases for text, raw HTML, attributes, resource URLs, booleans, nested components, and empty rendering, plus component lifecycle and mounted-root checks. Browser tests verify all six global callback identities and navigation remain intact; the callback regression fails against the original implementation. Local darwin/arm64 benchmarks for a div containing one span measured 112 B/op and 2 allocations for `HTMLString`, and 64 B/op and 1 allocation for `PrintHTML`; 1,000-child benchmarks are included.
 
   **Impact:** High.
 
