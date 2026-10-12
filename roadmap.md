@@ -166,23 +166,27 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Existing output tests; `HTMLString`/`PrintHTML` benchmarks on small and large trees with `-benchmem`. Browser tests must show active callback identities and navigation survive serialization.
 
-- [ ] **8. Fix service-worker lifecycle and cache ownership**
+- [x] **8. Fix service-worker lifecycle and versioned cache lookup**
+
+  **Implemented:** Install and activate register their work synchronously with `waitUntil`, with failures propagated after logging. Cache names retain the existing `app-<version>` format, and activation deletes every cache except the current version, under the one-app-per-origin model. Fetch searches only the current cache to avoid stale responses while old caches still exist. Resource caching still precedes `skipWaiting`, and best-effort cleanup still precedes `clients.claim`. Regenerated the default worker without changing custom template substitution.
+
+  **Validated:** `go test -race ./pkg/app` and `go vet ./pkg/app` passed with Node.js available. Node.js-backed regression tests invoked from `http_test.go` cover delayed/failed installation, delayed activation, cleanup failures, old-version cleanup, current-version lookup, and cache misses; they skip when Node.js is unavailable. Tests also verify generated-template consistency and custom template substitution.
 
   **Impact:** High.
 
-  **Files:** `pkg/app/gen/app-worker.js:4–57`; generated `pkg/app/scripts.go`; worker tests in `pkg/app/http_test.go`.
+  **Files:** `pkg/app/gen/app-worker.js`; generated `pkg/app/scripts.go`; worker tests in `pkg/app/http_test.go` and `pkg/app/testdata/app-worker.test.cjs`.
 
-  **Found:** Async install/activate listeners never register their promises with `event.waitUntil`, and install errors are swallowed. Cleanup deletes every origin cache except the current version; fetch searches all origin caches. Cache names identify only version, not registration/application.
+  **Found:** Async install/activate listeners never register their promises with `event.waitUntil`, and install errors are swallowed. Fetch searches all origin caches and can return stale responses from previous versions.
 
-  **Why it matters:** Installation can advance without completed resource caching, lifecycle work can be interrupted, and upgrades can delete unrelated application caches or retrieve another cache's response. The [service-worker event lifetime rules](https://w3c.github.io/ServiceWorker/#extendableevent-waituntil-method) require lifecycle promises to be registered.
+  **Why it matters:** Installation can advance without completed resource caching, lifecycle work can be interrupted, and fetches can retrieve an old version's response. The [service-worker event lifetime rules](https://w3c.github.io/ServiceWorker/#extendableevent-waituntil-method) require lifecycle promises to be registered.
 
-  **Recommended change:** Register lifecycle work synchronously with `waitUntil`; propagate installation failure after logging. Derive a registration/application-scoped namespace, delete only caches with proven ownership, and fetch from the current app cache. Handle legacy names conservatively. Update the generator input and regenerate only during implementation.
+  **Recommended change:** Register lifecycle work synchronously with `waitUntil`; propagate installation failure after logging. Fetch from the current version's cache. Preserve the existing cache naming and cleanup model, skip-waiting/claim ordering, and custom template support.
 
-  **Expected benefit:** Reliable offline upgrades and isolation between applications sharing an origin.
+  **Expected benefit:** Reliable offline upgrades and current-version cached responses.
 
-  **Risk/difficulty:** Medium. Requires an upgrade/migration strategy and browser integration tests; preserve intended skip-waiting/claim ordering and custom template support.
+  **Risk/difficulty:** Medium. Preserve lifecycle ordering and failure behavior.
 
-  **Verification:** Delayed/failing population, failed upgrade preserving the old worker, offline reload, activation completion, two registrations plus an unrelated cache, and distinct cached responses for the same URL. Test generated template consistency.
+  **Verification:** Delayed/failing population, activation completion, cleanup failures, old-version cleanup, cache misses, and distinct cached responses for the same URL across versions. Test generated template consistency.
 
 - [ ] **9. Make child filtering linear in input and emitted children**
 
