@@ -4,11 +4,16 @@
 package app
 
 import (
+	"context"
+	_ "embed"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -263,8 +268,8 @@ func TestHandlerServeAppWorkerJSWithLocalDir(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", async (event) => {`)
-	require.Contains(t, body, `self.addEventListener("activate", async (event) => {`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
 	require.Contains(t, body, `"/web/hello.css"`)
 	require.Contains(t, body, `"/web/hello.js"`)
@@ -294,8 +299,8 @@ func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", async (event) => {`)
-	require.Contains(t, body, `self.addEventListener("activate", async (event) => {`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
 	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.css"`)
 	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.js"`)
@@ -325,8 +330,8 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", async (event) => {`)
-	require.Contains(t, body, `self.addEventListener("activate", async (event) => {`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
 	require.Contains(t, body, `"/go-app/web/hello.css"`)
 	require.Contains(t, body, `"/go-app/web/hello.js"`)
@@ -336,6 +341,46 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `"/go-app/app.js"`)
 	require.Contains(t, body, `"/go-app/web/app.wasm"`)
 	require.Contains(t, body, `"/go-app"`)
+}
+
+//go:embed gen/app-worker.js
+var appWorkerTemplate string
+
+//go:embed testdata/app-worker.test.cjs
+var appWorkerTests string
+
+func TestDefaultAppWorkerJS(t *testing.T) {
+	require.Equal(t, appWorkerTemplate, DefaultAppWorkerJS, "run go generate to update scripts.go")
+}
+
+func TestAppWorkerLifecycleAndCaches(t *testing.T) {
+	node, err := exec.LookPath("node")
+	if err != nil {
+		t.Skip("Node.js is required to exercise the service-worker script")
+	}
+	h := Handler{
+		Version:               "v2",
+		Resources:             LocalDir(""),
+		ServiceWorkerTemplate: DefaultAppWorkerJS,
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, node, "-", string(h.makeAppWorkerJS()))
+	cmd.Stdin = strings.NewReader(appWorkerTests)
+	output, err := cmd.CombinedOutput()
+	require.NoError(t, err, "%s", output)
+}
+
+func TestHandlerCustomAppWorkerTemplate(t *testing.T) {
+	h := Handler{
+		Version:               "custom-version",
+		Resources:             GitHubPages("custom-app"),
+		ServiceWorkerTemplate: "version={{.Version}}; resources={{.ResourcesToCache}}",
+	}
+	script := string(h.makeAppWorkerJS())
+	require.Contains(t, script, "version=custom-version; resources=[")
+	require.Contains(t, script, `"/custom-app/web/app.wasm"`)
+	require.NotContains(t, script, "{{.")
 }
 
 func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
