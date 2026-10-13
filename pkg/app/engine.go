@@ -351,11 +351,23 @@ func (e *engineX) Encode(w *bytes.Buffer, document HTMLHtml) error {
 }
 
 func (e *engineX) dispatch(v func()) {
-	e.dispatches <- v
+	if e.ctx.Err() != nil {
+		return
+	}
+	select {
+	case e.dispatches <- v:
+	case <-e.ctx.Done():
+	}
 }
 
 func (e *engineX) defere(v func()) {
-	e.defers <- v
+	if e.ctx.Err() != nil {
+		return
+	}
+	select {
+	case e.defers <- v:
+	case <-e.ctx.Done():
+	}
 }
 
 func (e *engineX) async(v func()) {

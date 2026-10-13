@@ -90,13 +90,17 @@ func TestHandlerRequestContext(t *testing.T) {
 			h := Handler{}
 			h.ServeHTTP(w, r)
 
+			if test.cancelBefore {
+				require.Nil(t, renderContext, "a canceled request must not enqueue pre-render callbacks")
+				return
+			}
 			require.NotNil(t, renderContext)
 			require.Equal(t, "request value", renderContext.Value(requestKey{}))
 			gotDeadline, ok := renderContext.Deadline()
 			require.True(t, ok)
 			require.Equal(t, deadline, gotDeadline)
 			require.Equal(t, context.Canceled, renderContext.Err())
-			if test.cancelBefore || test.cancelDuring {
+			if test.cancelDuring {
 				require.Equal(t, context.Canceled, renderError)
 			} else {
 				require.NoError(t, renderError)

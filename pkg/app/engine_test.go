@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -213,6 +214,97 @@ func TestEngineExternalNavigation(t *testing.T) {
 		destination, _ := url.Parse("/hello")
 		require.False(t, e.externalNavigation(destination))
 	})
+}
+
+func TestEngineQueueCancellation(t *testing.T) {
+	for _, queueTest := range []struct {
+		name    string
+		queue   func(*engineX) chan func()
+		enqueue func(*engineX, func())
+	}{
+		{"dispatch", func(e *engineX) chan func() { return e.dispatches }, (*engineX).dispatch},
+		{"defer", func(e *engineX) chan func() { return e.defers }, (*engineX).defere},
+	} {
+		t.Run(queueTest.name, func(t *testing.T) {
+			for _, test := range []struct {
+				name         string
+				full         bool
+				cancelBefore bool
+				cancelDuring bool
+			}{
+				{name: "enqueue normally"},
+				{name: "wait for queue space", full: true},
+				{name: "already canceled", cancelBefore: true},
+				{name: "already canceled with full queue", full: true, cancelBefore: true},
+				{name: "cancel sender with full queue", full: true, cancelDuring: true},
+			} {
+				t.Run(test.name, func(t *testing.T) {
+					ctx, cancel := context.WithCancel(context.Background())
+					e := &engineX{
+						ctx:        ctx,
+						dispatches: make(chan func(), 1),
+						defers:     make(chan func(), 1),
+					}
+					queue := queueTest.queue(e)
+					t.Cleanup(func() {
+						cancel()
+						// Release the sender even if a broken implementation ignores cancellation.
+						select {
+						case <-queue:
+						default:
+						}
+					})
+					var calls []int
+					if test.full {
+						queue <- func() { calls = append(calls, 1) }
+					}
+					if test.cancelBefore {
+						cancel()
+					}
+
+					started := make(chan struct{})
+					e.async(func() {
+						close(started)
+						queueTest.enqueue(e, func() { calls = append(calls, 2) })
+					})
+					<-started
+					if test.cancelDuring {
+						cancel()
+					} else if test.full && !test.cancelBefore {
+						(<-queue)()
+					}
+
+					finished := make(chan struct{})
+					go func() {
+						e.goroutines.Wait()
+						close(finished)
+					}()
+					select {
+					case <-finished:
+					case <-time.After(5 * time.Second):
+						t.Fatal("queue sender did not finish")
+					}
+
+					if test.cancelBefore || test.cancelDuring {
+						if test.full {
+							require.Len(t, queue, 1)
+							(<-queue)()
+							require.Equal(t, []int{1}, calls)
+						}
+						require.Empty(t, queue)
+						return
+					}
+					require.Len(t, queue, 1)
+					(<-queue)()
+					if test.full {
+						require.Equal(t, []int{1, 2}, calls)
+					} else {
+						require.Equal(t, []int{2}, calls)
+					}
+				})
+			}
+		})
+	}
 }
 
 func TestEngineAsync(t *testing.T) {
