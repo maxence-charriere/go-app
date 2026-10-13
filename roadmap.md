@@ -256,9 +256,9 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
 - [ ] **12. Bind rendering and delayed work to request cancellation**
 
-  **Partial implementation:** `Context.After` now waits on a timer or context cancellation and checks cancellation again before enqueueing and inside the dispatched callback. Normal, zero/negative-duration, and nil callbacks retain their behavior. Request-context propagation and cancellation-aware engine enqueueing/consumption remain separate follow-up work.
+  **Partial implementation:** `Context.After` now waits on a timer or context cancellation and checks cancellation again before enqueueing and inside the dispatched callback. Normal, zero/negative-duration, and nil callbacks retain their behavior. HTTP page rendering now derives its context from `r.Context()` with deferred cancellation, preserving request values, deadlines, and cancellation while ending the render context when the handler returns. Cancellation-aware engine enqueueing/consumption remains separate follow-up work.
 
-  **Validated:** The timer tests passed 20 runs under `-race`, along with the full native `pkg/app` race suite and `go vet ./pkg/app`. Tests cover cancellation before/after scheduling and after the callback is queued, and verify that tracked delayed workers finish without waiting for the original delay. The queued-callback regression fails against the previous implementation.
+  **Validated:** The timer tests passed 20 runs under `-race`, along with the full native `pkg/app` race suite and `go vet ./pkg/app`. Tests cover cancellation before/after scheduling and after the callback is queued, and verify that tracked delayed workers finish without waiting for the original delay. The queued-callback regression fails against the previous implementation. HTTP tests verify request values/deadlines, cancellation before and during rendering, and render-context cleanup without canceling the parent request; the full native `pkg/app` race suite and `go vet ./pkg/app` pass with request-context propagation.
 
   **Impact:** Medium.
 

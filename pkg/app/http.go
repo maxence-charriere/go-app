@@ -617,7 +617,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(r.Context())
+	defer cancel()
 
 	origin := *r.URL
 	origin.Scheme = "http"

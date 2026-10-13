@@ -34,6 +34,80 @@ func (c *preRenderTestCompo) Render() UI {
 		)
 }
 
+type requestContextTestCompo struct {
+	Compo
+	onPreRender func(Context)
+}
+
+func (c *requestContextTestCompo) OnPreRender(ctx Context) {
+	c.onPreRender(ctx)
+}
+
+func (c *requestContextTestCompo) Render() UI {
+	return Div().Text("request context")
+}
+
+func TestHandlerRequestContext(t *testing.T) {
+	type requestKey struct{}
+	for _, test := range []struct {
+		name         string
+		cancelBefore bool
+		cancelDuring bool
+	}{
+		{name: "values, deadline, and render cleanup"},
+		{name: "canceled before rendering", cancelBefore: true},
+		{name: "canceled during rendering", cancelDuring: true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			deadline := time.Now().Add(time.Hour)
+			parent, cancel := context.WithDeadline(
+				context.WithValue(context.Background(), requestKey{}, "request value"), deadline)
+			defer cancel()
+			if test.cancelBefore {
+				cancel()
+			}
+
+			var renderContext context.Context
+			var renderError error
+			const path = "/request-context-test"
+			Route(path, func() Composer {
+				return &requestContextTestCompo{onPreRender: func(ctx Context) {
+					renderContext = ctx.Context
+					if test.cancelDuring {
+						cancel()
+					}
+					renderError = ctx.Err()
+				}}
+			})
+			t.Cleanup(func() {
+				routes.mu.Lock()
+				defer routes.mu.Unlock()
+				delete(routes.routes, path)
+			})
+
+			r := httptest.NewRequest(http.MethodGet, path, nil).WithContext(parent)
+			w := httptest.NewRecorder()
+			h := Handler{}
+			h.ServeHTTP(w, r)
+
+			require.NotNil(t, renderContext)
+			require.Equal(t, "request value", renderContext.Value(requestKey{}))
+			gotDeadline, ok := renderContext.Deadline()
+			require.True(t, ok)
+			require.Equal(t, deadline, gotDeadline)
+			require.Equal(t, context.Canceled, renderContext.Err())
+			if test.cancelBefore || test.cancelDuring {
+				require.Equal(t, context.Canceled, renderError)
+			} else {
+				require.NoError(t, renderError)
+				require.NoError(t, parent.Err(), "render cleanup must not cancel the request context")
+				require.Equal(t, http.StatusOK, w.Code)
+				require.Contains(t, w.Body.String(), "<div>request context</div>")
+			}
+		})
+	}
+}
+
 func TestHandlerServePageWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
