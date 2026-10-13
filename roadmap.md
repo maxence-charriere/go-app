@@ -190,6 +190,14 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
 - [ ] **9. Make child filtering linear in input and emitted children**
 
+  **Implemented (reduced scope):** Kept the original reverse loop and replaced the custom removal/replacement helpers with `slices.Delete` and `slices.Replace`. Nil and typed-nil elements are removed at their original traversal positions, without a separate compaction pass. The standard library handles movement, allocation, per-operation overlap, and clearing discarded references. Exported APIs are unchanged.
+
+  **Remaining:** The linear-time redesign is deferred in favor of the simpler standard-library implementation. Repeated deletions and selector replacements still have quadratic worst-case cost. Sequential operations do not provide whole-call snapshots for selector bodies that alias the input; earlier mutations can affect those bodies. The original processing order is preserved, but allocation and backing-array writes follow standard-library slice semantics.
+
+  **Validated:** Full native `pkg/app` race tests, full browser/WASM tests in headless Chrome, and `go vet ./pkg/app` passed. Regression tests cover order, nested selectors, typed nils, empty results, slice reuse, expansion before earlier nil removal, shared bodies, and reference clearing. The shared-slice regression preserves the original selected child, and the earlier-nil allocation regression preserves detachment from the input. A 10-second fuzz run completed over 505,000 comparisons against expected children. Scaling benchmarks cover flat, nil-heavy, empty-condition, single-child-condition, expanding-condition, and expanding-range inputs at 100, 1,000, and 10,000 elements.
+
+  **Benchmarked:** Local darwin/arm64 medians over three runs use identical workloads and include the same input-reset copy. At 10,000 inputs, original / `DeleteFunc` / selected `Delete` times were 18.9 / 25.3 / 20.4 µs for flat lists; 1.59 ms / 24.2 µs / 1.62 ms for alternating nils; 4.21 / 1.65 / 1.63 ms for empty conditions; 14.1 ms / 50.6 µs / 44.0 µs for single-child conditions; and 25.7 / 9.53 / 9.42 ms for expanding ranges. Selector cases alternate selectors with ordinary children. The selected implementation removes the extra nil-filter pass, retaining selector improvements over the original while accepting the original quadratic nil-heavy cost. Single-child conditions dropped from 18 to zero allocations, and expanding ranges from 23 to three; flat and nil-heavy cases still allocate zero times.
+
   **Impact:** Medium.
 
   **Files:** `pkg/app/node.go:37–74`, `pkg/app/range.go`, generated `Body` methods; `pkg/app/node_test.go:102`.

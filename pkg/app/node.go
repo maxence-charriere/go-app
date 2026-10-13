@@ -5,6 +5,7 @@ import (
 	"html"
 	"io"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v11/pkg/errors"
@@ -33,43 +34,32 @@ type UI interface {
 //
 // This function is primarily intended for components that accept ui elements as
 // variadic arguments or slice, such as the Body method of HTML elements.
+//
+// It may reuse and modify the input's backing array, clearing discarded slots.
 func FilterUIElems(v ...UI) []UI {
 	if len(v) == 0 {
 		return nil
 	}
 
-	removeELemAt := func(i int) {
-		copy(v[i:], v[i+1:])
-		v[len(v)-1] = nil
-		v = v[:len(v)-1]
-	}
-
-	var trailing []UI
-	replaceElemAt := func(i int, elems ...UI) {
-		trailing = append(trailing, v[i+1:]...)
-		v = append(v[:i], elems...)
-		v = append(v, trailing...)
-		trailing = trailing[:0]
-	}
-
 	for i := len(v) - 1; i >= 0; i-- {
 		elem := v[i]
 		if elem == nil {
-			removeELemAt(i)
+			v = slices.Delete(v, i, i+1)
+			continue
 		}
-		if elemValue := reflect.ValueOf(elem); elemValue.Kind() == reflect.Pointer && elemValue.IsNil() {
-			removeELemAt(i)
+		if value := reflect.ValueOf(elem); value.Kind() == reflect.Pointer && value.IsNil() {
+			v = slices.Delete(v, i, i+1)
+			continue
 		}
 
 		switch elem := elem.(type) {
 		case Condition:
-			replaceElemAt(i, elem.body()...)
+			v = slices.Replace(v, i, i+1, elem.body()...)
 
 		case RangeLoop:
-			replaceElemAt(i, elem.body()...)
+			v = slices.Replace(v, i, i+1, elem.body()...)
 		}
 	}
-
 	return v
 }
 

@@ -101,6 +101,221 @@ func TestFilterUIElems(t *testing.T) {
 	})
 }
 
+func TestFilterUIElemsSliceReuse(t *testing.T) {
+	a, b, c, d := Text("a"), Text("b"), Text("c"), Text("d")
+	selected := func(children ...UI) UI {
+		return IfSlice(true, func() []UI { return children })
+	}
+
+	for _, test := range []struct {
+		name     string
+		input    []UI
+		capacity int
+		want     []UI
+		reuse    bool
+		backing  []UI
+	}{
+		{"unchanged", []UI{a, b}, 2, []UI{a, b}, true, []UI{a, b}},
+		{"compact", []UI{nil, a, (*foo)(nil), b, nil}, 5, []UI{a, b}, true, []UI{a, b, nil, nil, nil}},
+		{"all nil", []UI{nil, (*foo)(nil)}, 2, []UI{}, true, []UI{nil, nil}},
+		{"selector fits", []UI{selected(a, b), c}, 4, []UI{a, b, c}, true, []UI{a, b, c}},
+		{"empty selector", []UI{a, selected(), b}, 3, []UI{a, b}, true, []UI{a, b, nil}},
+		{"expand then remove earlier nil", []UI{nil, selected(a, b), c}, 4, []UI{a, b, c}, true, []UI{a, b, c, nil}},
+		{"reuse after suffix shrinks", []UI{selected(a, b), nil, c}, 3, []UI{a, b, c}, true, []UI{a, b, c}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			// Spare slots beyond the highest used index must survive clearing.
+			storage := make([]UI, test.capacity+1)
+			for i := range storage {
+				storage[i] = d
+			}
+			input := storage[:len(test.input):test.capacity]
+			copy(input, test.input)
+			got := FilterUIElems(input...)
+			require.Equal(t, test.want, got)
+			require.Equal(t, test.reuse, filterSharesInput(got, input))
+			require.Equal(t, test.backing, storage[:len(test.backing)])
+			for _, elem := range storage[len(test.backing):] {
+				require.Same(t, d, elem)
+			}
+		})
+	}
+
+	t.Run("expand before removing earlier nils", func(t *testing.T) {
+		selector := selected(a, b)
+		input := []UI{nil, nil, selector}
+		got := FilterUIElems(input...)
+		require.Equal(t, []UI{a, b}, got)
+		require.False(t, filterSharesInput(got, input))
+		require.Equal(t, []UI{nil, nil, selector}, input)
+	})
+
+	t.Run("replacement grows after suffix compaction", func(t *testing.T) {
+		selector := selected(a, b, c)
+		input := []UI{selector, nil, d}
+		got := FilterUIElems(input...)
+		require.Equal(t, []UI{a, b, c, d}, got)
+		require.False(t, filterSharesInput(got, input))
+		require.Equal(t, []UI{selector, d, nil}, input)
+	})
+
+	t.Run("empty input returns nil even with capacity", func(t *testing.T) {
+		input := []UI{a}
+		require.Nil(t, FilterUIElems(input[:0]...))
+		require.Same(t, a, input[0])
+	})
+}
+
+func TestFilterUIElemsSelectors(t *testing.T) {
+	a, b, c := Text("a"), Text("b"), Text("c")
+	for _, test := range []struct {
+		name  string
+		build func() []UI
+		want  []UI
+	}{
+		{"read shared body before removing earlier nil", func() []UI {
+			input := []UI{nil, a, b, nil}
+			input[3] = IfSlice(true, func() []UI { return input[1:2] })
+			return input
+		}, []UI{a, b, a}},
+		{"body shares prefix", func() []UI {
+			input := []UI{a, b, nil, nil}
+			input[3] = IfSlice(true, func() []UI { return input[:2] })
+			return input
+		}, []UI{a, b, a, b}},
+		{"selectors share a body", func() []UI {
+			body := []UI{a, b}
+			selector := IfSlice(true, func() []UI { return body })
+			return []UI{selector, nil, selector, c}
+		}, []UI{a, b, a, b, c}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			require.Equal(t, test.want, FilterUIElems(test.build()...))
+		})
+	}
+
+	t.Run("nil selector pointers", func(t *testing.T) {
+		require.Equal(t, []UI{a}, FilterUIElems((*condition)(nil), a, (*rangeLoop)(nil)))
+	})
+
+	t.Run("nested constructors and sorted map range", func(t *testing.T) {
+		mapping := map[string]UI{"b": b, "a": a}
+		slice := []UI{nil, c}
+		got := Div().Body(If(true, func() UI {
+			return Range(mapping).Map(func(key string) UI {
+				return If(true, func() UI {
+					return mapping[key]
+				})
+			})
+		}), Range(slice).Slice(func(i int) UI {
+			return slice[i]
+		})).body()
+		require.Equal(t, []UI{a, b, c}, got)
+	})
+}
+
+func filterSharesInput(result, input []UI) bool {
+	return cap(result) != 0 && cap(input) != 0 && &result[:cap(result)][0] == &input[:cap(input)][0]
+}
+
+func FuzzFilterUIElems(f *testing.F) {
+	f.Add([]byte{0, 1, 2, 3, 4, 5, 6, 7}, uint8(0))
+	f.Add([]byte{0, 0, 4}, uint8(0))
+	f.Add([]byte{4, 0, 2}, uint8(8))
+	f.Add([]byte{}, uint8(1))
+	f.Fuzz(func(t *testing.T, data []byte, spare uint8) {
+		if len(data) > 256 {
+			return
+		}
+		input := make([]UI, len(data), len(data)+int(spare))
+		want := make([]UI, 0)
+		for i, value := range data {
+			a, b := Text(i), Text(-i)
+			switch value % 8 {
+			case 0:
+			case 1:
+				input[i] = (*foo)(nil)
+			case 2:
+				input[i] = a
+				want = append(want, a)
+			case 3:
+				input[i] = If(false, nil)
+			case 4:
+				input[i] = IfSlice(true, func() []UI { return []UI{a, b} })
+				want = append(want, a, b)
+			case 5:
+				input[i] = Range([]UI{a, nil, b}).Slice(func(j int) UI { return []UI{a, nil, b}[j] })
+				want = append(want, a, b)
+			case 6:
+				input[i] = If(true, func() UI { return If(true, func() UI { return a }) })
+				want = append(want, a)
+			case 7:
+				input[i] = Range([]UI{}).Slice(func(int) UI { panic("empty range") })
+			}
+		}
+		got := FilterUIElems(input...)
+		require.Equal(t, len(input) == 0, got == nil)
+		require.Len(t, got, len(want))
+		for i := range want {
+			require.Same(t, want[i], got[i])
+		}
+	})
+}
+
+func BenchmarkFilterUIElemsScaling(b *testing.B) {
+	for _, size := range []int{100, 1000, 10000} {
+		for _, workload := range []string{"flat", "nil", "typed-nil", "empty-selectors", "single-selectors", "expanding-selectors", "expanding-ranges"} {
+			b.Run(fmt.Sprintf("%s/%d", workload, size), func(b *testing.B) {
+				child := Text("child")
+				selector := IfSlice(true, func() []UI { return []UI{child, child, child} })
+				single := If(true, func() UI { return child })
+				rangeLoop := Range([]int{0, 1, 2}).Slice(func(int) UI { return child })
+				input := make([]UI, size)
+				for i := range input {
+					input[i] = child
+					if i%2 == 0 {
+						switch workload {
+						case "nil":
+							input[i] = nil
+						case "typed-nil":
+							input[i] = (*foo)(nil)
+						case "empty-selectors":
+							input[i] = If(false, nil)
+						case "single-selectors":
+							input[i] = single
+						case "expanding-selectors":
+							input[i] = selector
+						case "expanding-ranges":
+							input[i] = rangeLoop
+						}
+					}
+				}
+				working := make([]UI, size)
+				copy(working, input)
+				wantCount := size
+				switch workload {
+				case "nil", "typed-nil", "empty-selectors":
+					wantCount = size / 2
+				case "expanding-selectors", "expanding-ranges":
+					wantCount = size * 2
+				}
+				got := FilterUIElems(working...)
+				require.Len(b, got, wantCount)
+				for _, elem := range got {
+					require.Same(b, child, elem)
+				}
+				b.ReportAllocs()
+				b.ResetTimer()
+				for b.Loop() {
+					// Include the same reset copy in baseline and optimized runs.
+					copy(working, input)
+					FilterUIElems(working...)
+				}
+			})
+		}
+	}
+}
+
 func BenchmarkFilterUIElems(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		FilterUIElems(Div().
