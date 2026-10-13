@@ -242,7 +242,7 @@ func TestContextAfter(t *testing.T) {
 		t.Helper()
 		done := make(chan struct{})
 		go func() {
-			e.goroutines.Wait()
+			e.waitAsync(context.Background())
 			close(done)
 		}()
 		select {

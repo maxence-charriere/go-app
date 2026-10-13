@@ -617,7 +617,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(r.Context())
+	defer cancel()
+	if ctx.Err() != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 
 	origin := *r.URL
 	origin.Scheme = "http"
@@ -639,6 +644,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	)
 	engine.Navigate(page.URL(), false)
 	engine.ConsumeAll()
+	if ctx.Err() != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 
 	icon := h.Icon.SVG
 	if icon == "" {
@@ -785,6 +794,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					),
 			),
 		))
+	if ctx.Err() != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 	if err != nil {
 		Log(errors.New("encoding html document failed").Wrap(err))
 		w.WriteHeader(http.StatusInternalServerError)

@@ -34,6 +34,169 @@ func (c *preRenderTestCompo) Render() UI {
 		)
 }
 
+type requestContextTestCompo struct {
+	Compo
+	onPreRender func(Context)
+}
+
+func (c *requestContextTestCompo) OnPreRender(ctx Context) {
+	c.onPreRender(ctx)
+}
+
+func (c *requestContextTestCompo) Render() UI {
+	return Div().Text("request context")
+}
+
+func TestHandlerRequestContext(t *testing.T) {
+	type requestKey struct{}
+	for _, test := range []struct {
+		name           string
+		cancelBefore   bool
+		cancelDuring   bool
+		cancelEncoding bool
+		expired        bool
+	}{
+		{name: "values, deadline, and render cleanup"},
+		{name: "canceled before rendering", cancelBefore: true},
+		{name: "canceled during rendering", cancelDuring: true},
+		{name: "canceled during encoding", cancelEncoding: true},
+		{name: "deadline exceeded before rendering", expired: true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			deadline := time.Now().Add(time.Hour)
+			if test.expired {
+				deadline = time.Now().Add(-time.Second)
+			}
+			parent, cancel := context.WithDeadline(
+				context.WithValue(context.Background(), requestKey{}, "request value"), deadline)
+			defer cancel()
+			if test.cancelBefore {
+				cancel()
+			}
+
+			var renderContext context.Context
+			var renderError error
+			const path = "/request-context-test"
+			Route(path, func() Composer {
+				return &requestContextTestCompo{onPreRender: func(ctx Context) {
+					renderContext = ctx.Context
+					if test.cancelDuring {
+						cancel()
+					}
+					renderError = ctx.Err()
+				}}
+			})
+			t.Cleanup(func() {
+				routes.mu.Lock()
+				defer routes.mu.Unlock()
+				delete(routes.routes, path)
+			})
+
+			r := httptest.NewRequest(http.MethodGet, path, nil).WithContext(parent)
+			w := httptest.NewRecorder()
+			h := Handler{}
+			if test.cancelEncoding {
+				h.HTML = func() HTMLHtml {
+					cancel()
+					return Html()
+				}
+			}
+			h.ServeHTTP(w, r)
+
+			if test.cancelBefore || test.expired {
+				require.Nil(t, renderContext, "a canceled request must not enqueue pre-render callbacks")
+				require.Equal(t, http.StatusServiceUnavailable, w.Code)
+				require.Empty(t, w.Body.String())
+				return
+			}
+			require.NotNil(t, renderContext)
+			require.Equal(t, "request value", renderContext.Value(requestKey{}))
+			gotDeadline, ok := renderContext.Deadline()
+			require.True(t, ok)
+			require.Equal(t, deadline, gotDeadline)
+			require.Equal(t, context.Canceled, renderContext.Err())
+			if test.cancelDuring || test.cancelEncoding {
+				if test.cancelDuring {
+					require.Equal(t, context.Canceled, renderError)
+				} else {
+					require.NoError(t, renderError)
+				}
+				require.Equal(t, http.StatusServiceUnavailable, w.Code)
+				require.Empty(t, w.Body.String())
+			} else {
+				require.NoError(t, renderError)
+				require.NoError(t, parent.Err(), "render cleanup must not cancel the request context")
+				require.Equal(t, http.StatusOK, w.Code)
+				require.Contains(t, w.Body.String(), "<div>request context</div>")
+			}
+		})
+	}
+}
+
+func TestHandlerCancelPendingRender(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	started := make(chan struct{})
+	release := make(chan struct{})
+	workerFinished := make(chan struct{})
+	finished := make(chan struct{})
+	const path = "/cancel-pending-render-test"
+	Route(path, func() Composer {
+		return &requestContextTestCompo{onPreRender: func(ctx Context) {
+			ctx.Async(func() {
+				defer close(workerFinished)
+				close(started)
+				<-release // Deliberately ignores cancellation.
+			})
+		}}
+	})
+	t.Cleanup(func() {
+		cancel()
+		close(release)
+		select {
+		case <-finished:
+		case <-time.After(5 * time.Second):
+			t.Error("handler did not finish")
+		}
+		select {
+		case <-started:
+			select {
+			case <-workerFinished:
+			case <-time.After(5 * time.Second):
+				t.Error("async worker did not finish after release")
+			}
+		default:
+		}
+		routes.mu.Lock()
+		defer routes.mu.Unlock()
+		delete(routes.routes, path)
+	})
+	r := httptest.NewRequest(http.MethodGet, path, nil).WithContext(ctx)
+	w := httptest.NewRecorder()
+	h := Handler{}
+	go func() {
+		h.ServeHTTP(w, r)
+		close(finished)
+	}()
+	select {
+	case <-started:
+	case <-time.After(5 * time.Second):
+		t.Fatal("async pre-render work did not start")
+	}
+	cancel()
+	select {
+	case <-finished:
+	case <-time.After(5 * time.Second):
+		t.Fatal("handler waited for canceled pre-render work")
+	}
+	select {
+	case <-workerFinished:
+		t.Fatal("worker should still be pending when the handler returns")
+	default:
+	}
+	require.Empty(t, w.Body.String(), "canceled rendering must not write partial HTML")
+	require.Equal(t, http.StatusServiceUnavailable, w.Code)
+}
+
 func TestHandlerServePageWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
