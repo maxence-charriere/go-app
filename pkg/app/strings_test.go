@@ -166,7 +166,7 @@ func TestAppendClass(t *testing.T) {
 }
 
 func BenchmarkAppendClass(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		AppendClass("hello", "foo-bar-k", "bar-lkj-adsf-adsf")
 	}
 }

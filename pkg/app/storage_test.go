@@ -117,7 +117,7 @@ func BenchmarkMemoryStorageForEach(b *testing.B) {
 				}
 			}
 			b.ReportAllocs()
-			b.ResetTimer()
+
 			for b.Loop() {
 				s.ForEach(func(string) {})
 			}

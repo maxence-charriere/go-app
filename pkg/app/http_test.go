@@ -719,7 +719,7 @@ func BenchmarkHandlerColdRun(b *testing.B) {
 	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
 	w := httptest.NewRecorder()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		h := Handler{}
 		h.ServeHTTP(w, r)
 		h.ServeHTTP(w, r)
@@ -732,7 +732,7 @@ func BenchmarkHandlerHotRun(b *testing.B) {
 	h := Handler{}
 	h.ServeHTTP(w, r)
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		h.ServeHTTP(w, r)
 	}
 }
