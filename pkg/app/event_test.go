@@ -137,7 +137,7 @@ func BenchmarkEventHandlerEquality(b *testing.B) {
 	funcA := func(Context, Event) {}
 	funcB := func(Context, Event) {}
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		a := eventHandler{
 			event:     "test",
 			goHandler: funcA,

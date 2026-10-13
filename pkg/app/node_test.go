@@ -305,7 +305,7 @@ func BenchmarkFilterUIElemsScaling(b *testing.B) {
 					require.Same(b, child, elem)
 				}
 				b.ReportAllocs()
-				b.ResetTimer()
+
 				for b.Loop() {
 					// Include the same reset copy in baseline and optimized runs.
 					copy(working, input)
@@ -317,7 +317,7 @@ func BenchmarkFilterUIElemsScaling(b *testing.B) {
 }
 
 func BenchmarkFilterUIElems(b *testing.B) {
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		FilterUIElems(Div().
 			Class("shell").
 			Body(
@@ -485,13 +485,13 @@ func BenchmarkHTMLSerialization(b *testing.B) {
 		ui := Div().Body(children...)
 		b.Run(fmt.Sprintf("HTMLString/%d", count), func(b *testing.B) {
 			b.ReportAllocs()
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				htmlSerializationResult = HTMLString(ui)
 			}
 		})
 		b.Run(fmt.Sprintf("PrintHTML/%d", count), func(b *testing.B) {
 			b.ReportAllocs()
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				PrintHTML(io.Discard, ui)
 			}
 		})
@@ -705,7 +705,7 @@ func BenchmarkNodeManagerMount(b *testing.B) {
 	var m nodeManager
 	ctx := makeTestContext()
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		m.Mount(ctx, 1, Div())
 	}
 }
@@ -805,7 +805,7 @@ func TestNodeManagerCanUpdate(t *testing.T) {
 
 func BenchmarkNodeManagerCanUpdate(b *testing.B) {
 	var m nodeManager
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		m.CanUpdate(Div(), Div())
 	}
 }

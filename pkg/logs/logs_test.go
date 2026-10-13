@@ -52,7 +52,7 @@ func (s goStringer) GoString() string {
 }
 
 func BenchmarkNew(b *testing.B) {
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		New("a log with tags").
 			WithTag("string", "hello world").
 			WithTag("int8", int8(8)).
@@ -65,7 +65,7 @@ func BenchmarkNew(b *testing.B) {
 func BenchmarkString(b *testing.B) {
 	var s string
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		s = New("a log with tags").
 			WithTag("string", "hello world").
 			WithTag("int8", int8(8)).

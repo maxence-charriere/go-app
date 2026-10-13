@@ -232,11 +232,15 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** JS tests for 200/404, invalid/missing lengths, read failure, cancellation, and slow/absent consumers. Browser startup and peak-memory comparisons for large WASM binaries; verify generated script consistency.
 
-- [ ] **11. Encode JavaScript configuration as string literals**
+- [x] **11. Encode JavaScript configuration as string literals**
+
+  **Implemented:** Built-in app-script string values use the existing JSON encoder by replacing complete double-quoted placeholders, keeping the source templates valid JavaScript for formatting tools. Both script generators use one-pass `strings.NewReplacer` substitution so configuration text containing placeholder names remains literal. The default worker keeps the existing `Version` placeholder and cache-name expression; complete double-quoted `Version` placeholders are JSON-encoded for its cache name and lifecycle logs. Custom templates retain verbatim substitution for other occurrences of `Version` and JSON-array `ResourcesToCache` substitution. Resource resolution, string types, and worker lifecycle ordering are preserved. App JS, worker JS, CSS, and the Go runtime script are embedded directly at compile time. `make install` copies the Go runtime script into `pkg/app/gen/wasm_exec.js`. `DefaultAppWorkerJS` is now an exported variable rather than a constant. Documented the placeholder contract.
+
+  **Validated:** Full native `pkg/app` race tests, full browser/WASM tests in headless Chrome, and repository-wide `go vet` passed. Node runtime fixtures exercise complete generated scripts with quotes, backslashes, control characters, Unicode, markup, empty values, and literal placeholders, checking startup, decoded values, resolved URLs, cache resources, worker lifecycle, and cache lookup. Quote and placeholder regressions fail against the original generator. Tests also cover custom placeholders and the syntax of both embedded JavaScript templates. A separate headless-Chrome fixture verified real app startup, WASM instantiation, service-worker activation, and cache population using quoted, multiline, Unicode configuration and literal placeholder text.
 
   **Impact:** Medium.
 
-  **Files:** `pkg/app/http.go:322–329,362–365`, `pkg/app/gen/app.js:16–19`, `pkg/app/gen/app-worker.js:4,9`; generated `pkg/app/scripts.go` and HTTP tests.
+  **Files:** `pkg/app/http.go:322–329,362–365`, `pkg/app/gen/app.js:16–19`, `pkg/app/gen/app-worker.js:4,9`; `pkg/app/js_nowasm.go`, `pkg/app/js_wasm.go`, `Makefile`, `pkg/app/gen/wasm_exec.js`, and HTTP tests.
 
   **Found:** Configuration text is substituted directly inside quoted JavaScript strings. A public-API probe with a loading label containing quotes and a newline produced an `app.js` file that failed `node --check` with a syntax error. Resolver URLs and other string configuration use the same substitution pattern; worker version text is also inserted into quoted strings.
 

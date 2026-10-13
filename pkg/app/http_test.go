@@ -343,14 +343,86 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `"/go-app"`)
 }
 
-//go:embed gen/app-worker.js
-var appWorkerTemplate string
-
 //go:embed testdata/app-worker.test.cjs
 var appWorkerTests string
 
-func TestDefaultAppWorkerJS(t *testing.T) {
-	require.Equal(t, appWorkerTemplate, DefaultAppWorkerJS, "run go generate to update scripts.go")
+//go:embed testdata/script-config.test.cjs
+var scriptConfigTests string
+
+func TestJavaScriptTemplateSyntax(t *testing.T) {
+	node, err := exec.LookPath("node")
+	if err != nil {
+		t.Skip("Node.js is required to check JavaScript template syntax")
+	}
+	for name, source := range map[string]string{"app.js": appJS, "app-worker.js": DefaultAppWorkerJS} {
+		t.Run(name, func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, node, "--check")
+			cmd.Stdin = strings.NewReader(source)
+			output, err := cmd.CombinedOutput()
+			require.NoError(t, err, "%s", output)
+		})
+	}
+}
+
+func TestHandlerJavaScriptConfiguration(t *testing.T) {
+	node, err := exec.LookPath("node")
+	if err != nil {
+		t.Skip("Node.js is required to exercise generated JavaScript")
+	}
+	for _, test := range []struct {
+		name  string
+		value string
+	}{
+		{"plain", "loading {progress}%"},
+		{"empty", ""},
+		{"quotes", "double\" single' backtick`"},
+		{"backslashes", `C:\folder\file`},
+		{"whitespace", "first\nsecond\r\n\tend\b\f"},
+		{"unicode", "台灣 café 😀 \u2028\u2029"},
+		{"markup", "</script><script>globalThis.injected = true</script>&"},
+		{"injection", `"; globalThis.injected = true; //`},
+		{"placeholders", "{{.Env}} {{.LoadingLabel}} {{.Wasm}} {{.WorkerJS}} {{.WasmContentLength}} {{.WasmContentLengthHeader}} {{.Version}} {{.ResourcesToCache}}"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			// makeAppJS exports these values to the server environment too.
+			for _, key := range []string{"GOAPP_SCRIPT_TEST", "GOAPP_INTERNAL_URLS", "GOAPP_VERSION", "GOAPP_STATIC_RESOURCES_URL", "GOAPP_ROOT_PREFIX"} {
+				t.Setenv(key, "")
+			}
+			h := Handler{
+				Version:                 test.value,
+				LoadingLabel:            test.value,
+				WasmContentLength:       test.value,
+				WasmContentLengthHeader: test.value,
+				Env:                     map[string]string{"GOAPP_SCRIPT_TEST": test.value},
+				InternalURLs:            []string{test.value},
+				Resources:               PrefixedLocation("/" + test.value),
+				ServiceWorkerTemplate:   DefaultAppWorkerJS,
+			}
+			appSource := string(h.makeAppJS())
+			var resources []string
+			for _, path := range []string{"/app.css", "/app.js", "/manifest.webmanifest", "/wasm_exec.js", "/web/app.wasm", "/"} {
+				resources = append(resources, h.Resources.Resolve(path))
+			}
+			input := map[string]any{
+				"app":       appSource,
+				"worker":    string(h.makeAppWorkerJS()),
+				"value":     test.value,
+				"env":       h.Env,
+				"wasmURL":   h.Resources.Resolve("/web/app.wasm"),
+				"workerURL": h.Resources.Resolve("/app-worker.js"),
+				"resources": resources,
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, node, "-e", scriptConfigTests)
+			cmd.Stdin = strings.NewReader(jsonString(input))
+			output, err := cmd.CombinedOutput()
+			require.NoError(t, err, "%s", output)
+			require.Contains(t, string(output), "JavaScript configuration checks passed")
+		})
+	}
 }
 
 func TestAppWorkerLifecycleAndCaches(t *testing.T) {
@@ -381,6 +453,17 @@ func TestHandlerCustomAppWorkerTemplate(t *testing.T) {
 	require.Contains(t, script, "version=custom-version; resources=[")
 	require.Contains(t, script, `"/custom-app/web/app.wasm"`)
 	require.NotContains(t, script, "{{.")
+}
+
+func TestHandlerCustomAppWorkerLiteralPlaceholders(t *testing.T) {
+	h := Handler{
+		Version:               "quotes\"\n{{.ResourcesToCache}} {{.Version}}",
+		Resources:             LocalDir(""),
+		ServiceWorkerTemplate: `raw={{.Version}}; literal="{{.Version}}"; resources={{.ResourcesToCache}}`,
+	}
+	script := string(h.makeAppWorkerJS())
+	require.True(t, strings.HasPrefix(script, "raw="+h.Version+"; literal="+jsonString(h.Version)+"; resources=["))
+	require.Contains(t, script, `"/web/app.wasm"`)
 }
 
 func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
@@ -636,7 +719,7 @@ func BenchmarkHandlerColdRun(b *testing.B) {
 	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
 	w := httptest.NewRecorder()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		h := Handler{}
 		h.ServeHTTP(w, r)
 		h.ServeHTTP(w, r)
@@ -649,7 +732,7 @@ func BenchmarkHandlerHotRun(b *testing.B) {
 	h := Handler{}
 	h.ServeHTTP(w, r)
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		h.ServeHTTP(w, r)
 	}
 }
