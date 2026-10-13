@@ -7,6 +7,14 @@ import (
 	"github.com/maxence-charriere/go-app/v11/pkg/errors"
 )
 
+var (
+	// DefaultAppWorkerJS is the default template used to generate app-worker.js.
+	DefaultAppWorkerJS = ""
+
+	appJS  = ""
+	appCSS = ""
+)
+
 type value struct {
 	jsValue
 }

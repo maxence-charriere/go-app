@@ -2,12 +2,12 @@
 // PWA
 // -----------------------------------------------------------------------------
 const cacheName = "app-" + "{{.Version}}";
-const resourcesToCache = {{.ResourcesToCache}};
+const resourcesToCache = "{{.ResourcesToCache}}";
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     try {
-      console.log("installing app worker {{.Version}}");
+      console.log("installing app worker " + "{{.Version}}");
       await installWorker();
       await self.skipWaiting();
     } catch (error) {
@@ -27,7 +27,7 @@ self.addEventListener("activate", (event) => {
     try {
       await deletePreviousCaches();
       await self.clients.claim();
-      console.log("app worker {{.Version}} is activated");
+      console.log("app worker " + "{{.Version}}" + " is activated");
     } catch (error) {
       console.error("error during activation:", error);
       throw error;

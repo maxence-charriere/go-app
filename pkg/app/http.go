@@ -318,14 +318,14 @@ func (h *Handler) makeAppJS() []byte {
 		}
 	}
 
-	s := appJS
-	s = strings.ReplaceAll(s, "{{.Env}}", jsonString(h.Env))
-	s = strings.ReplaceAll(s, "{{.LoadingLabel}}", h.LoadingLabel)
-	s = strings.ReplaceAll(s, "{{.Wasm}}", h.Resources.Resolve("/web/app.wasm"))
-	s = strings.ReplaceAll(s, "{{.WasmContentLength}}", h.WasmContentLength)
-	s = strings.ReplaceAll(s, "{{.WasmContentLengthHeader}}", h.WasmContentLengthHeader)
-	s = strings.ReplaceAll(s, "{{.WorkerJS}}", h.Resources.Resolve("/app-worker.js"))
-	return []byte(s)
+	return []byte(strings.NewReplacer(
+		`"{{.Env}}"`, jsonString(h.Env),
+		`"{{.LoadingLabel}}"`, jsonString(h.LoadingLabel),
+		`"{{.Wasm}}"`, jsonString(h.Resources.Resolve("/web/app.wasm")),
+		`"{{.WasmContentLength}}"`, jsonString(h.WasmContentLength),
+		`"{{.WasmContentLengthHeader}}"`, jsonString(h.WasmContentLengthHeader),
+		`"{{.WorkerJS}}"`, jsonString(h.Resources.Resolve("/app-worker.js")),
+	).Replace(appJS))
 }
 
 func (h *Handler) makeAppWorkerJS() []byte {
@@ -359,10 +359,12 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) > 0
 	})
 
-	s := h.ServiceWorkerTemplate
-	s = strings.ReplaceAll(s, "{{.Version}}", h.Version)
-	s = strings.ReplaceAll(s, "{{.ResourcesToCache}}", jsonString(resourcesTocache))
-	return []byte(s)
+	return []byte(strings.NewReplacer(
+		`"{{.Version}}"`, jsonString(h.Version),
+		"{{.Version}}", h.Version,
+		`"{{.ResourcesToCache}}"`, jsonString(resourcesTocache),
+		"{{.ResourcesToCache}}", jsonString(resourcesTocache),
+	).Replace(h.ServiceWorkerTemplate))
 }
 
 func (h *Handler) makeManifestJSON() []byte {

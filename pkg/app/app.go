@@ -1,5 +1,5 @@
 //go:generate go run gen/html.go
-//go:generate go run gen/scripts.go
+//go:generate go run gen/wasmexec.go
 //go:generate go fmt
 
 // Package app is a package to build progressive web apps (PWA) with Go
