@@ -223,10 +223,28 @@ func (ctx Context) Async(v func()) {
 }
 
 // After pauses for a determined span, then triggers a specified function.
+// The function is skipped if the context is canceled before it executes.
 func (ctx Context) After(d time.Duration, f func(Context)) {
 	ctx.async(func() {
-		time.Sleep(d)
-		ctx.Dispatch(f)
+		timer := time.NewTimer(d)
+		defer timer.Stop()
+
+		select {
+		case <-ctx.Done():
+			return
+
+		case <-timer.C:
+		}
+
+		if ctx.Err() != nil {
+			return
+		}
+
+		ctx.Dispatch(func(ctx Context) {
+			if ctx.Err() == nil && f != nil {
+				f(ctx)
+			}
+		})
 	})
 }
 

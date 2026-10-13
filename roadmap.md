@@ -256,6 +256,10 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
 - [ ] **12. Bind rendering and delayed work to request cancellation**
 
+  **Partial implementation:** `Context.After` now waits on a timer or context cancellation and checks cancellation again before enqueueing and inside the dispatched callback. Normal, zero/negative-duration, and nil callbacks retain their behavior. Request-context propagation and cancellation-aware engine enqueueing/consumption remain separate follow-up work.
+
+  **Validated:** The timer tests passed 20 runs under `-race`, along with the full native `pkg/app` race suite and `go vet ./pkg/app`. Tests cover cancellation before/after scheduling and after the callback is queued, and verify that tracked delayed workers finish without waiting for the original delay. The queued-callback regression fails against the previous implementation.
+
   **Impact:** Medium.
 
   **Files:** `pkg/app/http.go:618–639`, `pkg/app/context.go:226–230`, `pkg/app/engine.go:293–318,353–366`.
