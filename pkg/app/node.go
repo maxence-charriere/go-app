@@ -195,16 +195,12 @@ func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHan
 	})
 	v.JSValue().addEventListener(event, jsHandler, handler.options())
 
-	return eventHandler{
-		event:     event,
-		scope:     handler.scope,
-		goHandler: handler.goHandler,
-		jsHandler: jsHandler,
-		close: func() {
-			v.JSValue().removeEventListener(event, jsHandler)
-			jsHandler.Release()
-		},
+	handler.jsHandler = jsHandler
+	handler.close = func() {
+		v.JSValue().removeEventListener(event, jsHandler)
+		jsHandler.Release()
 	}
+	return handler
 }
 
 func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, error) {

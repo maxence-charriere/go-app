@@ -340,7 +340,11 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Unknown routes with validators, changed local files, page changes within one version, GET/HEAD and other methods, ETag lists/weak tags, generated assets, and legacy aliases. Measure any extra dynamic-page work.
 
-- [ ] **16. Retain passive options in mounted event metadata**
+- [x] **16. Retain passive options in mounted event metadata**
+
+  **Implemented:** Mounting attaches the JavaScript callback and cleanup function to the original handler record, preserving its passive option and scope. Unchanged passive listeners are retained, and both passive-option transitions replace the browser listener.
+
+  **Validated:** Regression tests fail against the previous implementation in native and browser runs. Tests cover unchanged passive/nonpassive updates, both transitions, listener add/remove counts, callback removal, and cancellation of synthetic wheel/touchmove events in the browser. The full native race suite, `go vet ./...`, and browser/WASM `pkg/app` suite pass. Three local darwin/arm64 benchmark runs show unchanged passive-event updates dropping from 400 B and 3 allocations per update to zero allocations.
 
   **Impact:** Medium.
 
