@@ -69,7 +69,6 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 				filename = "/index.html"
 			}
 
-			// Fetch before opening the file so a failed response cannot truncate it.
 			page, err := createStaticPage(server.URL + path)
 			if err != nil {
 				return errors.New("creating page failed").
@@ -77,6 +76,7 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 					WithTag("filename", filename).
 					Wrap(err)
 			}
+
 			f, err := createStaticFile(dir, filename)
 			if err != nil {
 				return errors.New("creating file failed").
