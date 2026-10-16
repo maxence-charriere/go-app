@@ -316,7 +316,13 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Versioned/unversioned static paths, both WASM aliases, escaped paths, queries, and custom/local resolvers. Assert the original request and URL are unchanged after handling.
 
-- [ ] **15. Evaluate conditional requests against the selected representation**
+- [x] **15. Evaluate conditional requests against the selected representation**
+
+  **Implemented:** Removed the global version check before routing. Generated PWA assets and library styles retain version ETags; static handlers own their validators. Pages use a SHA-256 ETag of the newly rendered HTML, with sorted HTML attributes for stable output. Successfully fetched proxy bodies store a content ETag alongside the cached response. `http.ServeContent` handles conditional headers, weak/list matching, HEAD bodies, precondition failures, and ranges after the representation is selected. Page responses are not cached by URL.
+
+  **Validated:** Regression tests reproduce the previous failures and cover missing resources, changed local files, custom validators, request-dependent pages within one version, GET/HEAD/POST/PUT, ETag lists/weak tags/wildcards, precondition precedence, ranges, generated assets, legacy aliases, and proxy cache misses/hits. The conditional tests pass 20 runs under `-race`; the full native race suite, `go vet ./...`, and browser/WASM `pkg/app` suite pass.
+
+  **Measured:** Three local darwin/arm64 benchmark runs on a small page measured normal GETs at roughly 14 µs before and 16 µs after. Content-conditional requests now take roughly 15 µs and render on every request; the previous version-only shortcut took roughly 0.3 µs but could return stale content. Matching content validators save response bytes, not rendering work.
 
   **Impact:** Medium.
 

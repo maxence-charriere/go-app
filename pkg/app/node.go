@@ -693,11 +693,18 @@ func (m nodeManager) encodeHTML(ctx Context, w *bytes.Buffer, depth int, v HTML)
 	m.encodeIndent(w, depth)
 	w.WriteByte('<')
 	w.WriteString(v.Tag())
-	for name, value := range v.attrs() {
-		m.encodeHTMLAttribute(ctx, w, name, value)
-	}
-	w.WriteByte('>')
 
+	attrs := v.attrs()
+	attrNames := make([]string, 0, len(attrs))
+	for attrName := range attrs {
+		attrNames = append(attrNames, attrName)
+	}
+	slices.Sort(attrNames)
+	for _, attrName := range attrNames {
+		m.encodeHTMLAttribute(ctx, w, attrName, attrs[attrName])
+	}
+
+	w.WriteByte('>')
 	if v.SelfClosing() {
 		return
 	}

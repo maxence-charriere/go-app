@@ -13,7 +13,9 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -980,6 +982,303 @@ func TestHandlerProxyResources(t *testing.T) {
 				}
 
 				require.Equal(t, u.body, string(body))
+			}
+		})
+	}
+}
+
+type conditionalTestLibrary struct{}
+
+func (conditionalTestLibrary) Styles() (string, string) {
+	return "/conditional-library.css", "body { color: red; }"
+}
+
+func conditionalRequest(h http.Handler, method, path, etag string) *httptest.ResponseRecorder {
+	r := httptest.NewRequest(method, path, nil)
+	if etag != "" {
+		r.Header.Set("If-None-Match", etag)
+	}
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, r)
+	return w
+}
+
+func TestHandlerConditionalGeneratedResources(t *testing.T) {
+	h := &Handler{Version: "conditional", Libraries: []Library{conditionalTestLibrary{}}}
+	for _, path := range []string{
+		"/wasm_exec.js", "/app.js", "/goapp.js", "/app-worker.js", "/app.css",
+		"/manifest.webmanifest", "/manifest.json", "/conditional-library.css", "/conditional/app.js",
+	} {
+		t.Run(path, func(t *testing.T) {
+			initial := conditionalRequest(h, http.MethodGet, path, "")
+			require.Equal(t, http.StatusOK, initial.Code)
+			require.NotEmpty(t, initial.Body.String())
+			require.Equal(t, `"conditional"`, initial.Header().Get("ETag"))
+			for _, method := range []string{http.MethodGet, http.MethodHead, http.MethodPost, http.MethodPut} {
+				for _, condition := range []struct {
+					name  string
+					value string
+					match bool
+				}{
+					{"unconditional", "", false},
+					{"matching", `"conditional"`, true},
+					{"weak", `W/"conditional"`, true},
+					{"list", `"other,tag", W/"conditional", "last"`, true},
+					{"wildcard", "*", true},
+					{"different", `"different"`, false},
+					{"invalid", "conditional", false},
+				} {
+					t.Run(method+"/"+condition.name, func(t *testing.T) {
+						w := conditionalRequest(h, method, path, condition.value)
+						status := http.StatusOK
+						if condition.match {
+							status = http.StatusPreconditionFailed
+							if method == http.MethodGet || method == http.MethodHead {
+								status = http.StatusNotModified
+							}
+						}
+						require.Equal(t, status, w.Code)
+						require.Equal(t, initial.Header().Get("ETag"), w.Header().Get("ETag"))
+						if status != http.StatusOK || method == http.MethodHead {
+							require.Empty(t, w.Body.String())
+						} else {
+							require.Equal(t, initial.Body.String(), w.Body.String())
+						}
+						if status == http.StatusOK {
+							require.Equal(t, strconv.Itoa(initial.Body.Len()), w.Header().Get("Content-Length"))
+						} else {
+							require.Empty(t, w.Header().Get("Content-Length"))
+						}
+						if status == http.StatusNotModified {
+							require.Empty(t, w.Header().Get("Content-Type"))
+						}
+					})
+				}
+			}
+		})
+	}
+}
+
+func TestHandlerConditionalMissingResources(t *testing.T) {
+	h := &Handler{Version: "conditional", Resources: LocalDir(t.TempDir())}
+	for _, path := range []string{"/conditional-missing-page", "/web/missing.txt", "/app.wasm", "/goapp.wasm", "/conditional/web/missing.txt"} {
+		for _, etag := range []string{`"conditional"`, `W/"conditional"`, "*"} {
+			t.Run(path+"/"+etag, func(t *testing.T) {
+				w := conditionalRequest(h, http.MethodGet, path, etag)
+				require.Equal(t, http.StatusNotFound, w.Code)
+				require.Empty(t, w.Header().Get("ETag"))
+			})
+		}
+	}
+}
+
+func TestHandlerConditionalPrecedenceAndRanges(t *testing.T) {
+	h := &Handler{Version: "conditional"}
+	initial := conditionalRequest(h, http.MethodGet, "/app.css", "")
+	for _, test := range []struct {
+		name   string
+		header http.Header
+		status int
+		body   string
+	}{
+		{"failed If-Match precedes If-None-Match", http.Header{
+			"If-Match": {`"different"`}, "If-None-Match": {`"conditional"`},
+		}, http.StatusPreconditionFailed, ""},
+		{"weak If-Match does not match", http.Header{
+			"If-Match": {`W/"conditional"`},
+		}, http.StatusPreconditionFailed, ""},
+		{"If-None-Match precedes range", http.Header{
+			"If-None-Match": {`"conditional"`}, "Range": {"bytes=0-3"},
+		}, http.StatusNotModified, ""},
+		{"matching If-Range", http.Header{
+			"If-Range": {`"conditional"`}, "Range": {"bytes=0-3"},
+		}, http.StatusPartialContent, initial.Body.String()[:4]},
+		{"different If-Range", http.Header{
+			"If-Range": {`"different"`}, "Range": {"bytes=0-3"},
+		}, http.StatusOK, initial.Body.String()},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			r := httptest.NewRequest(http.MethodGet, "/app.css", nil)
+			r.Header = test.header
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.Equal(t, test.status, w.Code)
+			require.Equal(t, test.body, w.Body.String())
+		})
+	}
+}
+
+func TestHandlerConditionalLocalResources(t *testing.T) {
+	directory := t.TempDir()
+	require.NoError(t, os.Mkdir(filepath.Join(directory, "web"), 0700))
+	file := filepath.Join(directory, "web", "app.wasm")
+	oldTime := time.Now().Add(-time.Hour).Truncate(time.Second)
+	for _, path := range []string{"/web/app.wasm", "/app.wasm", "/goapp.wasm", "/conditional/web/app.wasm", "/conditional/goapp.wasm"} {
+		t.Run(path, func(t *testing.T) {
+			require.NoError(t, os.WriteFile(file, []byte("first"), 0600))
+			require.NoError(t, os.Chtimes(file, oldTime, oldTime))
+			h := &Handler{Version: "conditional", Resources: LocalDir(directory)}
+			initial := conditionalRequest(h, http.MethodGet, path, `"conditional"`)
+			require.Equal(t, http.StatusOK, initial.Code)
+			require.Equal(t, "first", initial.Body.String())
+			require.Empty(t, initial.Header().Get("ETag"))
+			require.NotEmpty(t, initial.Header().Get("Last-Modified"))
+			r := httptest.NewRequest(http.MethodGet, path, nil)
+			r.Header.Set("If-Modified-Since", initial.Header().Get("Last-Modified"))
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.Equal(t, http.StatusNotModified, w.Code)
+			require.NoError(t, os.WriteFile(file, []byte("changed"), 0600))
+			newTime := oldTime.Add(time.Minute)
+			require.NoError(t, os.Chtimes(file, newTime, newTime))
+			w = httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.Equal(t, http.StatusOK, w.Code)
+			require.Equal(t, "changed", w.Body.String())
+		})
+	}
+}
+
+func TestHandlerConditionalCustomResource(t *testing.T) {
+	calls := 0
+	h := &Handler{Version: "conditional", Resources: forwardingTestResolver{http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls++
+		w.Header().Set("ETag", `"resource"`)
+		http.ServeContent(w, r, "", time.Time{}, strings.NewReader("resource"))
+	})}}
+	for _, path := range []string{"/web/file.txt", "/conditional/web/file.txt", "/app.wasm", "/goapp.wasm"} {
+		w := conditionalRequest(h, http.MethodGet, path, `"conditional"`)
+		require.Equal(t, http.StatusOK, w.Code)
+		require.Equal(t, "resource", w.Body.String())
+		w = conditionalRequest(h, http.MethodGet, path, `W/"resource"`)
+		require.Equal(t, http.StatusNotModified, w.Code)
+	}
+	require.Equal(t, 8, calls)
+}
+
+func TestHandlerConditionalPage(t *testing.T) {
+	type titleKey struct{}
+	const path = "/conditional-page-test"
+	renders := 0
+	Route(path, func() Composer {
+		return &requestContextTestCompo{onPreRender: func(ctx Context) {
+			renders++
+			ctx.Page().SetTitle(ctx.Value(titleKey{}).(string))
+		}}
+	})
+	t.Cleanup(func() {
+		routes.mu.Lock()
+		defer routes.mu.Unlock()
+		delete(routes.routes, path)
+	})
+	h := &Handler{Version: "conditional"}
+	request := func(method, title, etag string) *httptest.ResponseRecorder {
+		r := httptest.NewRequest(method, path, nil)
+		r = r.WithContext(context.WithValue(r.Context(), titleKey{}, title))
+		r.Header.Set("If-None-Match", etag)
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		return w
+	}
+	initial := request(http.MethodGet, "first", `"conditional"`)
+	require.Equal(t, http.StatusOK, initial.Code)
+	require.Contains(t, initial.Body.String(), "<title>first</title>")
+	etag := initial.Header().Get("ETag")
+	require.NotEmpty(t, etag)
+	require.NotEqual(t, `"conditional"`, etag)
+	w := request(http.MethodGet, "first", `"other", W/`+etag)
+	require.Equal(t, http.StatusNotModified, w.Code)
+	require.Empty(t, w.Body.String())
+	w = request(http.MethodHead, "first", etag)
+	require.Equal(t, http.StatusNotModified, w.Code)
+	require.Empty(t, w.Body.String())
+	w = request(http.MethodHead, "second", etag)
+	require.Equal(t, http.StatusOK, w.Code)
+	require.NotEqual(t, etag, w.Header().Get("ETag"))
+	require.Empty(t, w.Body.String())
+	w = request(http.MethodGet, "second", etag)
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Contains(t, w.Body.String(), "<title>second</title>")
+	w = request(http.MethodPost, "first", etag)
+	require.Equal(t, http.StatusPreconditionFailed, w.Code)
+	require.Empty(t, w.Body.String())
+	require.Equal(t, 6, renders, "each request must render its own representation")
+}
+
+func TestHandlerConditionalProxyResource(t *testing.T) {
+	var fetches atomic.Int32
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fetches.Add(1)
+		if r.URL.Path != "/web/proxy.txt" {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "text/plain")
+		io.WriteString(w, "proxy content")
+	}))
+	defer upstream.Close()
+	h := &Handler{
+		Version: "conditional", Resources: RemoteBucket(upstream.URL),
+		ProxyResources: []ProxyResource{{Path: "/proxy.txt", ResourcePath: "/web/proxy.txt"}},
+	}
+	initial := conditionalRequest(h, http.MethodGet, "/conditional/proxy.txt", `"conditional"`)
+	require.Equal(t, http.StatusOK, initial.Code)
+	require.Equal(t, "proxy content", initial.Body.String())
+	etag := initial.Header().Get("ETag")
+	require.NotEmpty(t, etag)
+	require.NotEqual(t, `"conditional"`, etag)
+	for _, method := range []string{http.MethodGet, http.MethodHead, http.MethodPost} {
+		w := conditionalRequest(h, method, "/proxy.txt", `W/`+etag)
+		status := http.StatusNotModified
+		if method == http.MethodPost {
+			status = http.StatusPreconditionFailed
+		}
+		require.Equal(t, status, w.Code)
+		require.Empty(t, w.Body.String())
+	}
+	require.EqualValues(t, 1, fetches.Load())
+	for _, etag := range []string{`"conditional"`, "*"} {
+		w := conditionalRequest(h, http.MethodGet, "/robots.txt", etag)
+		require.Equal(t, http.StatusNotFound, w.Code)
+		require.Empty(t, w.Header().Get("ETag"))
+	}
+	// Even a wildcard must first establish that the uncached resource exists.
+	h = &Handler{
+		Version: "conditional", Resources: RemoteBucket(upstream.URL),
+		ProxyResources: []ProxyResource{{Path: "/proxy.txt", ResourcePath: "/web/proxy.txt"}},
+	}
+	before := fetches.Load()
+	w := conditionalRequest(h, http.MethodGet, "/proxy.txt", "*")
+	require.Equal(t, http.StatusNotModified, w.Code)
+	require.Equal(t, before+1, fetches.Load())
+	require.Equal(t, etag, w.Header().Get("ETag"))
+}
+
+func BenchmarkHandlerConditionalPage(b *testing.B) {
+	h := &Handler{Version: "conditional"}
+	initial := conditionalRequest(h, http.MethodGet, "/", "")
+	require.Equal(b, http.StatusOK, initial.Code)
+	require.Contains(b, initial.Body.String(), "pre-render-ok")
+	for _, condition := range []struct {
+		name string
+		etag string
+	}{
+		{"unconditional", ""},
+		{"version", `"conditional"`},
+		{"content", initial.Header().Get("ETag")},
+	} {
+		b.Run(condition.name, func(b *testing.B) {
+			status := http.StatusOK
+			if condition.name == "content" {
+				status = http.StatusNotModified
+			}
+			require.Equal(b, status, conditionalRequest(h, http.MethodGet, "/", condition.etag).Code)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
+			r.Header.Set("If-None-Match", condition.etag)
+			b.ReportAllocs()
+			for b.Loop() {
+				w := httptest.NewRecorder()
+				h.ServeHTTP(w, r)
 			}
 		})
 	}

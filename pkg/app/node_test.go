@@ -1346,6 +1346,13 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 }
 
 func TestNodeManagerEncode(t *testing.T) {
+	t.Run("stable attribute order", func(t *testing.T) {
+		var m nodeManager
+		var b bytes.Buffer
+		m.Encode(makeTestContext(), &b, Div().Title("title").ID("id").Class("class"))
+		require.Equal(t, `<div class="class" id="id" title="title"></div>`, b.String())
+	})
+
 	t.Run("encode indent with no depth", func(t *testing.T) {
 		var m nodeManager
 		var b bytes.Buffer

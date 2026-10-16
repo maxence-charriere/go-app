@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,7 +12,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -270,30 +270,35 @@ func (h *Handler) initPWAResources() {
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
+		ETag:        h.etag,
 		ContentType: "application/javascript",
 		Body:        []byte(wasmExecJS()),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.js",
+		ETag:        h.etag,
 		ContentType: "application/javascript",
 		Body:        h.makeAppJS(),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app-worker.js",
+		ETag:        h.etag,
 		ContentType: "application/javascript",
 		Body:        h.makeAppWorkerJS(),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/manifest.webmanifest",
+		ETag:        h.etag,
 		ContentType: "application/manifest+json",
 		Body:        h.makeManifestJSON(),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.css",
+		ETag:        h.etag,
 		ContentType: "text/css",
 		Body:        []byte(appCSS),
 	})
@@ -484,13 +489,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.once.Do(h.init)
 
 	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("ETag", h.etag)
-
-	etag := r.Header.Get("If-None-Match")
-	if etag == h.etag {
-		w.WriteHeader(http.StatusNotModified)
-		return
-	}
 
 	path := r.URL.Path
 	if strings.HasPrefix(path, "/"+h.Version+"/") {
@@ -521,7 +519,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if res, ok := h.cachedPWAResources.Get(path); ok {
-		h.serveCachedItem(w, res)
+		h.serveCachedItem(w, r, res)
 		return
 	}
 
@@ -549,16 +547,19 @@ func requestWithPath(r *http.Request, path string) *http.Request {
 	return &r2
 }
 
-func (h *Handler) serveCachedItem(w http.ResponseWriter, i cacheItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(i.Len()))
+func (h *Handler) serveCachedItem(w http.ResponseWriter, r *http.Request, i cacheItem) {
 	w.Header().Set("Content-Type", i.ContentType)
+	w.Header().Set("ETag", i.ETag)
 
 	if i.ContentEncoding != "" {
 		w.Header().Set("Content-Encoding", i.ContentEncoding)
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write(i.Body)
+	http.ServeContent(w, r, "", time.Time{}, bytes.NewReader(i.Body))
+}
+
+func contentETag(body []byte) string {
+	return fmt.Sprintf(`"%x"`, sha256.Sum256(body))
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
@@ -576,7 +577,7 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 	}
 
 	if i, ok := h.cachedProxyResources.Get(resource.Path); ok {
-		h.serveCachedItem(w, i)
+		h.serveCachedItem(w, r, i)
 		return
 	}
 
@@ -614,10 +615,11 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		Path:            resource.Path,
 		ContentType:     res.Header.Get("Content-Type"),
 		ContentEncoding: res.Header.Get("Content-Encoding"),
+		ETag:            contentETag(body),
 		Body:            body,
 	}
 	h.cachedProxyResources.Set(item)
-	h.serveCachedItem(w, item)
+	h.serveCachedItem(w, r, item)
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
@@ -813,15 +815,16 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")
-	w.Write(b.Bytes())
+	// Pages can vary between requests even when the application version is unchanged.
+	w.Header().Set("ETag", contentETag(b.Bytes()))
+	http.ServeContent(w, r, "", time.Time{}, bytes.NewReader(b.Bytes()))
 }
 
 func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library []byte) {
-	w.Header().Set("Content-Length", strconv.Itoa(len(library)))
 	w.Header().Set("Content-Type", "text/css")
-	w.Write(library)
+	w.Header().Set("ETag", h.etag)
+	http.ServeContent(w, r, "", time.Time{}, bytes.NewReader(library))
 }
 
 // Icon represents a square image utilized in various contexts, such as the
