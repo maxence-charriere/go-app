@@ -5,7 +5,9 @@ import (
 	"context"
 	"net/url"
 	"os"
+	"runtime"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -215,6 +217,97 @@ func TestEngineExternalNavigation(t *testing.T) {
 	})
 }
 
+func TestEngineQueueCancellation(t *testing.T) {
+	for _, queueTest := range []struct {
+		name    string
+		queue   func(*engineX) chan func()
+		enqueue func(*engineX, func())
+	}{
+		{"dispatch", func(e *engineX) chan func() { return e.dispatches }, (*engineX).dispatch},
+		{"defer", func(e *engineX) chan func() { return e.defers }, (*engineX).defere},
+	} {
+		t.Run(queueTest.name, func(t *testing.T) {
+			for _, test := range []struct {
+				name         string
+				full         bool
+				cancelBefore bool
+				cancelDuring bool
+			}{
+				{name: "enqueue normally"},
+				{name: "wait for queue space", full: true},
+				{name: "already canceled", cancelBefore: true},
+				{name: "already canceled with full queue", full: true, cancelBefore: true},
+				{name: "cancel sender with full queue", full: true, cancelDuring: true},
+			} {
+				t.Run(test.name, func(t *testing.T) {
+					ctx, cancel := context.WithCancel(context.Background())
+					e := &engineX{
+						ctx:        ctx,
+						dispatches: make(chan func(), 1),
+						defers:     make(chan func(), 1),
+					}
+					queue := queueTest.queue(e)
+					t.Cleanup(func() {
+						cancel()
+						// Release the sender even if a broken implementation ignores cancellation.
+						select {
+						case <-queue:
+						default:
+						}
+					})
+					var calls []int
+					if test.full {
+						queue <- func() { calls = append(calls, 1) }
+					}
+					if test.cancelBefore {
+						cancel()
+					}
+
+					started := make(chan struct{})
+					e.async(func() {
+						close(started)
+						queueTest.enqueue(e, func() { calls = append(calls, 2) })
+					})
+					<-started
+					if test.cancelDuring {
+						cancel()
+					} else if test.full && !test.cancelBefore {
+						(<-queue)()
+					}
+
+					finished := make(chan struct{})
+					go func() {
+						e.waitAsync(context.Background())
+						close(finished)
+					}()
+					select {
+					case <-finished:
+					case <-time.After(5 * time.Second):
+						t.Fatal("queue sender did not finish")
+					}
+
+					if test.cancelBefore || test.cancelDuring {
+						if test.full {
+							require.Len(t, queue, 1)
+							(<-queue)()
+							require.Equal(t, []int{1}, calls)
+						}
+						require.Empty(t, queue)
+						return
+					}
+					require.Len(t, queue, 1)
+					(<-queue)()
+					if test.full {
+						require.Equal(t, []int{1, 2}, calls)
+					} else {
+						require.Equal(t, []int{2}, calls)
+					}
+				})
+			}
+		})
+	}
+}
+
 func TestEngineAsync(t *testing.T) {
 	e := newTestEngine()
 
@@ -223,8 +316,133 @@ func TestEngineAsync(t *testing.T) {
 		called = true
 	})
 
-	e.goroutines.Wait()
+	e.waitAsync(context.Background())
 	require.True(t, called)
+}
+
+func TestEngineAsyncCompletion(t *testing.T) {
+	e := newTestEngine()
+	for range 3 {
+		called := false
+		e.async(func() {
+			e.async(func() { called = true })
+			runtime.Goexit()
+		})
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		completed := e.waitAsync(ctx)
+		cancel()
+		require.True(t, completed, "nested work must complete even when its parent exits with Goexit")
+		require.True(t, called)
+	}
+}
+
+func TestEngineConsumeCancellation(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		consume func(*engineX)
+	}{
+		{"next", (*engineX).ConsumeNext},
+		{"all", (*engineX).ConsumeAll},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			t.Run("pending async work", func(t *testing.T) {
+				e := newTestEngine()
+				ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+				e.ctx = ctx
+				release := make(chan struct{})
+				e.async(func() { <-release })
+				finished := make(chan struct{})
+				t.Cleanup(func() {
+					cancel()
+					close(release)
+					cleanup, stop := context.WithTimeout(context.Background(), 5*time.Second)
+					defer stop()
+					require.True(t, e.waitAsync(cleanup))
+				})
+				go func() {
+					test.consume(e)
+					close(finished)
+				}()
+				select {
+				case <-finished:
+				case <-time.After(5 * time.Second):
+					t.Fatal("consumption did not stop while async work was still pending")
+				}
+			})
+
+			for _, when := range []string{"before consumption", "in dispatch", "in defer"} {
+				t.Run(when, func(t *testing.T) {
+					e := newTestEngine()
+					ctx, cancel := context.WithCancel(context.Background())
+					defer cancel()
+					e.ctx = ctx
+					var calls []string
+					e.dispatch(func() {
+						calls = append(calls, "dispatch")
+						if when == "in dispatch" {
+							cancel()
+						}
+					})
+					if when != "in defer" {
+						e.dispatch(func() { calls = append(calls, "unexpected dispatch") })
+					}
+					e.defere(func() {
+						calls = append(calls, "defer")
+						cancel()
+					})
+					e.defere(func() { calls = append(calls, "unexpected defer") })
+					if when == "before consumption" {
+						cancel()
+					}
+					test.consume(e)
+					switch when {
+					case "before consumption":
+						require.Empty(t, calls)
+					case "in dispatch":
+						require.Equal(t, []string{"dispatch"}, calls)
+					case "in defer":
+						require.Equal(t, []string{"dispatch", "defer"}, calls)
+					}
+				})
+			}
+		})
+	}
+}
+
+func TestEngineConsumeNextEmptyQueueCancellation(t *testing.T) {
+	e := newTestEngine()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	defer cancel()
+	e.ctx = ctx
+	finished := make(chan struct{})
+	go func() {
+		e.ConsumeNext()
+		close(finished)
+	}()
+	select {
+	case <-finished:
+	case <-time.After(5 * time.Second):
+		t.Fatal("consumption did not stop with an empty dispatch queue")
+	}
+}
+
+func TestEngineConsumeAsyncDispatches(t *testing.T) {
+	e := newTestEngine()
+	var calls []int
+	e.async(func() {
+		e.async(func() {
+			e.dispatch(func() {
+				calls = append(calls, 1)
+				e.async(func() {
+					e.dispatch(func() { calls = append(calls, 2) })
+				})
+			})
+		})
+	})
+	e.ConsumeNext()
+	require.Equal(t, []int{1}, calls)
+	e.ConsumeAll()
+	require.Equal(t, []int{1, 2}, calls)
 }
 
 func TestEngineStart(t *testing.T) {

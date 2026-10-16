@@ -462,7 +462,7 @@ func TestNormalizeEnvOptionName(t *testing.T) {
 func BenchmarkNormalizeOptionName(b *testing.B) {
 	s := "hello world- i great_lolYeahPORIGON\tbwa"
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		normalizeOptionName(s, "-")
 	}
 }

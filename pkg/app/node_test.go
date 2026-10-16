@@ -3,6 +3,8 @@ package app
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"net/url"
 	"reflect"
 	"sync"
 	"testing"
@@ -99,8 +101,223 @@ func TestFilterUIElems(t *testing.T) {
 	})
 }
 
+func TestFilterUIElemsSliceReuse(t *testing.T) {
+	a, b, c, d := Text("a"), Text("b"), Text("c"), Text("d")
+	selected := func(children ...UI) UI {
+		return IfSlice(true, func() []UI { return children })
+	}
+
+	for _, test := range []struct {
+		name     string
+		input    []UI
+		capacity int
+		want     []UI
+		reuse    bool
+		backing  []UI
+	}{
+		{"unchanged", []UI{a, b}, 2, []UI{a, b}, true, []UI{a, b}},
+		{"compact", []UI{nil, a, (*foo)(nil), b, nil}, 5, []UI{a, b}, true, []UI{a, b, nil, nil, nil}},
+		{"all nil", []UI{nil, (*foo)(nil)}, 2, []UI{}, true, []UI{nil, nil}},
+		{"selector fits", []UI{selected(a, b), c}, 4, []UI{a, b, c}, true, []UI{a, b, c}},
+		{"empty selector", []UI{a, selected(), b}, 3, []UI{a, b}, true, []UI{a, b, nil}},
+		{"expand then remove earlier nil", []UI{nil, selected(a, b), c}, 4, []UI{a, b, c}, true, []UI{a, b, c, nil}},
+		{"reuse after suffix shrinks", []UI{selected(a, b), nil, c}, 3, []UI{a, b, c}, true, []UI{a, b, c}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			// Spare slots beyond the highest used index must survive clearing.
+			storage := make([]UI, test.capacity+1)
+			for i := range storage {
+				storage[i] = d
+			}
+			input := storage[:len(test.input):test.capacity]
+			copy(input, test.input)
+			got := FilterUIElems(input...)
+			require.Equal(t, test.want, got)
+			require.Equal(t, test.reuse, filterSharesInput(got, input))
+			require.Equal(t, test.backing, storage[:len(test.backing)])
+			for _, elem := range storage[len(test.backing):] {
+				require.Same(t, d, elem)
+			}
+		})
+	}
+
+	t.Run("expand before removing earlier nils", func(t *testing.T) {
+		selector := selected(a, b)
+		input := []UI{nil, nil, selector}
+		got := FilterUIElems(input...)
+		require.Equal(t, []UI{a, b}, got)
+		require.False(t, filterSharesInput(got, input))
+		require.Equal(t, []UI{nil, nil, selector}, input)
+	})
+
+	t.Run("replacement grows after suffix compaction", func(t *testing.T) {
+		selector := selected(a, b, c)
+		input := []UI{selector, nil, d}
+		got := FilterUIElems(input...)
+		require.Equal(t, []UI{a, b, c, d}, got)
+		require.False(t, filterSharesInput(got, input))
+		require.Equal(t, []UI{selector, d, nil}, input)
+	})
+
+	t.Run("empty input returns nil even with capacity", func(t *testing.T) {
+		input := []UI{a}
+		require.Nil(t, FilterUIElems(input[:0]...))
+		require.Same(t, a, input[0])
+	})
+}
+
+func TestFilterUIElemsSelectors(t *testing.T) {
+	a, b, c := Text("a"), Text("b"), Text("c")
+	for _, test := range []struct {
+		name  string
+		build func() []UI
+		want  []UI
+	}{
+		{"read shared body before removing earlier nil", func() []UI {
+			input := []UI{nil, a, b, nil}
+			input[3] = IfSlice(true, func() []UI { return input[1:2] })
+			return input
+		}, []UI{a, b, a}},
+		{"body shares prefix", func() []UI {
+			input := []UI{a, b, nil, nil}
+			input[3] = IfSlice(true, func() []UI { return input[:2] })
+			return input
+		}, []UI{a, b, a, b}},
+		{"selectors share a body", func() []UI {
+			body := []UI{a, b}
+			selector := IfSlice(true, func() []UI { return body })
+			return []UI{selector, nil, selector, c}
+		}, []UI{a, b, a, b, c}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			require.Equal(t, test.want, FilterUIElems(test.build()...))
+		})
+	}
+
+	t.Run("nil selector pointers", func(t *testing.T) {
+		require.Equal(t, []UI{a}, FilterUIElems((*condition)(nil), a, (*rangeLoop)(nil)))
+	})
+
+	t.Run("nested constructors and sorted map range", func(t *testing.T) {
+		mapping := map[string]UI{"b": b, "a": a}
+		slice := []UI{nil, c}
+		got := Div().Body(If(true, func() UI {
+			return Range(mapping).Map(func(key string) UI {
+				return If(true, func() UI {
+					return mapping[key]
+				})
+			})
+		}), Range(slice).Slice(func(i int) UI {
+			return slice[i]
+		})).body()
+		require.Equal(t, []UI{a, b, c}, got)
+	})
+}
+
+func filterSharesInput(result, input []UI) bool {
+	return cap(result) != 0 && cap(input) != 0 && &result[:cap(result)][0] == &input[:cap(input)][0]
+}
+
+func FuzzFilterUIElems(f *testing.F) {
+	f.Add([]byte{0, 1, 2, 3, 4, 5, 6, 7}, uint8(0))
+	f.Add([]byte{0, 0, 4}, uint8(0))
+	f.Add([]byte{4, 0, 2}, uint8(8))
+	f.Add([]byte{}, uint8(1))
+	f.Fuzz(func(t *testing.T, data []byte, spare uint8) {
+		if len(data) > 256 {
+			return
+		}
+		input := make([]UI, len(data), len(data)+int(spare))
+		want := make([]UI, 0)
+		for i, value := range data {
+			a, b := Text(i), Text(-i)
+			switch value % 8 {
+			case 0:
+			case 1:
+				input[i] = (*foo)(nil)
+			case 2:
+				input[i] = a
+				want = append(want, a)
+			case 3:
+				input[i] = If(false, nil)
+			case 4:
+				input[i] = IfSlice(true, func() []UI { return []UI{a, b} })
+				want = append(want, a, b)
+			case 5:
+				input[i] = Range([]UI{a, nil, b}).Slice(func(j int) UI { return []UI{a, nil, b}[j] })
+				want = append(want, a, b)
+			case 6:
+				input[i] = If(true, func() UI { return If(true, func() UI { return a }) })
+				want = append(want, a)
+			case 7:
+				input[i] = Range([]UI{}).Slice(func(int) UI { panic("empty range") })
+			}
+		}
+		got := FilterUIElems(input...)
+		require.Equal(t, len(input) == 0, got == nil)
+		require.Len(t, got, len(want))
+		for i := range want {
+			require.Same(t, want[i], got[i])
+		}
+	})
+}
+
+func BenchmarkFilterUIElemsScaling(b *testing.B) {
+	for _, size := range []int{100, 1000, 10000} {
+		for _, workload := range []string{"flat", "nil", "typed-nil", "empty-selectors", "single-selectors", "expanding-selectors", "expanding-ranges"} {
+			b.Run(fmt.Sprintf("%s/%d", workload, size), func(b *testing.B) {
+				child := Text("child")
+				selector := IfSlice(true, func() []UI { return []UI{child, child, child} })
+				single := If(true, func() UI { return child })
+				rangeLoop := Range([]int{0, 1, 2}).Slice(func(int) UI { return child })
+				input := make([]UI, size)
+				for i := range input {
+					input[i] = child
+					if i%2 == 0 {
+						switch workload {
+						case "nil":
+							input[i] = nil
+						case "typed-nil":
+							input[i] = (*foo)(nil)
+						case "empty-selectors":
+							input[i] = If(false, nil)
+						case "single-selectors":
+							input[i] = single
+						case "expanding-selectors":
+							input[i] = selector
+						case "expanding-ranges":
+							input[i] = rangeLoop
+						}
+					}
+				}
+				working := make([]UI, size)
+				copy(working, input)
+				wantCount := size
+				switch workload {
+				case "nil", "typed-nil", "empty-selectors":
+					wantCount = size / 2
+				case "expanding-selectors", "expanding-ranges":
+					wantCount = size * 2
+				}
+				got := FilterUIElems(working...)
+				require.Len(b, got, wantCount)
+				for _, elem := range got {
+					require.Same(b, child, elem)
+				}
+				b.ReportAllocs()
+
+				for b.Loop() {
+					// Include the same reset copy in baseline and optimized runs.
+					copy(working, input)
+					FilterUIElems(working...)
+				}
+			})
+		}
+	}
+}
+
 func BenchmarkFilterUIElems(b *testing.B) {
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		FilterUIElems(Div().
 			Class("shell").
 			Body(
@@ -156,6 +373,237 @@ func TestPrintHTML(t *testing.T) {
 	var b bytes.Buffer
 	PrintHTML(&b, Div())
 	require.Equal(t, "<div></div>", b.String())
+}
+
+func TestHTMLSerializationOutput(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		ui   UI
+		want string
+	}{
+		{"nil", nil, ""},
+		{"text", Text("hello <world> & friends"), "hello &lt;world&gt; &amp; friends"},
+		{"raw", Raw("<b>raw</b>"), "<b>raw</b>"},
+		{"attribute", Div().Title(`a "quote" & more`), `<div title="a &#34;quote&#34; &amp; more"></div>`},
+		{"local resource", Img().Src("/web/image.png"), `<img src="/web/image.png">`},
+		{"remote resource", Img().Src("https://example.com/image.png"), `<img src="https://example.com/image.png">`},
+		{"resource query", A().Href("/web/file?a=1&b=2"), `<a href="/web/file?a=1&amp;b=2"></a>`},
+		{"boolean", Input().Disabled(true), `<input disabled>`},
+		{"false boolean", Input().Disabled(false), `<input>`},
+		{"indentation", Div().Body(Span().Text("one"), Span().Text("two")), "<div>\n  <span>one</span>\n  <span>two</span>\n</div>"},
+		{"component", &bar{Value: "component"}, "component"},
+		{"nested components", Div().Body(&foo{Bar: "nested"}), "<div>\n  nested\n</div>"},
+		{"empty component", &compoWithNilRendering{}, ""},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			require.Equal(t, test.want, HTMLString(test.ui))
+			var output bytes.Buffer
+			PrintHTML(&output, test.ui)
+			require.Equal(t, test.want, output.String())
+		})
+	}
+}
+
+func TestHTMLSerializationComponentLifecycle(t *testing.T) {
+	component := &bar{Value: "unmounted"}
+	require.Equal(t, "unmounted", HTMLString(component))
+	require.False(t, component.initialized)
+	require.False(t, component.Mounted())
+	require.Nil(t, component.root())
+
+	var nodes nodeManager
+	_, err := nodes.Mount(makeTestContext(), 1, component)
+	require.NoError(t, err)
+	defer nodes.Dismount(component)
+	root := component.root()
+	component.Value = "changed without rendering"
+	// Mounted components serialize their existing root, without rerendering.
+	require.Equal(t, "unmounted", HTMLString(component))
+	var output bytes.Buffer
+	PrintHTML(&output, component)
+	require.Equal(t, "unmounted", output.String())
+	require.Same(t, root, component.root())
+	require.True(t, component.Mounted())
+}
+
+func TestHTMLSerializationPreservesBrowserCallbacks(t *testing.T) {
+	if IsServer {
+		t.Skip("requires browser callbacks")
+	}
+	names := []string{"onclick", "onpopstate", "goappNav", "goappOnUpdate", "goappOnAppInstallChange", "onresize"}
+	previous := make(map[string]Value)
+	for _, name := range names {
+		previous[name] = Window().Get(name)
+	}
+	defer func() {
+		for _, name := range names {
+			Window().Set(name, previous[name])
+		}
+	}()
+
+	ctx := makeTestContext()
+	var destination string
+	ctx.navigate = func(u *url.URL, updateHistory bool) { destination = u.String() }
+	var browser browser
+	browser.HandleEvents(ctx, func(any) {})
+	defer func() {
+		for _, callback := range []Func{browser.anchorClick, browser.popState, browser.navigationFromJS,
+			browser.appUpdate, browser.appInstallChange, browser.appResize} {
+			callback.Release()
+		}
+	}()
+	active := make(map[string]Value)
+	for _, name := range names {
+		active[name] = Window().Get(name)
+	}
+
+	for _, print := range []bool{false, true} {
+		t.Run(fmt.Sprintf("PrintHTML=%v", print), func(t *testing.T) {
+			if print {
+				PrintHTML(io.Discard, Div())
+			} else {
+				HTMLString(Div())
+			}
+			for _, name := range names {
+				require.True(t, active[name].Equal(Window().Get(name)), "%s was replaced", name)
+			}
+			destination = ""
+			Window().Get("goappNav").Invoke("/serialization-test")
+			require.Equal(t, "/serialization-test", destination)
+		})
+	}
+}
+
+var htmlSerializationResult string
+
+func BenchmarkHTMLSerialization(b *testing.B) {
+	for _, count := range []int{1, 1000} {
+		children := make([]UI, count)
+		for i := range children {
+			children[i] = Span().Text("hello")
+		}
+		ui := Div().Body(children...)
+		b.Run(fmt.Sprintf("HTMLString/%d", count), func(b *testing.B) {
+			b.ReportAllocs()
+			for b.Loop() {
+				htmlSerializationResult = HTMLString(ui)
+			}
+		})
+		b.Run(fmt.Sprintf("PrintHTML/%d", count), func(b *testing.B) {
+			b.ReportAllocs()
+			for b.Loop() {
+				PrintHTML(io.Discard, ui)
+			}
+		})
+	}
+}
+
+type eventListenerCounter struct {
+	Value
+	adds    int
+	removes int
+}
+
+func (v *eventListenerCounter) addEventListener(event string, fn Func, options map[string]any) {
+	v.adds++
+	v.Value.addEventListener(event, fn, options)
+}
+
+func (v *eventListenerCounter) removeEventListener(event string, fn Func) {
+	v.removes++
+	v.Value.removeEventListener(event, fn)
+}
+
+func TestNodeManagerPassiveEventUpdates(t *testing.T) {
+	for _, event := range []string{"wheel", "touchmove"} {
+		for _, test := range []struct {
+			name    string
+			initial bool
+			next    bool
+		}{
+			{"unchanged nonpassive", false, false},
+			{"unchanged passive", true, true},
+			{"passive to nonpassive", true, false},
+			{"nonpassive to passive", false, true},
+		} {
+			t.Run(event+"/"+test.name, func(t *testing.T) {
+				var m nodeManager
+				ctx := makeTestContext()
+				elem, err := m.Mount(ctx, 1, Div())
+				require.NoError(t, err)
+				t.Cleanup(func() { m.Dismount(elem) })
+				counter := &eventListenerCounter{Value: elem.JSValue()}
+				elem.(HTML).setJSElement(counter)
+				calls := 0
+				handler := func(ctx Context, e Event) {
+					calls++
+					e.PreventDefault()
+				}
+				render := func(passive bool) HTMLDiv {
+					options := []EventOption{EventScope("passive-test")}
+					if passive {
+						options = append(options, PassiveEvent())
+					}
+					return Div().On(event, handler, options...)
+				}
+				dispatch := func(passive bool) {
+					if IsServer {
+						return
+					}
+					before := calls
+					e := Window().Get("Event").New(event, map[string]any{"cancelable": true})
+					elem.JSValue().Call("dispatchEvent", e)
+					require.Equal(t, before+1, calls)
+					require.Equal(t, !passive, e.Get("defaultPrevented").Bool())
+				}
+				elem, err = m.Update(ctx, elem, render(test.initial))
+				require.NoError(t, err)
+				require.Equal(t, 1, counter.adds)
+				require.Zero(t, counter.removes)
+				dispatch(test.initial)
+				newElement := render(test.next)
+				elem, err = m.Update(ctx, elem, newElement)
+				require.NoError(t, err)
+				adds := 1
+				if test.initial != test.next {
+					adds = 2
+				}
+				require.Equal(t, adds, counter.adds)
+				require.Equal(t, adds-1, counter.removes)
+				dispatch(test.next)
+				require.True(t, elem.(HTML).events()[event].Equal(newElement.(HTML).events()[event]))
+				// Repeating the new options must retain the mounted listener.
+				elem, err = m.Update(ctx, elem, render(test.next))
+				require.NoError(t, err)
+				require.Equal(t, adds, counter.adds)
+				require.Equal(t, adds-1, counter.removes)
+				elem, err = m.Update(ctx, elem, Div())
+				require.NoError(t, err)
+				require.Equal(t, adds, counter.removes)
+				if !IsServer {
+					before := calls
+					e := Window().Get("Event").New(event, map[string]any{"cancelable": true})
+					elem.JSValue().Call("dispatchEvent", e)
+					require.Equal(t, before, calls, "removed listeners must not run")
+				}
+			})
+		}
+	}
+}
+
+func BenchmarkNodeManagerPassiveEventUpdate(b *testing.B) {
+	var m nodeManager
+	ctx := makeTestContext()
+	handler := func(Context, Event) {}
+	elem, err := m.Mount(ctx, 1, Div().On("wheel", handler, PassiveEvent()))
+	require.NoError(b, err)
+	defer m.Dismount(elem)
+	newElement := Div().On("wheel", handler, PassiveEvent())
+	ctx = m.context(ctx, elem)
+	b.ReportAllocs()
+	for b.Loop() {
+		m.updateHTMLEventHandlers(ctx, elem.(HTML), newElement.(HTML).events())
+	}
 }
 
 func TestNodeManagerMount(t *testing.T) {
@@ -365,7 +813,7 @@ func BenchmarkNodeManagerMount(b *testing.B) {
 	var m nodeManager
 	ctx := makeTestContext()
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		m.Mount(ctx, 1, Div())
 	}
 }
@@ -465,7 +913,7 @@ func TestNodeManagerCanUpdate(t *testing.T) {
 
 func BenchmarkNodeManagerCanUpdate(b *testing.B) {
 	var m nodeManager
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		m.CanUpdate(Div(), Div())
 	}
 }
@@ -1006,6 +1454,13 @@ func TestNodeManagerNotifyComponentEvent(t *testing.T) {
 }
 
 func TestNodeManagerEncode(t *testing.T) {
+	t.Run("stable attribute order", func(t *testing.T) {
+		var m nodeManager
+		var b bytes.Buffer
+		m.Encode(makeTestContext(), &b, Div().Title("title").ID("id").Class("class"))
+		require.Equal(t, `<div class="class" id="id" title="title"></div>`, b.String())
+	})
+
 	t.Run("encode indent with no depth", func(t *testing.T) {
 		var m nodeManager
 		var b bytes.Buffer

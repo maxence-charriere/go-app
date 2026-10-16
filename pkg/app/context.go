@@ -216,17 +216,36 @@ func (ctx Context) Defer(v func(Context)) {
 	})
 }
 
-// Async initiates a function asynchronously. It enables go-app to monitor
-// goroutines, ensuring they conclude when rendering server-side.
+// Async initiates a function asynchronously. Server-side rendering waits for
+// tracked functions unless the context is canceled. Functions must observe
+// the context themselves to stop early.
 func (ctx Context) Async(v func()) {
 	ctx.async(v)
 }
 
 // After pauses for a determined span, then triggers a specified function.
+// The function is skipped if the context is canceled before it executes.
 func (ctx Context) After(d time.Duration, f func(Context)) {
 	ctx.async(func() {
-		time.Sleep(d)
-		ctx.Dispatch(f)
+		timer := time.NewTimer(d)
+		defer timer.Stop()
+
+		select {
+		case <-ctx.Done():
+			return
+
+		case <-timer.C:
+		}
+
+		if ctx.Err() != nil {
+			return
+		}
+
+		ctx.Dispatch(func(ctx Context) {
+			if ctx.Err() == nil && f != nil {
+				f(ctx)
+			}
+		})
 	})
 }
 

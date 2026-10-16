@@ -11,7 +11,7 @@ import (
 func BenchmarkMountHTMLElement(b *testing.B) {
 	var m nodeManager
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		m.Mount(makeTestContext(), 1, Div().
 			Class("shell").
 			Body(
@@ -47,7 +47,7 @@ func BenchmarkHTMLElementHTML(b *testing.B) {
 				}),
 		)
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		var bytes bytes.Buffer
 		m.Encode(makeTestContext(), &bytes, div)
 	}

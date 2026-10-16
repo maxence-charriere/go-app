@@ -1,4 +1,5 @@
 install:
+	cp "$$(go env GOROOT)/lib/wasm/wasm_exec.js" pkg/app/gen/wasm_exec.js
 	@echo "\033[94m• Setting up go test for wasm to run in the browser\033[00m"
 	go install github.com/agnivade/wasmbrowsertest@latest
 	mv `go env GOPATH`/bin/wasmbrowsertest `go env GOPATH`/bin/go_js_wasm_exec
