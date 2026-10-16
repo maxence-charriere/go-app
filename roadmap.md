@@ -362,7 +362,13 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Both passive transitions and unchanged passive updates; browser listener add/remove counts and cancelable wheel/touch behavior. Compare update allocations and retain existing option/equality tests.
 
-- [ ] **17. Bound file lifetimes and reject failed static-generation responses**
+- [x] **17. Bound file lifetimes and reject failed static-generation responses**
+
+  **Implemented:** Fetch and fully read an HTTP 200 response before opening its output file, preserving existing output on HTTP/status/read failures. Each file is written and closed before the next resource; short writes and write/close errors are returned, including both errors when writing and closing fail. Directory creation uses `MkdirAll` directly so filesystem errors are preserved. Existing filename/layout rules remain intact. Generation stops on error and retains already completed files; disk writes are not atomic.
+
+  **Validated:** Regression tests reproduce accepted error responses, swallowed directory failures, and accumulating output descriptors in the previous implementation. Fixtures now register valid pages and assert generated content. Tests cover 404/500 and incomplete responses, preservation of existing output, file/directory creation errors, injected short/write/close failures, and 128-route descriptor bounds. The full native race suite, `go vet ./...`, and browser/WASM `pkg/app` suite pass.
+
+  **Measured:** Local darwin/arm64 benchmarks for 100 and 1,000 routes sampled 3 extra descriptors during rendering after the fix, versus 109 and 1,009 before. The writer additionally holds at most one output file between requests. Single-iteration runs took approximately 15 ms and 107 ms after the fix, with sampled heap growth around 2–3 MB; these timings are illustrative, not a statistically established speedup.
 
   **Impact:** Medium.
 
