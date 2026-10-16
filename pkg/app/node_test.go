@@ -498,6 +498,114 @@ func BenchmarkHTMLSerialization(b *testing.B) {
 	}
 }
 
+type eventListenerCounter struct {
+	Value
+	adds    int
+	removes int
+}
+
+func (v *eventListenerCounter) addEventListener(event string, fn Func, options map[string]any) {
+	v.adds++
+	v.Value.addEventListener(event, fn, options)
+}
+
+func (v *eventListenerCounter) removeEventListener(event string, fn Func) {
+	v.removes++
+	v.Value.removeEventListener(event, fn)
+}
+
+func TestNodeManagerPassiveEventUpdates(t *testing.T) {
+	for _, event := range []string{"wheel", "touchmove"} {
+		for _, test := range []struct {
+			name    string
+			initial bool
+			next    bool
+		}{
+			{"unchanged nonpassive", false, false},
+			{"unchanged passive", true, true},
+			{"passive to nonpassive", true, false},
+			{"nonpassive to passive", false, true},
+		} {
+			t.Run(event+"/"+test.name, func(t *testing.T) {
+				var m nodeManager
+				ctx := makeTestContext()
+				elem, err := m.Mount(ctx, 1, Div())
+				require.NoError(t, err)
+				t.Cleanup(func() { m.Dismount(elem) })
+				counter := &eventListenerCounter{Value: elem.JSValue()}
+				elem.(HTML).setJSElement(counter)
+				calls := 0
+				handler := func(ctx Context, e Event) {
+					calls++
+					e.PreventDefault()
+				}
+				render := func(passive bool) HTMLDiv {
+					options := []EventOption{EventScope("passive-test")}
+					if passive {
+						options = append(options, PassiveEvent())
+					}
+					return Div().On(event, handler, options...)
+				}
+				dispatch := func(passive bool) {
+					if IsServer {
+						return
+					}
+					before := calls
+					e := Window().Get("Event").New(event, map[string]any{"cancelable": true})
+					elem.JSValue().Call("dispatchEvent", e)
+					require.Equal(t, before+1, calls)
+					require.Equal(t, !passive, e.Get("defaultPrevented").Bool())
+				}
+				elem, err = m.Update(ctx, elem, render(test.initial))
+				require.NoError(t, err)
+				require.Equal(t, 1, counter.adds)
+				require.Zero(t, counter.removes)
+				dispatch(test.initial)
+				newElement := render(test.next)
+				elem, err = m.Update(ctx, elem, newElement)
+				require.NoError(t, err)
+				adds := 1
+				if test.initial != test.next {
+					adds = 2
+				}
+				require.Equal(t, adds, counter.adds)
+				require.Equal(t, adds-1, counter.removes)
+				dispatch(test.next)
+				require.True(t, elem.(HTML).events()[event].Equal(newElement.(HTML).events()[event]))
+				// Repeating the new options must retain the mounted listener.
+				elem, err = m.Update(ctx, elem, render(test.next))
+				require.NoError(t, err)
+				require.Equal(t, adds, counter.adds)
+				require.Equal(t, adds-1, counter.removes)
+				elem, err = m.Update(ctx, elem, Div())
+				require.NoError(t, err)
+				require.Equal(t, adds, counter.removes)
+				if !IsServer {
+					before := calls
+					e := Window().Get("Event").New(event, map[string]any{"cancelable": true})
+					elem.JSValue().Call("dispatchEvent", e)
+					require.Equal(t, before, calls, "removed listeners must not run")
+				}
+			})
+		}
+	}
+}
+
+func BenchmarkNodeManagerPassiveEventUpdate(b *testing.B) {
+	var m nodeManager
+	ctx := makeTestContext()
+	handler := func(Context, Event) {}
+	elem, err := m.Mount(ctx, 1, Div().On("wheel", handler, PassiveEvent()))
+	require.NoError(b, err)
+	defer m.Dismount(elem)
+	newElement := Div().On("wheel", handler, PassiveEvent())
+	ctx = m.context(ctx, elem)
+	b.ReportAllocs()
+	for b.Loop() {
+		m.updateHTMLEventHandlers(ctx, elem.(HTML), newElement.(HTML).events())
+	}
+}
+
 func TestNodeManagerMount(t *testing.T) {
 	ctx := makeTestContext()
 
