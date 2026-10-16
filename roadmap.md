@@ -386,7 +386,11 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Many-route generation with bounded descriptor usage, injected 404/500/write/close/directory failures, and expected content assertions. Update existing fixtures to register valid pages. Benchmark large route sets and peak memory/descriptors.
 
-- [ ] **18. Validate reflective inputs and propagate CLI decoding failures**
+- [x] **18. Validate reflective inputs and propagate CLI decoding failures**
+
+  **Implemented:** Reject typed-nil option receivers and state source/receiver pointers before dereferencing them; check that state receivers can be set while preserving exact-type copies and untyped-nil resets. Environment decoding failures now return errors with option name, environment key, and expected type, omitting decoder messages that may expose values. Invalid environment values fail before flag parsing, even when a flag would override them; flags still override valid environment values. CLI loading prints ordinary parse errors and keeps help output free of error messages. The precedence policy is documented in the CLI README and `Load` documentation.
+
+  **Validated:** Regression tests reproduce the former reflection panic, ignored environment failures, and suppressed CLI diagnostics. Coverage includes nil and typed-nil inputs, pointer/value copies and type mismatches, scalar/duration/time/collection/nested environment failures, value redaction, valid overrides, invalid environment overrides, and help output. Environment tests restore previous values with `t.Setenv`. The full native race suite, `go vet ./...`, and browser/WASM `pkg/app` suite pass.
 
   **Impact:** Medium.
 
