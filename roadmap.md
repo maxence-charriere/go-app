@@ -294,7 +294,11 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Exact/regexp factories registering routes, concurrent registration/lookup/enumeration under `-race`, and existing routing precedence/static generation tests.
 
-- [ ] **14. Copy request URLs correctly when forwarding normalized paths**
+- [x] **14. Copy request URLs correctly when forwarding normalized paths**
+
+  **Implemented:** Static forwarding copies both the request and URL and passes the normalized path. Path rewrites clear stale `RawPath` while retaining query strings and request context. Both legacy WASM aliases forward `/web/app.wasm` directly to the configured resource handler, consistently with other static resources.
+
+  **Validated:** Regression tests reproduce the previous failures and cover versioned/unversioned resources, both WASM aliases, escaped paths, queries, custom handlers, absolute/relative local directories, and original-request preservation. The full native race suite, `go vet ./...`, and browser/WASM `pkg/app` suite pass.
 
   **Impact:** Medium.
 
