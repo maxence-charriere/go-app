@@ -9,6 +9,8 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -753,6 +755,111 @@ func TestHandlerServeAppWasm(t *testing.T) {
 			require.Equal(t, "application/wasm", w.Header().Get("Content-Type"))
 			require.Equal(t, http.StatusOK, w.Code)
 			require.Equal(t, "wasm!", w.Body.String())
+		})
+	}
+}
+
+type forwardingTestResolver struct {
+	http.Handler
+}
+
+func (forwardingTestResolver) Resolve(path string) string {
+	return "/assets" + path
+}
+
+func TestHandlerForwardResourceRequest(t *testing.T) {
+	for _, test := range []struct {
+		path string
+		want string
+	}{
+		{"/web/hello.txt", "/web/hello.txt"},
+		{"/audit/web/hello.txt", "/web/hello.txt"},
+		{"/web/hello%20world.txt", "/web/hello world.txt"},
+		{"/web/nested%2Fhello.txt", "/web/nested/hello.txt"},
+		{"/audit/web/hello%20world.txt", "/web/hello world.txt"},
+		{"/audit/web/nested%2Fhello.txt", "/web/nested/hello.txt"},
+		{"/%61udit/web/hello.txt", "/web/hello.txt"},
+		{"/app.wasm", "/web/app.wasm"},
+		{"/goapp.wasm", "/web/app.wasm"},
+		{"/audit/app.wasm", "/web/app.wasm"},
+		{"/audit/goapp.wasm", "/web/app.wasm"},
+		{"/audit/%61pp.wasm", "/web/app.wasm"},
+	} {
+		t.Run(test.path, func(t *testing.T) {
+			r := httptest.NewRequest(http.MethodGet, test.path+"?q=a%2Fb&x=1&x=2", nil)
+			type contextKey struct{}
+			r = r.WithContext(context.WithValue(r.Context(), contextKey{}, "request value"))
+			r.Header.Set("X-Test", "forwarded")
+			original := *r
+			originalURL := *r.URL
+			called := false
+			h := Handler{
+				Version: "audit",
+				Resources: forwardingTestResolver{http.HandlerFunc(func(w http.ResponseWriter, forwarded *http.Request) {
+					called = true
+					require.NotSame(t, r, forwarded)
+					require.NotSame(t, r.URL, forwarded.URL)
+					require.Equal(t, test.want, forwarded.URL.Path)
+					if forwarded.URL.RawPath != "" {
+						decoded, err := url.PathUnescape(forwarded.URL.RawPath)
+						require.NoError(t, err)
+						require.Equal(t, forwarded.URL.Path, decoded)
+					}
+					require.Equal(t, originalURL.RawQuery, forwarded.URL.RawQuery)
+					require.Equal(t, r.RequestURI, forwarded.RequestURI)
+					require.Equal(t, r.Host, forwarded.Host)
+					require.Equal(t, "forwarded", forwarded.Header.Get("X-Test"))
+					require.Equal(t, "request value", forwarded.Context().Value(contextKey{}))
+					forwarded.URL.Path = "/changed-by-handler"
+					forwarded.URL.RawQuery = "changed=true"
+					w.WriteHeader(http.StatusOK)
+				})},
+			}
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.True(t, called)
+			require.Equal(t, http.StatusOK, w.Code)
+			require.Equal(t, originalURL, *r.URL)
+			require.Equal(t, original, *r)
+		})
+	}
+}
+
+func TestHandlerForwardLocalResources(t *testing.T) {
+	directory := t.TempDir()
+	require.NoError(t, os.Mkdir(filepath.Join(directory, "web"), 0700))
+	for _, name := range []string{"hello.txt", "hello world.txt", "app.wasm"} {
+		require.NoError(t, os.WriteFile(filepath.Join(directory, "web", name), []byte(name), 0600))
+	}
+	workingDirectory, err := os.Getwd()
+	require.NoError(t, err)
+	relativeDirectory, err := filepath.Rel(workingDirectory, directory)
+	require.NoError(t, err)
+	for name, root := range map[string]string{"absolute": directory, "relative": relativeDirectory} {
+		t.Run(name, func(t *testing.T) {
+			h := Handler{Version: "audit", Resources: LocalDir(root)}
+			for _, prefix := range []string{"", "/audit"} {
+				for _, test := range []struct {
+					path string
+					body string
+				}{
+					{"/web/hello.txt", "hello.txt"},
+					{"/web/hello%20world.txt", "hello world.txt"},
+					{"/web/app.wasm", "app.wasm"},
+					{"/app.wasm", "app.wasm"},
+					{"/goapp.wasm", "app.wasm"},
+				} {
+					t.Run(prefix+test.path, func(t *testing.T) {
+						r := httptest.NewRequest(http.MethodGet, prefix+test.path+"?download=1", nil)
+						originalURL := *r.URL
+						w := httptest.NewRecorder()
+						h.ServeHTTP(w, r)
+						require.Equal(t, http.StatusOK, w.Code)
+						require.Equal(t, test.body, w.Body.String())
+						require.Equal(t, originalURL, *r.URL)
+					})
+				}
+			}
 		})
 	}
 }

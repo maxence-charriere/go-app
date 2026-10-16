@@ -499,7 +499,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fileHandler, isServingStaticResources := h.Resources.(http.Handler)
 	if isServingStaticResources && strings.HasPrefix(path, "/web/") {
-		fileHandler.ServeHTTP(w, r)
+		fileHandler.ServeHTTP(w, requestWithPath(r, path))
 		return
 	}
 
@@ -512,9 +512,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	case "/app.wasm", "/goapp.wasm":
 		if isServingStaticResources {
-			r2 := *r
-			r2.URL.Path = h.Resources.Resolve("/web/app.wasm")
-			fileHandler.ServeHTTP(w, &r2)
+			fileHandler.ServeHTTP(w, requestWithPath(r, "/web/app.wasm"))
 			return
 		}
 		w.WriteHeader(http.StatusNotFound)
@@ -538,6 +536,17 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.servePage(w, r)
+}
+
+func requestWithPath(r *http.Request, path string) *http.Request {
+	r2 := *r
+	u := *r.URL
+	r2.URL = &u
+	if u.Path != path {
+		u.Path = path
+		u.RawPath = ""
+	}
+	return &r2
 }
 
 func (h *Handler) serveCachedItem(w http.ResponseWriter, i cacheItem) {
