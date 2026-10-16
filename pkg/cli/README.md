@@ -5,6 +5,11 @@ Go package for building cli tool that can load program configuration from multip
 - command flags
 - Environment
 
+Environment values override struct defaults, and command flags override valid
+environment values. Invalid environment values stop loading before flags are
+parsed, even when a flag would override them. The error identifies the option,
+environment key, and expected type without printing the environment value.
+
 ## Usage
 
 Define a Go struct that uses field tags to describe a command configuration:

@@ -31,6 +31,10 @@ func (p *optionParser) parse(v interface{}) ([]option, error) {
 			WithTag("type", val.Type()).
 			WithTag("kind", val.Kind())
 	}
+	if val.IsNil() {
+		return nil, errors.New("receiver is a nil pointer").
+			WithTag("type", val.Type())
+	}
 
 	if val = val.Elem(); val.Kind() != reflect.Struct {
 		return nil, errors.New("receiver does not point to a struct").
@@ -38,7 +42,9 @@ func (p *optionParser) parse(v interface{}) ([]option, error) {
 			WithTag("kind", val.Kind())
 	}
 
-	p.parseStruct("", val)
+	if err := p.parseStruct("", val); err != nil {
+		return nil, err
+	}
 
 	for _, o := range p.options {
 		if o.name != "h" && o.name != "help" {
@@ -49,7 +55,7 @@ func (p *optionParser) parse(v interface{}) ([]option, error) {
 	return p.options, nil
 }
 
-func (p *optionParser) parseStruct(prefix string, v reflect.Value) {
+func (p *optionParser) parseStruct(prefix string, v reflect.Value) error {
 	for i := 0; i < v.NumField(); i++ {
 		fval := v.Field(i)
 		if !fval.CanSet() {
@@ -81,15 +87,24 @@ func (p *optionParser) parseStruct(prefix string, v reflect.Value) {
 		}
 
 		if envVal, ok := os.LookupEnv(envKey); ok && envKey != "-" {
-			o.Set(envVal)
+			if err := o.Set(envVal); err != nil {
+				// Decoder errors may include sensitive environment values.
+				return errors.New("decoding environment option failed").
+					WithTag("option-name", fname).
+					WithTag("env-key", envKey).
+					WithTag("type", fval.Type())
+			}
 		}
 
 		p.options = append(p.options, o)
 
 		if fval.Kind() == reflect.Struct {
-			p.parseStruct(fname, fval)
+			if err := p.parseStruct(fname, fval); err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }
 
 type option struct {

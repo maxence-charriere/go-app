@@ -74,6 +74,8 @@ func Register(cmd ...string) Command {
 
 // Load loads the registered command that matches the program args. If defined,
 // environment variables and flags are loaded in the command options.
+// Flags override valid environment values. Invalid environment values cause an
+// error before flags are parsed, even if a flag would override the value.
 //
 // It prints the command usage and exits the program with code -1 when an error
 // occurs.
@@ -82,7 +84,7 @@ func Load() (cmd string) {
 	currentUsage = usage
 
 	if err != nil {
-		if errors.Is(err, errNoRootCmd) && err != flag.ErrHelp {
+		if !errors.Is(err, flag.ErrHelp) {
 			printError(defaultManager.out, err)
 		}
 

@@ -79,6 +79,61 @@ func TestUsagePanic(t *testing.T) {
 	})
 }
 
+func TestLoadErrorOutput(t *testing.T) {
+	for _, tt := range []struct {
+		name       string
+		args       []string
+		env        string
+		noCommand  bool
+		nilOptions bool
+		message    string
+	}{
+		{name: "invalid flag value", args: []string{"-count", "invalid"}, message: "invalid value"},
+		{name: "unknown flag", args: []string{"-unknown"}, message: "flag provided but not defined"},
+		{name: "unknown command", args: []string{"unknown"}, message: "unknown command"},
+		{name: "no root command", noCommand: true, message: "no root command"},
+		{name: "nil options", nilOptions: true, message: "receiver"},
+		{name: "invalid environment", env: "private-config-value", message: "GOAPP_TEST_COUNT"},
+		{name: "flag cannot override invalid environment", args: []string{"-count", "42"}, env: "private-config-value", message: "GOAPP_TEST_COUNT"},
+		{name: "help", args: []string{"-h"}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			oldManager, oldUsage, oldArgs, oldExit := defaultManager, currentUsage, programArgs, exitOnError
+			t.Cleanup(func() {
+				defaultManager, currentUsage, programArgs, exitOnError = oldManager, oldUsage, oldArgs, oldExit
+			})
+			var out bytes.Buffer
+			defaultManager = commandManager{out: &out}
+			programArgs = tt.args
+			exitOnError = false
+			type options struct {
+				Count int `env:"GOAPP_TEST_COUNT"`
+			}
+			opts := &options{}
+			if tt.nilOptions {
+				opts = nil
+			}
+			if !tt.noCommand {
+				Register().Options(opts)
+			}
+			env := "21"
+			if tt.env != "" {
+				env = tt.env
+			}
+			t.Setenv("GOAPP_TEST_COUNT", env)
+			require.Panics(t, func() { Load() })
+			if tt.message == "" {
+				require.NotContains(t, out.String(), "Error:")
+				require.Contains(t, out.String(), "Usage:")
+				return
+			}
+			require.Contains(t, out.String(), "Error:")
+			require.Contains(t, out.String(), tt.message)
+			require.NotContains(t, out.String(), "private-config-value")
+		})
+	}
+}
+
 func TestError(t *testing.T) {
 	w := bytes.NewBufferString("\n")
 	defaultManager.out = w
