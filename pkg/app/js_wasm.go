@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/url"
+	"sync"
 	"syscall/js"
 
 	"github.com/maxence-charriere/go-app/v11/pkg/errors"
@@ -73,21 +74,41 @@ func (v value) Release() {
 }
 
 func (v value) Then(f func(Value)) {
-	release := func() {}
+	var fulfilled Func
+	var rejected Func
+	release := sync.OnceFunc(func() {
+		fulfilled.Release()
+		rejected.Release()
+	})
 
-	then := FuncOf(func(this Value, args []Value) any {
+	fulfilled = FuncOf(func(this Value, args []Value) any {
+		defer release()
 		var arg Value
 		if len(args) > 0 {
 			arg = args[0]
 		}
 
 		f(arg)
-		release()
 		return nil
 	})
 
-	release = then.Release
-	v.Call("then", then)
+	rejected = FuncOf(func(this Value, args []Value) any {
+		defer release()
+		reason := Undefined()
+		if len(args) > 0 {
+			reason = args[0]
+		}
+		return Window().Get("Promise").Call("reject", reason)
+	})
+
+	attached := false
+	defer func() {
+		if !attached {
+			release()
+		}
+	}()
+	v.Call("then", fulfilled, rejected)
+	attached = true
 }
 
 func (v value) getAttr(k string) string {
