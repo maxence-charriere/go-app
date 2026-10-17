@@ -408,7 +408,11 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Nil interface/typed-nil source/receiver tables, valid pointer/value state copies, mismatches, and invalid scalar/duration/time/collection/nested environment values. Use isolated environment settings and test overrides and error output.
 
-- [ ] **19. Release promise bridge callbacks on every settlement path**
+- [x] **19. Release promise bridge callbacks on every settlement path**
+
+  **Implemented:** Attach fulfillment and rejection callbacks with shared, once-only cleanup. Both callbacks defer cleanup, including when the fulfillment handler panics; failed handler registration also releases them. Rejection returns a rejected promise with the original reason, preserving browser reporting without calling the fulfillment handler. Pending promises retain their callbacks until settlement. No exported API changes.
+
+  **Validated:** Browser/WASM tests exercise the public `Then` method for fulfillment, undefined values, pending promises, rejection-reason identity, and browser `unhandledrejection` reporting. Callback cleanup is implemented directly in `Then`, without an injected callback factory or release-counting test wrappers.
 
   **Impact:** Medium.
 
