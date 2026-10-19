@@ -1255,10 +1255,11 @@ func TestHandlerConditionalProxyResource(t *testing.T) {
 }
 
 func BenchmarkHandlerConditionalPage(b *testing.B) {
+	r := benchmarkPageRequest(b)
 	h := &Handler{Version: "conditional"}
-	initial := conditionalRequest(h, http.MethodGet, "/", "")
+	initial := conditionalRequest(h, http.MethodGet, r.URL.Path, "")
 	require.Equal(b, http.StatusOK, initial.Code)
-	require.Contains(b, initial.Body.String(), "pre-render-ok")
+	require.Contains(b, initial.Body.String(), "Static page: "+r.URL.Path)
 	for _, condition := range []struct {
 		name string
 		etag string
@@ -1272,8 +1273,8 @@ func BenchmarkHandlerConditionalPage(b *testing.B) {
 			if condition.name == "content" {
 				status = http.StatusNotModified
 			}
-			require.Equal(b, status, conditionalRequest(h, http.MethodGet, "/", condition.etag).Code)
-			r := httptest.NewRequest(http.MethodGet, "/", nil)
+			require.Equal(b, status, conditionalRequest(h, http.MethodGet, r.URL.Path, condition.etag).Code)
+			r := httptest.NewRequest(http.MethodGet, r.URL.Path, nil)
 			r.Header.Set("If-None-Match", condition.etag)
 			b.ReportAllocs()
 			for b.Loop() {
@@ -1285,24 +1286,131 @@ func BenchmarkHandlerConditionalPage(b *testing.B) {
 }
 
 func BenchmarkHandlerColdRun(b *testing.B) {
-	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
-	w := httptest.NewRecorder()
+	r := benchmarkPageRequest(b)
+	check := conditionalRequest(&Handler{Version: "benchmark"}, http.MethodGet, r.URL.Path, "")
+	require.Equal(b, http.StatusOK, check.Code)
+	require.Contains(b, check.Body.String(), "Static page: "+r.URL.Path)
 
+	// One operation initializes a handler and serves one page. A fresh recorder
+	// includes response allocation without retaining earlier responses.
+	b.ReportAllocs()
 	for b.Loop() {
-		h := Handler{}
-		h.ServeHTTP(w, r)
+		h := Handler{Version: "benchmark"}
+		w := httptest.NewRecorder()
 		h.ServeHTTP(w, r)
 	}
 }
 
 func BenchmarkHandlerHotRun(b *testing.B) {
-	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
+	r := benchmarkPageRequest(b)
 	w := httptest.NewRecorder()
-	h := Handler{}
+	h := Handler{Version: "benchmark"}
 	h.ServeHTTP(w, r)
+	require.Equal(b, http.StatusOK, w.Code)
+	require.Contains(b, w.Body.String(), "Static page: "+r.URL.Path)
 
+	// Pages are rendered on every request; this is not a response-cache hit.
+	b.ReportAllocs()
 	for b.Loop() {
+		w := httptest.NewRecorder()
 		h.ServeHTTP(w, r)
+	}
+}
+
+func benchmarkHandlerEnvironment(b *testing.B) {
+	b.Helper()
+	// Handler initialization writes these process variables. Restore them so
+	// benchmark order does not change subsequent workloads.
+	for _, key := range []string{"GOAPP_INTERNAL_URLS", "GOAPP_VERSION", "GOAPP_STATIC_RESOURCES_URL", "GOAPP_ROOT_PREFIX"} {
+		b.Setenv(key, "")
+	}
+}
+
+func benchmarkPageRequest(b *testing.B) *http.Request {
+	b.Helper()
+	benchmarkHandlerEnvironment(b)
+	const path = "/benchmark/page"
+	registerStaticTestRoutes(b, path)
+	return httptest.NewRequest(http.MethodGet, path, nil)
+}
+
+func BenchmarkHandlerInitialization(b *testing.B) {
+	benchmarkHandlerEnvironment(b)
+	check := &Handler{Version: "benchmark"}
+	check.once.Do(check.init)
+	item, ok := check.cachedPWAResources.Get("/app.css")
+	require.True(b, ok)
+	require.Equal(b, appCSS, string(item.Body))
+	b.ReportAllocs()
+	for b.Loop() {
+		h := &Handler{Version: "benchmark"}
+		h.once.Do(h.init)
+	}
+}
+
+func BenchmarkHandlerCachedResource(b *testing.B) {
+	benchmarkHandlerEnvironment(b)
+	h := &Handler{Version: "benchmark"}
+	r := httptest.NewRequest(http.MethodGet, "/app.css", nil)
+	check := httptest.NewRecorder()
+	h.ServeHTTP(check, r)
+	require.Equal(b, http.StatusOK, check.Code)
+	require.Equal(b, appCSS, check.Body.String())
+	b.ReportAllocs()
+	for b.Loop() {
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+	}
+}
+
+func BenchmarkHandlerProxyResource(b *testing.B) {
+	benchmarkHandlerEnvironment(b)
+	const body = "benchmark proxy resource"
+	var fetches atomic.Int64
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fetches.Add(1)
+		w.Header().Set("Content-Type", "text/plain")
+		io.WriteString(w, body)
+	}))
+	b.Cleanup(upstream.Close)
+	for _, cold := range []bool{true, false} {
+		name := "cache-hit"
+		if cold {
+			name = "cold-fetch"
+		}
+		b.Run(name, func(b *testing.B) {
+			h := &Handler{
+				Version: "benchmark", Resources: RemoteBucket(upstream.URL),
+				ProxyResources: []ProxyResource{{Path: "/proxy.txt", ResourcePath: "/web/proxy.txt"}},
+			}
+			r := httptest.NewRequest(http.MethodGet, "/proxy.txt", nil)
+			before := fetches.Load()
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.Equal(b, http.StatusOK, w.Code)
+			require.Equal(b, body, w.Body.String())
+			require.Equal(b, before+1, fetches.Load())
+			before = fetches.Load()
+			b.ReportAllocs()
+			for b.Loop() {
+				if cold {
+					// Exclude cache reset and handler initialization: measure one
+					// uncached fetch over the local HTTP server, including caching.
+					b.StopTimer()
+					h.cachedProxyResources = newMemoryCache(1)
+					b.StartTimer()
+				}
+				w = httptest.NewRecorder()
+				h.ServeHTTP(w, r)
+			}
+			require.Equal(b, http.StatusOK, w.Code)
+			require.Equal(b, body, w.Body.String())
+			wantFetches := int64(0)
+			if cold {
+				wantFetches = int64(b.N)
+			}
+			require.Equal(b, wantFetches, fetches.Load()-before)
+		})
 	}
 }
 

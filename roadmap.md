@@ -430,11 +430,17 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Browser/WASM tests for fulfillment, rejection, callback failure, and many rejected promises; instrument callback registrations/releases and compare retained resources after settlement. Native stub tests cannot establish this improvement.
 
-- [ ] **20. Make performance benchmarks exercise valid, bounded workloads**
+- [x] **20. Make performance benchmarks exercise valid, bounded workloads**
+
+  **Implemented:** HTTP benchmarks register and restore a dedicated page route, validate successful status/content before timing, use deterministic versions, and restore handler environment changes. Cold and hot page benchmarks serve one request per iteration with a fresh response recorder; hot pages still render on every request. Separate cases measure initialization, cached PWA resources, and cold/cached proxy requests against a local HTTP server, with upstream request counts checked after timing and cold-cache reset excluded. Filtering retains the existing 100/1,000/10,000-element cases and now measures a real mixed workload in its small benchmark. Serialization validates output and reports throughput; replacement benchmarks alternate incompatible child tags at fixed sizes; cache reads cover serial and parallel callers. Mount benchmarks include dismounting each iteration to release browser event callbacks. Runtime code and exported APIs are unchanged.
+
+  **Validated:** The repository-wide native race suite and `go vet ./...` pass. The full browser/WASM suite and three-iteration browser benchmark checks pass in headless Chrome. All affected native benchmarks pass with the race detector and in three 100 ms measurement runs. Setup assertions check routes, bodies, serialized output, cache contents, and replacement lifecycle behavior; proxy checks verify one fetch per cold operation and none per cache hit.
+
+  **Measured:** On Go 1.27.2, darwin/arm64, Apple M4 Max, the three-run median was about 43.8 µs for initialization plus one page request, 15.7 µs for an initialized page request, and 0.96 µs for a cached PWA resource. These are new baselines, not speedups over the former 404/two-request workloads. Sampled live-heap profiles after 1,000, 10,000, and 100,000 cold/hot iterations retained approximately 2.5–3.5 MiB, attributed to runtime and parser initialization rather than response buffers; process peak RSS varied with runtime heap growth.
 
   **Impact:** Medium.
 
-  **Files:** `pkg/app/http_test.go:590–609`, `pkg/app/node_test.go:102`, `pkg/app/html_test.go`; relevant cache/serialization benchmark coverage.
+  **Files:** `pkg/app/http_test.go`, `pkg/app/node_test.go`, `pkg/app/html_test.go`, `pkg/app/cache_test.go`.
 
   **Found:** Handler benchmarks request `/hello`, which is not registered in the global test router, so they measure 404 handling. They reuse one response recorder without resetting its accumulated body; the cold benchmark also makes two requests per iteration. Filtering benchmarks omit the large/nil/selector workloads that expose quadratic cost.
 
