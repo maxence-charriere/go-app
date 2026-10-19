@@ -476,11 +476,15 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Nested joins, multiple `%w`, mixed wrappers, competing matches, nil children, and no-match cases; retain the full existing suite.
 
-- [ ] **22. Reset text-node mounted state during dismount**
+- [x] **22. Reset text-node mounted state during dismount**
+
+  **Implemented:** The text branch of `Dismount` clears its JavaScript value, making `Mounted()` false and allowing the same text object to mount again with its content preserved. Parent relationships, node ownership, and unrelated lifecycle callbacks are unchanged.
+
+  **Validated:** Regression tests fail against the previous implementation and pass with the fix. Coverage includes root, nested, and component-root text, repeated dismounting, removal and replacement through HTML updates, and reuse of the same text object. Browser assertions verify that removed/replaced DOM nodes are detached, the Go text object clears its old reference, and remounting creates a distinct DOM node with the expected content and parent. The full native race suite, repository-wide `go vet`, and full browser/WASM app suite in headless Chrome pass.
 
   **Impact:** Low.
 
-  **Files:** `pkg/app/node.go:284–296`, `pkg/app/text.go:24–29`; node/text lifecycle tests.
+  **Files:** `pkg/app/node.go`, `pkg/app/node_test.go`; mounted-state semantics in `pkg/app/text.go`.
 
   **Found:** The text branch of `Dismount` is empty, leaving its JS value attached and `Mounted()` true, unlike HTML/raw nodes. Subsequent mounting rejects an already-mounted text node. This is a direct code-path finding; no browser retention measurement was performed.
 

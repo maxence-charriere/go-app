@@ -942,6 +942,90 @@ func TestNodeManagerDismount(t *testing.T) {
 	})
 }
 
+func TestNodeManagerTextDismount(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		root func(UI) UI
+	}{
+		{"root", func(text UI) UI { return text }},
+		{"nested", func(text UI) UI { return Div().Body(Span().Body(text)) }},
+		{"component root", func(text UI) UI { return &compoWithCustomRoot{Root: text} }},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var m nodeManager
+			ctx := makeTestContext()
+			text := Text("hello")
+			require.False(t, text.Mounted())
+			root, err := m.Mount(ctx, 1, tt.root(text))
+			require.NoError(t, err)
+			defer func() { m.Dismount(root) }()
+			require.True(t, text.Mounted())
+			oldJS := text.JSValue()
+			require.NotNil(t, oldJS)
+
+			m.Dismount(root)
+			require.False(t, text.Mounted())
+			require.Nil(t, text.JSValue())
+			require.Equal(t, "hello", HTMLString(text))
+			// Repeated dismounting must keep a text node ready for reuse.
+			m.Dismount(text)
+			require.False(t, text.Mounted())
+
+			root, err = m.Mount(ctx, 1, root)
+			require.NoError(t, err)
+			require.True(t, text.Mounted())
+			require.NotNil(t, text.JSValue())
+			if IsClient {
+				require.False(t, oldJS.Equal(text.JSValue()))
+				require.Equal(t, "hello", text.JSValue().Get("nodeValue").String())
+			}
+		})
+	}
+}
+
+func TestNodeManagerRemovedTextReuse(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		next func() UI
+	}{
+		{"remove", func() UI { return Div() }},
+		{"replace", func() UI { return Div().Body(Span().Text("replacement")) }},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var m nodeManager
+			ctx := makeTestContext()
+			text := Text("reused")
+			root, err := m.Mount(ctx, 1, Div().Body(text))
+			require.NoError(t, err)
+			defer func() { m.Dismount(root) }()
+			oldJS := text.JSValue()
+			if IsClient {
+				require.True(t, oldJS.Get("parentNode").Equal(root.JSValue()))
+			}
+
+			root, err = m.Update(ctx, root, tt.next())
+			require.NoError(t, err)
+			require.False(t, text.Mounted())
+			require.Nil(t, text.JSValue())
+			if IsClient {
+				require.True(t, oldJS.Get("parentNode").IsNull())
+			}
+
+			root, err = m.Update(ctx, root, Div().Body(text))
+			require.NoError(t, err)
+			require.Len(t, root.(HTML).body(), 1)
+			require.Same(t, text, root.(HTML).body()[0])
+			require.True(t, text.Mounted())
+			require.Same(t, root, text.parent())
+			if IsClient {
+				require.False(t, oldJS.Equal(text.JSValue()))
+				require.True(t, root.JSValue().Get("firstChild").Equal(text.JSValue()))
+				require.Equal(t, "reused", root.JSValue().Get("textContent").String())
+			}
+		})
+	}
+}
+
 func TestNodeManagerCanUpdate(t *testing.T) {
 	t.Run("elements with same type can be updated", func(t *testing.T) {
 		var m nodeManager
