@@ -503,3 +503,136 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 Select checklist items before implementation. Generated fluent HTML APIs should retain their public surface; fix their shared runtime or generator inputs when appropriate. Keep current route precedence, scheduling order, and supported resolver behavior unless a separately reviewed bug fix requires a narrowly scoped behavioral correction.
 
 The review of `pkg/logs` and `pkg/analytics` did not establish another material, compatibility-preserving first-pass change. Broad rewrites of exported mutable globals, blanket pooling, replacement of reflection, and mass edits of generated methods would need workload or contract evidence beyond this audit. The unused private URL predicates in `pkg/app/http.go` are cleanup candidates, but their removal alone offers little material benefit and is not prioritized.
+
+## Standard library
+
+Audit date: 2026-10-19. Reviewed against Go 1.27.2, the latest stable release at the time and the installed toolchain. The recommended APIs also fit the repository's existing Go 1.26 minimum. Preserve public APIs, existing behavior, and native/WASM compatibility. [Go release history](https://go.dev/doc/devel/release)
+
+This separate audit found six practical simplifications, ranked below, and two larger replacements to defer because they change behavior. Small changes can be combined into one focused cleanup PR. No implementation changes were made during the audit.
+
+Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and temporary standalone probes for CLI wrapping output and AES-GCM interoperability. Browser/WASM execution was not performed for this audit. Implementation should run the relevant equivalence tests below, the native race suite, and browser/WASM tests for shared application code.
+
+- [ ] **23. Replace the custom discard writer with `io.Discard`**
+
+  **Priority:** Recommended; low risk.
+
+  **Files/functions:** `pkg/cli/command.go`: `commandManager.parse` and `writerNoop.Write`; test references in `pkg/cli/option_test.go`.
+
+  **Recommended change:** Use `flags.SetOutput(io.Discard)` and remove `writerNoop`. The `io` package is already imported. [Documentation](https://pkg.go.dev/io#Discard)
+
+  **Expected benefit:** Removes a redundant writer implementation and its incorrect successful-write count.
+
+  **Behavior and compatibility:** The custom writer returns `0, nil` for nonempty input, violating the `io.Writer` contract. `io.Discard` returns `len(p), nil`. Flag parsing ignores that count, so command behavior should remain unchanged. Update tests that instantiate the private writer.
+
+  **Verification:** Successful parsing, unknown flags, invalid values, and help requests retain their returned errors and output behavior.
+
+- [ ] **24. Replace indexed sorting callbacks with `slices.SortFunc`**
+
+  **Priority:** Recommended; check generator output carefully.
+
+  **Files/functions:** `pkg/app/http.go`: `Handler.makeAppWorkerJS`; `pkg/cli/usage.go`: `commandUsageIndex`; `pkg/app/gen/html.go`: `attrsByNames`, `withGlobalAttrs`, `eventHandlersByName`, `withGlobalEventHandlers`, and `withMediaEventHandlers`.
+
+  **Recommended change:** Use typed comparators with `slices.SortFunc` and `strings.Compare`. [Documentation](https://pkg.go.dev/slices#SortFunc)
+
+  **Expected benefit:** Removes indexed access and reflection-based sorting. Five generator comparators currently use `<= 0`, incorrectly reporting equal names as less; a three-way comparator naturally returns zero for equality. No performance improvement is claimed without measurement.
+
+  **Behavior and compatibility:** Preserve descending resource ordering in the service worker and ascending ordering elsewhere. Correcting the generator comparators may change the ordering of equal-name entries; review any resulting output differences before adoption.
+
+  **Verification:** Compare generated HTML source and service-worker output byte-for-byte, verify command ordering, and exercise duplicate names. Regenerate in a temporary directory during comparison to avoid overwriting the baseline.
+
+- [ ] **25. Replace manual tag copying with `maps.Copy`**
+
+  **Priority:** Recommended; low risk.
+
+  **Files/functions:** `pkg/app/context.go`: `Context.NewActionWithValue`.
+
+  **Recommended change:** Replace the inner assignment loop with `maps.Copy(tagMap, tag.Tags())`, retaining the outer loop and allocation timing. [Documentation](https://pkg.go.dev/maps#Copy)
+
+  **Expected benefit:** Expresses the merge operation directly and removes repetitive map plumbing.
+
+  **Behavior and compatibility:** No taggers must still produce a nil map; an empty tagger must still produce an allocated empty map. Later taggers overwrite earlier keys. Values remain shallowly copied, and each `Tags()` method must be called once.
+
+  **Verification:** Overlapping keys, nil/empty source maps, no taggers, call counts, and source-map mutation after creating the action.
+
+- [ ] **26. Replace the storage map-deletion loop with `clear`**
+
+  **Priority:** Recommended; low risk.
+
+  **Files/functions:** `pkg/app/storage.go`: `memoryStorage.Clear`.
+
+  **Recommended change:** Use the language built-in `clear(s.data)` inside the existing lock. [Specification](https://go.dev/ref/spec#Clear)
+
+  **Expected benefit:** Expresses the operation directly while retaining the allocated map.
+
+  **Behavior and compatibility:** Equivalent for this string-keyed map, including nil and empty maps. Keep synchronization unchanged. Do not apply this mechanically to loops that delete entries while performing callbacks.
+
+  **Verification:** Clearing populated/empty storage, setting values afterward, clearing from a `ForEach` callback, and existing concurrent storage tests under the race detector.
+
+- [ ] **27. Iterate resource tokens with `strings.SplitSeq`**
+
+  **Priority:** Recommended; small simplification.
+
+  **Files/functions:** `pkg/app/http.go`: `parseHTTPResource`.
+
+  **Recommended change:** Change `range strings.Split(v, " ")` to `range strings.SplitSeq(v, " ")`. [Documentation](https://pkg.go.dev/strings#SplitSeq)
+
+  **Expected benefit:** Avoids constructing an intermediate slice for tokens consumed only once.
+
+  **Behavior and compatibility:** Retain the literal-space separator and existing trimming logic. `strings.Fields` would change behavior for embedded tabs and newlines. Preserve last-value-wins handling of repeated modes and URLs.
+
+  **Verification:** Empty input, repeated spaces, tabs/newlines, mixed-case attributes, repeated attributes, and multiple URL tokens. A small allocation benchmark can verify the allocation benefit.
+
+- [ ] **28. Reset reflected values with `reflect.Value.SetZero`**
+
+  **Priority:** Recommended; small simplification to combine with other cleanup.
+
+  **Files/functions:** `pkg/app/state.go`: `storeValue`.
+
+  **Recommended change:** Replace `dst.Set(reflect.Zero(dst.Type()))` with `dst.SetZero()`. [Documentation](https://pkg.go.dev/reflect#Value.SetZero)
+
+  **Expected benefit:** Expresses the reset directly without constructing a separate reflected zero value.
+
+  **Behavior and compatibility:** Keep all receiver validation and typed-nil handling. The current branch resets values for an untyped nil input; a typed nil pointer remains an error.
+
+  **Verification:** Reset scalars, structs, pointers, interfaces, slices, and maps; retain invalid-receiver and typed-nil rejection cases.
+
+- [ ] **29. Evaluate standard GCM nonce management — deferred**
+
+  **Priority:** Deferred under strict behavior preservation; not an approved implementation item.
+
+  **Files/functions:** `pkg/app/crypto.go`: `encrypt` and `decrypt`.
+
+  **Possible replacement:** `cipher.NewGCMWithRandomNonce` generates, prepends, and extracts the nonce. Its wire format matches the existing 12-byte nonce prefix plus ciphertext and authentication tag. [Documentation](https://pkg.go.dev/crypto/cipher#NewGCMWithRandomNonce)
+
+  **Expected benefit:** Removes manual nonce allocation, random reads, and ciphertext splitting.
+
+  **Behavior and compatibility:** The current implementation reads exported `crypto/rand.Reader` and can return its errors. The standard helper uses internal randomness, and `Seal` cannot return an error. Also preserve the enriched `"ciphertext too short"` error for inputs shorter than 12 bytes. These differences prevent treating the change as fully equivalent.
+
+  **Verification:** Native standalone probes passed cross-decryption in both directions for AES-128/192/256 and nil, empty, text, and binary payloads. Before adoption, test persisted fixtures, truncation, tampering, invalid keys, input immutability, randomness failure behavior, and browser/WASM execution. Resolve the error-contract difference before implementation.
+
+- [ ] **30. Evaluate iterator-based CLI word wrapping — deferred**
+
+  **Priority:** Deferred under strict output preservation; not an approved implementation item.
+
+  **Files/functions:** `pkg/cli/usage.go`: `writeText`.
+
+  **Possible replacement:** Iterate words using `strings.FieldsSeq` while retaining the wrapping rules. [Documentation](https://pkg.go.dev/strings#FieldsSeq)
+
+  **Expected benefit:** Could remove manual `bufio.ScanWords` buffer advancement and pending-word state.
+
+  **Behavior and compatibility:** A direct substitution changes existing output. A standalone comparison confirmed that `"hello  "` currently produces `"hello \n"`, while the straightforward iterator version produces `"hello\n"`. Byte-based wrapping, oversized words, and partial writer results also require preservation. Retaining all quirks may erase much of the simplification benefit.
+
+  **Verification:** Exact output for trailing whitespace, Unicode whitespace, malformed UTF-8, boundary widths, oversized words, and short/error writers. Resolve output compatibility before implementation.
+
+### Custom implementations to retain
+
+| Files/functions | Reason to retain |
+| --- | --- |
+| `pkg/errors/errors.go`: `visitErrors` | Metadata lookup uses predicates and skips nil tag values. `errors.As`/`AsType` select matching types and honor custom `As` hooks, which would change behavior. |
+| `pkg/app/engine.go`: `async`, `waitAsync` | Waiting is context-cancelable and includes nested work. `sync.WaitGroup` alone does not provide cancelable waiting. |
+| `pkg/app/storage.go`: `memoryStorage.ForEach` | The snapshot allows callbacks to modify storage after the lock is released. Direct map iteration would lose that behavior. |
+| `pkg/app/route.go`: router methods | Exact routes and ordered regular expressions select components in native and browser environments. `http.ServeMux` has different matching, redirect, and handler semantics. |
+| `pkg/app/resource.go`: resource resolvers; `pkg/app/strings.go`: `toPath` | `path.Join` and `url.JoinPath` normalize paths, potentially changing repeated separators, dot segments, and trailing slashes. |
+| `pkg/app/static.go`: `writeStaticPage` | Detects short writes and preserves both write and close errors with metadata. `os.WriteFile` does not preserve that contract. |
+
+No equivalent standard-library replacement was identified for the UUID, HTML parsing, Markdown, or WebPush dependencies. Replacing them with lower-level primitives would introduce custom behavior rather than remove it.
