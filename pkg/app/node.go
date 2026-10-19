@@ -273,6 +273,7 @@ func (m nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
 func (m nodeManager) Dismount(v UI) {
 	switch v := v.(type) {
 	case *text:
+		v.jsvalue = nil
 
 	case HTML:
 		m.dismountHTML(v)
