@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/url"
 	"reflect"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -317,21 +318,19 @@ func BenchmarkFilterUIElemsScaling(b *testing.B) {
 }
 
 func BenchmarkFilterUIElems(b *testing.B) {
+	// Measure filtering itself; constructing an HTML tree would already filter
+	// its children in Body before this benchmark's FilterUIElems call.
+	input := []UI{Div(), nil, (*foo)(nil), If(true, func() UI { return Span() })}
+	working := make([]UI, len(input))
+	copy(working, input)
+	got := FilterUIElems(working...)
+	require.Len(b, got, 2)
+	require.IsType(b, Div(), got[0])
+	require.IsType(b, Span(), got[1])
+	b.ReportAllocs()
 	for b.Loop() {
-		FilterUIElems(Div().
-			Class("shell").
-			Body(
-				H1().Class("title").
-					Text("Hello"),
-				Input().
-					Type("text").
-					Class("in").
-					Value("World").
-					Placeholder("Type a name.").
-					OnChange(func(ctx Context, e Event) {
-						fmt.Println("Yo!")
-					}),
-			))
+		copy(working, input)
+		FilterUIElems(working...)
 	}
 }
 
@@ -483,14 +482,21 @@ func BenchmarkHTMLSerialization(b *testing.B) {
 			children[i] = Span().Text("hello")
 		}
 		ui := Div().Body(children...)
+		want := "<div>\n" + strings.Repeat("  <span>hello</span>\n", count) + "</div>"
 		b.Run(fmt.Sprintf("HTMLString/%d", count), func(b *testing.B) {
+			require.Equal(b, want, HTMLString(ui))
 			b.ReportAllocs()
+			b.SetBytes(int64(len(want)))
 			for b.Loop() {
 				htmlSerializationResult = HTMLString(ui)
 			}
 		})
 		b.Run(fmt.Sprintf("PrintHTML/%d", count), func(b *testing.B) {
+			var check bytes.Buffer
+			PrintHTML(&check, ui)
+			require.Equal(b, want, check.String())
 			b.ReportAllocs()
+			b.SetBytes(int64(len(want)))
 			for b.Loop() {
 				PrintHTML(io.Discard, ui)
 			}
@@ -813,8 +819,65 @@ func BenchmarkNodeManagerMount(b *testing.B) {
 	var m nodeManager
 	ctx := makeTestContext()
 
+	check, err := m.Mount(ctx, 1, Div())
+	require.NoError(b, err)
+	require.True(b, check.Mounted())
+	m.Dismount(check)
+	b.ReportAllocs()
+	// Include dismounting so each operation completes the node lifecycle.
 	for b.Loop() {
-		m.Mount(ctx, 1, Div())
+		elem, err := m.Mount(ctx, 1, Div())
+		if err != nil {
+			b.Fatal(err)
+		}
+		m.Dismount(elem)
+	}
+}
+
+func BenchmarkNodeManagerReplaceChildren(b *testing.B) {
+	for _, count := range []int{1, 100, 1000} {
+		b.Run(fmt.Sprint(count), func(b *testing.B) {
+			var m nodeManager
+			ctx := makeTestContext()
+			makeTree := func(tag string) UI {
+				children := make([]UI, count)
+				for i := range children {
+					children[i] = Elem(tag)
+				}
+				return Div().Body(children...)
+			}
+			root, err := m.Mount(ctx, 1, makeTree("span"))
+			require.NoError(b, err)
+			defer func() { m.Dismount(root) }()
+			// Check both transitions before timing. Keep the number of mounted
+			// children fixed while every update replaces incompatible tags.
+			for _, tag := range []string{"p", "span"} {
+				old := append([]UI(nil), root.(HTML).body()...)
+				root, err = m.Update(ctx, root, makeTree(tag))
+				require.NoError(b, err)
+				require.Len(b, root.(HTML).body(), count)
+				for i, child := range root.(HTML).body() {
+					require.Equal(b, tag, child.(HTML).Tag())
+					require.True(b, child.Mounted())
+					require.False(b, old[i].Mounted())
+				}
+			}
+			tag := "p"
+			b.ReportAllocs()
+			// One operation includes building the replacement tree and updating.
+			for b.Loop() {
+				root, err = m.Update(ctx, root, makeTree(tag))
+				if err != nil {
+					b.Fatal(err)
+				}
+				if tag == "p" {
+					tag = "span"
+				} else {
+					tag = "p"
+				}
+			}
+			require.Len(b, root.(HTML).body(), count)
+		})
 	}
 }
 
