@@ -454,11 +454,15 @@ Passing existing tests did not cover the demonstrated edge cases. Performance nu
 
   **Verification:** Assert route/status/body expectations in setup, report allocations, use representative input sizes, and compare repeated runs on the same toolchain/machine. Ensure memory remains bounded as iteration count grows; use profiles to attribute changes.
 
-- [ ] **21. Traverse modern multi-error trees for metadata lookup**
+- [x] **21. Traverse modern multi-error trees for metadata lookup**
+
+  **Implemented:** `HasType`, `Tag`, and `UIError` share an internal traversal supporting both `Unwrap() error` and `Unwrap() []error`. It checks the root first, then visits children depth-first in left-to-right order, skips nil children, and stops at the first match. Existing single-chain precedence, non-nil tag semantics, UI-provider fallback behavior, and `HasType(nil, "")` are preserved. Public `Unwrap` still follows only the single-error form. API comments now describe tree traversal and lookup precedence.
+
+  **Validated:** New regression tests fail against the previous implementation and pass with the fix. Coverage includes joins, multiple `%w` operands, nested and mixed wrappers, pointer errors, competing metadata, early termination, nil/empty branches, zero-valued and typed-nil tags, empty UI messages, provider fallbacks, no-match behavior, and unchanged public `Unwrap` semantics. The full native race suite, repository-wide `go vet`, errors-package WASM tests in Node, and full browser/WASM app suite in headless Chrome pass.
 
   **Impact:** Low.
 
-  **Files:** `pkg/errors/errors.go:87–96,101–111,121–131`; error tests.
+  **Files:** `pkg/errors/errors.go`, `pkg/errors/errors_test.go`.
 
   **Found:** `HasType`, `Tag`, and `UIError` follow only `Unwrap() error`. A joined plain/enriched error matched through this package's standard-library-backed `Is`, but metadata lookup missed the enriched branch and UI output fell back to combined internal text.
 

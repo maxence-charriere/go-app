@@ -1,6 +1,7 @@
 package errors
 
 import (
+	stderr "errors"
 	"fmt"
 	"io"
 	"reflect"
@@ -31,14 +32,14 @@ func TestNew(t *testing.T) {
 	t.Run("new error", func(t *testing.T) {
 		err := New("hello")
 		require.Equal(t, "hello", err.Message)
-		require.Equal(t, "errors_test.go:32", err.Line)
+		require.Equal(t, "errors_test.go:33", err.Line)
 		t.Log(err)
 	})
 
 	t.Run("new error with format", func(t *testing.T) {
 		err := Newf("hello %v", 42)
 		require.Equal(t, "hello 42", err.Message)
-		require.Equal(t, "errors_test.go:39", err.Line)
+		require.Equal(t, "errors_test.go:40", err.Line)
 		t.Log(err)
 	})
 }
@@ -324,6 +325,129 @@ func TestUIError(t *testing.T) {
 	t.Run("returns empty string for nil", func(t *testing.T) {
 		require.Empty(t, UIError(nil))
 	})
+}
+
+// Unlike errors.Join, this wrapper preserves nil children for traversal tests.
+type multiError []error
+
+func (e multiError) Error() string   { return "multiple errors" }
+func (e multiError) Unwrap() []error { return e }
+
+type unvisitedError struct{}
+
+func (unvisitedError) Error() string { return "must not unwrap" }
+func (unvisitedError) Unwrap() error { panic("visited a later branch after a match") }
+
+func TestMetadataErrorTrees(t *testing.T) {
+	leaf := New("database connection refused").
+		WithType("database").
+		WithTag("operation", "save").
+		WithUIError("Unable to save your changes.")
+	plain := stderr.New("cleanup failed")
+	for _, tt := range []struct {
+		name string
+		err  error
+	}{
+		{"join", stderr.Join(plain, leaf)},
+		{"multiple percent w", fmt.Errorf("cleanup: %w; save: %w", plain, leaf)},
+		{"nested joins", stderr.Join(plain, stderr.Join(plain, leaf))},
+		{"single wrapper around join", fmt.Errorf("request: %w", stderr.Join(plain, leaf))},
+		{"join around single wrapper", stderr.Join(plain, fmt.Errorf("save: %w", leaf))},
+		{"pointer enriched error", stderr.Join(plain, &leaf)},
+		{"nil children", multiError{nil, plain, nil, leaf, nil}},
+		{"empty branch before match", multiError{multiError{}, leaf}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.True(t, HasType(tt.err, "database"))
+			require.Equal(t, "save", Tag(tt.err, "operation"))
+			require.Equal(t, "Unable to save your changes.", UIError(tt.err))
+		})
+	}
+}
+
+func TestMetadataErrorTreePrecedence(t *testing.T) {
+	first := New("first").WithType("first").WithTag("key", "first").WithUIError("first UI")
+	second := New("second").WithType("second").WithTag("key", "second").WithUIError("second UI")
+	for _, tt := range []struct {
+		name string
+		err  error
+		want string
+		ui   string
+	}{
+		{"left sibling first", stderr.Join(first, second), "first", "first UI"},
+		{"reversed siblings", stderr.Join(second, first), "second", "second UI"},
+		{"depth before next sibling", stderr.Join(fmt.Errorf("wrapped: %w", stderr.Join(first)), second), "first", "first UI"},
+		{"outer metadata first", New("outer").WithType("outer").WithTag("key", "outer").WithUIError("outer UI").Wrap(stderr.Join(first, second)), "outer", "outer UI"},
+		{"single chain keeps outer metadata", first.Wrap(second), "first", "first UI"},
+		{"stop before later branch", stderr.Join(first, unvisitedError{}), "first", "first UI"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.True(t, HasType(tt.err, tt.want))
+			require.Equal(t, tt.want, Tag(tt.err, "key"))
+			require.Equal(t, tt.ui, UIError(tt.err))
+		})
+	}
+
+	t.Run("type search continues past a different type", func(t *testing.T) {
+		err := first.Wrap(stderr.Join(stderr.New("plain"), second))
+		require.True(t, HasType(err, "second"))
+	})
+	t.Run("tag search continues past an absent or nil tag", func(t *testing.T) {
+		err := New("outer").WithTag("key", nil).Wrap(stderr.Join(New("untagged"), second))
+		require.Equal(t, "second", Tag(err, "key"))
+	})
+	for _, value := range []any{0, false, "", (*int)(nil)} {
+		t.Run(fmt.Sprintf("non-nil tag value %T", value), func(t *testing.T) {
+			err := stderr.Join(New("first").WithTag("key", value), second)
+			require.Equal(t, value, Tag(err, "key"))
+		})
+	}
+	t.Run("empty UI message is still a match", func(t *testing.T) {
+		require.Equal(t, "", UIError(stderr.Join(uiErr(""), second)))
+	})
+	t.Run("first enriched error keeps its own UI fallback", func(t *testing.T) {
+		fallback := New("internal error")
+		require.Equal(t, fallback.Error(), UIError(stderr.Join(fallback, second)))
+		err := fallback.Wrap(stderr.Join(first, second))
+		require.Equal(t, err.Error(), UIError(err))
+	})
+}
+
+func TestMetadataErrorTreeNoMatch(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		err  error
+	}{
+		{"nil", nil},
+		{"empty join", stderr.Join(nil, nil)},
+		{"empty children", multiError{}},
+		{"nil children", multiError{nil, nil}},
+		{"plain join", stderr.Join(stderr.New("first"), stderr.New("second"))},
+		{"wrapped join", fmt.Errorf("outer: %w", stderr.Join(stderr.New("first"), stderr.New("second")))},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.False(t, HasType(tt.err, "missing"))
+			require.Nil(t, Tag(tt.err, "missing"))
+			if tt.err == nil {
+				require.True(t, HasType(tt.err, ""))
+				require.Empty(t, UIError(tt.err))
+			} else {
+				// Nil children must not match the special top-level nil type.
+				require.False(t, HasType(tt.err, ""))
+				require.True(t, HasType(tt.err, Type(tt.err)))
+				require.Equal(t, tt.err.Error(), UIError(tt.err))
+			}
+		})
+	}
+}
+
+func TestUnwrapErrorTrees(t *testing.T) {
+	joined := stderr.Join(stderr.New("first"), stderr.New("second"))
+	// The public helper keeps the standard library's single-error semantics.
+	require.Nil(t, Unwrap(joined))
+	require.Nil(t, Unwrap(fmt.Errorf("%w and %w", stderr.New("first"), stderr.New("second"))))
+	require.Nil(t, Unwrap(nil))
+	require.Same(t, joined, Unwrap(fmt.Errorf("outer: %w", joined)))
 }
 
 func BenchmarkIs(b *testing.B) {
