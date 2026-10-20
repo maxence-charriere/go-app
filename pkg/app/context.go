@@ -149,7 +149,7 @@ func (ctx Context) SessionStorage() BrowserStorage {
 	return ctx.sessionStorage
 }
 
-// Encrypt enciphers a value using AES encryption.
+// Encrypt enciphers a value using AES-GCM with a randomly generated nonce.
 func (ctx Context) Encrypt(v any) ([]byte, error) {
 	b, err := json.Marshal(v)
 	if err != nil {

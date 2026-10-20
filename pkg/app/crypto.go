@@ -3,8 +3,6 @@ package app
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/rand"
-	"io"
 
 	"github.com/maxence-charriere/go-app/v11/pkg/errors"
 )
@@ -15,17 +13,12 @@ func encrypt(key string, v []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	gcm, err := cipher.NewGCM(c)
+	gcm, err := cipher.NewGCMWithRandomNonce(c)
 	if err != nil {
 		return nil, err
 	}
 
-	nonce := make([]byte, gcm.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		return nil, err
-	}
-
-	return gcm.Seal(nonce, nonce, v, nil), nil
+	return gcm.Seal(nil, nil, v, nil), nil
 }
 
 func decrypt(key string, v []byte) ([]byte, error) {
@@ -34,16 +27,16 @@ func decrypt(key string, v []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	gcm, err := cipher.NewGCM(c)
+	gcm, err := cipher.NewGCMWithRandomNonce(c)
 	if err != nil {
 		return nil, err
 	}
 
-	nonceSize := gcm.NonceSize()
-	if len(v) < nonceSize {
+	// Preserve the legacy error for an incomplete 12-byte nonce prefix.
+	// NewGCMWithRandomNonce reports a NonceSize of zero.
+	if len(v) < 12 {
 		return nil, errors.New("ciphertext too short")
 	}
 
-	nonce, ciphertext := v[:nonceSize], v[nonceSize:]
-	return gcm.Open(nil, nonce, ciphertext, nil)
+	return gcm.Open(nil, nil, v, nil)
 }

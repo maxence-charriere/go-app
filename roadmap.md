@@ -620,19 +620,17 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Verification:** Reset scalars, structs, pointers, interfaces, slices, and maps; retain invalid-receiver and typed-nil rejection cases.
 
-- [ ] **29. Evaluate standard GCM nonce management — deferred**
+- [x] **29. Adopt standard GCM nonce management**
 
-  **Priority:** Deferred under strict behavior preservation; not an approved implementation item.
+  **Implemented:** `encrypt` and `decrypt` use `cipher.NewGCMWithRandomNonce`, which generates, prepends, and extracts the nonce. This removes manual nonce allocation, random reads, and ciphertext splitting. [Documentation](https://pkg.go.dev/crypto/cipher#NewGCMWithRandomNonce)
 
-  **Files/functions:** `pkg/app/crypto.go`: `encrypt` and `decrypt`.
+  **Files/functions:** `pkg/app/crypto.go`: `encrypt` and `decrypt`; `Context.Encrypt` documentation; compatibility tests in `pkg/app/crypto_test.go`.
 
-  **Possible replacement:** `cipher.NewGCMWithRandomNonce` generates, prepends, and extracts the nonce. Its wire format matches the existing 12-byte nonce prefix plus ciphertext and authentication tag. [Documentation](https://pkg.go.dev/crypto/cipher#NewGCMWithRandomNonce)
+  **Format compatibility:** The wire format remains a 12-byte nonce prefix followed by ciphertext and the authentication tag. Existing persisted ciphertext remains readable, and previous releases can decrypt newly encrypted values. An explicit `len(ciphertext) < 12` check preserves the enriched `"ciphertext too short"` error and invalid-key error precedence. The helper's `NonceSize()` is zero, so it cannot supply that compatibility threshold.
 
-  **Expected benefit:** Removes manual nonce allocation, random reads, and ciphertext splitting.
+  **Accepted behavior change:** Nonce generation now uses Go's internal cryptographic random source rather than an overridden `crypto/rand.Reader`. Errors from a replacement reader are therefore no longer returned by encryption. `Context.Encrypt` documents this change. Failure of the internal system random source terminates execution rather than returning an encryption error; on the tested Go 1.27.2 toolchain, the previous default reader already had that behavior. An actual system-entropy failure was not injected.
 
-  **Behavior and compatibility:** The current implementation reads exported `crypto/rand.Reader` and can return its errors. The standard helper uses internal randomness, and `Seal` cannot return an error. Also preserve the enriched `"ciphertext too short"` error for inputs shorter than 12 bytes. These differences prevent treating the change as fully equivalent.
-
-  **Verification:** Native standalone probes passed cross-decryption in both directions for AES-128/192/256 and nil, empty, text, and binary payloads. Before adoption, test persisted fixtures, truncation, tampering, invalid keys, input immutability, randomness failure behavior, and browser/WASM execution. Resolve the error-contract difference before implementation.
+  **Validated:** Permanent tests cover cross-decryption in both directions for AES-128/192/256 with nil, empty, text, binary, and larger binary payloads; fixed legacy fixtures; persisted-state reload; all truncations and single-byte tampering of a fixture; wrong keys; invalid key sizes; input immutability; and overridden-reader behavior. The internal-randomness test fails against the previous implementation and passes with the replacement. `go vet ./...`, `go test -race ./...`, and the Chrome/WASM application suite passed.
 
 - [ ] **30. Evaluate iterator-based CLI word wrapping — deferred**
 
