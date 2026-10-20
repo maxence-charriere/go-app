@@ -15,7 +15,7 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 
 
 
-<script>var goVersion = "go1.25.3";</script>
+<script>var goVersion = "go1.26.2";</script>
 <script src="/lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -1593,8 +1593,6 @@ resources to run Go-based progressive web apps.
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/route.go">route.go</a>
 			
-				<a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/scripts.go">scripts.go</a>
-			
 				<a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/social.go">social.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/state.go">state.go</a>
@@ -1614,6 +1612,8 @@ resources to run Go-based progressive web apps.
 				<a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/update.go">update.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/wasmexec.go">wasmexec.go</a>
+			
+				<a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/wasmexec_gen.go">wasmexec_gen.go</a>
 			
 			</span>
 			</p>
@@ -1637,15 +1637,17 @@ resources to run Go-based progressive web apps.
     <span id="IsServer">IsServer</span> = <a href="/pkg/runtime/">runtime</a>.<a href="/pkg/runtime/#GOARCH">GOARCH</a> != &#34;wasm&#34; || <a href="/pkg/runtime/">runtime</a>.<a href="/pkg/runtime/#GOOS">GOOS</a> != &#34;js&#34;
 )</pre>
 			
-				
-				<pre>const (
-    <span class="comment">// The default template used to generate app-worker.js.</span>
-    <span id="DefaultAppWorkerJS">DefaultAppWorkerJS</span> = &#34;// -----------------------------------------------------------------------------\n// PWA\n// -----------------------------------------------------------------------------\nconst cacheName = \&#34;app-\&#34; + \&#34;{{.Version}}\&#34;;\nconst resourcesToCache = {{.ResourcesToCache}};\n\nself.addEventListener(\&#34;install\&#34;, async (event) =&gt; {\n  try {\n    console.log(\&#34;installing app worker {{.Version}}\&#34;);\n    await installWorker();\n    await self.skipWaiting();\n  } catch (error) {\n    console.error(\&#34;error during installation:\&#34;, error);\n  }\n});\n\nasync function installWorker() {\n  const cache = await caches.open(cacheName);\n  await cache.addAll(resourcesToCache);\n}\n\nself.addEventListener(\&#34;activate\&#34;, async (event) =&gt; {\n  try {\n    await deletePreviousCaches(); // Await cache cleanup\n    await self.clients.claim(); // Ensure the service worker takes control of the clients\n    console.log(\&#34;app worker {{.Version}} is activated\&#34;);\n  } catch (error) {\n    console.error(\&#34;error during activation:\&#34;, error);\n  }\n});\n\nasync function deletePreviousCaches() {\n  const keys = await caches.keys();\n  await Promise.all(\n    keys.map(async (key) =&gt; {\n      if (key !== cacheName) {\n        try {\n          console.log(\&#34;deleting\&#34;, key, \&#34;cache\&#34;);\n          await caches.delete(key);\n        } catch (err) {\n          console.error(\&#34;deleting\&#34;, key, \&#34;cache failed:\&#34;, err);\n        }\n      }\n    })\n  );\n}\n\nself.addEventListener(\&#34;fetch\&#34;, (event) =&gt; {\n  event.respondWith(fetchWithCache(event.request));\n});\n\nasync function fetchWithCache(request) {\n  const cachedResponse = await caches.match(request);\n  if (cachedResponse) {\n    return cachedResponse;\n  }\n  return await fetch(request);\n}\n\n// -----------------------------------------------------------------------------\n// Push Notifications\n// -----------------------------------------------------------------------------\nself.addEventListener(\&#34;push\&#34;, (event) =&gt; {\n  event.waitUntil((async () =&gt; {\n    let notification;\n\n    try {\n      notification = event.data ? event.data.json() : null;\n    } catch {\n      notification = null;\n    }\n\n    if (!notification) {\n      return;\n    }\n\n    await showNotification(self.registration, notification);\n  })());\n});\n\nself.addEventListener(\&#34;message\&#34;, (event) =&gt; {\n  const msg = event.data;\n  if (!msg || msg.type !== \&#34;goapp:notify\&#34;) {\n    return;\n  }\n\n  event.waitUntil(\n    showNotification(self.registration, msg.options)\n  );\n});\n\nasync function showNotification(registration, notification) {\n  const title = notification.title || \&#34;Notification\&#34;;\n\n  let actions = [];\n  for (let i in notification.actions) {\n    const action = notification.actions[i];\n    actions.push({\n      action: action.action,\n      path: action.path,\n    });\n    delete action.path;\n  }\n\n  await registration.showNotification(title, {\n    body: notification.body,\n    icon: notification.icon,\n    badge: notification.badge,\n    actions: notification.actions,\n    data: {\n      goapp: {\n        path: notification.path,\n        actions: actions\n      }\n    }\n  });\n}\n\nself.addEventListener(\&#34;notificationclick\&#34;, (event) =&gt; {\n  event.notification.close();\n\n  const notification = event.notification;\n  let path = notification.data.goapp.path;\n\n  for (let i in notification.data.goapp.actions) {\n    const action = notification.data.goapp.actions[i];\n    if (action.action === event.action) {\n      path = action.path;\n      break;\n    }\n  }\n\n  event.waitUntil(\n    clients\n      .matchAll({\n        type: \&#34;window\&#34;,\n      })\n      .then((clientList) =&gt; {\n        for (var i = 0; i &lt; clientList.length; i++) {\n          let client = clientList[i];\n          if (\&#34;focus\&#34; in client) {\n            client.focus();\n            client.postMessage({\n              goapp: {\n                type: \&#34;notification\&#34;,\n                path: path,\n              },\n            });\n            return;\n          }\n        }\n\n        if (clients.openWindow) {\n          return clients.openWindow(path);\n        }\n      })\n  );\n});&#34;
-)</pre>
-			
 		
 		
 			<h2 id="pkg-variables">Variables</h2>
+			
+				
+				<pre>var (
+    <span class="comment">// DefaultAppWorkerJS is the default template used to generate app-worker.js.</span>
+    <span class="comment">//</span>
+    <span class="comment">//go:embed gen/app-worker.js</span>
+    <span id="DefaultAppWorkerJS">DefaultAppWorkerJS</span> <a href="/pkg/builtin/#string">string</a>
+)</pre>
 			
 				
 				<pre>var (
@@ -1657,7 +1659,7 @@ resources to run Go-based progressive web apps.
 		
 			
 			
-			<h2 id="AppendClass">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/strings.go?s=1576:1626#L89">AppendClass</a>
+			<h2 id="AppendClass">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/strings.go?s=1645:1695#L93">AppendClass</a>
 				<a class="permalink" href="#AppendClass">&#xb6;</a>
 				
 				
@@ -1723,7 +1725,7 @@ directory.
 		
 			
 			
-			<h2 id="Getenv">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=1089:1117#L28">Getenv</a>
+			<h2 id="Getenv">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=1090:1118#L28">Getenv</a>
 				<a class="permalink" href="#Getenv">&#xb6;</a>
 				
 				
@@ -1738,7 +1740,7 @@ returns the value, which will be empty if the variable is not present.
 		
 			
 			
-			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=1737:1766#L69">HTMLString</a>
+			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=1590:1619#L58">HTMLString</a>
 				<a class="permalink" href="#HTMLString">&#xb6;</a>
 				
 				
@@ -1768,7 +1770,7 @@ action is triggered, the handler executes in a separate goroutine.
 		
 			
 			
-			<h2 id="KeepBodyClean">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=1397:1432#L42">KeepBodyClean</a>
+			<h2 id="KeepBodyClean">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=1398:1433#L42">KeepBodyClean</a>
 				<a class="permalink" href="#KeepBodyClean">&#xb6;</a>
 				
 				
@@ -1843,7 +1845,7 @@ err = app.Match(app.Text(&quot;bar&quot;), tree, 1, 0)
 		
 			
 			
-			<h2 id="NewZeroComponentFactory">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=4405:4461#L152">NewZeroComponentFactory</a>
+			<h2 id="NewZeroComponentFactory">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=4406:4462#L152">NewZeroComponentFactory</a>
 				<a class="permalink" href="#NewZeroComponentFactory">&#xb6;</a>
 				
 				
@@ -1865,7 +1867,7 @@ newComponent := componentFunc()
 		
 			
 			
-			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=1998:2032#L78">PrintHTML</a>
+			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=1753:1787#L64">PrintHTML</a>
 				<a class="permalink" href="#PrintHTML">&#xb6;</a>
 				
 				
@@ -1880,7 +1882,7 @@ specified writer.
 		
 			
 			
-			<h2 id="Route">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=3336:3389#L123">Route</a>
+			<h2 id="Route">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=3337:3390#L123">Route</a>
 				<a class="permalink" href="#Route">&#xb6;</a>
 				
 				
@@ -1901,7 +1903,7 @@ newComponent is invoked to create and mount the associated component.
 		
 			
 			
-			<h2 id="RouteWithRegexp">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=3827:3893#L137">RouteWithRegexp</a>
+			<h2 id="RouteWithRegexp">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=3828:3894#L137">RouteWithRegexp</a>
 				<a class="permalink" href="#RouteWithRegexp">&#xb6;</a>
 				
 				
@@ -1923,7 +1925,7 @@ create and mount the associated component.
 		
 			
 			
-			<h2 id="RunWhenOnBrowser">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=2369:2392#L79">RunWhenOnBrowser</a>
+			<h2 id="RunWhenOnBrowser">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=2370:2393#L79">RunWhenOnBrowser</a>
 				<a class="permalink" href="#RunWhenOnBrowser">&#xb6;</a>
 				
 				
@@ -1987,7 +1989,7 @@ of integers, for use in a TestUIDescriptor.
 		
 			
 			
-			<h2 id="TryUpdate">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=4767:4783#L163">TryUpdate</a>
+			<h2 id="TryUpdate">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=4768:4784#L163">TryUpdate</a>
 				<a class="permalink" href="#TryUpdate">&#xb6;</a>
 				
 				
@@ -2231,7 +2233,7 @@ get, delete, and iterate over stored items, among other functionalities.
 
 			
 				
-				<h3 id="Window">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=1613:1640#L54">Window</a>
+				<h3 id="Window">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/app.go?s=1614:1641#L54">Window</a>
 					<a class="permalink" href="#Window">&#xb6;</a>
 					
 					
@@ -28722,7 +28724,7 @@ configurations for PWA features, offline support, auto-update, and more.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/http.go?s=13052:13119#L471">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/http.go?s=13076:13143#L473">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -28736,7 +28738,7 @@ configurations for PWA features, offline support, auto-update, and more.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/http.go?s=21073:22236#L796">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/http.go?s=21097:22260#L798">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -30041,7 +30043,7 @@ relative to parent elements for the purpose of testing.
 		
 			
 			
-			<h2 id="UI">type <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=237:432#L6">UI</a>
+			<h2 id="UI">type <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=236:431#L6">UI</a>
 				<a class="permalink" href="#UI">&#xb6;</a>
 				
 				
@@ -30075,7 +30077,7 @@ components and HTML elements.
 
 			
 				
-				<h3 id="FilterUIElems">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=902:934#L27">FilterUIElems</a>
+				<h3 id="FilterUIElems">func <a href="/src/github.com/maxence-charriere/go-app/v11/pkg/app/node.go?s=984:1016#L29">FilterUIElems</a>
 					<a class="permalink" href="#FilterUIElems">&#xb6;</a>
 					
 					
@@ -30089,6 +30091,7 @@ elements.
 - Flattens and includes the children of recognized selector elements.
 <p>This function is primarily intended for components that accept ui elements as
 variadic arguments or slice, such as the Body method of HTML elements.
+<p>It may reuse and modify the input&apos;s backing array, clearing discarded slots.
 
 				
 				
@@ -30406,7 +30409,7 @@ package.
 
 
 <div id="footer">
-Build version go1.25.3.<br>
+Build version go1.26.2.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,

@@ -4,10 +4,24 @@
 package app
 
 import (
+	_ "embed"
 	"net/url"
 	"runtime"
 
 	"github.com/maxence-charriere/go-app/v11/pkg/errors"
+)
+
+var (
+	// DefaultAppWorkerJS is the default template used to generate app-worker.js.
+	//
+	//go:embed gen/app-worker.js
+	DefaultAppWorkerJS string
+
+	//go:embed gen/app.js
+	appJS string
+
+	//go:embed gen/app.css
+	appCSS string
 )
 
 type value struct{}

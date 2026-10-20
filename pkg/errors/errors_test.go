@@ -331,8 +331,7 @@ func BenchmarkIs(b *testing.B) {
 		err := New("err")
 		target := err
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !Is(err, target) {
 				b.Fatal("expected match")
 			}
@@ -346,8 +345,7 @@ func BenchmarkIs(b *testing.B) {
 			WithTag("code", 401)
 		target := err
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !Is(err, target) {
 				b.Fatal("expected match")
 			}
@@ -361,8 +359,7 @@ func BenchmarkIs(b *testing.B) {
 			WithTag("code", 401)
 		target := err
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !Is(err, target) {
 				b.Fatal("expected match")
 			}
@@ -374,8 +371,7 @@ func BenchmarkIs(b *testing.B) {
 		err := New("err").Wrap(wrapped)
 		target := wrapped
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !Is(err, target) {
 				b.Fatal("expected match")
 			}
@@ -388,8 +384,7 @@ func BenchmarkErrorIs(b *testing.B) {
 		err := New("err")
 		target := err
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !err.Is(target) {
 				b.Fatal("expected match")
 			}
@@ -403,8 +398,7 @@ func BenchmarkErrorIs(b *testing.B) {
 			WithTag("code", 401)
 		target := err
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !err.Is(target) {
 				b.Fatal("expected match")
 			}
@@ -418,8 +412,7 @@ func BenchmarkErrorIs(b *testing.B) {
 			WithTag("code", 401)
 		target := err
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !err.Is(target) {
 				b.Fatal("expected match")
 			}
@@ -431,8 +424,7 @@ func BenchmarkErrorIs(b *testing.B) {
 		err := New("err").Wrap(wrapped)
 		target := err
 
-		b.ResetTimer()
-		for i := 0; i < b.N; i++ {
+		for b.Loop() {
 			if !err.Is(target) {
 				b.Fatal("expected match")
 			}

@@ -4,11 +4,20 @@
 package app
 
 import (
+	"context"
+	_ "embed"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"os"
+	"os/exec"
 	"path/filepath"
+	"strconv"
+	"strings"
+	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -27,6 +36,169 @@ func (c *preRenderTestCompo) Render() UI {
 		Body(
 			Img().Src("/web/resolve-static-resource-test.jpg"),
 		)
+}
+
+type requestContextTestCompo struct {
+	Compo
+	onPreRender func(Context)
+}
+
+func (c *requestContextTestCompo) OnPreRender(ctx Context) {
+	c.onPreRender(ctx)
+}
+
+func (c *requestContextTestCompo) Render() UI {
+	return Div().Text("request context")
+}
+
+func TestHandlerRequestContext(t *testing.T) {
+	type requestKey struct{}
+	for _, test := range []struct {
+		name           string
+		cancelBefore   bool
+		cancelDuring   bool
+		cancelEncoding bool
+		expired        bool
+	}{
+		{name: "values, deadline, and render cleanup"},
+		{name: "canceled before rendering", cancelBefore: true},
+		{name: "canceled during rendering", cancelDuring: true},
+		{name: "canceled during encoding", cancelEncoding: true},
+		{name: "deadline exceeded before rendering", expired: true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			deadline := time.Now().Add(time.Hour)
+			if test.expired {
+				deadline = time.Now().Add(-time.Second)
+			}
+			parent, cancel := context.WithDeadline(
+				context.WithValue(context.Background(), requestKey{}, "request value"), deadline)
+			defer cancel()
+			if test.cancelBefore {
+				cancel()
+			}
+
+			var renderContext context.Context
+			var renderError error
+			const path = "/request-context-test"
+			Route(path, func() Composer {
+				return &requestContextTestCompo{onPreRender: func(ctx Context) {
+					renderContext = ctx.Context
+					if test.cancelDuring {
+						cancel()
+					}
+					renderError = ctx.Err()
+				}}
+			})
+			t.Cleanup(func() {
+				routes.mu.Lock()
+				defer routes.mu.Unlock()
+				delete(routes.routes, path)
+			})
+
+			r := httptest.NewRequest(http.MethodGet, path, nil).WithContext(parent)
+			w := httptest.NewRecorder()
+			h := Handler{}
+			if test.cancelEncoding {
+				h.HTML = func() HTMLHtml {
+					cancel()
+					return Html()
+				}
+			}
+			h.ServeHTTP(w, r)
+
+			if test.cancelBefore || test.expired {
+				require.Nil(t, renderContext, "a canceled request must not enqueue pre-render callbacks")
+				require.Equal(t, http.StatusServiceUnavailable, w.Code)
+				require.Empty(t, w.Body.String())
+				return
+			}
+			require.NotNil(t, renderContext)
+			require.Equal(t, "request value", renderContext.Value(requestKey{}))
+			gotDeadline, ok := renderContext.Deadline()
+			require.True(t, ok)
+			require.Equal(t, deadline, gotDeadline)
+			require.Equal(t, context.Canceled, renderContext.Err())
+			if test.cancelDuring || test.cancelEncoding {
+				if test.cancelDuring {
+					require.Equal(t, context.Canceled, renderError)
+				} else {
+					require.NoError(t, renderError)
+				}
+				require.Equal(t, http.StatusServiceUnavailable, w.Code)
+				require.Empty(t, w.Body.String())
+			} else {
+				require.NoError(t, renderError)
+				require.NoError(t, parent.Err(), "render cleanup must not cancel the request context")
+				require.Equal(t, http.StatusOK, w.Code)
+				require.Contains(t, w.Body.String(), "<div>request context</div>")
+			}
+		})
+	}
+}
+
+func TestHandlerCancelPendingRender(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	started := make(chan struct{})
+	release := make(chan struct{})
+	workerFinished := make(chan struct{})
+	finished := make(chan struct{})
+	const path = "/cancel-pending-render-test"
+	Route(path, func() Composer {
+		return &requestContextTestCompo{onPreRender: func(ctx Context) {
+			ctx.Async(func() {
+				defer close(workerFinished)
+				close(started)
+				<-release // Deliberately ignores cancellation.
+			})
+		}}
+	})
+	t.Cleanup(func() {
+		cancel()
+		close(release)
+		select {
+		case <-finished:
+		case <-time.After(5 * time.Second):
+			t.Error("handler did not finish")
+		}
+		select {
+		case <-started:
+			select {
+			case <-workerFinished:
+			case <-time.After(5 * time.Second):
+				t.Error("async worker did not finish after release")
+			}
+		default:
+		}
+		routes.mu.Lock()
+		defer routes.mu.Unlock()
+		delete(routes.routes, path)
+	})
+	r := httptest.NewRequest(http.MethodGet, path, nil).WithContext(ctx)
+	w := httptest.NewRecorder()
+	h := Handler{}
+	go func() {
+		h.ServeHTTP(w, r)
+		close(finished)
+	}()
+	select {
+	case <-started:
+	case <-time.After(5 * time.Second):
+		t.Fatal("async pre-render work did not start")
+	}
+	cancel()
+	select {
+	case <-finished:
+	case <-time.After(5 * time.Second):
+		t.Fatal("handler waited for canceled pre-render work")
+	}
+	select {
+	case <-workerFinished:
+		t.Fatal("worker should still be pending when the handler returns")
+	default:
+	}
+	require.Empty(t, w.Body.String(), "canceled rendering must not write partial HTML")
+	require.Equal(t, http.StatusServiceUnavailable, w.Code)
 }
 
 func TestHandlerServePageWithLocalDir(t *testing.T) {
@@ -263,8 +435,8 @@ func TestHandlerServeAppWorkerJSWithLocalDir(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", async (event) => {`)
-	require.Contains(t, body, `self.addEventListener("activate", async (event) => {`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
 	require.Contains(t, body, `"/web/hello.css"`)
 	require.Contains(t, body, `"/web/hello.js"`)
@@ -294,8 +466,8 @@ func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", async (event) => {`)
-	require.Contains(t, body, `self.addEventListener("activate", async (event) => {`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
 	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.css"`)
 	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.js"`)
@@ -325,8 +497,8 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", async (event) => {`)
-	require.Contains(t, body, `self.addEventListener("activate", async (event) => {`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
 	require.Contains(t, body, `"/go-app/web/hello.css"`)
 	require.Contains(t, body, `"/go-app/web/hello.js"`)
@@ -336,6 +508,129 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `"/go-app/app.js"`)
 	require.Contains(t, body, `"/go-app/web/app.wasm"`)
 	require.Contains(t, body, `"/go-app"`)
+}
+
+//go:embed testdata/app-worker.test.cjs
+var appWorkerTests string
+
+//go:embed testdata/script-config.test.cjs
+var scriptConfigTests string
+
+func TestJavaScriptTemplateSyntax(t *testing.T) {
+	node, err := exec.LookPath("node")
+	if err != nil {
+		t.Skip("Node.js is required to check JavaScript template syntax")
+	}
+	for name, source := range map[string]string{"app.js": appJS, "app-worker.js": DefaultAppWorkerJS} {
+		t.Run(name, func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, node, "--check")
+			cmd.Stdin = strings.NewReader(source)
+			output, err := cmd.CombinedOutput()
+			require.NoError(t, err, "%s", output)
+		})
+	}
+}
+
+func TestHandlerJavaScriptConfiguration(t *testing.T) {
+	node, err := exec.LookPath("node")
+	if err != nil {
+		t.Skip("Node.js is required to exercise generated JavaScript")
+	}
+	for _, test := range []struct {
+		name  string
+		value string
+	}{
+		{"plain", "loading {progress}%"},
+		{"empty", ""},
+		{"quotes", "double\" single' backtick`"},
+		{"backslashes", `C:\folder\file`},
+		{"whitespace", "first\nsecond\r\n\tend\b\f"},
+		{"unicode", "台灣 café 😀 \u2028\u2029"},
+		{"markup", "</script><script>globalThis.injected = true</script>&"},
+		{"injection", `"; globalThis.injected = true; //`},
+		{"placeholders", "{{.Env}} {{.LoadingLabel}} {{.Wasm}} {{.WorkerJS}} {{.WasmContentLength}} {{.WasmContentLengthHeader}} {{.Version}} {{.ResourcesToCache}}"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			// makeAppJS exports these values to the server environment too.
+			for _, key := range []string{"GOAPP_SCRIPT_TEST", "GOAPP_INTERNAL_URLS", "GOAPP_VERSION", "GOAPP_STATIC_RESOURCES_URL", "GOAPP_ROOT_PREFIX"} {
+				t.Setenv(key, "")
+			}
+			h := Handler{
+				Version:                 test.value,
+				LoadingLabel:            test.value,
+				WasmContentLength:       test.value,
+				WasmContentLengthHeader: test.value,
+				Env:                     map[string]string{"GOAPP_SCRIPT_TEST": test.value},
+				InternalURLs:            []string{test.value},
+				Resources:               PrefixedLocation("/" + test.value),
+				ServiceWorkerTemplate:   DefaultAppWorkerJS,
+			}
+			appSource := string(h.makeAppJS())
+			var resources []string
+			for _, path := range []string{"/app.css", "/app.js", "/manifest.webmanifest", "/wasm_exec.js", "/web/app.wasm", "/"} {
+				resources = append(resources, h.Resources.Resolve(path))
+			}
+			input := map[string]any{
+				"app":       appSource,
+				"worker":    string(h.makeAppWorkerJS()),
+				"value":     test.value,
+				"env":       h.Env,
+				"wasmURL":   h.Resources.Resolve("/web/app.wasm"),
+				"workerURL": h.Resources.Resolve("/app-worker.js"),
+				"resources": resources,
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, node, "-e", scriptConfigTests)
+			cmd.Stdin = strings.NewReader(jsonString(input))
+			output, err := cmd.CombinedOutput()
+			require.NoError(t, err, "%s", output)
+			require.Contains(t, string(output), "JavaScript configuration checks passed")
+		})
+	}
+}
+
+func TestAppWorkerLifecycleAndCaches(t *testing.T) {
+	node, err := exec.LookPath("node")
+	if err != nil {
+		t.Skip("Node.js is required to exercise the service-worker script")
+	}
+	h := Handler{
+		Version:               "v2",
+		Resources:             LocalDir(""),
+		ServiceWorkerTemplate: DefaultAppWorkerJS,
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, node, "-", string(h.makeAppWorkerJS()))
+	cmd.Stdin = strings.NewReader(appWorkerTests)
+	output, err := cmd.CombinedOutput()
+	require.NoError(t, err, "%s", output)
+}
+
+func TestHandlerCustomAppWorkerTemplate(t *testing.T) {
+	h := Handler{
+		Version:               "custom-version",
+		Resources:             GitHubPages("custom-app"),
+		ServiceWorkerTemplate: "version={{.Version}}; resources={{.ResourcesToCache}}",
+	}
+	script := string(h.makeAppWorkerJS())
+	require.Contains(t, script, "version=custom-version; resources=[")
+	require.Contains(t, script, `"/custom-app/web/app.wasm"`)
+	require.NotContains(t, script, "{{.")
+}
+
+func TestHandlerCustomAppWorkerLiteralPlaceholders(t *testing.T) {
+	h := Handler{
+		Version:               "quotes\"\n{{.ResourcesToCache}} {{.Version}}",
+		Resources:             LocalDir(""),
+		ServiceWorkerTemplate: `raw={{.Version}}; literal="{{.Version}}"; resources={{.ResourcesToCache}}`,
+	}
+	script := string(h.makeAppWorkerJS())
+	require.True(t, strings.HasPrefix(script, "raw="+h.Version+"; literal="+jsonString(h.Version)+"; resources=["))
+	require.Contains(t, script, `"/web/app.wasm"`)
 }
 
 func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
@@ -466,6 +761,111 @@ func TestHandlerServeAppWasm(t *testing.T) {
 	}
 }
 
+type forwardingTestResolver struct {
+	http.Handler
+}
+
+func (forwardingTestResolver) Resolve(path string) string {
+	return "/assets" + path
+}
+
+func TestHandlerForwardResourceRequest(t *testing.T) {
+	for _, test := range []struct {
+		path string
+		want string
+	}{
+		{"/web/hello.txt", "/web/hello.txt"},
+		{"/audit/web/hello.txt", "/web/hello.txt"},
+		{"/web/hello%20world.txt", "/web/hello world.txt"},
+		{"/web/nested%2Fhello.txt", "/web/nested/hello.txt"},
+		{"/audit/web/hello%20world.txt", "/web/hello world.txt"},
+		{"/audit/web/nested%2Fhello.txt", "/web/nested/hello.txt"},
+		{"/%61udit/web/hello.txt", "/web/hello.txt"},
+		{"/app.wasm", "/web/app.wasm"},
+		{"/goapp.wasm", "/web/app.wasm"},
+		{"/audit/app.wasm", "/web/app.wasm"},
+		{"/audit/goapp.wasm", "/web/app.wasm"},
+		{"/audit/%61pp.wasm", "/web/app.wasm"},
+	} {
+		t.Run(test.path, func(t *testing.T) {
+			r := httptest.NewRequest(http.MethodGet, test.path+"?q=a%2Fb&x=1&x=2", nil)
+			type contextKey struct{}
+			r = r.WithContext(context.WithValue(r.Context(), contextKey{}, "request value"))
+			r.Header.Set("X-Test", "forwarded")
+			original := *r
+			originalURL := *r.URL
+			called := false
+			h := Handler{
+				Version: "audit",
+				Resources: forwardingTestResolver{http.HandlerFunc(func(w http.ResponseWriter, forwarded *http.Request) {
+					called = true
+					require.NotSame(t, r, forwarded)
+					require.NotSame(t, r.URL, forwarded.URL)
+					require.Equal(t, test.want, forwarded.URL.Path)
+					if forwarded.URL.RawPath != "" {
+						decoded, err := url.PathUnescape(forwarded.URL.RawPath)
+						require.NoError(t, err)
+						require.Equal(t, forwarded.URL.Path, decoded)
+					}
+					require.Equal(t, originalURL.RawQuery, forwarded.URL.RawQuery)
+					require.Equal(t, r.RequestURI, forwarded.RequestURI)
+					require.Equal(t, r.Host, forwarded.Host)
+					require.Equal(t, "forwarded", forwarded.Header.Get("X-Test"))
+					require.Equal(t, "request value", forwarded.Context().Value(contextKey{}))
+					forwarded.URL.Path = "/changed-by-handler"
+					forwarded.URL.RawQuery = "changed=true"
+					w.WriteHeader(http.StatusOK)
+				})},
+			}
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.True(t, called)
+			require.Equal(t, http.StatusOK, w.Code)
+			require.Equal(t, originalURL, *r.URL)
+			require.Equal(t, original, *r)
+		})
+	}
+}
+
+func TestHandlerForwardLocalResources(t *testing.T) {
+	directory := t.TempDir()
+	require.NoError(t, os.Mkdir(filepath.Join(directory, "web"), 0700))
+	for _, name := range []string{"hello.txt", "hello world.txt", "app.wasm"} {
+		require.NoError(t, os.WriteFile(filepath.Join(directory, "web", name), []byte(name), 0600))
+	}
+	workingDirectory, err := os.Getwd()
+	require.NoError(t, err)
+	relativeDirectory, err := filepath.Rel(workingDirectory, directory)
+	require.NoError(t, err)
+	for name, root := range map[string]string{"absolute": directory, "relative": relativeDirectory} {
+		t.Run(name, func(t *testing.T) {
+			h := Handler{Version: "audit", Resources: LocalDir(root)}
+			for _, prefix := range []string{"", "/audit"} {
+				for _, test := range []struct {
+					path string
+					body string
+				}{
+					{"/web/hello.txt", "hello.txt"},
+					{"/web/hello%20world.txt", "hello world.txt"},
+					{"/web/app.wasm", "app.wasm"},
+					{"/app.wasm", "app.wasm"},
+					{"/goapp.wasm", "app.wasm"},
+				} {
+					t.Run(prefix+test.path, func(t *testing.T) {
+						r := httptest.NewRequest(http.MethodGet, prefix+test.path+"?download=1", nil)
+						originalURL := *r.URL
+						w := httptest.NewRecorder()
+						h.ServeHTTP(w, r)
+						require.Equal(t, http.StatusOK, w.Code)
+						require.Equal(t, test.body, w.Body.String())
+						require.Equal(t, originalURL, *r.URL)
+					})
+				}
+			}
+		})
+	}
+}
+
 func TestHandlerServeFile(t *testing.T) {
 	close := testCreateDir(t, "web")
 	defer close()
@@ -587,11 +987,308 @@ func TestHandlerProxyResources(t *testing.T) {
 	}
 }
 
+type conditionalTestLibrary struct{}
+
+func (conditionalTestLibrary) Styles() (string, string) {
+	return "/conditional-library.css", "body { color: red; }"
+}
+
+func conditionalRequest(h http.Handler, method, path, etag string) *httptest.ResponseRecorder {
+	r := httptest.NewRequest(method, path, nil)
+	if etag != "" {
+		r.Header.Set("If-None-Match", etag)
+	}
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, r)
+	return w
+}
+
+func TestHandlerConditionalGeneratedResources(t *testing.T) {
+	h := &Handler{Version: "conditional", Libraries: []Library{conditionalTestLibrary{}}}
+	for _, path := range []string{
+		"/wasm_exec.js", "/app.js", "/goapp.js", "/app-worker.js", "/app.css",
+		"/manifest.webmanifest", "/manifest.json", "/conditional-library.css", "/conditional/app.js",
+	} {
+		t.Run(path, func(t *testing.T) {
+			initial := conditionalRequest(h, http.MethodGet, path, "")
+			require.Equal(t, http.StatusOK, initial.Code)
+			require.NotEmpty(t, initial.Body.String())
+			require.Equal(t, `"conditional"`, initial.Header().Get("ETag"))
+			for _, method := range []string{http.MethodGet, http.MethodHead, http.MethodPost, http.MethodPut} {
+				for _, condition := range []struct {
+					name  string
+					value string
+					match bool
+				}{
+					{"unconditional", "", false},
+					{"matching", `"conditional"`, true},
+					{"weak", `W/"conditional"`, true},
+					{"list", `"other,tag", W/"conditional", "last"`, true},
+					{"wildcard", "*", true},
+					{"different", `"different"`, false},
+					{"invalid", "conditional", false},
+				} {
+					t.Run(method+"/"+condition.name, func(t *testing.T) {
+						w := conditionalRequest(h, method, path, condition.value)
+						status := http.StatusOK
+						if condition.match {
+							status = http.StatusPreconditionFailed
+							if method == http.MethodGet || method == http.MethodHead {
+								status = http.StatusNotModified
+							}
+						}
+						require.Equal(t, status, w.Code)
+						require.Equal(t, initial.Header().Get("ETag"), w.Header().Get("ETag"))
+						if status != http.StatusOK || method == http.MethodHead {
+							require.Empty(t, w.Body.String())
+						} else {
+							require.Equal(t, initial.Body.String(), w.Body.String())
+						}
+						if status == http.StatusOK {
+							require.Equal(t, strconv.Itoa(initial.Body.Len()), w.Header().Get("Content-Length"))
+						} else {
+							require.Empty(t, w.Header().Get("Content-Length"))
+						}
+						if status == http.StatusNotModified {
+							require.Empty(t, w.Header().Get("Content-Type"))
+						}
+					})
+				}
+			}
+		})
+	}
+}
+
+func TestHandlerConditionalMissingResources(t *testing.T) {
+	h := &Handler{Version: "conditional", Resources: LocalDir(t.TempDir())}
+	for _, path := range []string{"/conditional-missing-page", "/web/missing.txt", "/app.wasm", "/goapp.wasm", "/conditional/web/missing.txt"} {
+		for _, etag := range []string{`"conditional"`, `W/"conditional"`, "*"} {
+			t.Run(path+"/"+etag, func(t *testing.T) {
+				w := conditionalRequest(h, http.MethodGet, path, etag)
+				require.Equal(t, http.StatusNotFound, w.Code)
+				require.Empty(t, w.Header().Get("ETag"))
+			})
+		}
+	}
+}
+
+func TestHandlerConditionalPrecedenceAndRanges(t *testing.T) {
+	h := &Handler{Version: "conditional"}
+	initial := conditionalRequest(h, http.MethodGet, "/app.css", "")
+	for _, test := range []struct {
+		name   string
+		header http.Header
+		status int
+		body   string
+	}{
+		{"failed If-Match precedes If-None-Match", http.Header{
+			"If-Match": {`"different"`}, "If-None-Match": {`"conditional"`},
+		}, http.StatusPreconditionFailed, ""},
+		{"weak If-Match does not match", http.Header{
+			"If-Match": {`W/"conditional"`},
+		}, http.StatusPreconditionFailed, ""},
+		{"If-None-Match precedes range", http.Header{
+			"If-None-Match": {`"conditional"`}, "Range": {"bytes=0-3"},
+		}, http.StatusNotModified, ""},
+		{"matching If-Range", http.Header{
+			"If-Range": {`"conditional"`}, "Range": {"bytes=0-3"},
+		}, http.StatusPartialContent, initial.Body.String()[:4]},
+		{"different If-Range", http.Header{
+			"If-Range": {`"different"`}, "Range": {"bytes=0-3"},
+		}, http.StatusOK, initial.Body.String()},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			r := httptest.NewRequest(http.MethodGet, "/app.css", nil)
+			r.Header = test.header
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.Equal(t, test.status, w.Code)
+			require.Equal(t, test.body, w.Body.String())
+		})
+	}
+}
+
+func TestHandlerConditionalLocalResources(t *testing.T) {
+	directory := t.TempDir()
+	require.NoError(t, os.Mkdir(filepath.Join(directory, "web"), 0700))
+	file := filepath.Join(directory, "web", "app.wasm")
+	oldTime := time.Now().Add(-time.Hour).Truncate(time.Second)
+	for _, path := range []string{"/web/app.wasm", "/app.wasm", "/goapp.wasm", "/conditional/web/app.wasm", "/conditional/goapp.wasm"} {
+		t.Run(path, func(t *testing.T) {
+			require.NoError(t, os.WriteFile(file, []byte("first"), 0600))
+			require.NoError(t, os.Chtimes(file, oldTime, oldTime))
+			h := &Handler{Version: "conditional", Resources: LocalDir(directory)}
+			initial := conditionalRequest(h, http.MethodGet, path, `"conditional"`)
+			require.Equal(t, http.StatusOK, initial.Code)
+			require.Equal(t, "first", initial.Body.String())
+			require.Empty(t, initial.Header().Get("ETag"))
+			require.NotEmpty(t, initial.Header().Get("Last-Modified"))
+			r := httptest.NewRequest(http.MethodGet, path, nil)
+			r.Header.Set("If-Modified-Since", initial.Header().Get("Last-Modified"))
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.Equal(t, http.StatusNotModified, w.Code)
+			require.NoError(t, os.WriteFile(file, []byte("changed"), 0600))
+			newTime := oldTime.Add(time.Minute)
+			require.NoError(t, os.Chtimes(file, newTime, newTime))
+			w = httptest.NewRecorder()
+			h.ServeHTTP(w, r)
+			require.Equal(t, http.StatusOK, w.Code)
+			require.Equal(t, "changed", w.Body.String())
+		})
+	}
+}
+
+func TestHandlerConditionalCustomResource(t *testing.T) {
+	calls := 0
+	h := &Handler{Version: "conditional", Resources: forwardingTestResolver{http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		calls++
+		w.Header().Set("ETag", `"resource"`)
+		http.ServeContent(w, r, "", time.Time{}, strings.NewReader("resource"))
+	})}}
+	for _, path := range []string{"/web/file.txt", "/conditional/web/file.txt", "/app.wasm", "/goapp.wasm"} {
+		w := conditionalRequest(h, http.MethodGet, path, `"conditional"`)
+		require.Equal(t, http.StatusOK, w.Code)
+		require.Equal(t, "resource", w.Body.String())
+		w = conditionalRequest(h, http.MethodGet, path, `W/"resource"`)
+		require.Equal(t, http.StatusNotModified, w.Code)
+	}
+	require.Equal(t, 8, calls)
+}
+
+func TestHandlerConditionalPage(t *testing.T) {
+	type titleKey struct{}
+	const path = "/conditional-page-test"
+	renders := 0
+	Route(path, func() Composer {
+		return &requestContextTestCompo{onPreRender: func(ctx Context) {
+			renders++
+			ctx.Page().SetTitle(ctx.Value(titleKey{}).(string))
+		}}
+	})
+	t.Cleanup(func() {
+		routes.mu.Lock()
+		defer routes.mu.Unlock()
+		delete(routes.routes, path)
+	})
+	h := &Handler{Version: "conditional"}
+	request := func(method, title, etag string) *httptest.ResponseRecorder {
+		r := httptest.NewRequest(method, path, nil)
+		r = r.WithContext(context.WithValue(r.Context(), titleKey{}, title))
+		r.Header.Set("If-None-Match", etag)
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		return w
+	}
+	initial := request(http.MethodGet, "first", `"conditional"`)
+	require.Equal(t, http.StatusOK, initial.Code)
+	require.Contains(t, initial.Body.String(), "<title>first</title>")
+	etag := initial.Header().Get("ETag")
+	require.NotEmpty(t, etag)
+	require.NotEqual(t, `"conditional"`, etag)
+	w := request(http.MethodGet, "first", `"other", W/`+etag)
+	require.Equal(t, http.StatusNotModified, w.Code)
+	require.Empty(t, w.Body.String())
+	w = request(http.MethodHead, "first", etag)
+	require.Equal(t, http.StatusNotModified, w.Code)
+	require.Empty(t, w.Body.String())
+	w = request(http.MethodHead, "second", etag)
+	require.Equal(t, http.StatusOK, w.Code)
+	require.NotEqual(t, etag, w.Header().Get("ETag"))
+	require.Empty(t, w.Body.String())
+	w = request(http.MethodGet, "second", etag)
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Contains(t, w.Body.String(), "<title>second</title>")
+	w = request(http.MethodPost, "first", etag)
+	require.Equal(t, http.StatusPreconditionFailed, w.Code)
+	require.Empty(t, w.Body.String())
+	require.Equal(t, 6, renders, "each request must render its own representation")
+}
+
+func TestHandlerConditionalProxyResource(t *testing.T) {
+	var fetches atomic.Int32
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fetches.Add(1)
+		if r.URL.Path != "/web/proxy.txt" {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "text/plain")
+		io.WriteString(w, "proxy content")
+	}))
+	defer upstream.Close()
+	h := &Handler{
+		Version: "conditional", Resources: RemoteBucket(upstream.URL),
+		ProxyResources: []ProxyResource{{Path: "/proxy.txt", ResourcePath: "/web/proxy.txt"}},
+	}
+	initial := conditionalRequest(h, http.MethodGet, "/conditional/proxy.txt", `"conditional"`)
+	require.Equal(t, http.StatusOK, initial.Code)
+	require.Equal(t, "proxy content", initial.Body.String())
+	etag := initial.Header().Get("ETag")
+	require.NotEmpty(t, etag)
+	require.NotEqual(t, `"conditional"`, etag)
+	for _, method := range []string{http.MethodGet, http.MethodHead, http.MethodPost} {
+		w := conditionalRequest(h, method, "/proxy.txt", `W/`+etag)
+		status := http.StatusNotModified
+		if method == http.MethodPost {
+			status = http.StatusPreconditionFailed
+		}
+		require.Equal(t, status, w.Code)
+		require.Empty(t, w.Body.String())
+	}
+	require.EqualValues(t, 1, fetches.Load())
+	for _, etag := range []string{`"conditional"`, "*"} {
+		w := conditionalRequest(h, http.MethodGet, "/robots.txt", etag)
+		require.Equal(t, http.StatusNotFound, w.Code)
+		require.Empty(t, w.Header().Get("ETag"))
+	}
+	// Even a wildcard must first establish that the uncached resource exists.
+	h = &Handler{
+		Version: "conditional", Resources: RemoteBucket(upstream.URL),
+		ProxyResources: []ProxyResource{{Path: "/proxy.txt", ResourcePath: "/web/proxy.txt"}},
+	}
+	before := fetches.Load()
+	w := conditionalRequest(h, http.MethodGet, "/proxy.txt", "*")
+	require.Equal(t, http.StatusNotModified, w.Code)
+	require.Equal(t, before+1, fetches.Load())
+	require.Equal(t, etag, w.Header().Get("ETag"))
+}
+
+func BenchmarkHandlerConditionalPage(b *testing.B) {
+	h := &Handler{Version: "conditional"}
+	initial := conditionalRequest(h, http.MethodGet, "/", "")
+	require.Equal(b, http.StatusOK, initial.Code)
+	require.Contains(b, initial.Body.String(), "pre-render-ok")
+	for _, condition := range []struct {
+		name string
+		etag string
+	}{
+		{"unconditional", ""},
+		{"version", `"conditional"`},
+		{"content", initial.Header().Get("ETag")},
+	} {
+		b.Run(condition.name, func(b *testing.B) {
+			status := http.StatusOK
+			if condition.name == "content" {
+				status = http.StatusNotModified
+			}
+			require.Equal(b, status, conditionalRequest(h, http.MethodGet, "/", condition.etag).Code)
+			r := httptest.NewRequest(http.MethodGet, "/", nil)
+			r.Header.Set("If-None-Match", condition.etag)
+			b.ReportAllocs()
+			for b.Loop() {
+				w := httptest.NewRecorder()
+				h.ServeHTTP(w, r)
+			}
+		})
+	}
+}
+
 func BenchmarkHandlerColdRun(b *testing.B) {
 	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
 	w := httptest.NewRecorder()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		h := Handler{}
 		h.ServeHTTP(w, r)
 		h.ServeHTTP(w, r)
@@ -604,7 +1301,7 @@ func BenchmarkHandlerHotRun(b *testing.B) {
 	h := Handler{}
 	h.ServeHTTP(w, r)
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		h.ServeHTTP(w, r)
 	}
 }

@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"net/url"
-	"sync"
 	"testing"
 	"time"
 
@@ -239,20 +238,93 @@ func TestContextDefer(t *testing.T) {
 }
 
 func TestContextAfter(t *testing.T) {
-	e := newTestEngine()
+	waitForWorkers := func(t *testing.T, e *engineX) {
+		t.Helper()
+		done := make(chan struct{})
+		go func() {
+			e.waitAsync(context.Background())
+			close(done)
+		}()
+		select {
+		case <-done:
+		case <-time.After(5 * time.Second):
+			t.Fatal("delayed worker did not finish")
+		}
+	}
 
-	hello := &hello{}
-	e.Load(hello)
-	ctx := e.nodes.context(e.baseContext(), hello)
+	for _, duration := range []time.Duration{time.Millisecond, 0, -time.Millisecond} {
+		t.Run(duration.String(), func(t *testing.T) {
+			e := newTestEngine()
+			hello := &hello{}
+			require.NoError(t, e.Load(hello))
+			ctx := e.nodes.context(e.baseContext(), hello)
+			calls := 0
+			ctx.After(duration, func(Context) { calls++ })
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	ctx.After(time.Millisecond, func(ctx Context) {
-		wg.Done()
+			waitForWorkers(t, e)
+			e.ConsumeAll()
+			require.Equal(t, 1, calls)
+		})
+	}
+
+	for _, test := range []struct {
+		name         string
+		duration     time.Duration
+		cancelBefore bool
+	}{
+		{"canceled before scheduling", time.Hour, true},
+		{"canceled with ready timer", 0, true},
+		{"canceled after scheduling", time.Hour, false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			e := newTestEngine()
+			var cancel context.CancelFunc
+			e.ctx, cancel = context.WithCancel(e.ctx)
+			defer cancel()
+			hello := &hello{}
+			require.NoError(t, e.Load(hello))
+			ctx := e.nodes.context(e.baseContext(), hello)
+			called := false
+			if test.cancelBefore {
+				cancel()
+			}
+			ctx.After(test.duration, func(Context) { called = true })
+			cancel()
+
+			waitForWorkers(t, e)
+			e.ConsumeAll()
+			require.False(t, called)
+		})
+	}
+
+	t.Run("canceled after callback is queued", func(t *testing.T) {
+		e := newTestEngine()
+		var cancel context.CancelFunc
+		e.ctx, cancel = context.WithCancel(e.ctx)
+		defer cancel()
+		hello := &hello{}
+		require.NoError(t, e.Load(hello))
+		ctx := e.nodes.context(e.baseContext(), hello)
+		called := false
+		ctx.After(0, func(Context) { called = true })
+
+		waitForWorkers(t, e)
+		require.NotEmpty(t, e.dispatches)
+		cancel()
+		e.ConsumeAll()
+		require.False(t, called)
 	})
 
-	e.ConsumeAll()
-	wg.Wait()
+	t.Run("nil callback", func(t *testing.T) {
+		e := newTestEngine()
+		hello := &hello{}
+		require.NoError(t, e.Load(hello))
+		ctx := e.nodes.context(e.baseContext(), hello)
+		ctx.After(0, nil)
+
+		waitForWorkers(t, e)
+		require.NotPanics(t, e.ConsumeAll)
+	})
 }
 
 func TestContextPreventUpdate(t *testing.T) {

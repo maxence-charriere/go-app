@@ -14,6 +14,9 @@ type cacheItem struct {
 	// The response content encoding.
 	ContentEncoding string
 
+	// The validator for this response body.
+	ETag string
+
 	// The response body.
 	Body []byte
 }
