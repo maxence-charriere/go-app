@@ -512,7 +512,9 @@ This separate audit found six practical simplifications, ranked below, and two l
 
 Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and temporary standalone probes for CLI wrapping output and AES-GCM interoperability. Browser/WASM execution was not performed for this audit. Implementation should run the relevant equivalence tests below, the native race suite, and browser/WASM tests for shared application code.
 
-- [ ] **23. Replace the custom discard writer with `io.Discard`**
+- [x] **23. Replace the custom discard writer with `io.Discard`**
+
+  **Implemented:** Command parsing and option parser tests use `io.Discard`; removed the private `writerNoop` implementation. Existing CLI tests cover successful parsing, unknown flags, invalid values, and help output.
 
   **Priority:** Recommended; low risk.
 

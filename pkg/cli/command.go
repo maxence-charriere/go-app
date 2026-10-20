@@ -63,7 +63,7 @@ func (m *commandManager) parse(args ...string) (string, func(), error) {
 
 	programName := filepath.Base(os.Args[0])
 	flags := flag.NewFlagSet(commandString(programName, k), flag.ContinueOnError)
-	flags.SetOutput(writerNoop{})
+	flags.SetOutput(io.Discard)
 
 	optsParser := optionParser{flags: flags}
 	opts, err := optsParser.parse(cmd.options)
@@ -103,10 +103,4 @@ func commandEndIndex(args []string) int {
 		i++
 	}
 	return i
-}
-
-type writerNoop struct{}
-
-func (w writerNoop) Write([]byte) (int, error) {
-	return 0, nil
 }
