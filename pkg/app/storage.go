@@ -91,9 +91,7 @@ func (s *memoryStorage) Del(k string) {
 
 func (s *memoryStorage) Clear() {
 	s.mu.Lock()
-	for k := range s.data {
-		delete(s.data, k)
-	}
+	clear(s.data)
 	s.mu.Unlock()
 }
 

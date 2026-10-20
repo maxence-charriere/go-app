@@ -564,7 +564,11 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Verification:** Overlapping keys, nil/empty source maps, no taggers, call counts, and source-map mutation after creating the action.
 
-- [ ] **26. Replace the storage map-deletion loop with `clear`**
+- [x] **26. Replace the storage map-deletion loop with `clear`**
+
+  **Implemented:** `memoryStorage.Clear` uses `clear(s.data)` inside the existing write lock, retaining the allocated map and synchronization behavior.
+
+  **Validated:** Existing storage tests cover clearing populated/empty storage, setting values afterward, clearing from a `ForEach` callback, and concurrent access. `go vet ./...`, `go test -race ./...`, and the Chrome/WASM application suite passed.
 
   **Priority:** Recommended; low risk.
 
