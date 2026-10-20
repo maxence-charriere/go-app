@@ -463,7 +463,7 @@ func storeValue(recv, v any) error {
 	src := reflect.ValueOf(v)
 	switch {
 	case !src.IsValid():
-		dst.Set(reflect.Zero(dst.Type()))
+		dst.SetZero()
 		return nil
 
 	case src.Kind() == reflect.Ptr:

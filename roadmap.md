@@ -602,7 +602,11 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Verification:** Empty input, repeated spaces, tabs/newlines, mixed-case attributes, repeated attributes, and multiple URL tokens. A small allocation benchmark can verify the allocation benefit.
 
-- [ ] **28. Reset reflected values with `reflect.Value.SetZero`**
+- [x] **28. Reset reflected values with `reflect.Value.SetZero`**
+
+  **Implemented:** `storeValue` calls `dst.SetZero()` for an untyped nil source, preserving receiver validation, exact-type copying, and typed-nil pointer rejection.
+
+  **Validated:** Temporary probes verified resets of scalars, structs, pointers, interfaces, slices, and maps, plus rejection of invalid receivers and typed-nil pointer sources without changing the destination. Vet, the native race suite, and the Chrome/WASM application suite passed; both test suites included the probes.
 
   **Priority:** Recommended; small simplification to combine with other cleanup.
 
