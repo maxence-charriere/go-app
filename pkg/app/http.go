@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"sort"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -360,8 +360,8 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	for k := range resources {
 		resourcesTocache = append(resourcesTocache, h.Resources.Resolve(k))
 	}
-	sort.Slice(resourcesTocache, func(a, b int) bool {
-		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) > 0
+	slices.SortFunc(resourcesTocache, func(a, b string) int {
+		return strings.Compare(b, a)
 	})
 
 	return []byte(strings.NewReplacer(

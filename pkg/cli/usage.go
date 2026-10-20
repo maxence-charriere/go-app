@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"sort"
+	"slices"
 	"strings"
 )
 
@@ -117,8 +117,8 @@ func commandUsageIndex(w io.Writer, cmds map[string]Command) func() {
 			cmdlist = append(cmdlist, cmd)
 		}
 
-		sort.Slice(cmdlist, func(i, j int) bool {
-			return strings.Compare(cmdlist[i].name, cmdlist[j].name) < 0
+		slices.SortFunc(cmdlist, func(a, b *command) int {
+			return strings.Compare(a.name, b.name)
 		})
 
 		for _, c := range cmdlist {

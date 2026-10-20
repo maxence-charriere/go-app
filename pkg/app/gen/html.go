@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"sort"
+	"slices"
 	"strings"
 )
 
@@ -1661,8 +1661,8 @@ func attrsByNames(names ...string) []attr {
 		res = append(res, attr)
 	}
 
-	sort.Slice(res, func(i, j int) bool {
-		return strings.Compare(res[i].Name, res[j].Name) <= 0
+	slices.SortFunc(res, func(a, b attr) int {
+		return strings.Compare(a.Name, b.Name)
 	})
 
 	return res
@@ -1690,8 +1690,8 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"attribute",
 	)...)
 
-	sort.Slice(attrs, func(i, j int) bool {
-		return strings.Compare(attrs[i].Name, attrs[j].Name) <= 0
+	slices.SortFunc(attrs, func(a, b attr) int {
+		return strings.Compare(a.Name, b.Name)
 	})
 
 	return attrs
@@ -2018,8 +2018,8 @@ func eventHandlersByName(names ...string) []eventHandler {
 		res = append(res, h)
 	}
 
-	sort.Slice(res, func(i, j int) bool {
-		return strings.Compare(res[i].Name, res[j].Name) <= 0
+	slices.SortFunc(res, func(a, b eventHandler) int {
+		return strings.Compare(a.Name, b.Name)
 	})
 
 	return res
@@ -2067,8 +2067,8 @@ func withGlobalEventHandlers(handlers ...eventHandler) []eventHandler {
 		"onpaste",
 	)...)
 
-	sort.Slice(handlers, func(i, j int) bool {
-		return strings.Compare(handlers[i].Name, handlers[j].Name) <= 0
+	slices.SortFunc(handlers, func(a, b eventHandler) int {
+		return strings.Compare(a.Name, b.Name)
 	})
 
 	return handlers
@@ -2101,8 +2101,8 @@ func withMediaEventHandlers(handlers ...eventHandler) []eventHandler {
 		"onwaiting",
 	)...)
 
-	sort.Slice(handlers, func(i, j int) bool {
-		return strings.Compare(handlers[i].Name, handlers[j].Name) <= 0
+	slices.SortFunc(handlers, func(a, b eventHandler) int {
+		return strings.Compare(a.Name, b.Name)
 	})
 
 	return handlers

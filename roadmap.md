@@ -528,7 +528,11 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Verification:** Successful parsing, unknown flags, invalid values, and help requests retain their returned errors and output behavior.
 
-- [ ] **24. Replace indexed sorting callbacks with `slices.SortFunc`**
+- [x] **24. Replace indexed sorting callbacks with `slices.SortFunc`**
+
+  **Implemented:** Replaced all seven indexed sorting callbacks with typed `slices.SortFunc` comparators using `strings.Compare`. Service-worker resources retain descending order; commands, attributes, and event handlers retain ascending order. Generator comparators now return zero for equal names.
+
+  **Validated:** Temporary before/after generation produced byte-for-byte identical HTML source, generated tests, and service-worker scripts for local, remote-bucket, and GitHub Pages resources. Generated Go files also match the tracked files after formatting. Temporary probes verified command ordering and duplicate-name sorting without losing entries across all five generator helpers. `go vet ./...`, `go test -race ./...`, and the Chrome/WASM application suite passed.
 
   **Priority:** Recommended; check generator output carefully.
 
