@@ -632,9 +632,9 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Validated:** Permanent tests cover cross-decryption in both directions for AES-128/192/256 with nil, empty, text, binary, and larger binary payloads; fixed legacy fixtures; persisted-state reload; all truncations and single-byte tampering of a fixture; wrong keys; invalid key sizes; input immutability; and overridden-reader behavior. The internal-randomness test fails against the previous implementation and passes with the replacement. `go vet ./...`, `go test -race ./...`, and the Chrome/WASM application suite passed.
 
-- [ ] **30. Evaluate iterator-based CLI word wrapping — deferred**
+- [x] **30. Evaluate iterator-based CLI word wrapping — evaluated; replacement deferred**
 
-  **Priority:** Deferred under strict output preservation; not an approved implementation item.
+  **Decision:** Retain the current wrapper. A direct iterator replacement changes output; preserving the existing behavior requires additional trailing-whitespace handling and offers no clear simplification. Runtime code remains unchanged.
 
   **Files/functions:** `pkg/cli/usage.go`: `writeText`.
 
@@ -642,9 +642,13 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Expected benefit:** Could remove manual `bufio.ScanWords` buffer advancement and pending-word state.
 
-  **Behavior and compatibility:** A direct substitution changes existing output. A standalone comparison confirmed that `"hello  "` currently produces `"hello \n"`, while the straightforward iterator version produces `"hello\n"`. Byte-based wrapping, oversized words, and partial writer results also require preservation. Retaining all quirks may erase much of the simplification benefit.
+  **Behavior and compatibility:** `ScanWords` consumes one whitespace rune after a word; if more whitespace remains, the next call advances with a nil token. The existing wrapper processes that token, whereas `FieldsSeq` yields only words. With level 0 and width 80, `"hello  "` therefore changes from `"hello \n"` to `"hello\n"`. With level 0 and width 6, `"abc def  "` changes from `"abc def\n\n"` to `"abc def\n"`. Unicode trailing whitespace has the same effect. Byte-based width accounting, the existing separator-width rule, initial newlines for oversized words, and counting actual writer results must also be preserved.
 
-  **Verification:** Exact output for trailing whitespace, Unicode whitespace, malformed UTF-8, boundary widths, oversized words, and short/error writers. Resolve output compatibility before implementation.
+  **Alternatives evaluated:** A compatibility iterator reproduced the final nil token by inspecting trailing Unicode whitespace and whether any word was yielded. It matched output and writer calls, but added special-case logic and per-word byte-slice allocations. Using `io.WriteString` avoids those allocations for writers implementing `io.StringWriter`, but also switches word output to `WriteString`; a dual-interface writer with different failure behavior demonstrated an observable change. That alternative still requires resolving the whitespace differences.
+
+  **Validated:** Temporary standalone probes compared 37,050 input/width/indent/writer combinations, covering empty and trailing whitespace, Unicode whitespace, malformed UTF-8, boundary widths, oversized words, short writes, zero-byte failures, and partial/full writes returning errors. The direct iterator changed output in 4,632 cases; the compatibility iterator matched output, write calls, and nil-write behavior in every case. The probes and existing CLI tests passed under the race detector; `go vet ./pkg/cli` passed. No browser/WASM application code changed.
+
+  **Measured:** Three short native benchmark runs on darwin/arm64 with `io.Discard` showed the existing wrapper using 53 B/op and 6 allocs/op for a short description, versus 88 B/op and 11 allocs/op for both iterator variants retaining `Write([]byte)`. For a repeated paragraph, the existing wrapper used 526 B/op and 79 allocs/op, versus 1,024 B/op and 142 allocs/op for the compatibility iterator. The `io.WriteString` variant reduced these to 5 B/op and 5 allocs/op for the short description and 78 B/op and 78 allocs/op for the paragraph, but did not consistently improve elapsed time and changes writer dispatch. These measurements apply to the tested writer and inputs, not all CLI output workloads.
 
 ### Custom implementations to retain
 
