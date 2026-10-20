@@ -2,6 +2,7 @@ package cli
 
 import (
 	"flag"
+	"io"
 	"reflect"
 	"testing"
 	"time"
@@ -352,7 +353,7 @@ func TestOptionParserParse(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			flags := flag.NewFlagSet("test", flag.ContinueOnError)
-			flags.SetOutput(writerNoop{})
+			flags.SetOutput(io.Discard)
 
 			p := optionParser{
 				flags: flags,
