@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"encoding/json"
+	"maps"
 	"net/url"
 	"strings"
 	"time"
@@ -281,9 +282,7 @@ func (ctx Context) NewActionWithValue(action string, v any, tags ...Tagger) {
 			tagMap = make(Tags)
 		}
 
-		for k, v := range tag.Tags() {
-			tagMap[k] = v
-		}
+		maps.Copy(tagMap, tag.Tags())
 	}
 
 	ctx.postAction(ctx, Action{

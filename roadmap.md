@@ -546,7 +546,11 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Verification:** Compare generated HTML source and service-worker output byte-for-byte, verify command ordering, and exercise duplicate names. Regenerate in a temporary directory during comparison to avoid overwriting the baseline.
 
-- [ ] **25. Replace manual tag copying with `maps.Copy`**
+- [x] **25. Replace manual tag copying with `maps.Copy`**
+
+  **Implemented:** `Context.NewActionWithValue` uses `maps.Copy` for each tagger, retaining the outer loop and allocation timing. No taggers produce nil tags; nil or empty source maps produce an allocated empty map. Later taggers still overwrite earlier keys.
+
+  **Validated:** Temporary probes verified overlapping keys, nil/empty sources, no taggers, one `Tags()` call per tagger, and independence from later source-map mutation. `go vet ./...`, the native race suite, and the Chrome/WASM application suite passed; both suites included the temporary probes.
 
   **Priority:** Recommended; low risk.
 
