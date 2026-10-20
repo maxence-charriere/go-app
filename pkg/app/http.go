@@ -900,7 +900,7 @@ func (r httpResource) toScript() HTMLScript {
 
 func parseHTTPResource(v string) httpResource {
 	var res httpResource
-	for _, part := range strings.Split(v, " ") {
+	for part := range strings.SplitSeq(v, " ") {
 		if part = strings.TrimSpace(part); part == "" {
 			continue
 		}

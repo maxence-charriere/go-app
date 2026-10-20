@@ -582,7 +582,13 @@ Evidence: read-only source review, `go fix -diff -mod=readonly ./...`, and tempo
 
   **Verification:** Clearing populated/empty storage, setting values afterward, clearing from a `ForEach` callback, and existing concurrent storage tests under the race detector.
 
-- [ ] **27. Iterate resource tokens with `strings.SplitSeq`**
+- [x] **27. Iterate resource tokens with `strings.SplitSeq`**
+
+  **Implemented:** `parseHTTPResource` iterates `strings.SplitSeq(v, " ")`, retaining the literal-space separator, per-token trimming, case handling, and last-value-wins behavior.
+
+  **Validated:** Temporary probes checked empty input, repeated spaces, tabs/newlines, mixed-case attributes, repeated attributes, and multiple URL tokens, plus 1,728 token combinations against the previous implementation. Vet, the native race suite, and the Chrome/WASM application suite passed; both test suites included the probes.
+
+  **Measured:** A temporary native allocation benchmark for `/web/app.js defer crossorigin=anonymous` dropped from 48 B/op and 1 alloc/op with `strings.Split` to 0 B/op and 0 allocs/op with `strings.SplitSeq` on darwin/arm64.
 
   **Priority:** Recommended; small simplification.
 
