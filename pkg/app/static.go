@@ -21,6 +21,16 @@ import (
 // Note that app.wasm must still be built separately and put into the web
 // directory.
 func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
+	return GenerateStaticWebsiteFromMux(dir, h, pages...)
+}
+
+// GenerateStaticWebsiteFromMux generates the files to run a PWA built with go-app as a
+// static website in the specified directory. Static websites can be used with
+// hosts such as Github Pages.
+//
+// Note that app.wasm must still be built separately and put into the web
+// directory.
+func GenerateStaticWebsiteFromMux(dir string, h http.Handler, pages ...string) error {
 	if dir == "" {
 		dir = "."
 	}
