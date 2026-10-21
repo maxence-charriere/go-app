@@ -24,7 +24,8 @@ func (a attributes) Set(name string, value any) {
 	}
 
 	switch name {
-	case "cite",
+	case "alt",
+		"cite",
 		"data",
 		"download",
 		"href",
