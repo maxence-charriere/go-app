@@ -14,9 +14,12 @@ test:
 	@echo "\033[94m\n• Running go wasm tests\033[00m"
 	GOARCH=wasm GOOS=js go test ./pkg/app
 
-gen:
+.PHONY: build
+build:
 	@echo "\033[94m• Generating HTML Syntax\033[00m"
 	@go generate ./pkg/app
+	@echo "\033[94m• Building Go packages\033[00m"
+	@go build ./...
 
 clean:
 	@go clean -v ./...
