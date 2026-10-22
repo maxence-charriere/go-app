@@ -1,45 +1,45 @@
 // Package cli is a package to build CLI programs.
 //
 // eg:
-//  func main() {
-//      opts := struct {
-// 	        Foo string `env:"FOO" help:"A simple string."`
-// 		    Bar int    `env:"BAR" help:"A simple integer."`
-//      }{
-// 		    Foo: "foo",
-// 		    Bar: 42,
-//      }
 //
-//      ctx, cancel := cli.ContextWithSignals(context.Background(),
-//          os.Interrupt,
-// 		    syscall.SIGTERM,
-//      )
-//      defer cancel()
+//	 func main() {
+//	     opts := struct {
+//		        Foo string `env:"FOO" help:"A simple string."`
+//			    Bar int    `env:"BAR" help:"A simple integer."`
+//	     }{
+//			    Foo: "foo",
+//			    Bar: 42,
+//	     }
 //
-//      cli.Register().
-// 		    Help("A simple command").
-// 		    Options(&opts)
+//	     ctx, cancel := cli.ContextWithSignals(context.Background(),
+//	         os.Interrupt,
+//			    syscall.SIGTERM,
+//	     )
+//	     defer cancel()
 //
-//      cli.Register("hello").
-// 		    Help("A sub command").
-// 		    Options(&opts)
+//	     cli.Register().
+//			    Help("A simple command").
+//			    Options(&opts)
 //
-//      cli.Register("world").
-// 		    Help("Another sub command").
-// 		    Options(&opts)
+//	     cli.Register("hello").
+//			    Help("A sub command").
+//			    Options(&opts)
 //
-//      switch cli.Load() {
-// 	    case "hello":
-// 		    helloCmd(ctx, opts)
+//	     cli.Register("world").
+//			    Help("Another sub command").
+//			    Options(&opts)
 //
-//      case "world":
-// 		    worldCmd(ctx, opts)
+//	     switch cli.Load() {
+//		    case "hello":
+//			    helloCmd(ctx, opts)
 //
-// 	    default:
-// 		    defaultCmd(ctx, opts)
-// 	    }
-//  }
+//	     case "world":
+//			    worldCmd(ctx, opts)
 //
+//		    default:
+//			    defaultCmd(ctx, opts)
+//		    }
+//	 }
 package cli
 
 import (
@@ -74,6 +74,8 @@ func Register(cmd ...string) Command {
 
 // Load loads the registered command that matches the program args. If defined,
 // environment variables and flags are loaded in the command options.
+// Flags override valid environment values. Invalid environment values cause an
+// error before flags are parsed, even if a flag would override the value.
 //
 // It prints the command usage and exits the program with code -1 when an error
 // occurs.
@@ -82,7 +84,7 @@ func Load() (cmd string) {
 	currentUsage = usage
 
 	if err != nil {
-		if errors.Is(err, errNoRootCmd) && err != flag.ErrHelp {
+		if !errors.Is(err, flag.ErrHelp) {
 			printError(defaultManager.out, err)
 		}
 
@@ -120,18 +122,10 @@ func Error(err error) {
 // when one of the specified signals is emitted. If no signals are provided, all
 // incoming signals will cancel the context.
 //
-// Canceling this context releases resources associated with it, so code should
-// call cancel as soon as the operations running in this Context complete.
+// The returned cancel function unregisters signal delivery and releases
+// associated resources. Call it when operations complete, even if a signal or
+// parent cancellation has already canceled the context. This may restore the
+// default behavior for subsequent signals.
 func ContextWithSignals(parent context.Context, sig ...os.Signal) (ctx context.Context, cancel func()) {
-	ctx, cancel = context.WithCancel(parent)
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, sig...)
-
-	go func() {
-		<-c
-		close(c)
-		cancel()
-	}()
-
-	return ctx, cancel
+	return signal.NotifyContext(parent, sig...)
 }

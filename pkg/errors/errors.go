@@ -16,14 +16,15 @@ func init() {
 // Unwrap returns the result of calling the Unwrap method on err, if err's type
 // contains an Unwrap method returning error.
 // Otherwise, Unwrap returns nil.
+// It does not unwrap errors with an Unwrap method returning []error.
 func Unwrap(err error) error {
 	return errors.Unwrap(err)
 }
 
-// Is reports whether any error in err's chain matches target.
+// Is reports whether any error in err's tree matches target.
 //
-// The chain consists of err itself followed by the sequence of errors obtained
-// by repeatedly calling Unwrap.
+// The tree consists of err itself followed by errors obtained through either
+// Unwrap() error or Unwrap() []error, traversed depth-first, left-to-right.
 //
 // An error is considered to match a target if it is equal to that target or if
 // it implements a method Is(error) bool such that Is(target) returns true.
@@ -40,12 +41,12 @@ func Is(err, target error) bool {
 	return errors.Is(err, target)
 }
 
-// As finds the first error in err's chain that matches target, and if one is
+// As finds the first error in err's tree that matches target, and if one is
 // found, sets target to that error value and returns true. Otherwise, it
 // returns false.
 //
-// The chain consists of err itself followed by the sequence of errors obtained
-// by repeatedly calling Unwrap.
+// The tree consists of err itself followed by errors obtained through either
+// Unwrap() error or Unwrap() []error, traversed depth-first, left-to-right.
 //
 // An error matches target if the error's concrete value is assignable to the
 // value pointed to by target, or if the error has a method As(any) bool
@@ -77,59 +78,89 @@ func Type(err error) string {
 	return reflect.TypeOf(err).String()
 }
 
-// HasType reports whether any error in err's chain matches the given type.
+// HasType reports whether any error in err's tree matches the given type.
 //
-// The chain consists of err itself followed by the sequence of errors obtained
-// by repeatedly calling Unwrap.
+// The tree consists of err itself followed by errors obtained through either
+// Unwrap() error or Unwrap() []error, traversed depth-first, left-to-right.
 //
-// An error matches the given type if the error has a method Type() string such
-// that Type() returns a string equal to the given type.
+// An error matches when Type returns the given type. A nil err matches only
+// the empty string; nil children in the tree are skipped.
 func HasType(err error, v string) bool {
-	for {
-		if v == Type(err) {
-			return true
-		}
-
-		if err = Unwrap(err); err == nil {
-			return false
-		}
+	if err == nil {
+		return v == ""
 	}
+	return visitErrors(err, func(current error) bool {
+		return Type(current) == v
+	})
 }
 
-// UIError returns the UI message attached to err if present in the error chain.
-// Otherwise it returns the default error string.
+// UIError returns the result from the first error implementing UIError() string
+// in err's tree, even if that result is empty or the provider's own fallback.
+// It checks err before its children, traversing both Unwrap forms depth-first,
+// left-to-right. If no provider is found, it returns err.Error(); nil returns "".
 func UIError(err error) string {
 	if err == nil {
 		return ""
 	}
 
-	for current := err; current != nil; current = Unwrap(current) {
-		if err, ok := current.(interface{ UIError() string }); ok {
-			return err.UIError()
+	var message string
+	if visitErrors(err, func(current error) bool {
+		if provider, ok := current.(interface{ UIError() string }); ok {
+			message = provider.UIError()
+			return true
 		}
+		return false
+	}) {
+		return message
 	}
 	return err.Error()
 }
 
-// Tag returns the first tag value in err's chain that matches the given key.
+// Tag returns the first non-nil tag value in err's tree for the given key.
 //
-// The chain consists of err itself followed by the sequence of errors obtained
-// by repeatedly calling Unwrap.
+// The tree consists of err itself followed by errors obtained through either
+// Unwrap() error or Unwrap() []error, traversed depth-first, left-to-right.
 //
 // An error has a tag when it has a method Tag(string) any such that Tag(k)
 // returns a non-nil value.
 func Tag(err error, k string) any {
-	for {
-		if err, ok := err.(interface{ Tag(string) any }); ok {
-			if v := err.Tag(k); v != nil {
-				return v
-			}
+	var value any
+	visitErrors(err, func(current error) bool {
+		if provider, ok := current.(interface{ Tag(string) any }); ok {
+			value = provider.Tag(k)
+			return value != nil
+		}
+		return false
+	})
+	return value
+}
+
+// visitErrors visits the root before its children in depth-first, left-to-right
+// order, stopping when visit returns true. Single-error chains are iterative;
+// only branches require recursion. Nil errors are skipped.
+func visitErrors(err error, visit func(error) bool) bool {
+	for err != nil {
+		if visit(err) {
+			return true
 		}
 
-		if err = Unwrap(err); err == nil {
-			return nil
+		switch current := err.(type) {
+		case interface{ Unwrap() error }:
+			err = current.Unwrap()
+
+		case interface{ Unwrap() []error }:
+			for _, child := range current.Unwrap() {
+				if visitErrors(child, visit) {
+					return true
+				}
+			}
+			return false
+
+		default:
+			return false
 		}
 	}
+	return false
 }
 
 // An enriched error.

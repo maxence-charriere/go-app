@@ -91,9 +91,7 @@ func (s *memoryStorage) Del(k string) {
 
 func (s *memoryStorage) Clear() {
 	s.mu.Lock()
-	for k := range s.data {
-		delete(s.data, k)
-	}
+	clear(s.data)
 	s.mu.Unlock()
 }
 
@@ -105,13 +103,23 @@ func (s *memoryStorage) Len() int {
 }
 
 func (s *memoryStorage) ForEach(f func(key string)) {
+	s.mu.RLock()
+	keys := make([]string, 0, len(s.data))
 	for k := range s.data {
+		keys = append(keys, k)
+	}
+	s.mu.RUnlock()
+
+	// Callbacks may modify storage, so iterate over the snapshot without a lock.
+	for _, k := range keys {
 		f(k)
 	}
 }
 
 func (s *memoryStorage) Contains(k string) bool {
+	s.mu.RLock()
 	_, ok := s.data[k]
+	s.mu.RUnlock()
 	return ok
 }
 

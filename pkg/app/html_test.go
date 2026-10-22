@@ -10,9 +10,9 @@ import (
 
 func BenchmarkMountHTMLElement(b *testing.B) {
 	var m nodeManager
-
-	for n := 0; n < b.N; n++ {
-		m.Mount(makeTestContext(), 1, Div().
+	ctx := makeTestContext()
+	makeElement := func() HTML {
+		return Div().
 			Class("shell").
 			Body(
 				H1().Class("title").
@@ -22,15 +22,30 @@ func BenchmarkMountHTMLElement(b *testing.B) {
 					Class("in").
 					Value("World").
 					Placeholder("Type a name.").
-					OnChange(func(ctx Context, e Event) {
-						fmt.Println("Yo!")
-					}),
-			))
+					OnChange(func(Context, Event) {}),
+			)
+	}
+	check, err := m.Mount(ctx, 1, makeElement())
+	require.NoError(b, err)
+	require.True(b, check.Mounted())
+	require.Len(b, check.(HTML).body(), 2)
+	m.Dismount(check)
+	require.False(b, check.Mounted())
+	b.ReportAllocs()
+	// Include construction, mounting, and dismounting. Releasing event
+	// callbacks on every iteration keeps browser benchmarks bounded too.
+	for b.Loop() {
+		elem, err := m.Mount(ctx, 1, makeElement())
+		if err != nil {
+			b.Fatal(err)
+		}
+		m.Dismount(elem)
 	}
 }
 
 func BenchmarkHTMLElementHTML(b *testing.B) {
 	var m nodeManager
+	ctx := makeTestContext()
 
 	div := Div().
 		Class("shell").
@@ -47,9 +62,15 @@ func BenchmarkHTMLElementHTML(b *testing.B) {
 				}),
 		)
 
-	for n := 0; n < b.N; n++ {
-		var bytes bytes.Buffer
-		m.Encode(makeTestContext(), &bytes, div)
+	var check bytes.Buffer
+	m.Encode(ctx, &check, div)
+	require.Contains(b, check.String(), `<h1 class="title">Hello</h1>`)
+	require.Contains(b, check.String(), `value="World"`)
+	b.ReportAllocs()
+	b.SetBytes(int64(check.Len()))
+	for b.Loop() {
+		var out bytes.Buffer
+		m.Encode(ctx, &out, div)
 	}
 }
 

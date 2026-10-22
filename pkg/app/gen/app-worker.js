@@ -2,16 +2,19 @@
 // PWA
 // -----------------------------------------------------------------------------
 const cacheName = "app-" + "{{.Version}}";
-const resourcesToCache = {{.ResourcesToCache}};
+const resourcesToCache = "{{.ResourcesToCache}}";
 
-self.addEventListener("install", async (event) => {
-  try {
-    console.log("installing app worker {{.Version}}");
-    await installWorker();
-    await self.skipWaiting();
-  } catch (error) {
-    console.error("error during installation:", error);
-  }
+self.addEventListener("install", (event) => {
+  event.waitUntil((async () => {
+    try {
+      console.log("installing app worker " + "{{.Version}}");
+      await installWorker();
+      await self.skipWaiting();
+    } catch (error) {
+      console.error("error during installation:", error);
+      throw error;
+    }
+  })());
 });
 
 async function installWorker() {
@@ -19,14 +22,17 @@ async function installWorker() {
   await cache.addAll(resourcesToCache);
 }
 
-self.addEventListener("activate", async (event) => {
-  try {
-    await deletePreviousCaches(); // Await cache cleanup
-    await self.clients.claim(); // Ensure the service worker takes control of the clients
-    console.log("app worker {{.Version}} is activated");
-  } catch (error) {
-    console.error("error during activation:", error);
-  }
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    try {
+      await deletePreviousCaches();
+      await self.clients.claim();
+      console.log("app worker " + "{{.Version}}" + " is activated");
+    } catch (error) {
+      console.error("error during activation:", error);
+      throw error;
+    }
+  })());
 });
 
 async function deletePreviousCaches() {
@@ -50,7 +56,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 async function fetchWithCache(request) {
-  const cachedResponse = await caches.match(request);
+  const cachedResponse = await caches.match(request, { cacheName });
   if (cachedResponse) {
     return cachedResponse;
   }

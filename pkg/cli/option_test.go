@@ -2,7 +2,7 @@ package cli
 
 import (
 	"flag"
-	"os"
+	"io"
 	"reflect"
 	"testing"
 	"time"
@@ -32,6 +32,16 @@ func TestOptionParserParse(t *testing.T) {
 		{
 			scenario: "parsing a non-struct pointer option returns an error",
 			options:  new(int),
+			err:      true,
+		},
+		{
+			scenario: "parsing a nil struct pointer returns an error",
+			options:  (*struct{})(nil),
+			err:      true,
+		},
+		{
+			scenario: "parsing a nil scalar pointer returns an error",
+			options:  (*int)(nil),
 			err:      true,
 		},
 		{
@@ -181,6 +191,10 @@ func TestOptionParserParse(t *testing.T) {
 		},
 		{
 			scenario: "args take priority over env variables",
+			env: map[string]string{
+				"INT":    "21",
+				"STRING": "bar",
+			},
 			args: []string{
 				"-int", "84",
 				"-string", "boo",
@@ -339,15 +353,14 @@ func TestOptionParserParse(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			flags := flag.NewFlagSet("test", flag.ContinueOnError)
-			flags.SetOutput(writerNoop{})
+			flags.SetOutput(io.Discard)
 
 			p := optionParser{
 				flags: flags,
 			}
 
 			for k, v := range test.env {
-				os.Setenv(k, v)
-				defer os.Unsetenv(k)
+				t.Setenv(k, v)
 			}
 
 			_, err := p.parse(test.options)
@@ -369,6 +382,110 @@ func TestOptionParserParse(t *testing.T) {
 
 			options := reflect.ValueOf(test.options).Elem().Interface()
 			require.Equal(t, test.expectedOptions, options)
+		})
+	}
+}
+
+func TestOptionParserNil(t *testing.T) {
+	p := optionParser{flags: flag.NewFlagSet("test", flag.ContinueOnError)}
+	opts, err := p.parse(nil)
+	require.NoError(t, err)
+	require.Empty(t, opts)
+}
+
+func TestOptionParserInvalidEnvironment(t *testing.T) {
+	const envKey = "GOAPP_TEST_OPTION"
+	const secret = "private-config-value"
+	tests := []struct {
+		name       string
+		options    any
+		value      string
+		optionName string
+	}{
+		{
+			name: "integer",
+			options: &struct {
+				Value int `env:"GOAPP_TEST_OPTION"`
+			}{Value: 42},
+			value:      `"` + secret + `"`,
+			optionName: "value",
+		},
+		{
+			name: "boolean",
+			options: &struct {
+				Value bool `env:"GOAPP_TEST_OPTION"`
+			}{},
+			value:      `"` + secret + `"`,
+			optionName: "value",
+		},
+		{
+			name: "duration",
+			options: &struct {
+				Value time.Duration `env:"GOAPP_TEST_OPTION"`
+			}{},
+			value:      secret,
+			optionName: "value",
+		},
+		{
+			name: "time",
+			options: &struct {
+				Value time.Time `env:"GOAPP_TEST_OPTION"`
+			}{},
+			value:      secret,
+			optionName: "value",
+		},
+		{
+			name: "time pointer",
+			options: &struct {
+				Value *time.Time `env:"GOAPP_TEST_OPTION"`
+			}{},
+			value:      secret,
+			optionName: "value",
+		},
+		{
+			name: "slice",
+			options: &struct {
+				Value []int `env:"GOAPP_TEST_OPTION"`
+			}{},
+			value:      `["` + secret + `"]`,
+			optionName: "value",
+		},
+		{
+			name: "map",
+			options: &struct {
+				Value map[string]int `env:"GOAPP_TEST_OPTION"`
+			}{},
+			value:      `{"key":"` + secret + `"}`,
+			optionName: "value",
+		},
+		{
+			name: "struct",
+			options: &struct {
+				Value nestedStruct `env:"GOAPP_TEST_OPTION"`
+			}{},
+			value:      `{"Float":"` + secret + `"}`,
+			optionName: "value",
+		},
+		{
+			name: "nested field",
+			options: &struct {
+				Nested struct {
+					Count int `env:"GOAPP_TEST_OPTION"`
+				} `env:"-"`
+			}{},
+			value:      `"` + secret + `"`,
+			optionName: "nested.count",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Setenv(envKey, tt.value)
+			p := optionParser{flags: flag.NewFlagSet("test", flag.ContinueOnError)}
+			_, err := p.parse(tt.options)
+			require.Error(t, err)
+			require.Contains(t, err.Error(), envKey)
+			require.Contains(t, err.Error(), tt.optionName)
+			require.NotContains(t, err.Error(), secret)
 		})
 	}
 }
@@ -462,7 +579,7 @@ func TestNormalizeEnvOptionName(t *testing.T) {
 func BenchmarkNormalizeOptionName(b *testing.B) {
 	s := "hello world- i great_lolYeahPORIGON\tbwa"
 
-	for n := 0; n < b.N; n++ {
+	for b.Loop() {
 		normalizeOptionName(s, "-")
 	}
 }

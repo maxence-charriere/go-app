@@ -452,15 +452,24 @@ func storeValue(recv, v any) error {
 	if dst.Kind() != reflect.Ptr {
 		return errors.New("receiver is not a pointer")
 	}
+	if dst.IsNil() {
+		return errors.New("receiver is a nil pointer")
+	}
 	dst = dst.Elem()
+	if !dst.CanSet() {
+		return errors.New("receiver cannot be set")
+	}
 
 	src := reflect.ValueOf(v)
 	switch {
-	case src == reflect.Value{}:
-		dst.Set(reflect.Zero(dst.Type()))
+	case !src.IsValid():
+		dst.SetZero()
 		return nil
 
 	case src.Kind() == reflect.Ptr:
+		if src.IsNil() {
+			return errors.New("value is a nil pointer")
+		}
 		src = src.Elem()
 	}
 

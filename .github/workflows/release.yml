@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BASE_VERSION: v11.0.0
+  BASE_VERSION: v11.1.0
 
 jobs:
   release:
@@ -31,23 +31,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
-
-      - name: Setup Go
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
-          cache: true
-          cache-dependency-path: go.sum
-
-      - name: Install release build tools
-        run: go install golang.org/x/tools/cmd/godoc@latest
-
-      - name: Build GitHub Pages assets
-        run: make github
 
       - name: Compute Version
         id: version
@@ -82,6 +69,14 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag "${TAG}" "${{ github.event.workflow_run.head_sha }}"
           git push origin "refs/tags/${TAG}"
+
+      - name: Rebuild go-app documentation
+        env:
+          GH_TOKEN: ${{ secrets.GO_APP_DOCS_TOKEN }}
+        run: |
+          gh api --method POST \
+            repos/maxence-charriere/go-app-docs/dispatches \
+            -f event_type=build
 
       - name: Create GitHub release
         env:

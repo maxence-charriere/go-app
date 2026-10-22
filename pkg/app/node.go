@@ -5,7 +5,7 @@ import (
 	"html"
 	"io"
 	"reflect"
-	"strconv"
+	"slices"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v11/pkg/errors"
@@ -34,59 +34,52 @@ type UI interface {
 //
 // This function is primarily intended for components that accept ui elements as
 // variadic arguments or slice, such as the Body method of HTML elements.
+//
+// It may reuse and modify the input's backing array, clearing discarded slots.
 func FilterUIElems(v ...UI) []UI {
 	if len(v) == 0 {
 		return nil
 	}
 
-	removeELemAt := func(i int) {
-		copy(v[i:], v[i+1:])
-		v[len(v)-1] = nil
-		v = v[:len(v)-1]
-	}
-
-	var trailing []UI
-	replaceElemAt := func(i int, elems ...UI) {
-		trailing = append(trailing, v[i+1:]...)
-		v = append(v[:i], elems...)
-		v = append(v, trailing...)
-		trailing = trailing[:0]
-	}
-
 	for i := len(v) - 1; i >= 0; i-- {
 		elem := v[i]
 		if elem == nil {
-			removeELemAt(i)
+			v = slices.Delete(v, i, i+1)
+			continue
 		}
-		if elemValue := reflect.ValueOf(elem); elemValue.Kind() == reflect.Pointer && elemValue.IsNil() {
-			removeELemAt(i)
+		if value := reflect.ValueOf(elem); value.Kind() == reflect.Pointer && value.IsNil() {
+			v = slices.Delete(v, i, i+1)
+			continue
 		}
 
 		switch elem := elem.(type) {
 		case Condition:
-			replaceElemAt(i, elem.body()...)
+			v = slices.Replace(v, i, i+1, elem.body()...)
 
 		case RangeLoop:
-			replaceElemAt(i, elem.body()...)
+			v = slices.Replace(v, i, i+1, elem.body()...)
 		}
 	}
-
 	return v
 }
 
 // HTMLString returns a string that represents the HTML markup for the provided
 // UI element.
 func HTMLString(ui UI) string {
-	engine := NewTestEngine().(*engineX)
-	var b bytes.Buffer
-	engine.nodes.Encode(engine.baseContext(), &b, ui)
-	return b.String()
+	return string(htmlBytes(ui))
 }
 
 // PrintHTML writes the HTML representation of the given UI element into the
 // specified writer.
 func PrintHTML(w io.Writer, ui UI) {
-	w.Write([]byte(HTMLString(ui)))
+	w.Write(htmlBytes(ui))
+}
+
+func htmlBytes(ui UI) []byte {
+	ctx := Context{resolveURL: func(v string) string { return v }}
+	var b bytes.Buffer
+	nodeManager{}.Encode(ctx, &b, ui)
+	return b.Bytes()
 }
 
 // Component events.
@@ -202,16 +195,12 @@ func (m nodeManager) mountHTMLEventHandler(ctx Context, v HTML, handler eventHan
 	})
 	v.JSValue().addEventListener(event, jsHandler, handler.options())
 
-	return eventHandler{
-		event:     event,
-		scope:     handler.scope,
-		goHandler: handler.goHandler,
-		jsHandler: jsHandler,
-		close: func() {
-			v.JSValue().removeEventListener(event, jsHandler)
-			jsHandler.Release()
-		},
+	handler.jsHandler = jsHandler
+	handler.close = func() {
+		v.JSValue().removeEventListener(event, jsHandler)
+		jsHandler.Release()
 	}
+	return handler
 }
 
 func (m nodeManager) mountComponent(ctx Context, depth uint, v Composer) (UI, error) {
@@ -284,6 +273,7 @@ func (m nodeManager) mountRawHTML(depth uint, v *raw) (UI, error) {
 func (m nodeManager) Dismount(v UI) {
 	switch v := v.(type) {
 	case *text:
+		v.jsvalue = nil
 
 	case HTML:
 		m.dismountHTML(v)
@@ -478,7 +468,7 @@ func (m nodeManager) updateHTMLAttributes(ctx Context, v HTML, newAttrs attribut
 	}
 
 	for name, value := range newAttrs {
-		if attrs[name] == value {
+		if previous, exists := attrs[name]; exists && previous == value {
 			continue
 		}
 
@@ -700,11 +690,18 @@ func (m nodeManager) encodeHTML(ctx Context, w *bytes.Buffer, depth int, v HTML)
 	m.encodeIndent(w, depth)
 	w.WriteByte('<')
 	w.WriteString(v.Tag())
-	for name, value := range v.attrs() {
-		m.encodeHTMLAttribute(ctx, w, name, value)
-	}
-	w.WriteByte('>')
 
+	attrs := v.attrs()
+	attrNames := make([]string, 0, len(attrs))
+	for attrName := range attrs {
+		attrNames = append(attrNames, attrName)
+	}
+	slices.Sort(attrNames)
+	for _, attrName := range attrNames {
+		m.encodeHTMLAttribute(ctx, w, attrName, attrs[attrName])
+	}
+
+	w.WriteByte('>')
 	if v.SelfClosing() {
 		return
 	}
@@ -737,6 +734,11 @@ func (m nodeManager) encodeHTML(ctx Context, w *bytes.Buffer, depth int, v HTML)
 }
 
 func (m nodeManager) encodeHTMLAttribute(ctx Context, w *bytes.Buffer, name, value string) {
+	boolean := isBooleanAttribute(name)
+	if boolean && value == "false" {
+		return
+	}
+
 	if value == "" {
 		switch name {
 		case "id", "class", "title":
@@ -746,10 +748,14 @@ func (m nodeManager) encodeHTMLAttribute(ctx Context, w *bytes.Buffer, name, val
 
 	w.WriteString(" ")
 	w.WriteString(name)
-	if value != "" && value != "true" {
-		w.WriteString("=")
-		w.WriteString(strconv.Quote(resolveAttributeURLValue(name, value, ctx.ResolveStaticResource)))
+	if boolean && value == "true" {
+		return
 	}
+
+	value = resolveAttributeURLValue(name, value, ctx.ResolveStaticResource)
+	w.WriteString(`="`)
+	w.WriteString(html.EscapeString(value))
+	w.WriteByte('"')
 }
 
 func (m nodeManager) encodeComponent(ctx Context, w *bytes.Buffer, depth int, v Composer) {

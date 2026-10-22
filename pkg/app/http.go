@@ -4,14 +4,14 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
-	"sort"
-	"strconv"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -270,30 +270,35 @@ func (h *Handler) initPWAResources() {
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
+		ETag:        h.etag,
 		ContentType: "application/javascript",
 		Body:        []byte(wasmExecJS()),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.js",
+		ETag:        h.etag,
 		ContentType: "application/javascript",
 		Body:        h.makeAppJS(),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app-worker.js",
+		ETag:        h.etag,
 		ContentType: "application/javascript",
 		Body:        h.makeAppWorkerJS(),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/manifest.webmanifest",
+		ETag:        h.etag,
 		ContentType: "application/manifest+json",
 		Body:        h.makeManifestJSON(),
 	})
 
 	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.css",
+		ETag:        h.etag,
 		ContentType: "text/css",
 		Body:        []byte(appCSS),
 	})
@@ -318,14 +323,14 @@ func (h *Handler) makeAppJS() []byte {
 		}
 	}
 
-	s := appJS
-	s = strings.ReplaceAll(s, "{{.Env}}", jsonString(h.Env))
-	s = strings.ReplaceAll(s, "{{.LoadingLabel}}", h.LoadingLabel)
-	s = strings.ReplaceAll(s, "{{.Wasm}}", h.Resources.Resolve("/web/app.wasm"))
-	s = strings.ReplaceAll(s, "{{.WasmContentLength}}", h.WasmContentLength)
-	s = strings.ReplaceAll(s, "{{.WasmContentLengthHeader}}", h.WasmContentLengthHeader)
-	s = strings.ReplaceAll(s, "{{.WorkerJS}}", h.Resources.Resolve("/app-worker.js"))
-	return []byte(s)
+	return []byte(strings.NewReplacer(
+		`"{{.Env}}"`, jsonString(h.Env),
+		`"{{.LoadingLabel}}"`, jsonString(h.LoadingLabel),
+		`"{{.Wasm}}"`, jsonString(h.Resources.Resolve("/web/app.wasm")),
+		`"{{.WasmContentLength}}"`, jsonString(h.WasmContentLength),
+		`"{{.WasmContentLengthHeader}}"`, jsonString(h.WasmContentLengthHeader),
+		`"{{.WorkerJS}}"`, jsonString(h.Resources.Resolve("/app-worker.js")),
+	).Replace(appJS))
 }
 
 func (h *Handler) makeAppWorkerJS() []byte {
@@ -355,14 +360,16 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	for k := range resources {
 		resourcesTocache = append(resourcesTocache, h.Resources.Resolve(k))
 	}
-	sort.Slice(resourcesTocache, func(a, b int) bool {
-		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) > 0
+	slices.SortFunc(resourcesTocache, func(a, b string) int {
+		return strings.Compare(b, a)
 	})
 
-	s := h.ServiceWorkerTemplate
-	s = strings.ReplaceAll(s, "{{.Version}}", h.Version)
-	s = strings.ReplaceAll(s, "{{.ResourcesToCache}}", jsonString(resourcesTocache))
-	return []byte(s)
+	return []byte(strings.NewReplacer(
+		`"{{.Version}}"`, jsonString(h.Version),
+		"{{.Version}}", h.Version,
+		`"{{.ResourcesToCache}}"`, jsonString(resourcesTocache),
+		"{{.ResourcesToCache}}", jsonString(resourcesTocache),
+	).Replace(h.ServiceWorkerTemplate))
 }
 
 func (h *Handler) makeManifestJSON() []byte {
@@ -482,13 +489,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.once.Do(h.init)
 
 	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("ETag", h.etag)
-
-	etag := r.Header.Get("If-None-Match")
-	if etag == h.etag {
-		w.WriteHeader(http.StatusNotModified)
-		return
-	}
 
 	path := r.URL.Path
 	if strings.HasPrefix(path, "/"+h.Version+"/") {
@@ -497,7 +497,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fileHandler, isServingStaticResources := h.Resources.(http.Handler)
 	if isServingStaticResources && strings.HasPrefix(path, "/web/") {
-		fileHandler.ServeHTTP(w, r)
+		fileHandler.ServeHTTP(w, requestWithPath(r, path))
 		return
 	}
 
@@ -510,9 +510,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	case "/app.wasm", "/goapp.wasm":
 		if isServingStaticResources {
-			r2 := *r
-			r2.URL.Path = h.Resources.Resolve("/web/app.wasm")
-			fileHandler.ServeHTTP(w, &r2)
+			fileHandler.ServeHTTP(w, requestWithPath(r, "/web/app.wasm"))
 			return
 		}
 		w.WriteHeader(http.StatusNotFound)
@@ -521,7 +519,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if res, ok := h.cachedPWAResources.Get(path); ok {
-		h.serveCachedItem(w, res)
+		h.serveCachedItem(w, r, res)
 		return
 	}
 
@@ -538,16 +536,30 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) serveCachedItem(w http.ResponseWriter, i cacheItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(i.Len()))
+func requestWithPath(r *http.Request, path string) *http.Request {
+	r2 := *r
+	u := *r.URL
+	r2.URL = &u
+	if u.Path != path {
+		u.Path = path
+		u.RawPath = ""
+	}
+	return &r2
+}
+
+func (h *Handler) serveCachedItem(w http.ResponseWriter, r *http.Request, i cacheItem) {
 	w.Header().Set("Content-Type", i.ContentType)
+	w.Header().Set("ETag", i.ETag)
 
 	if i.ContentEncoding != "" {
 		w.Header().Set("Content-Encoding", i.ContentEncoding)
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write(i.Body)
+	http.ServeContent(w, r, "", time.Time{}, bytes.NewReader(i.Body))
+}
+
+func contentETag(body []byte) string {
+	return fmt.Sprintf(`"%x"`, sha256.Sum256(body))
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
@@ -565,7 +577,7 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 	}
 
 	if i, ok := h.cachedProxyResources.Get(resource.Path); ok {
-		h.serveCachedItem(w, i)
+		h.serveCachedItem(w, r, i)
 		return
 	}
 
@@ -603,10 +615,11 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		Path:            resource.Path,
 		ContentType:     res.Header.Get("Content-Type"),
 		ContentEncoding: res.Header.Get("Content-Encoding"),
+		ETag:            contentETag(body),
 		Body:            body,
 	}
 	h.cachedProxyResources.Set(item)
-	h.serveCachedItem(w, item)
+	h.serveCachedItem(w, r, item)
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
@@ -615,7 +628,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(r.Context())
+	defer cancel()
+	if ctx.Err() != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 
 	origin := *r.URL
 	origin.Scheme = "http"
@@ -637,6 +655,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	)
 	engine.Navigate(page.URL(), false)
 	engine.ConsumeAll()
+	if ctx.Err() != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 
 	icon := h.Icon.SVG
 	if icon == "" {
@@ -783,21 +805,26 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					),
 			),
 		))
+	if ctx.Err() != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		return
+	}
 	if err != nil {
 		Log(errors.New("encoding html document failed").Wrap(err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
 	w.Header().Set("Content-Type", "text/html")
-	w.Write(b.Bytes())
+	// Pages can vary between requests even when the application version is unchanged.
+	w.Header().Set("ETag", contentETag(b.Bytes()))
+	http.ServeContent(w, r, "", time.Time{}, bytes.NewReader(b.Bytes()))
 }
 
 func (h *Handler) serveLibrary(w http.ResponseWriter, r *http.Request, library []byte) {
-	w.Header().Set("Content-Length", strconv.Itoa(len(library)))
 	w.Header().Set("Content-Type", "text/css")
-	w.Write(library)
+	w.Header().Set("ETag", h.etag)
+	http.ServeContent(w, r, "", time.Time{}, bytes.NewReader(library))
 }
 
 // Icon represents a square image utilized in various contexts, such as the
@@ -873,7 +900,7 @@ func (r httpResource) toScript() HTMLScript {
 
 func parseHTTPResource(v string) httpResource {
 	var res httpResource
-	for _, part := range strings.Split(v, " ") {
+	for part := range strings.SplitSeq(v, " ") {
 		if part = strings.TrimSpace(part); part == "" {
 			continue
 		}

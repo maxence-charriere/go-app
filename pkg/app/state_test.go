@@ -784,6 +784,8 @@ func TestStateManagerCleanupExpiredPersistedStates(t *testing.T) {
 
 func TestStoreValue(t *testing.T) {
 	nb := 42
+	var nilPointer *int
+	pointerCopy := &nb
 	c := copyTester{pointer: &nb}
 
 	utests := []struct {
@@ -793,6 +795,17 @@ func TestStoreValue(t *testing.T) {
 		expected any
 		err      bool
 	}{
+		{scenario: "nil receiver", src: 42, recv: nil, err: true},
+		{scenario: "nil pointer receiver", src: 42, recv: (*int)(nil), err: true},
+		{scenario: "nil source and receiver", src: nil, recv: nil, err: true},
+		{scenario: "nil source and nil pointer receiver", src: nil, recv: (*int)(nil), err: true},
+		{scenario: "nil pointer source", src: (*int)(nil), recv: &c.Exported, err: true},
+		{scenario: "nil pointer source and receiver", src: (*int)(nil), recv: (*int)(nil), err: true},
+		{scenario: "pointer value copy", src: &nb, recv: &c.Exported, expected: 42},
+		{scenario: "pointer to nil pointer", src: &nilPointer, recv: &pointerCopy, expected: (*int)(nil)},
+		{scenario: "nil slice", src: []int(nil), recv: &c.slice, expected: []int(nil)},
+		{scenario: "nil map", src: map[string]int(nil), recv: &c.mapp, expected: map[string]int(nil)},
+		{scenario: "pointer type mismatch", src: new(string), recv: &c.Exported, err: true},
 		{
 			scenario: "value to exported field receiver",
 			src:      42,
