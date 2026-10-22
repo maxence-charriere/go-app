@@ -124,8 +124,8 @@ Follow the [Getting Started guide](https://go-app.dev/getting-started) to build 
 
 ## Built with go-app
 
-- [Murlok.io](https://murlok.io/): World of Warcraft character builds and guides.
-- [go-app documentation](https://go-app.dev/): The documentation website, built with go-app.
+- [Murlok](https://murlok.io/): World of Warcraft character builds and guides.
+- [GoApp Docs](https://go-app.dev/): The documentation website, built with go-app.
 - [liwasc](https://pojntfx.github.io/liwasc/): Network discovery, port scanning, and Wake-on-LAN.
 
 ## Support the project
