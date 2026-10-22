@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-Open a GitHub Issue.
+Open a [GitHub Issue](https://github.com/maxence-charriere/go-app/issues/new).
