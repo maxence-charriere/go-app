@@ -41,9 +41,18 @@ go get github.com/maxence-charriere/go-app/v11/pkg/app
 
 Describe your UI with Go functions using go-app's [declarative syntax](https://go-app.dev/declarative-syntax). Each component embeds `app.Compo` and defines a `Render` method that returns its UI.
 
-This component displays a greeting that updates as you type your name:
+Create a `main.go` file with the following component, then add the `main` function from the next section. The component displays a greeting that updates as you type your name:
 
 ```go
+package main
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/maxence-charriere/go-app/v11/pkg/app"
+)
+
 type hello struct {
 	app.Compo
 
@@ -74,7 +83,7 @@ func (h *hello) Render() app.UI {
 
 Serve your app with Go's standard [`net/http`](https://pkg.go.dev/net/http) package. The `app.Handler` type implements `http.Handler` and can be used with an existing Go server.
 
-This example registers the component above at `/` and serves the app on port `8000`:
+Add this function to `main.go` to register the component at `/` and serve the app on port `8000`:
 
 ```go
 func main() {
@@ -95,6 +104,19 @@ func main() {
 	}
 }
 ```
+
+## Build and run
+
+From your project directory, build the WebAssembly app and the server, then run the server:
+
+```sh
+mkdir -p web
+GOOS=js GOARCH=wasm go build -o web/app.wasm
+go build -o server
+./server
+```
+
+Open [localhost:8000](http://localhost:8000) in your browser. After changing the code, rebuild both binaries and restart the server.
 
 ## Getting started
 
