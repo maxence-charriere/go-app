@@ -98,13 +98,13 @@ func main() {
 
 ## Getting started
 
-**Read the [Getting Started](https://go-app.dev/getting-started) document**.
+Follow the [Getting Started guide](https://go-app.dev/getting-started) to build and run your first app.
 
 ## Built with go-app
 
-- [Murlok.io](https://murlok.io/)
-- [liwasc](https://pojntfx.github.io/liwasc/)
-- [go-app Docs](https://go-app.dev/)
+- [Murlok.io](https://murlok.io/): World of Warcraft character builds and guides.
+- [go-app documentation](https://go-app.dev/): The documentation website, built with go-app.
+- [liwasc](https://pojntfx.github.io/liwasc/): Network discovery, port scanning, and Wake-on-LAN.
 
 ## Support the project
 
