@@ -102,3 +102,7 @@ func main() {
 - [Murlok.io](https://murlok.io/)
 - [liwasc](https://pojntfx.github.io/liwasc/)
 - [go-app Docs](https://go-app.dev/)
+
+## Support the project
+
+If go-app is useful to you, consider [sponsoring its development](https://github.com/sponsors/maxence-charriere).
