@@ -210,8 +210,8 @@ func (h *Handler) initServiceWorker() {
 
 func (h *Handler) initIcon() {
 	if h.Icon.Default == "" {
-		h.Icon.Default = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"
-		h.Icon.Large = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.png"
+		h.Icon.Default = "https://raw.githubusercontent.com/maxence-charriere/go-app-docs/main/docs/web/icon.png"
+		h.Icon.Large = "https://raw.githubusercontent.com/maxence-charriere/go-app-docs/main/docs/web/icon.png"
 	}
 
 	if h.Icon.Maskable == "" {
@@ -219,7 +219,7 @@ func (h *Handler) initIcon() {
 	}
 
 	if h.Icon.SVG == "" {
-		h.Icon.SVG = "https://raw.githubusercontent.com/maxence-charriere/go-app/master/docs/web/icon.svg"
+		h.Icon.SVG = "https://raw.githubusercontent.com/maxence-charriere/go-app-docs/main/docs/web/icon.svg"
 	}
 }
 
