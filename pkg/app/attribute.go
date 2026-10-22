@@ -29,6 +29,7 @@ func (a attributes) Set(name string, value any) {
 		"data",
 		"download",
 		"href",
+		"sandbox",
 		"src",
 		"value":
 		a[name] = v
