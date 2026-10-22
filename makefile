@@ -3,7 +3,6 @@ install:
 	@echo "\033[94m• Setting up go test for wasm to run in the browser\033[00m"
 	go install github.com/agnivade/wasmbrowsertest@latest
 	mv `go env GOPATH`/bin/wasmbrowsertest `go env GOPATH`/bin/go_js_wasm_exec
-	go install golang.org/x/tools/cmd/godoc@latest
 	go install golang.org/x/perf/cmd/benchstat@latest
 
 .PHONY: test
@@ -31,22 +30,6 @@ gen:
 	@echo "\033[94m• Generating HTML Syntax\033[00m"
 	@go generate ./pkg/app
 
-build:
-	@echo "\033[94m• Building go-app documentation PWA\033[00m"
-	@godoc -url /pkg/github.com/maxence-charriere/go-app/v11/pkg/app > ./docs/web/documents/reference.html
-	@GOARCH=wasm GOOS=js go build -v -o docs/web/app.wasm ./docs/src
-	@echo "\033[94m• Building go-app documentation\033[00m"
-	@go build -o docs/documentation ./docs/src
-
-run: build
-	@echo "\033[94m• Running go-app documentation server\033[00m"
-	@cd docs && ./documentation local
-
-github: build
-	@echo "\033[94m• Generating GitHub Pages\033[00m"
-	@cd docs && ./documentation github
-
 clean:
 	@go clean -v ./...
-	-@rm docs/documentation
 	@go mod tidy
