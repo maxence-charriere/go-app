@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BASE_VERSION: v11.0.0
+  BASE_VERSION: v11.1.0
 
 jobs:
   release:
