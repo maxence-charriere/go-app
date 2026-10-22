@@ -70,21 +70,24 @@ func (h *hello) Render() app.UI {
 }
 ```
 
-## Standard HTTP
+## Serving the app
 
-Apps created with go-app complies with [Go standard HTTP](https://golang.org/pkg/net/http) package interfaces.
+Serve your app with Go's standard [`net/http`](https://pkg.go.dev/net/http) package. The `app.Handler` type implements `http.Handler` and can be used with an existing Go server.
+
+This example registers the component above at `/` and serves the app on port `8000`:
 
 ```go
 func main() {
-	// Components routing:
+	// Register the component.
 	app.Route("/", func() app.Composer { return &hello{} })
-	app.Route("/hello", func() app.Composer { return &hello{} })
+
+	// Start the app in the browser; on the server, continue below.
 	app.RunWhenOnBrowser()
 
-	// HTTP routing:
+	// Serve the app over HTTP.
 	http.Handle("/", &app.Handler{
 		Name:        "Hello",
-		Description: "An Hello World! example",
+		Description: "A Hello World example",
 	})
 
 	if err := http.ListenAndServe(":8000", nil); err != nil {
