@@ -21,7 +21,7 @@ An app created with go-app can out of the box **runs in its own window**, **supp
 
 ## Documentation (built with go-app)
 
-[![go-app documentation](docs/web/images/go-app.png)](https://go-app.dev)
+[![go-app documentation](https://raw.githubusercontent.com/maxence-charriere/go-app-docs/main/docs/web/images/go-app.png)](https://go-app.dev)
 
 ## Install
 
