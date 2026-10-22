@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="https://go-app.dev">
-        <img alt="go-app"  width="150" height="150" src="docs/web/icon.png">
+        <img alt="go-app"  width="150" height="150" src="https://raw.githubusercontent.com/maxence-charriere/go-app-docs/main/docs/web/icon.svg">
     </a>
 </h1>
 
@@ -9,40 +9,50 @@
 	<a href="https://GitHub.com/maxence-charriere/go-app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/go-app.svg" alt="GitHub release"></a>
 	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/v11/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
     <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/badge/twitter-@jonhymaxoo-35A9F8?logo=twitter&style=flat"></a>
-    <a href="https://opencollective.com/go-app" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/go-app/all/badge.svg?label=open+collective&color=4FB9F6" /></a>
 </p>
 
-Go-app is a package for **building progressive web apps (PWA)** with the [Go programming language (Golang)](https://golang.org) and [WebAssembly (Wasm)](https://webassembly.org).
+Go-app is a package for **building progressive web apps (PWAs)** with [Go](https://go.dev) and [WebAssembly (Wasm)](https://webassembly.org).
 
-Shaping a UI is done by using a **[declarative syntax](https://go-app.dev/declarative-syntax) that creates and compose HTML elements only by using the Go programing language**.
+Write your UI in Go using **reusable components** and a [declarative syntax](https://go-app.dev/declarative-syntax). Handle user interactions in Go and serve your app with the standard [`net/http`](https://pkg.go.dev/net/http) package.
 
-It **uses [Go HTTP standard](https://golang.org/pkg/net/http) model**.
-
-An app created with go-app can out of the box **runs in its own window**, **supports offline mode**, and is **SEO friendly**.
+Apps built with go-app are **SEO-friendly** and support **offline use**. On supported browsers and devices, users can **install your app and run it in its own window**.
 
 ## Documentation (built with go-app)
 
-[![go-app documentation](docs/web/images/go-app.png)](https://go-app.dev)
+[![go-app documentation](https://raw.githubusercontent.com/maxence-charriere/go-app-docs/main/docs/web/images/go-app.png)](https://go-app.dev)
 
 ## Install
 
-**go-app** requirements:
+Requires [Go 1.26 or newer](https://go.dev/dl/).
 
-- [Go 1.18](https://golang.org/doc/go1.17) or newer
-- [Go module](https://github.com/golang/go/wiki/Modules)
+From your project directory, initialize a Go module if you do not already have one. Replace `example.com/myapp` with your module path:
 
 ```sh
-go mod init
-go get -u github.com/maxence-charriere/go-app/v11/pkg/app
+go mod init example.com/myapp
 ```
 
-## Declarative syntax
+Add go-app to your project:
 
-Go-app uses a [declarative syntax](https://go-app.dev/declarative-syntax) so you can **write reusable component-based UI elements** just by using the Go programming language.
+```sh
+go get github.com/maxence-charriere/go-app/v11/pkg/app
+```
 
-Here is a Hello World component that takes an input and displays its value in its title:
+## Components
+
+Describe your UI with Go functions using go-app's [declarative syntax](https://go-app.dev/declarative-syntax). Each component embeds `app.Compo` and defines a `Render` method that returns its UI.
+
+Create a `main.go` file with the following component, then add the `main` function from the next section. The component displays a greeting that updates as you type your name:
 
 ```go
+package main
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/maxence-charriere/go-app/v11/pkg/app"
+)
+
 type hello struct {
 	app.Compo
 
@@ -59,33 +69,34 @@ func (h *hello) Render() app.UI {
 				return app.Text("World!")
 			}),
 		),
-		app.P().Body(
-			app.Input().
-				Type("text").
-				Value(h.name).
-				Placeholder("What is your name?").
-				AutoFocus(true).
-				OnChange(h.ValueTo(&h.name)),
-		),
+		app.Input().
+			Type("text").
+			Value(h.name).
+			Placeholder("What is your name?").
+			AutoFocus(true).
+			OnInput(h.ValueTo(&h.name)),
 	)
 }
 ```
 
-## Standard HTTP
+## Serving the app
 
-Apps created with go-app complies with [Go standard HTTP](https://golang.org/pkg/net/http) package interfaces.
+Serve your app with Go's standard [`net/http`](https://pkg.go.dev/net/http) package. The `app.Handler` type implements `http.Handler` and can be used with an existing Go server.
+
+Add this function to `main.go` to register the component at `/` and serve the app on port `8000`:
 
 ```go
 func main() {
-	// Components routing:
+	// Register the component.
 	app.Route("/", func() app.Composer { return &hello{} })
-	app.Route("/hello", func() app.Composer { return &hello{} })
+
+	// Start the app in the browser; on the server, continue below.
 	app.RunWhenOnBrowser()
 
-	// HTTP routing:
+	// Serve the app over HTTP.
 	http.Handle("/", &app.Handler{
 		Name:        "Hello",
-		Description: "An Hello World! example",
+		Description: "A Hello World example",
 	})
 
 	if err := http.ListenAndServe(":8000", nil); err != nil {
@@ -94,44 +105,29 @@ func main() {
 }
 ```
 
+## Build and run
+
+From your project directory, build the WebAssembly app and the server, then run the server:
+
+```sh
+mkdir -p web
+GOOS=js GOARCH=wasm go build -o web/app.wasm
+go build -o server
+./server
+```
+
+Open [localhost:8000](http://localhost:8000) in your browser. After changing the code, rebuild both binaries and restart the server.
+
 ## Getting started
 
-**Read the [Getting Started](https://go-app.dev/getting-started) document**.
+Follow the [Getting Started guide](https://go-app.dev/getting-started) to build and run your first app.
 
 ## Built with go-app
 
-- [Lofimusic.app](https://lofimusic.app/collegemusic-lonely)
-- [Murlok.io](https://murlok.io/)
-- [liwasc](https://pojntfx.github.io/liwasc/)
-- [go-app Docs](https://go-app.dev/)
+- [Murlok](https://murlok.io/): World of Warcraft character builds and guides.
+- [GoApp Docs](https://go-app.dev/): The documentation website, built with go-app.
+- [liwasc](https://pojntfx.github.io/liwasc/): Network discovery, port scanning, and Wake-on-LAN.
 
-## Contributors
+## Support the project
 
-### Code Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-
-<a href="https://github.com/maxence-charriere/go-app/graphs/contributors"><img src="https://opencollective.com/go-app/contributors.svg?width=890&button=false" /></a>
-
-### Financial Contributors
-
-Become a financial contributor and help us sustain [go-app](https://github.com/maxence-charriere/go-app) development. [[Contribute](https://opencollective.com/go-app/contribute)]
-
-#### Individuals
-
-<a href="https://opencollective.com/go-app"><img src="https://opencollective.com/go-app/individuals.svg?width=890"></a>
-
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/go-app/contribute)]
-
-<a href="https://opencollective.com/go-app/organization/0/website"><img src="https://opencollective.com/go-app/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/1/website"><img src="https://opencollective.com/go-app/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/2/website"><img src="https://opencollective.com/go-app/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/3/website"><img src="https://opencollective.com/go-app/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/4/website"><img src="https://opencollective.com/go-app/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/5/website"><img src="https://opencollective.com/go-app/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/6/website"><img src="https://opencollective.com/go-app/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/7/website"><img src="https://opencollective.com/go-app/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/8/website"><img src="https://opencollective.com/go-app/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/9/website"><img src="https://opencollective.com/go-app/organization/9/avatar.svg"></a>
+If go-app is useful to you, consider [sponsoring its development](https://github.com/sponsors/maxence-charriere).
