@@ -70,6 +70,14 @@ jobs:
           git tag "${TAG}" "${{ github.event.workflow_run.head_sha }}"
           git push origin "refs/tags/${TAG}"
 
+      - name: Rebuild go-app documentation
+        env:
+          GH_TOKEN: ${{ secrets.GO_APP_DOCS_TOKEN }}
+        run: |
+          gh api --method POST \
+            repos/maxence-charriere/go-app-docs/dispatches \
+            -f event_type=build
+
       - name: Create GitHub release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
