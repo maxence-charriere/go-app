@@ -9,7 +9,6 @@
 	<a href="https://GitHub.com/maxence-charriere/go-app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/go-app.svg" alt="GitHub release"></a>
 	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/v11/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
     <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/badge/twitter-@jonhymaxoo-35A9F8?logo=twitter&style=flat"></a>
-    <a href="https://opencollective.com/go-app" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/go-app/all/badge.svg?label=open+collective&color=4FB9F6" /></a>
 </p>
 
 Go-app is a package for **building progressive web apps (PWA)** with the [Go programming language (Golang)](https://golang.org) and [WebAssembly (Wasm)](https://webassembly.org).
@@ -100,38 +99,6 @@ func main() {
 
 ## Built with go-app
 
-- [Lofimusic.app](https://lofimusic.app/collegemusic-lonely)
 - [Murlok.io](https://murlok.io/)
 - [liwasc](https://pojntfx.github.io/liwasc/)
 - [go-app Docs](https://go-app.dev/)
-
-## Contributors
-
-### Code Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-
-<a href="https://github.com/maxence-charriere/go-app/graphs/contributors"><img src="https://opencollective.com/go-app/contributors.svg?width=890&button=false" /></a>
-
-### Financial Contributors
-
-Become a financial contributor and help us sustain [go-app](https://github.com/maxence-charriere/go-app) development. [[Contribute](https://opencollective.com/go-app/contribute)]
-
-#### Individuals
-
-<a href="https://opencollective.com/go-app"><img src="https://opencollective.com/go-app/individuals.svg?width=890"></a>
-
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/go-app/contribute)]
-
-<a href="https://opencollective.com/go-app/organization/0/website"><img src="https://opencollective.com/go-app/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/1/website"><img src="https://opencollective.com/go-app/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/2/website"><img src="https://opencollective.com/go-app/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/3/website"><img src="https://opencollective.com/go-app/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/4/website"><img src="https://opencollective.com/go-app/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/5/website"><img src="https://opencollective.com/go-app/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/6/website"><img src="https://opencollective.com/go-app/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/7/website"><img src="https://opencollective.com/go-app/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/8/website"><img src="https://opencollective.com/go-app/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/go-app/organization/9/website"><img src="https://opencollective.com/go-app/organization/9/avatar.svg"></a>
