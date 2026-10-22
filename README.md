@@ -37,11 +37,11 @@ Add go-app to your project:
 go get github.com/maxence-charriere/go-app/v11/pkg/app
 ```
 
-## Declarative syntax
+## Components
 
-Go-app uses a [declarative syntax](https://go-app.dev/declarative-syntax) so you can **write reusable component-based UI elements** just by using the Go programming language.
+Describe your UI with Go functions using go-app's [declarative syntax](https://go-app.dev/declarative-syntax). Each component embeds `app.Compo` and defines a `Render` method that returns its UI.
 
-Here is a Hello World component that takes an input and displays its value in its title:
+This component displays a greeting that updates as you type your name:
 
 ```go
 type hello struct {
@@ -60,14 +60,12 @@ func (h *hello) Render() app.UI {
 				return app.Text("World!")
 			}),
 		),
-		app.P().Body(
-			app.Input().
-				Type("text").
-				Value(h.name).
-				Placeholder("What is your name?").
-				AutoFocus(true).
-				OnChange(h.ValueTo(&h.name)),
-		),
+		app.Input().
+			Type("text").
+			Value(h.name).
+			Placeholder("What is your name?").
+			AutoFocus(true).
+			OnInput(h.ValueTo(&h.name)),
 	)
 }
 ```
