@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="https://go-app.dev">
-        <img alt="go-app"  width="150" height="150" src="docs/web/icon.png">
+        <img alt="go-app"  width="150" height="150" src="https://raw.githubusercontent.com/maxence-charriere/go-app-docs/main/docs/web/icon.svg">
     </a>
 </h1>
 
