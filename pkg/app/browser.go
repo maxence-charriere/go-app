@@ -1,6 +1,7 @@
 package app
 
 import (
+	"strings"
 	"time"
 )
 
@@ -48,8 +49,8 @@ func (b *browser) handleAnchorClick(ctx Context) {
 						return
 					}
 
-					switch target.Get("target").String() {
-					case "_blank":
+					targetName := target.Get("target").String()
+					if len(targetName) == len("_blank") && strings.EqualFold(targetName, "_blank") {
 						return
 					}
 
