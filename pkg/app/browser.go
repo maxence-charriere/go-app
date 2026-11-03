@@ -1,6 +1,7 @@
 package app
 
 import (
+	"strings"
 	"time"
 )
 
@@ -48,7 +49,7 @@ func (b *browser) handleAnchorClick(ctx Context) {
 						return
 					}
 
-					switch target.Get("target").String() {
+					switch strings.ToLower(target.Get("target").String()) {
 					case "_blank":
 						return
 					}
