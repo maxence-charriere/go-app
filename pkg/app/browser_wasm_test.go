@@ -112,3 +112,65 @@ func TestBrowserAnchorClick(t *testing.T) {
 		})
 	}
 }
+
+func TestBrowserAnchorTarget(t *testing.T) {
+	tests := []struct {
+		target          string
+		wantNavigations int
+	}{
+		{
+			target: "_blank",
+		},
+		{
+			target: "_BLANK",
+		},
+		{
+			target: "_Blank",
+		},
+		{
+			target: "_bLaNk",
+		},
+		{
+			target:          "_self",
+			wantNavigations: 1},
+		{
+			target:          "",
+			wantNavigations: 1,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.target, func(t *testing.T) {
+			var navigations int
+			ctx := Context{
+				dispatch: func(f func()) { f() },
+				navigate: func(destination *url.URL, updateHistory bool) {
+					navigations++
+				},
+			}
+			anchor := Window().Get("document").Call("createElement", "a")
+			anchor.Set("href", "#original")
+			anchor.Set("target", test.target)
+			ctx.sourceElement = A().setJSElement(anchor)
+
+			previousClick := Window().Get("onclick")
+			var browser browser
+			browser.handleAnchorClick(ctx)
+			t.Cleanup(func() {
+				Window().Set("onclick", previousClick)
+				browser.anchorClick.Release()
+			})
+
+			// Invoke the handler directly to avoid opening tabs or navigating.
+			event := Window().Get("MouseEvent").New("click", map[string]any{
+				"cancelable": true,
+			})
+			Window().Get("Object").Call("defineProperty", event, "target", map[string]any{
+				"value": anchor,
+			})
+			browser.anchorClick.Invoke(event)
+
+			require.Equal(t, test.wantNavigations, navigations)
+			require.Equal(t, test.wantNavigations != 0, event.Get("defaultPrevented").Bool())
+		})
+	}
+}
