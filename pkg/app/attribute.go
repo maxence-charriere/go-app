@@ -26,6 +26,7 @@ func (a attributes) Set(name string, value any) {
 	switch name {
 	case "alt",
 		"cite",
+		"crossorigin",
 		"data",
 		"download",
 		"href",
